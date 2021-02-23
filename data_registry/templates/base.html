@@ -1,0 +1,22 @@
+{% load i18n %}
+{% load l10n %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="/static/{{ STATIC_VERSION }}/css/main.css" />
+        <title>{% trans 'Data Registry' %}</title>
+
+
+    </head>
+
+    <body>
+        {% block content %}{% endblock %}
+
+        <script src="/static/{{ STATIC_VERSION }}/js/main.js"></script>
+    </body>
+</html>
