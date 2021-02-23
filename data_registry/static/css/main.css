@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap);@import url(https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700&display=swap);@import url(https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap);/* set the overriding variables */
+@import url(https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap);/* set the overriding variables */
 /*!
  * Bootstrap v4.6.0 (https://getbootstrap.com/)
  * Copyright 2011-2021 The Bootstrap Authors
@@ -10052,6 +10052,3 @@ a.text-dark:hover, a.text-dark:focus {
 @media (min-width: 2000px) {
   .text-xxxxl-nowrap {
     white-space: nowrap !important; } }
-
-[v-cloak] {
-  display: none; }
