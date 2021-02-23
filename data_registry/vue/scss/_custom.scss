@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap');
+
+$body-color: #4A4A4A !default;
+$primary: #FF2700;
+$secondary: #BCE9FF;
+$success: #7AC70C;
+$info: #A560EB;
+$warning: #FA811B;
+$danger: #D33131;
+$light: #f8f9fa;
+$dark: #848484;
+$background-light: #f5f5f5;
+$background-dark: #000000;
+$blue: #4a90e2;
+
+$font-family-sans-serif: 'Source Sans Pro',
+sanf-serif !default;
+
+$headings-font-family: 'Playfair Display',
+serif !default;
+
+$monospace-font-family: "Roboto Mono", monospace;
+
+$btn-padding-y: 1rem !default;
+$btn-padding-x: 1.3rem !default;
+
+$btn-padding-y-sm: .7rem !default;
+$btn-padding-x-sm: 1rem !default;
+
+$btn-padding-y-lg: 0.5rem !default;
+$btn-padding-x-lg: 3rem !default;
+
+$btn-font-family: $font-family-sans-serif;
+$btn-font-weight: 400 !default;
+
+$btn-border-radius-lg: 27px;
