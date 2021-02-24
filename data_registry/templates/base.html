@@ -1,5 +1,6 @@
 {% load i18n %}
 {% load l10n %}
+{% load analytics %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,8 +11,7 @@
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="/static/{{ STATIC_VERSION }}/css/main.css" />
         <title>{% trans 'Data Registry' %}</title>
-
-
+        {% fathom_analytics %}
     </head>
 
     <body>
