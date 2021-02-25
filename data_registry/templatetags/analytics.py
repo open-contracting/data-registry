@@ -7,6 +7,7 @@ register = template.Library()
 @register.inclusion_tag('fathom_snippet.html')
 def fathom_analytics():
     key = None
+    domain = None
     if hasattr(settings, 'FATHOM_KEY'):
         key = settings.FATHOM_KEY
         domain = settings.FATHOM_FATHOM_ANALYTICS_DOMAIN
