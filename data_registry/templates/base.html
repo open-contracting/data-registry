@@ -1,6 +1,7 @@
 {% load i18n %}
 {% load l10n %}
 {% load analytics %}
+{% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -9,7 +10,7 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="/static/{{ STATIC_VERSION }}/css/main.css" />
+        <link rel="stylesheet" href="{% static 'css/main.css' %}" />
         <title>{% trans 'Data Registry' %}</title>
         {% fathom_analytics %}
     </head>
@@ -23,6 +24,6 @@
 
             </div>
         </div>
-        <script src="/static/{{ STATIC_VERSION }}/js/main.js"></script>
+        <script src="{% static 'js/main.js'%}"></script>
     </body>
 </html>

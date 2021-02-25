@@ -11,5 +11,5 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns = [
-        url(r'^static/(.*)/(?P<path>.*)$', static.serve, {'document_root': settings.STATIC_ROOT}),
+        url(r'^{}(?P<path>.*)$'.format(settings.STATIC_URL), static.serve, {'document_root': settings.STATIC_ROOT}),
     ] + urlpatterns

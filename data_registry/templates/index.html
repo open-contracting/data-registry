@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% load humanize %}
+{% load static %}
 
 {% block content %}
     <div id="main_app">
+        <img src="{% static 'img/logo.svg' %}">
         <h1>Initial page</h1>
         <p>font testing</p>
     </div>
