@@ -15,8 +15,14 @@
     </head>
 
     <body>
-        {% block content %}{% endblock %}
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col col-11">
+                    {% block content %}{% endblock %}
+                </div>
 
+            </div>
+        </div>
         <script src="/static/{{ STATIC_VERSION }}/js/main.js"></script>
     </body>
 </html>

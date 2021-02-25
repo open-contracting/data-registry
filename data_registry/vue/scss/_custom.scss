@@ -1,4 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
+@font-face {
+    font-family: "GTEestiProDisplay-Bold";
+    src: url("/fonts/GTEestiProDisplay-Bold.otf") format("opentype");
+}
+
+@font-face {
+    font-family: "GTEestiProText-Regular";
+    src: url("/fonts/GTEestiProText-Regular.otf") format("opentype");
+}
 
 $body-color: #4A4A4A !default;
 $primary: #FF2700;
@@ -13,22 +21,8 @@ $background-light: #f5f5f5;
 $background-dark: #000000;
 $blue: #4a90e2;
 
-$font-family-sans-serif: 'Source Sans Pro', sanf-serif !default;
+$font-family-sans-serif: "GTEestiProText-Regular", "Helvetica Neue", Arial, sans-serif !default;
 
-$headings-font-family: 'Playfair Display', serif !default;
+$headings-font-family: "GTEestiProDisplay-Bold", "Helvetica Neue", Arial, sans-serif !default;
 
 $monospace-font-family: "Roboto Mono", monospace;
-
-$btn-padding-y: 1rem !default;
-$btn-padding-x: 1.3rem !default;
-
-$btn-padding-y-sm: .7rem !default;
-$btn-padding-x-sm: 1rem !default;
-
-$btn-padding-y-lg: 0.5rem !default;
-$btn-padding-x-lg: 3rem !default;
-
-$btn-font-family: $font-family-sans-serif;
-$btn-font-weight: 400 !default;
-
-$btn-border-radius-lg: 27px;
