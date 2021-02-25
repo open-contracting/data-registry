@@ -9,4 +9,5 @@ def fathom_analytics():
     key = None
     if hasattr(settings, 'FATHOM_KEY'):
         key = settings.FATHOM_KEY
-    return {'fathom_key': key}
+        domain = settings.FATHOM_FATHOM_ANALYTICS_DOMAIN
+    return {'fathom_key': key, 'fathom_analytics_domain': domain}

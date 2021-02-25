@@ -7,6 +7,7 @@ ENVIRONMENT = "production"
 SECRET_KEY = 'x_ayh_asdfsdfdsterwtefgewrtp%7li94n^'
 
 FATHOM_KEY = "HTTGFPYH"
+FATHOM_ANALYTICS_DOMAIN = 'cdn.usefathom.com'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
