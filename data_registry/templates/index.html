@@ -4,9 +4,75 @@
 {% load static %}
 
 {% block content %}
-    <div id="main_app">
-        <img src="{% static 'img/logo.svg' %}">
-        <h1>Initial page</h1>
-        <p>font testing</p>
+    <div class="row">
+        <div class="col col-12">
+            <img class="logo" src="{% static 'img/logo.svg' %}">
+        </div>
+    </div>
+    <div class="row motto">
+        <div class="col col-8">
+            <h1>{% translate "OCP Data Registry" %}</h1>
+            <h2>{% translate "Search for and access datasets by country" %}</h2>
+        </div>
+        <div class="col col-4 text-right align-bottom">
+            <a class="btn btn-primary btn-lg" href="#">{% translate "START YOUR SEARCH" %}</a>
+        </div>
+    </div>
+
+    <div class="row info">
+        <div class="col col-4">
+            <div class="info_card">
+                <h3>
+                    <img class="box_logo" src="{% static 'img/globe.svg' %}">
+                    {% translate "Data by Country" %}</h3>
+                <p>
+                    {% blocktrans %}
+                        The Data Registry has been designed to hlep you find open data sources for public sector procurement in different countries.
+                    {% endblocktrans %}
+                </p>
+                <p>
+                    {% blocktrans %}
+                        This includes if data is available to access directly form the OCP's Kingfisher database.
+                    {% endblocktrans %}
+                </p>
+            </div>
+        </div>
+
+        <div class="col col-4">
+            <div class="info_card">
+                <h3>
+                    <img class="box_logo" src="{% static 'img/school.svg' %}">
+                    {% translate "Learn about the source" %}</h3>
+                <p>
+                    {% blocktrans %}
+                        Information about each data source is provided to help you to understand what fields are avaliable or if there are any documents.
+                    {% endblocktrans %}
+                </p>
+                <p>
+                    {% blocktrans %}
+                        Any known data quality issues and advice on how to access data is provided here too.
+                    {% endblocktrans %}
+                </p>
+            </div>
+        </div>
+
+        <div class="col col-4">
+            <div class="info_card">
+                <h3>
+                    <img class="box_logo" src="{% static 'img/directions.svg' %}">
+                    {% translate "Get Directed" %}</h3>
+                <p>
+                    {% blocktrans %}
+                        The registry links you directly to the data source for you to access data.
+                    {% endblocktrans %}
+                </p>
+                <p>
+                    {% blocktrans %}
+                        If data is available from the OCP Kingfisher database you can download it directly in JSON or Excel using the Flatten Tool Interface.
+                    {% endblocktrans %}
+                </p>
+            </div>
+        </div>
+
     </div>
 {% endblock %}

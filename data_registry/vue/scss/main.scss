@@ -3,3 +3,47 @@
 @import '~bootstrap';
 @import "utils";
 
+.logo {
+    width: 150px;
+    margin-top: 40px;
+}
+
+.motto {
+    margin-top: 60px;
+}
+
+.motto h1 {
+    font-size: 48px;
+    color: #2f3a26;
+}
+
+.motto h2 {
+    font-size: 24px;
+    font-family: $font-family-sans-serif;
+    color: #2f3a26;
+}
+
+.info {
+    margin-top:60px;
+}
+
+.info_card {
+    padding: 40px 32px 20px 40px;
+    border-top-left-radius: 40px;
+    background-color: #eeeeee;
+    height: 100%;
+}
+
+.info_card h3 {
+    font-size: 18px
+}
+
+.info_card p {
+    margin-top: 30px;
+    font-size: 14px;
+}
+
+.box_logo {
+    width: 30px;
+    margin-right: 8px;
+}
