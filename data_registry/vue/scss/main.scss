@@ -3,6 +3,21 @@
 @import '~bootstrap';
 @import "utils";
 
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+.main_content {
+    padding: 20px;
+    min-height: 100%;
+    margin: 0 auto -300px;
+}
+
+#footer, .push {
+    height: 300px;
+}
+
 .logo {
     width: 150px;
     margin-top: 40px;
@@ -46,4 +61,66 @@
 .box_logo {
     width: 30px;
     margin-right: 8px;
+}
+
+#footer {
+    padding-top: 30px;
+    background-color: #444444;
+    font-size: 14px;
+    color: #ffffff;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+#footer h4 {
+    font-size: 14px;
+}
+
+#footer .logo_vertical {
+    width: 88px;
+}
+
+#footer .logo_col {
+    min-width: 140px;
+    max-width: 140px;
+}
+
+#footer .connect_col {
+    min-width: 150px;
+    max-width: 150px;
+}
+
+#footer .contact_col {
+    min-width: 390px;
+    max-width: 390px;
+    padding-right: 40px;
+}
+
+#footer .footer_link {
+    color: white;
+    margin-right: 32px;
+}
+
+#footer .contact_card {
+    padding: 16px 24px;
+    border-top-left-radius: 32px;
+    border: 3px solid $primary;
+    width: 100%;
+    font-size: 12px;
+}
+
+#footer .contact_card h3 {
+    font-size: 20px;
+}
+
+#footer .license {
+    margin-top: 30px;
+
+    font-size: 11px;
+    color: #c4c4c4;
+}
+
+#footer .connect_icon > img{
+    width: 30px;
+    margin-bottom: 18px;
 }
