@@ -10,7 +10,7 @@ FATHOM_KEY = "HTTGFPYH"
 FATHOM_ANALYTICS_DOMAIN = 'cdn.usefathom.com'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 DATABASES = {
     'default': {
