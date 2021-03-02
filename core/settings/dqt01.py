@@ -2,7 +2,8 @@ from .base import *  # noqa: F403,F401
 
 ENVIRONMENT = "development"
 
-STATIC_URL = '/static/v1/'
+STATIC_VERSION = "v1"
+STATIC_URL = "/static/{}/".format(STATIC_VERSION)
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'x_ayh_$*yjafdafdsdfuh4jjsdfgvy536-g#gjes#4&4*yp%7li94n^'
