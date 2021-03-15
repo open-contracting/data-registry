@@ -1,0 +1,44 @@
+name: CI
+on: [push, pull_request]
+env:
+    BASEDIR: https://raw.githubusercontent.com/open-contracting/standard-maintenance-scripts/main
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        services:
+            postgres:
+                image: postgres:11
+                env:
+                    POSTGRES_PASSWORD: postgres
+                options: >-
+                    --health-cmd pg_isready
+                    --health-interval 10s
+                    --health-timeout 5s
+                    --health-retries 5
+                ports:
+                    - 5432/tcp
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-python@v1
+              with:
+                  python-version: 3.6
+            - uses: actions/cache@v1
+              with:
+                  path: ~/.cache/pip
+                  key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements_dev.txt') }}
+                  restore-keys: |
+                      ${{ runner.os }}-pip-
+            # Check requirements.txt contains production requirements.
+            - run: pip install -r requirements.txt
+            - run: ./manage.py --help
+            - run: curl -s -S --retry 3 $BASEDIR/tests/install.sh | bash -
+            - run: pip install -r requirements_dev.txt
+            - run: curl -s -S --retry 3 $BASEDIR/tests/script.sh | bash -
+            - run: pytest /tmp/test_requirements.py
+            - run: coverage run --source core,data_registry manage.py test --settings core.settings.test
+              env:
+                  DATABASE_URL: postgresql://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres?application_name=data_registry
+              if: always()
+            - env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: coveralls --service=github
