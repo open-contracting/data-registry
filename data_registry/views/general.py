@@ -6,6 +6,7 @@ def index(request):
 
     return response
 
+
 def search(request):
     response = render(request, 'search.html')
 

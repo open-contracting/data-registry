@@ -25,4 +25,3 @@ def template_script_end():
 #         'search_criteria': search_criteria,
 #         'export_url': "/rest/tender_generate_pdf"
 #     }
-
