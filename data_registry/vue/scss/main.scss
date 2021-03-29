@@ -124,3 +124,87 @@ html, body {
     width: 30px;
     margin-bottom: 18px;
 }
+
+.collection-box {
+    background-color: $gray-200;
+    border-top-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    padding: 20px 50px 20px 30px;
+
+    .badge {
+        background-color: $color-green;
+        color: white;
+        font-size: 14px;
+        font-family: $font-family-sans-serif;
+        padding: 10px 20px;
+    }
+
+    .label {
+        color: $gray-500;
+    }
+
+    .link-detail {
+        font-weight: 700;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+
+        i {
+            font-size: 24px;
+        }
+    }
+
+    div[class^='format-'] i {
+        font-size: 18px;
+    }
+
+    .format-json i {
+        color: $color-green;
+    }
+
+    .format-excel i {
+        color: $gray-500;
+    }
+
+    .description {
+        font-size: 12px;
+    }
+
+    .flag {
+        border-top-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        width: 180px;
+        height: 90px;
+        background-color: white;
+        margin-bottom: 20px;
+    }
+}
+
+.collection-box + .collection-box {
+    margin-top: 20px;
+}
+
+#search_app {
+    .header{
+        margin-top: 40px;
+        h1, .logo {
+            margin: 0;
+        }
+    }
+
+
+    .link-back {
+        margin: 50px 0;
+        display: flex;
+        align-items: center;
+        color: $body-color;
+        font-size: 14px;
+
+        i {
+            color: $gray-500;
+            font-size: 24px;
+        }
+    }
+}

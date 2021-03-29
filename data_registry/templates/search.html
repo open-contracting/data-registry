@@ -5,7 +5,7 @@
 
 {% block content %}
     <div id="search_app">
-        <div class="row">
+        <div class="row align-items-center header">
             <div class="col col-3">
                 <img class="logo" src="{% static 'img/logo.svg' %}">
             </div>
@@ -16,7 +16,10 @@
 
         <div class="row">
             <div class="col col-3">
-                <a href="{% url 'index' %}">{% translate "BACK TO REGISTRY HOME" %}</a>
+                <a href="{% url 'index' %}" class="link-back">
+                    <i class="bi-arrow-left-circle-fill mr-2"></i>
+                    <span>{% translate "BACK TO REGISTRY HOME" %}</span>
+                </a>
             </div>
         </div>
 
@@ -33,9 +36,54 @@
                 <h6>{% translate "Data contains" %}</h6>
             </div>
             <div class="col col-9">
-                <h4>{% translate "datasets found" %}</h4>
+                <h4>[[ collections.length ]] {% translate "datasets found" %}</h4>
 
-
+                <div v-for="c in collections" :key="`collection-${c.id}`" class="collection-box">
+                    <div class="row">
+                        <div class="col-auto">
+                            <div class="flag"></div>
+                        </div>
+                        <div class="col">
+                            <h2>[[ c.country ]] [[ c.title ]] <span class="badge badge-pill">{% translate "OCDS" %}</span></h2>
+                            <p class="description">[[ c.description ]]</p>
+                        </div>
+                    </div>
+                    <div class="alert alert-danger">
+                        <i class="bi-calendar-x mr-2"></i>
+                        {% translate "This collection does not completely overlap with the selected date range. Date range matched:" %}
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="label">{% translate "Available formats:" %}</div>
+                            <div class="format-json"><i class="bi-check-circle mr-2"></i> JSON</div>
+                            <div class="format-excel"><i class="bi-x-circle mr-2"></i> EXCEL</div>
+                        </div>
+                        <div class="col">
+                            <div>
+                                <span class="label">{% translate "Data date range:" %}</span>
+                                <span class="value">[[ c.date_from | moment("MMM YYYY") ]] - [[ c.date_to | moment("MMM YYYY") ]]</span>
+                            </div>
+                            <div>
+                                <span class="label">{% translate "Update frequency:" %}</span>
+                                <span class="value">
+                                    <template v-if="c.update_frequency == 'MONTHLY'">{% translate "Monthly" %}</template>
+                                    <template v-else-if="c.update_frequency == 'HALF_YEARLY'">{% translate "Every 6 months" %}</template>
+                                    <template v-else-if="c.update_frequency == 'ANNUALLY'">{% translate "Annually" %}</template>
+                                </span>
+                            </div>
+                            <div>
+                                <span class="label">{% translate "Last updated:" %}</span>
+                                <span class="value">[[ c.last_update | moment("MMM YYYY") ]]</span>
+                            </div>
+                        </div>
+                        <div class="col align-self-end text-info text-right">
+                            <a href="#" class="link-detail text-info">
+                                <i class="bi-arrow-right-circle-fill mr-2"></i>
+                                <span>{% translate "See details" %}</span>
+                            </a>
+                        </div>
+                    </div>
+                <div>
             </div>
         </div>
     </div>
