@@ -1,5 +1,6 @@
 from django.db.models import Model, TextField
-from django.db.models.fields import CharField, DateField, DateTimeField
+from django.db.models.fields import (CharField, DateField, DateTimeField,
+                                     IntegerField)
 
 
 class Collection(Model):
@@ -21,6 +22,15 @@ class Collection(Model):
     ]
 
     update_frequency = CharField(max_length=2048, choices=FREQUENCY_CHOICES, blank=True, null=True)
+
+    tenders_count = IntegerField(default=0)
+    parties_count = IntegerField(default=0)
+    awards_count = IntegerField(default=0)
+    contracts_count = IntegerField(default=0)
+    documents_count = IntegerField(default=0)
+    plannings_count = IntegerField(default=0)
+    milestones_count = IntegerField(default=0)
+    amendments_count = IntegerField(default=0)
 
     created = DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)
     modified = DateTimeField(auto_now=True, blank=True, null=True, db_index=True)

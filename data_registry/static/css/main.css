@@ -10205,6 +10205,12 @@ html, body {
   #search_app .header h1, #search_app .header .logo {
     margin: 0; }
 
+#search_app h4 {
+  margin-bottom: 30px; }
+
+#search_app h6 {
+  margin-bottom: 20px; }
+
 #search_app .link-back {
   margin: 50px 0;
   display: flex;
@@ -10214,3 +10220,21 @@ html, body {
   #search_app .link-back i {
     color: #adb5bd;
     font-size: 24px; }
+
+#search_app .filter .country {
+  display: flex;
+  flex-wrap: wrap; }
+  #search_app .filter .country > div {
+    margin-bottom: 15px; }
+  #search_app .filter .country .delimiter {
+    margin: 0 15px; }
+  #search_app .filter .country .letter {
+    cursor: pointer; }
+    #search_app .filter .country .letter:hover {
+      text-decoration: underline; }
+    #search_app .filter .country .letter.selected {
+      font-weight: 700;
+      text-decoration: underline; }
+
+#search_app .filter .form-check .form-check-label {
+  margin-left: 30px; }
