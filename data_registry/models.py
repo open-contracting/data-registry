@@ -1,6 +1,5 @@
 from django.db.models import Model, TextField
-from django.db.models.fields import (CharField, DateField, DateTimeField,
-                                     IntegerField)
+from django.db.models.fields import CharField, DateField, DateTimeField, IntegerField
 
 
 class Collection(Model):
