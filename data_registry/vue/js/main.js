@@ -4,10 +4,15 @@ require('es6-promise').polyfill();
 
 import axios from "axios";
 import Vue from "vue/dist/vue.js";
-import VueMoment from 'vue-moment'
+import VueMoment from 'vue-moment';
+
+import {BootstrapVue, IconsPlugin} from 'bootstrap-vue'
+
 import {CONFIG} from "./config.js";
 
-Vue.use(VueMoment);
+Vue.use(VueMoment)
+Vue.use(BootstrapVue)
+Vue.use(IconsPlugin)
 
 if (document.getElementById("search_app")) {
     new Vue({

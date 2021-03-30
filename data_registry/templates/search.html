@@ -17,7 +17,11 @@
         <div class="row">
             <div class="col col-3">
                 <a href="{% url 'index' %}" class="link-back">
-                    <i class="bi-arrow-left-circle-fill mr-2"></i>
+                    <b-iconstack class="mr-2 icon">
+                        <b-icon stacked class="circle" icon="circle-fill"></b-icon>
+                        <b-icon stacked class="chevron" icon="chevron-left" scale="0.6"></b-icon>
+                    </b-iconstack>
+
                     <span>{% translate "BACK TO REGISTRY HOME" %}</span>
                 </a>
             </div>
@@ -88,7 +92,9 @@
                 </div>
             </div>
             <div class="col col-9">
-                <div v-if="busy">Loading ...</div>
+                <div v-if="busy" class="text-center">
+                    <b-icon icon="circle-fill" animation="throb" font-scale="4"></b-icon>
+                </div>
                 <template v-else>
                     <h4>[[ collections.length ]] {% translate "datasets found" %}</h4>
 
@@ -103,14 +109,14 @@
                             </div>
                         </div>
                         <div class="alert alert-danger">
-                            <i class="bi-calendar-x mr-2"></i>
+                            <b-icon icon="calendar-x"></b-icon>
                             {% translate "This collection does not completely overlap with the selected date range. Date range matched:" %}
                         </div>
                         <div class="row">
                             <div class="col">
                                 <div class="label">{% translate "Available formats:" %}</div>
-                                <div class="format-json"><i class="bi-check-circle mr-2"></i> JSON</div>
-                                <div class="format-excel"><i class="bi-x-circle mr-2"></i> EXCEL</div>
+                                <div class="format-json"><b-icon icon="check-circle" class="mr-2"></b-icon> JSON</div>
+                                <div class="format-excel"><b-icon icon="x-circle" class="mr-2"></b-icon> EXCEL</div>
                             </div>
                             <div class="col">
                                 <div>
@@ -132,7 +138,11 @@
                             </div>
                             <div class="col align-self-end text-info text-right">
                                 <a href="#" class="link-detail text-info">
-                                    <i class="bi-arrow-right-circle-fill mr-2"></i>
+                                    <b-iconstack class="mr-2 icon">
+                                        <b-icon stacked class="circle" icon="circle-fill"></b-icon>
+                                        <b-icon stacked class="chevron" icon="chevron-right" scale="0.6"></b-icon>
+                                    </b-iconstack>
+
                                     <span>{% translate "See details" %}</span>
                                 </a>
                             </div>
