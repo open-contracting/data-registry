@@ -1,28 +1,35 @@
+import os
+
+import dj_database_url
+
 from .base import *  # noqa: F403,F401
 
-ENVIRONMENT = "production"
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+
+# Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'x_ayh_asdfsdfdsterwtefgewrtp%7li94n^'
-
-FATHOM_KEY = "HTTGFPYH"
-FATHOM_ANALYTICS_DOMAIN = 'cdn.usefathom.com'
+SECRET_KEY = os.getenv('SECRET_KEY', '^0z5u6!dsdafsdf52345jknosk5k!uf-6n_0#2*p_4')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
+
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'data_registry',
-        'USER': 'data_registry',
-        'PASSWORD': 'data_registry',
-        'HOST': '127.0.0.1',
-        'PORT': '22090',
-    }
+    # https://docs.djangoproject.com/en/3.0/ref/databases/#postgresql-connection-settings
+    'default': dj_database_url.config(
+        default='postgresql:///data_registry?application_name=data_registry'),
 }
 
+
+# The schema in the older version had index names longer than 30 characters.
+SILENCED_SYSTEM_CHECKS = [
+    'models.E034',
+]
 
 LOGGING = {
     'version': 1,
@@ -53,7 +60,7 @@ LOGGING = {
             'handlers': ['console'],
             'level': 'INFO',
         },
-        'data_registry': {
+        'worker': {
             'handlers': ['console'],
             'level': 'DEBUG',
         },
