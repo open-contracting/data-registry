@@ -214,6 +214,10 @@ html, body {
         margin-bottom: 20px;
     }
 
+    div ~ h6 {
+        margin-top: 30px;
+    }
+
 
     .link-back {
         margin: 50px 0;
@@ -265,8 +269,79 @@ html, body {
             }
         }
 
-        .form-check .form-check-label {
-            margin-left: 30px;
+        .form-group.form-check {
+            margin-bottom: 10px;
+
+            .form-check-label {
+                margin-left: 30px;
+            }
+        }
+
+        .date {
+            width: 100%;
+
+            .dropdown-toggle {
+                background-color: transparent;
+                border: 1px solid $light;
+                border-top-left-radius: 3px;
+                border-bottom-left-radius: 3px;
+                border-top-right-radius: 24px;
+                border-bottom-right-radius: 24px;
+                padding: 5px 5px 5px 10px;
+                color: $body-color;
+                text-align: left;
+
+                .icon {
+                    font-size: 24px;
+
+                    .circle {
+                        color: $light;
+                    }
+
+                    .chevron {
+                        color: $dark;
+                    }
+                }
+
+                &:hover, &[aria-expanded="true"] {
+                    .icon {
+                        .circle {
+                            color: $dark;
+                        }
+
+                        .chevron {
+                            color: $light;
+                        }
+                    }
+                }
+
+                &:focus {
+                    box-shadow: none;
+                }
+            }
+        }
+
+        .b-form-datepicker {
+            margin-top: 15px;
+            background-color: transparent;
+            border: 1px solid $light;
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px;
+            border-top-right-radius: 24px;
+            border-bottom-right-radius: 24px;
+            display: flex;
+
+            button {
+                padding: 5px 10px 5px 5px;
+                order: 2;
+            }
+
+            label {
+                padding: 5px 5px 5px 10px;
+                font-size: 16px;
+                color: $body-color !important;
+                order: 1;
+            }
         }
     }
 }

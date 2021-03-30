@@ -40,8 +40,49 @@
                     </template>
                 </div>
 
-
                 <h6>{% translate "Data date range" %}</h6>
+
+                <b-dropdown
+                    class="date"
+                    toggle-tag="div"
+                    no-caret
+                >
+                    <b-dropdown-item
+                        v-for="(o, i) in dateFilterOptions"
+                        :key="`date-options-${i}`"
+                        :active="o == dateFilter"
+                        @click="dateFilter = o"
+                    >
+                        [[ o.label ]]
+                    </b-dropdown-item>
+
+                    <template #button-content>
+                        <div class="row justify-content-between no-gutters">
+                            <div class="col">[[ dateFilter.label ]]</div>
+                            <b-iconstack class="col-auto icon">
+                                <b-icon stacked class="circle" icon="circle-fill"></b-icon>
+                                <b-icon stacked class="chevron" icon="chevron-down" scale="0.6"></b-icon>
+                            </b-iconstack>
+                        </div>
+                    </template>
+                </b-dropdown>
+
+                <template v-if="filter.date == 'custom'">
+                    <b-form-datepicker
+                        v-model="dateFrom"
+                        size="sm"
+                        right
+                        :date-format-options="{ year: 'numeric', month: 'short', day: 'numeric' }"
+                        placeholder="{% translate 'Date from' %}"
+                    ></b-form-datepicker>
+                    <b-form-datepicker
+                        v-model="dateTo"
+                        size="sm"
+                        right
+                        :date-format-options="{ year: 'numeric', month: 'short', day: 'numeric' }"
+                        placeholder="{% translate 'Date to' %}"
+                    ></b-form-datepicker>
+                </template>
 
                 <h6>{% translate "Update frequency" %}</h6>
                 <div class="form-group form-check">
@@ -108,9 +149,11 @@
                                 <p class="description">[[ c.description ]]</p>
                             </div>
                         </div>
-                        <div class="alert alert-danger">
+                        <div v-if="c.overlap_alert" class="alert alert-danger">
                             <b-icon icon="calendar-x"></b-icon>
-                            {% translate "This collection does not completely overlap with the selected date range. Date range matched:" %}
+                            {% translate "This collection does not completely overlap with the selected date range. Date range matched: " %}
+                            <strong>[[ c.date_from > dateFrom ? c.date_from : dateFrom | moment("MMM YYYY") ]]
+                                - [[ c.date_to < dateTo ? c.date_to : dateTo | moment("MMM YYYY") ]]</strong>
                         </div>
                         <div class="row">
                             <div class="col">
@@ -152,4 +195,13 @@
             </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+        const DATE_FILTER_OPTIONS = [
+            {"value": null, "label": '{% trans "All" %}'},
+            {"value": "last-year", "label": '{% trans "Last year" %}'},
+            {"value": "past-6-months", "label": '{% trans "Past 6 months" %}'},
+            {"value": "custom", "label": '{% trans "Custom" %}'}
+        ]
+    </script>
 {% endblock %}

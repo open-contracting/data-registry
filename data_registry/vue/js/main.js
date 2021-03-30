@@ -24,7 +24,10 @@ if (document.getElementById("search_app")) {
                 countryFilter: null,
                 frequencyFilter: [],
                 dataFilter: [],
-                busy: false
+                busy: false,
+                dateFilter: null,
+                dateFrom: null,
+                dateTo: null,
             }
         },
         computed: {
@@ -40,6 +43,7 @@ if (document.getElementById("search_app")) {
                     country: this.countryFilter,
                     frequency: this.frequencyFilter.length ? this.frequencyFilter : null,
                     data: this.dataFilter.length ? this.dataFilter : null,
+                    date: this.dateFilter.value
                 }
             },
             collections: function() {
@@ -58,11 +62,43 @@ if (document.getElementById("search_app")) {
                         result &= this.filter.data.reduce((r, m) => r & n[m] > 0, true)
                     }
 
+                    if (this.filter.date) {
+                        n.overlap_alert = false
+                        switch (this.filter.date) {
+                            case "last-year":
+                                result &= this.$moment(n.date_from).isSameOrAfter(this.$moment().subtract(1, 'years'))
+                                    || this.$moment(n.date_to).isSameOrAfter(this.$moment().subtract(1, 'years'))
+                                break
+                            case "past-6-months":
+                                result &= this.$moment(n.date_from).isSameOrAfter(this.$moment().subtract(6, 'months'))
+                                    || this.$moment(n.date_to).isSameOrAfter(this.$moment().subtract(6, 'months'))
+                                break
+                            case "custom":
+                                if (this.dateFrom && this.dateTo) {
+                                    var isFrom = this.$moment(n.date_from).isSameOrAfter(this.$moment(this.dateFrom))
+                                    var isTo = this.$moment(n.date_to).isAfter(this.$moment(this.dateFrom))
+                                        && this.$moment(n.date_to).isSameOrBefore(this.$moment(this.dateTo))
+
+                                    result &= (isFrom || isTo)
+
+                                    n.overlap_alert = !isFrom || !isTo
+                                }
+                                break
+                            default:
+                                break
+                        }
+                    }
+
                     return result
                 })
+            },
+            dateFilterOptions: function() {
+                return DATE_FILTER_OPTIONS
             }
         },
         created: function() {
+            this.dateFilter = this.dateFilterOptions[0]
+
             this.busy = true
 
             axios

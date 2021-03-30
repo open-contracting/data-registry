@@ -1,10 +1,10 @@
 var config = {
-    apiBaseUrl: "http://localhost:8000/"
+    apiBaseUrl: "/"
 };
 
 if (process.env.NODE_ENV == "production") {
     Object.assign(config, {
-        apiBaseUrl: ""
+        apiBaseUrl: "/"
     });
 }
 
