@@ -1,6 +1,7 @@
 import os
 
 import dj_database_url
+from django.contrib.postgres import fields  # noqa: F403,F401
 
 from .base import *  # noqa: F403,F401
 

@@ -8,6 +8,8 @@ asgiref==3.3.1
     # via
     #   -r requirements.txt
     #   django
+attrs==20.3.0
+    # via pytest
 certifi==2020.12.5
     # via requests
 chardet==4.0.0
@@ -19,9 +21,9 @@ coverage==5.4
 coveralls==3.0.0
     # via -r requirements_dev.in
 dj-database-url==0.5.0
-    # via -r requirements.txt
-django-tastypie==0.14.3
-    # via -r requirements.txt
+    # via
+    #   -r requirements.txt
+    #   -r requirements_dev.in
 django==3.1.6
     # via -r requirements.txt
 docopt==0.6.2
@@ -31,41 +33,46 @@ flake8==3.8.4
 idna==2.10
     # via requests
 importlib-metadata==3.7.3
-    # via flake8
+    # via
+    #   flake8
+    #   pluggy
+    #   pytest
+iniconfig==1.1.1
+    # via pytest
 isort==5.7.0
     # via -r requirements_dev.in
 mccabe==0.6.1
     # via flake8
+packaging==20.9
+    # via pytest
 pip-tools==5.5.0
     # via -r requirements_dev.in
+pluggy==0.13.1
+    # via pytest
 psycopg2-binary==2.8.6
     # via -r requirements.txt
+py==1.10.0
+    # via pytest
 pycodestyle==2.6.0
     # via flake8
 pyflakes==2.2.0
     # via flake8
-python-dateutil==2.8.1
-    # via
-    #   -r requirements.txt
-    #   django-tastypie
-python-mimeparse==1.6.0
-    # via
-    #   -r requirements.txt
-    #   django-tastypie
+pyparsing==2.4.7
+    # via packaging
+pytest==6.2.2
+    # via -r requirements_dev.in
 pytz==2021.1
     # via
     #   -r requirements.txt
     #   django
 requests==2.25.1
     # via coveralls
-six==1.15.0
-    # via
-    #   -r requirements.txt
-    #   python-dateutil
 sqlparse==0.4.1
     # via
     #   -r requirements.txt
     #   django
+toml==0.10.2
+    # via pytest
 typing-extensions==3.7.4.3
     # via importlib-metadata
 urllib3==1.26.3

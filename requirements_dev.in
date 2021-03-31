@@ -3,4 +3,5 @@ coveralls
 flake8
 isort
 pip-tools
-
+dj-database-url
+pytest
