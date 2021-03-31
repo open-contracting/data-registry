@@ -4,6 +4,10 @@
 @import '~bootstrap-vue';
 @import "utils";
 
+*[v-cloak] {
+    display: none;
+}
+
 html, body {
     height: 100%;
     margin: 0;
@@ -134,14 +138,6 @@ html, body {
     border-bottom-left-radius: 5px;
     padding: 20px 50px 20px 30px;
 
-    .badge {
-        background-color: $color-green;
-        color: white;
-        font-size: 14px;
-        font-family: $font-family-sans-serif;
-        padding: 10px 20px;
-    }
-
     .label {
         color: $light;
     }
@@ -168,18 +164,6 @@ html, body {
         }
     }
 
-    div[class^='format-'] i {
-        font-size: 18px;
-    }
-
-    .format-json svg {
-        color: $color-green;
-    }
-
-    .format-excel svg {
-        color: $light;
-    }
-
     .description {
         font-size: 12px;
     }
@@ -196,6 +180,41 @@ html, body {
 
 .collection-box + .collection-box {
     margin-top: 20px;
+}
+
+.link-back {
+    margin: 50px 0;
+    display: flex;
+    align-items: center;
+    color: $body-color;
+    font-size: 14px;
+
+    .icon {
+        font-size: 24px;
+
+        .chevron {
+            color: white;
+        }
+        .circle {
+            color: $light;
+        }
+    }
+
+    &:hover {
+        color: $body-color;
+
+        .icon .circle {
+            color: inherit;
+        }
+    }
+}
+
+.collection-badge {
+    background-color: $color-green;
+    color: white;
+    font-size: 14px;
+    font-family: $font-family-sans-serif;
+    padding: 10px 20px;
 }
 
 #search_app {
@@ -216,30 +235,6 @@ html, body {
 
     div ~ h6 {
         margin-top: 30px;
-    }
-
-
-    .link-back {
-        margin: 50px 0;
-        display: flex;
-        align-items: center;
-        color: $body-color;
-        font-size: 14px;
-
-        .icon {
-            font-size: 24px;
-
-            .chevron {
-                color: white;
-            }
-            .circle {
-                color: $light;
-            }
-        }
-
-        &:hover .icon .circle {
-            color: inherit;
-        }
     }
 
     .filter {

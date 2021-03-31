@@ -22,3 +22,9 @@ def search(request):
         collections.append(n)
 
     return render(request, 'search.html', {"collections": collections})
+
+
+def detail(request, id):
+    data = CollectionSerializer.serialize(Collection.objects.get(id=id))
+
+    return render(request, 'detail.html', {'data': data})

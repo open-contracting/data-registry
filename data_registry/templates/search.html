@@ -4,7 +4,7 @@
 {% load static %}
 
 {% block content %}
-    <div id="search_app">
+    <div id="search_app" v-cloak>
         <div class="row align-items-center header">
             <div class="col col-3">
                 <img class="logo" src="{% static 'img/logo.svg' %}">
@@ -145,7 +145,7 @@
                                 <div class="flag"></div>
                             </div>
                             <div class="col">
-                                <h2>[[ c.country ]] [[ c.title ]] <span class="badge badge-pill">{% translate "OCDS" %}</span></h2>
+                                <h2>[[ c.country ]] [[ c.title ]] <span class="badge badge-pill collection-badge">{% translate "OCDS" %}</span></h2>
                                 <p class="description">[[ c.description ]]</p>
                             </div>
                         </div>
@@ -179,7 +179,7 @@
                                 </div>
                             </div>
                             <div class="col align-self-end text-info text-right">
-                                <a href="#" class="link-detail text-info">
+                                <a :href="c.detail_url" class="link-detail text-info">
                                     <b-iconstack class="mr-2 icon">
                                         <b-icon stacked class="circle" icon="circle-fill"></b-icon>
                                         <b-icon stacked class="chevron" icon="chevron-right" scale="0.6"></b-icon>

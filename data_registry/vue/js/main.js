@@ -113,3 +113,18 @@ if (document.getElementById("search_app")) {
         }
     });
 }
+
+if (document.getElementById("detail_app")) {
+    new Vue({
+        delimiters: ["[[", "]]"],
+        el: "#detail_app",
+        data: function() {
+            return {}
+        },
+        computed: {
+            data: function() {
+                return DATA
+            }
+        }
+    })
+}
