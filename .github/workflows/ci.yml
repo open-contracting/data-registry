@@ -36,7 +36,7 @@ jobs:
             - run: pip install -r requirements_dev.txt
             - run: curl -s -S --retry 3 $BASEDIR/tests/script.sh | bash -
             - run: pytest /tmp/test_requirements.py
-            - run: coverage run --source core,data_registry manage.py test --settings core.settings.test
+            - run: coverage run --source core,data_registry manage.py test --settings core.settings.github
               env:
                   DATABASE_URL: postgresql://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres?application_name=data_registry
               if: always()
