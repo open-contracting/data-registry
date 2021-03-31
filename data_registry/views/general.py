@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.urls import reverse
 
 from data_registry.models import Collection
 from data_registry.views.serializers import CollectionSerializer
@@ -20,8 +21,3 @@ def search(request):
         collections.append(n)
 
     return render(request, 'search.html', {"collections": collections})
-
-
-def collections(request):
-    collections = Collection.objects.all()
-    return JsonResponse([model_to_dict(c) for c in collections], safe=False)
