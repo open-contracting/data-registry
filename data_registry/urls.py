@@ -5,5 +5,4 @@ from data_registry.views import general
 urlpatterns = [
     path('', general.index, name='index'),
     path('search/', general.search, name='search'),
-    path('collections/', general.collections, name='collections')
 ]

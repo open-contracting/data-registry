@@ -2,13 +2,10 @@ import "babel-polyfill";
 var Promise = require('es6-promise').Promise;
 require('es6-promise').polyfill();
 
-import axios from "axios";
 import Vue from "vue/dist/vue.js";
 import VueMoment from 'vue-moment';
 
 import {BootstrapVue, IconsPlugin} from 'bootstrap-vue'
-
-import {CONFIG} from "./config.js";
 
 Vue.use(VueMoment)
 Vue.use(BootstrapVue)
@@ -20,7 +17,6 @@ if (document.getElementById("search_app")) {
         el: "#search_app",
         data: function() {
             return {
-                collectionsData: [],
                 countryFilter: null,
                 frequencyFilter: [],
                 dataFilter: [],
@@ -64,6 +60,7 @@ if (document.getElementById("search_app")) {
 
                     if (this.filter.date) {
                         n.overlap_alert = false
+                        n.overlap_from = n.overlap_to = null
                         switch (this.filter.date) {
                             case "last-year":
                                 result &= this.$moment(n.date_from).isSameOrAfter(this.$moment().subtract(1, 'years'))
@@ -82,6 +79,8 @@ if (document.getElementById("search_app")) {
                                     result &= (isFrom || isTo)
 
                                     n.overlap_alert = !isFrom || !isTo
+                                    n.overlap_from = n.date_from > this.dateFrom ? n.date_from : this.dateFrom
+                                    n.overlap_to = n.date_to < this.dateTo ? n.date_to : this.dateTo
                                 }
                                 break
                             default:
@@ -94,21 +93,13 @@ if (document.getElementById("search_app")) {
             },
             dateFilterOptions: function() {
                 return DATE_FILTER_OPTIONS
+            },
+            collectionsData: function() {
+                return COLLECTIONS
             }
         },
         created: function() {
             this.dateFilter = this.dateFilterOptions[0]
-
-            this.busy = true
-
-            axios
-                .get(CONFIG.apiBaseUrl + "collections/")
-                .then(r => this.collectionsData = r.data)
-                .catch(e => {
-                    this.collectionsData = []
-                    console.log(e)
-                })
-                .finally(() => this.busy = false)
         },
         methods: {
             setCountryFilter: function(country) {

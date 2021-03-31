@@ -1,8 +1,7 @@
-from django.forms.models import model_to_dict
-from django.http import JsonResponse
 from django.shortcuts import render
 
 from data_registry.models import Collection
+from data_registry.views.serializers import CollectionSerializer
 
 
 def index(request):
@@ -12,9 +11,15 @@ def index(request):
 
 
 def search(request):
-    response = render(request, 'search.html')
+    results = Collection.objects.all()
 
-    return response
+    collections = []
+    for r in results:
+        n = CollectionSerializer.serialize(r)
+        n["detail_url"] = reverse("detail", kwargs={"id": r.id})
+        collections.append(n)
+
+    return render(request, 'search.html', {"collections": collections})
 
 
 def collections(request):

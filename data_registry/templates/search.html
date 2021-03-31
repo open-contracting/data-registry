@@ -152,8 +152,7 @@
                         <div v-if="c.overlap_alert" class="alert alert-danger">
                             <b-icon icon="calendar-x"></b-icon>
                             {% translate "This collection does not completely overlap with the selected date range. Date range matched: " %}
-                            <strong>[[ c.date_from > dateFrom ? c.date_from : dateFrom | moment("MMM YYYY") ]]
-                                - [[ c.date_to < dateTo ? c.date_to : dateTo | moment("MMM YYYY") ]]</strong>
+                            <strong>[[ c.overlap_from | moment("MMM YYYY") ]] - [[ c.overlap_to | moment("MMM YYYY") ]]</strong>
                         </div>
                         <div class="row">
                             <div class="col">
@@ -196,6 +195,8 @@
         </div>
     </div>
 
+    {{ collections|json_script:"collections-data" }}
+
     <script type="text/javascript">
         const DATE_FILTER_OPTIONS = [
             {"value": null, "label": '{% trans "All" %}'},
@@ -203,5 +204,7 @@
             {"value": "past-6-months", "label": '{% trans "Past 6 months" %}'},
             {"value": "custom", "label": '{% trans "Custom" %}'}
         ]
+
+        const COLLECTIONS = JSON.parse(document.getElementById('collections-data').textContent)
     </script>
 {% endblock %}
