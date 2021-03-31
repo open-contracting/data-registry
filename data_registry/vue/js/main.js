@@ -11,6 +11,32 @@ Vue.use(VueMoment)
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 
+
+if (document.getElementById("chevron-btn-template")) {
+    Vue.component("chevron-btn", {
+        delimiters: ['[[', ']]'],
+        template: '#chevron-btn-template',
+        props: {
+            up: {type: Boolean, default: false},
+            right: {type: Boolean, default: false},
+            down: {type: Boolean, default: false}
+        },
+        computed: {
+            direction: function() {
+                if (this.up)            return "up"
+                else if (this.right)    return "right"
+                else if (this.down)     return "down"
+                else                    return "left"
+            }
+        },
+        data: function() {
+            return {};
+        },
+        methods: {
+        }
+    })
+}
+
 if (document.getElementById("search_app")) {
     new Vue({
         delimiters: ["[[", "]]"],

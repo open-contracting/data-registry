@@ -2,6 +2,7 @@
 {% load i18n %}
 {% load humanize %}
 {% load static %}
+{% load vue %}
 
 {% block content %}
     <div id="search_app" v-cloak>
@@ -17,10 +18,7 @@
         <div class="row">
             <div class="col col-3">
                 <a href="{% url 'index' %}" class="link-back">
-                    <b-iconstack class="mr-2 icon">
-                        <b-icon stacked class="circle" icon="circle-fill"></b-icon>
-                        <b-icon stacked class="chevron" icon="chevron-left" scale="0.6"></b-icon>
-                    </b-iconstack>
+                    <chevron-btn class="mr-2 icon"></chevron-btn>
 
                     <span>{% translate "BACK TO REGISTRY HOME" %}</span>
                 </a>
@@ -59,10 +57,8 @@
                     <template #button-content>
                         <div class="row justify-content-between no-gutters">
                             <div class="col">[[ dateFilter.label ]]</div>
-                            <b-iconstack class="col-auto icon">
-                                <b-icon stacked class="circle" icon="circle-fill"></b-icon>
-                                <b-icon stacked class="chevron" icon="chevron-down" scale="0.6"></b-icon>
-                            </b-iconstack>
+
+                            <chevron-btn class="col-auto icon" down></chevron-btn>
                         </div>
                     </template>
                 </b-dropdown>
@@ -180,10 +176,7 @@
                             </div>
                             <div class="col align-self-end text-info text-right">
                                 <a :href="c.detail_url" class="link-detail text-info">
-                                    <b-iconstack class="mr-2 icon">
-                                        <b-icon stacked class="circle" icon="circle-fill"></b-icon>
-                                        <b-icon stacked class="chevron" icon="chevron-right" scale="0.6"></b-icon>
-                                    </b-iconstack>
+                                    <chevron-btn class="mr-2 icon" right></chevron-btn>
 
                                     <span>{% translate "See details" %}</span>
                                 </a>
@@ -194,6 +187,8 @@
             </div>
         </div>
     </div>
+
+    {% chevron_btn_vue_template %}
 
     {{ collections|json_script:"collections-data" }}
 

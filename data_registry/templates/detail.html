@@ -2,6 +2,7 @@
 {% load i18n %}
 {% load humanize %}
 {% load static %}
+{% load vue %}
 
 {% block content %}
     <div id="detail_app" v-cloak>
@@ -14,11 +15,7 @@
         <div class="row">
             <div class="col col-12">
                 <a href="{% url 'search' %}" class="link-back">
-                    <b-iconstack class="mr-2 icon">
-                        <b-icon stacked class="circle" icon="circle-fill"></b-icon>
-                        <b-icon stacked class="chevron" icon="chevron-left" scale="0.6"></b-icon>
-                    </b-iconstack>
-
+                    <chevron-btn class="mr-2 icon"></chevron-btn>
                     <span>{% translate "BACK TO DATASETS SEARCH" %}</span>
                 </a>
             </div>
@@ -40,21 +37,17 @@
                 </div>
             </div>
             <div class="col-auto">
-                <a class="btn btn-primary btn-lg" href="{% url 'search' %}">
-                    <b-iconstack class="mr-2 icon">
-                        <b-icon stacked class="circle" icon="circle-fill"></b-icon>
-                        <b-icon stacked class="chevron" icon="chevron-right" scale="0.6"></b-icon>
-                    </b-iconstack>
-                    {% translate "ACCESS" %}
+                <a class="btn btn-primary btn-lg access-btn" href="#access">
+                    <chevron-btn class="mr-4 icon" right></chevron-btn>{% translate "ACCESS" %}
                 </a>
             </div>
         </div>
 
-        <div class="row section">
-            <div class="col-3">
+        <div class="row detail-section overview">
+            <div class="col-3 label">
                 <h4>{% translate "Overview" %}</h4>
             </div>
-            <div class="col-9">
+            <div class="col-9 data">
                 <div>
                     <span class="label">{% translate "Data date range:" %}</span>
                     <span class="value">[[ data.date_from | moment("MMM YYYY") ]] - [[ data.date_to | moment("MMM YYYY") ]]</span>
@@ -82,20 +75,65 @@
             </div>
         </div>
 
-        <div class="row section">
-            <div class="col-3">
+        <div class="row detail-section">
+            <div class="col-3 label">
                 <h4>{% translate "Data avaliable" %}</h4>
             </div>
-            <div class="col-9"></div>
+            <div class="col-9">
+                <div class="row">
+                    <div class="col-4">
+                        <b-icon :icon="data.parties_count ? 'check-circle' : 'x-circle'" class="mr-2"></b-icon> {% translate "Parties" %}
+                        {% translate "Count of parties:" %} [[ data.parties_count ]]
+                    </div>
+                    <div class="col-4">
+                        <b-icon :icon="data.plannings_count ? 'check-circle' : 'x-circle'" class="mr-2"></b-icon> {% translate "Plannings" %}
+                        {% translate "Count of planning activities:" %} [[ data.plannings_count ]]
+                    </div>
+                    <div class="col-4">
+                        <b-icon :icon="data.tenders_count ? 'check-circle' : 'x-circle'" class="mr-2"></b-icon> {% translate "Tenders" %}
+                        {% translate "Count of tenders:" %} [[ data.tenders_count ]]
+                    </div>
+                    <div class="col-4">
+                        <b-icon :icon="data.awards_count ? 'check-circle' : 'x-circle'" class="mr-2"></b-icon> {% translate "Awards" %}
+                        {% translate "Count of awards:" %} [[ data.awards_count ]]
+                    </div>
+                    <div class="col-4">
+                        <b-icon :icon="data.contracts_count ? 'check-circle' : 'x-circle'" class="mr-2"></b-icon> {% translate "Contracts" %}
+                        {% translate "Count of contracts:" %} [[ data.contracts_count ]]
+                    </div>
+                    <div class="col-4">
+                        <b-icon :icon="data.documents_count ? 'check-circle' : 'x-circle'" class="mr-2"></b-icon> {% translate "Documents" %}
+                        {% translate "Count of documents:" %} [[ data.documents_count ]]
+                    </div>
+                    <div class="col-4">
+                        <b-icon :icon="data.milestones_count ? 'check-circle' : 'x-circle'" class="mr-2"></b-icon> {% translate "Milestones" %}
+                        {% translate "Count of milestones:" %} [[ data.milestones_count ]]
+                    </div>
+                    <div class="col-4">
+                        <b-icon :icon="data.amendments_count ? 'check-circle' : 'x-circle'" class="mr-2"></b-icon> {% translate "Amendments" %}
+                        {% translate "Count of amendments:" %} [[ data.amendments_count ]]
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="row section">
-            <div class="col-3">
+        <div class="row detail-section">
+            <div class="col-3 label">
                 <h4>{% translate "Data quality" %}</h4>
             </div>
             <div class="col-9"></div>
         </div>
     </div>
+
+    <div class="row detail-section">
+        <div class="col-12">
+            <div id="access" class="info_card access">
+
+            </div>
+        </div>
+    </div>
+
+    {% chevron_btn_vue_template %}
 
     {{ data|json_script:"detail-data" }}
 

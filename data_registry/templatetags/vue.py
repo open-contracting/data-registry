@@ -14,14 +14,6 @@ def template_script_end():
     return mark_safe("</script>")
 
 
-# @register.inclusion_tag('vue_templates/tender_list.html')
-# def tender_list_vue_template():
-#     return {}
-
-
-# @register.inclusion_tag('vue_templates/research_form.html')
-# def tender_research_form_template(search_criteria):
-#     return {
-#         'search_criteria': search_criteria,
-#         'export_url': "/rest/tender_generate_pdf"
-#     }
+@register.inclusion_tag('vue/chevron_btn.html')
+def chevron_btn_vue_template():
+    return {}

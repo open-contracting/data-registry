@@ -12645,26 +12645,24 @@ html, body {
     display: flex;
     justify-content: flex-end;
     align-items: center; }
-    .collection-box .link-detail .icon {
-      font-size: 24px; }
-      .collection-box .link-detail .icon .chevron {
-        color: white; }
-      .collection-box .link-detail .icon .circle {
-        color: inherit; }
-    .collection-box .link-detail:hover .icon .circle {
+    .collection-box .link-detail .icon .circle {
       color: inherit; }
   .collection-box .description {
     font-size: 12px; }
   .collection-box .flag {
-    border-top-left-radius: 10px;
-    border-bottom-right-radius: 10px;
     width: 180px;
     height: 90px;
-    background-color: white;
     margin-bottom: 20px; }
 
 .collection-box + .collection-box {
   margin-top: 20px; }
+
+.flag {
+  border-top-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  min-width: 50px;
+  min-height: 50px;
+  background-color: white; }
 
 .link-back {
   margin: 50px 0;
@@ -12672,16 +12670,18 @@ html, body {
   align-items: center;
   color: #2f3a26;
   font-size: 14px; }
-  .link-back .icon {
-    font-size: 24px; }
-    .link-back .icon .chevron {
-      color: white; }
-    .link-back .icon .circle {
-      color: #b4b4b6; }
   .link-back:hover {
     color: #2f3a26; }
-    .link-back:hover .icon .circle {
-      color: inherit; }
+
+.chevron-btn {
+  font-size: 24px; }
+  .chevron-btn .chevron {
+    color: white; }
+  .chevron-btn .circle {
+    color: #b4b4b6; }
+
+*:hover > .chevron-btn .circle {
+  color: inherit; }
 
 .collection-badge {
   background-color: #72a735;
@@ -12766,3 +12766,36 @@ html, body {
     font-size: 16px;
     color: #2f3a26 !important;
     order: 1; }
+
+.bi-check-circle {
+  font-size: 18px;
+  color: #72a735; }
+
+.bi-x-circle {
+  font-size: 18px;
+  color: #b4b4b6; }
+
+.detail-section {
+  padding-top: 40px;
+  padding-bottom: 40px;
+  border-top: 1px solid #b4b4b6; }
+
+#detail_app .access-btn {
+  display: flex;
+  align-items: center; }
+  #detail_app .access-btn svg {
+    font-size: 36px; }
+  #detail_app .access-btn .circle {
+    color: inherit; }
+  #detail_app .access-btn .chevron {
+    color: #d6e100; }
+
+#detail_app .detail-section > .label {
+  text-align: right; }
+  #detail_app .detail-section > .label h4 {
+    margin-right: 40px; }
+
+#detail_app .detail-section.overview .data .label {
+  display: inline-block;
+  color: #b4b4b6;
+  margin-bottom: 10px; }
