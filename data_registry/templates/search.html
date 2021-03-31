@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load humanize %}
+{% load static %}
+
+{% block content %}
+    <div id="search_app">
+        <div class="row align-items-center header">
+            <div class="col col-3">
+                <img class="logo" src="{% static 'img/logo.svg' %}">
+            </div>
+            <div class="col col-9">
+                <h1>{% translate "Dataset by Country" %}</h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col col-3">
+                <a href="{% url 'index' %}" class="link-back">
+                    <b-iconstack class="mr-2 icon">
+                        <b-icon stacked class="circle" icon="circle-fill"></b-icon>
+                        <b-icon stacked class="chevron" icon="chevron-left" scale="0.6"></b-icon>
+                    </b-iconstack>
+
+                    <span>{% translate "BACK TO REGISTRY HOME" %}</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col col-3 filter">
+                <h4>{% translate "Filters" %}</h4>
+
+                <h6>{% translate "Country starting with" %}</h6>
+                <div class="country">
+                    <template v-for="n in alphabet">
+                        <div :key="n">
+                            <span class="letter" @click="setCountryFilter(n)" :class="{selected: countryFilter == n}">[[ n ]]</span><span class="delimiter" v-if="n != 'Z'">|</span>
+                        </div>
+                    </template>
+                </div>
+
+                <h6>{% translate "Data date range" %}</h6>
+
+                <b-dropdown
+                    class="date"
+                    toggle-tag="div"
+                    no-caret
+                >
+                    <b-dropdown-item
+                        v-for="(o, i) in dateFilterOptions"
+                        :key="`date-options-${i}`"
+                        :active="o == dateFilter"
+                        @click="dateFilter = o"
+                    >
+                        [[ o.label ]]
+                    </b-dropdown-item>
+
+                    <template #button-content>
+                        <div class="row justify-content-between no-gutters">
+                            <div class="col">[[ dateFilter.label ]]</div>
+                            <b-iconstack class="col-auto icon">
+                                <b-icon stacked class="circle" icon="circle-fill"></b-icon>
+                                <b-icon stacked class="chevron" icon="chevron-down" scale="0.6"></b-icon>
+                            </b-iconstack>
+                        </div>
+                    </template>
+                </b-dropdown>
+
+                <template v-if="filter.date == 'custom'">
+                    <b-form-datepicker
+                        v-model="dateFrom"
+                        size="sm"
+                        right
+                        :date-format-options="{ year: 'numeric', month: 'short', day: 'numeric' }"
+                        placeholder="{% translate 'Date from' %}"
+                    ></b-form-datepicker>
+                    <b-form-datepicker
+                        v-model="dateTo"
+                        size="sm"
+                        right
+                        :date-format-options="{ year: 'numeric', month: 'short', day: 'numeric' }"
+                        placeholder="{% translate 'Date to' %}"
+                    ></b-form-datepicker>
+                </template>
+
+                <h6>{% translate "Update frequency" %}</h6>
+                <div class="form-group form-check">
+                    <input v-model="frequencyFilter" value="MONTHLY" type="checkbox" class="form-check-input" id="f-montly">
+                    <label class="form-check-label" for="f-montly">{% translate "Monthly" %}</label>
+                </div>
+                <div class="form-group form-check">
+                    <input v-model="frequencyFilter" value="HALF_YEARLY" type="checkbox" class="form-check-input" id="f-half-yearly">
+                    <label class="form-check-label" for="f-half-yearly">{% translate "Every 6 months" %}</label>
+                </div>
+                <div class="form-group form-check">
+                    <input v-model="frequencyFilter" value="ANNUALLY" type="checkbox" class="form-check-input" id="f-annually">
+                    <label class="form-check-label" for="f-annually">{% translate "Annually" %}</label>
+                </div>
+
+                <h6>{% translate "Data contains" %}</h6>
+                <div class="form-group form-check">
+                    <input v-model="dataFilter" value="tenders_count" type="checkbox" class="form-check-input" id="d-tedners">
+                    <label class="form-check-label" for="d-tedners">{% translate "Tenders data" %}</label>
+                </div>
+                <div class="form-group form-check">
+                    <input v-model="dataFilter" value="parties_count" type="checkbox" class="form-check-input" id="d-parties">
+                    <label class="form-check-label" for="d-parties">{% translate "Parties data" %}</label>
+                </div>
+                <div class="form-group form-check">
+                    <input v-model="dataFilter" value="awards_count" type="checkbox" class="form-check-input" id="d-awards">
+                    <label class="form-check-label" for="d-awards">{% translate "Awards data" %}</label>
+                </div>
+                <div class="form-group form-check">
+                    <input v-model="dataFilter" value="contracts_count" type="checkbox" class="form-check-input" id="d-contracts">
+                    <label class="form-check-label" for="d-contracts">{% translate "Contracts data" %}</label>
+                </div>
+                <div class="form-group form-check">
+                    <input v-model="dataFilter" value="documents_count" type="checkbox" class="form-check-input" id="d-documents">
+                    <label class="form-check-label" for="d-documents">{% translate "Documents" %}</label>
+                </div>
+                <div class="form-group form-check">
+                    <input v-model="dataFilter" value="plannings_count" type="checkbox" class="form-check-input" id="d-plannings">
+                    <label class="form-check-label" for="d-plannings">{% translate "Plannings data" %}</label>
+                </div>
+                <div class="form-group form-check">
+                    <input v-model="dataFilter" value="milestones_count" type="checkbox" class="form-check-input" id="d-milestones">
+                    <label class="form-check-label" for="d-milestones">{% translate "Milestones data" %}</label>
+                </div>
+                <div class="form-group form-check">
+                    <input v-model="dataFilter" value="amendments_count" type="checkbox" class="form-check-input" id="d-amendments">
+                    <label class="form-check-label" for="d-amendments">{% translate "Amendments data" %}</label>
+                </div>
+            </div>
+            <div class="col col-9">
+                <div v-if="busy" class="text-center">
+                    <b-icon icon="circle-fill" animation="throb" font-scale="4"></b-icon>
+                </div>
+                <template v-else>
+                    <h4>[[ collections.length ]] {% translate "datasets found" %}</h4>
+
+                    <div v-for="c in collections" :key="`collection-${c.id}`" class="collection-box">
+                        <div class="row">
+                            <div class="col-auto">
+                                <div class="flag"></div>
+                            </div>
+                            <div class="col">
+                                <h2>[[ c.country ]] [[ c.title ]] <span class="badge badge-pill">{% translate "OCDS" %}</span></h2>
+                                <p class="description">[[ c.description ]]</p>
+                            </div>
+                        </div>
+                        <div v-if="c.overlap_alert" class="alert alert-danger">
+                            <b-icon icon="calendar-x"></b-icon>
+                            {% translate "This collection does not completely overlap with the selected date range. Date range matched: " %}
+                            <strong>[[ c.date_from > dateFrom ? c.date_from : dateFrom | moment("MMM YYYY") ]]
+                                - [[ c.date_to < dateTo ? c.date_to : dateTo | moment("MMM YYYY") ]]</strong>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="label">{% translate "Available formats:" %}</div>
+                                <div class="format-json"><b-icon icon="check-circle" class="mr-2"></b-icon> JSON</div>
+                                <div class="format-excel"><b-icon icon="x-circle" class="mr-2"></b-icon> EXCEL</div>
+                            </div>
+                            <div class="col">
+                                <div>
+                                    <span class="label">{% translate "Data date range:" %}</span>
+                                    <span class="value">[[ c.date_from | moment("MMM YYYY") ]] - [[ c.date_to | moment("MMM YYYY") ]]</span>
+                                </div>
+                                <div>
+                                    <span class="label">{% translate "Update frequency:" %}</span>
+                                    <span class="value">
+                                        <template v-if="c.update_frequency == 'MONTHLY'">{% translate "Monthly" %}</template>
+                                        <template v-else-if="c.update_frequency == 'HALF_YEARLY'">{% translate "Every 6 months" %}</template>
+                                        <template v-else-if="c.update_frequency == 'ANNUALLY'">{% translate "Annually" %}</template>
+                                    </span>
+                                </div>
+                                <div>
+                                    <span class="label">{% translate "Last updated:" %}</span>
+                                    <span class="value">[[ c.last_update | moment("MMM YYYY") ]]</span>
+                                </div>
+                            </div>
+                            <div class="col align-self-end text-info text-right">
+                                <a href="#" class="link-detail text-info">
+                                    <b-iconstack class="mr-2 icon">
+                                        <b-icon stacked class="circle" icon="circle-fill"></b-icon>
+                                        <b-icon stacked class="chevron" icon="chevron-right" scale="0.6"></b-icon>
+                                    </b-iconstack>
+
+                                    <span>{% translate "See details" %}</span>
+                                </a>
+                            </div>
+                        </div>
+                    <div>
+                </template>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        const DATE_FILTER_OPTIONS = [
+            {"value": null, "label": '{% trans "All" %}'},
+            {"value": "last-year", "label": '{% trans "Last year" %}'},
+            {"value": "past-6-months", "label": '{% trans "Past 6 months" %}'},
+            {"value": "custom", "label": '{% trans "Custom" %}'}
+        ]
+    </script>
+{% endblock %}

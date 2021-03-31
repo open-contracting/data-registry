@@ -1,6 +1,7 @@
 @import "custom";
 @import "breakpoints";
 @import '~bootstrap';
+@import '~bootstrap-vue';
 @import "utils";
 
 html, body {
@@ -29,13 +30,13 @@ html, body {
 
 .motto h1 {
     font-size: 48px;
-    color: #2f3a26;
+    color: $body-color;
 }
 
 .motto h2 {
     font-size: 24px;
     font-family: $font-family-sans-serif;
-    color: #2f3a26;
+    color: $body-color;
 }
 
 .info {
@@ -45,7 +46,7 @@ html, body {
 .info_card {
     padding: 40px 32px 20px 40px;
     border-top-left-radius: 40px;
-    background-color: #eeeeee;
+    background-color: $background-light;
     height: 100%;
 }
 
@@ -65,7 +66,7 @@ html, body {
 
 #footer {
     padding-top: 30px;
-    background-color: #444444;
+    background-color: $background-dark;
     font-size: 14px;
     color: #ffffff;
     padding-left: 30px;
@@ -123,4 +124,224 @@ html, body {
 #footer .connect_icon > img{
     width: 30px;
     margin-bottom: 18px;
+}
+
+.collection-box {
+    background-color: $background-light;
+    border-top-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    padding: 20px 50px 20px 30px;
+
+    .badge {
+        background-color: $color-green;
+        color: white;
+        font-size: 14px;
+        font-family: $font-family-sans-serif;
+        padding: 10px 20px;
+    }
+
+    .label {
+        color: $light;
+    }
+
+    .link-detail {
+        font-weight: 700;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+
+        .icon {
+            font-size: 24px;
+
+            .chevron {
+                color: white;
+            }
+            .circle {
+                color: inherit;
+            }
+        }
+
+        &:hover .icon .circle {
+            color: inherit;
+        }
+    }
+
+    div[class^='format-'] i {
+        font-size: 18px;
+    }
+
+    .format-json svg {
+        color: $color-green;
+    }
+
+    .format-excel svg {
+        color: $light;
+    }
+
+    .description {
+        font-size: 12px;
+    }
+
+    .flag {
+        border-top-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        width: 180px;
+        height: 90px;
+        background-color: white;
+        margin-bottom: 20px;
+    }
+}
+
+.collection-box + .collection-box {
+    margin-top: 20px;
+}
+
+#search_app {
+    .header{
+        margin-top: 40px;
+        h1, .logo {
+            margin: 0;
+        }
+    }
+
+    h4 {
+        margin-bottom: 30px;
+    }
+
+    h6 {
+        margin-bottom: 20px;
+    }
+
+    div ~ h6 {
+        margin-top: 30px;
+    }
+
+
+    .link-back {
+        margin: 50px 0;
+        display: flex;
+        align-items: center;
+        color: $body-color;
+        font-size: 14px;
+
+        .icon {
+            font-size: 24px;
+
+            .chevron {
+                color: white;
+            }
+            .circle {
+                color: $light;
+            }
+        }
+
+        &:hover .icon .circle {
+            color: inherit;
+        }
+    }
+
+    .filter {
+        .country {
+            display: flex;
+            flex-wrap: wrap;
+
+            & > div {
+                margin-bottom: 15px;
+            }
+
+            .delimiter {
+                margin: 0 15px;
+            }
+
+            .letter {
+                cursor: pointer;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+
+                &.selected {
+                    font-weight: 700;
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        .form-group.form-check {
+            margin-bottom: 10px;
+
+            .form-check-label {
+                margin-left: 30px;
+            }
+        }
+
+        .date {
+            width: 100%;
+
+            .dropdown-toggle {
+                background-color: transparent;
+                border: 1px solid $light;
+                border-top-left-radius: 3px;
+                border-bottom-left-radius: 3px;
+                border-top-right-radius: 24px;
+                border-bottom-right-radius: 24px;
+                padding: 5px 5px 5px 10px;
+                color: $body-color;
+                text-align: left;
+
+                .icon {
+                    font-size: 24px;
+
+                    .circle {
+                        color: $light;
+                    }
+
+                    .chevron {
+                        color: $dark;
+                    }
+                }
+
+                &:hover, &[aria-expanded="true"] {
+                    .icon {
+                        .circle {
+                            color: $dark;
+                        }
+
+                        .chevron {
+                            color: $light;
+                        }
+                    }
+                }
+
+                &:focus {
+                    box-shadow: none;
+                }
+            }
+        }
+
+        .b-form-datepicker {
+            margin-top: 15px;
+            background-color: transparent;
+            border: 1px solid $light;
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px;
+            border-top-right-radius: 24px;
+            border-bottom-right-radius: 24px;
+            display: flex;
+
+            button {
+                padding: 5px 10px 5px 5px;
+                order: 2;
+            }
+
+            label {
+                padding: 5px 5px 5px 10px;
+                font-size: 16px;
+                color: $body-color !important;
+                order: 1;
+            }
+        }
+    }
 }
