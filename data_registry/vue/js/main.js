@@ -65,7 +65,7 @@ if (document.getElementById("search_app")) {
                     country: this.countryFilter,
                     frequency: this.frequencyFilter.length ? this.frequencyFilter : null,
                     data: this.dataFilter.length ? this.dataFilter : null,
-                    date: this.dateFilter.value
+                    date: this.dateFilter ? this.dateFilter.value : null
                 }
             },
             collections: function() {
@@ -122,10 +122,30 @@ if (document.getElementById("search_app")) {
             },
             collectionsData: function() {
                 return COLLECTIONS
+            },
+            detailDateRange: function() {
+                if (this.filter.date == "custom") {
+                    if (this.dateFrom && this.dateTo) {
+                        return `${this.$moment(this.dateFrom).format("MMM YYYY")} - ${this.$moment(this.dateTo).format("MMM YYYY")}`
+                    }
+                } else {
+                    var found = this.dateFilterOptions.findIndex(n => n.value == this.filter.date)
+                    if (found >= 0) {
+                        return this.dateFilterOptions[found].label.toLowerCase()
+                    }
+                }
+
+                return null
+            }
+        },
+        watch: {
+            detailDateRange: function() {
+                localStorage.setItem("detail-date-range", this.detailDateRange)
             }
         },
         created: function() {
             this.dateFilter = this.dateFilterOptions[0]
+            localStorage.setItem("detail-date-range", this.detailDateRange)
         },
         methods: {
             setCountryFilter: function(country) {
@@ -150,6 +170,9 @@ if (document.getElementById("detail_app")) {
         computed: {
             data: function() {
                 return DATA
+            },
+            dateRange: function() {
+                return localStorage.getItem("detail-date-range")
             }
         }
     })

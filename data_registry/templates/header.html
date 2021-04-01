@@ -1,0 +1,26 @@
+{% load static %}
+
+<div id="header" class="container-fluid{% if dark %} dark{% endif %}">
+    <div class="row justify-content-center">
+        <div class="col col-10">
+            {% if title %}
+                <div class="row">
+                    <div class="col-3">
+                        {% if dark %}
+                            <img class="logo" src="{% static 'img/logo_dark.svg' %}">
+                        {% else %}
+                            <img class="logo" src="{% static 'img/logo.svg' %}">
+                        {% endif %}
+                    </div>
+                    <div class="col-9"><h1>{{ title }}</h1></div>
+                </div>
+            {% else %}
+                {% if dark %}
+                    <img class="logo" src="{% static 'img/logo_dark.svg' %}">
+                {% else %}
+                    <img class="logo" src="{% static 'img/logo.svg' %}">
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</div>

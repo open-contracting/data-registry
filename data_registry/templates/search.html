@@ -4,17 +4,12 @@
 {% load static %}
 {% load vue %}
 
+{% block header %}
+    {% include 'header.html' with title=_("Dataset by Country") %}
+{% endblock %}
+
 {% block content %}
     <div id="search_app" v-cloak>
-        <div class="row align-items-center header">
-            <div class="col col-3">
-                <img class="logo" src="{% static 'img/logo.svg' %}">
-            </div>
-            <div class="col col-9">
-                <h1>{% translate "Dataset by Country" %}</h1>
-            </div>
-        </div>
-
         <div class="row">
             <div class="col col-3">
                 <a href="{% url 'index' %}" class="link-back">

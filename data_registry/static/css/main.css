@@ -12542,15 +12542,20 @@ html, body {
   min-height: 100%;
   margin: 0 auto -300px; }
 
+#header {
+  padding-top: 40px;
+  padding-bottom: 40px; }
+  #header.dark {
+    background-color: #444444; }
+
 #footer, .push {
   height: 300px; }
 
 .logo {
-  width: 150px;
-  margin-top: 40px; }
+  width: 150px; }
 
 .motto {
-  margin-top: 60px; }
+  margin-top: 10px; }
 
 .motto h1 {
   font-size: 48px;
@@ -12569,6 +12574,12 @@ html, body {
   border-top-left-radius: 40px;
   background-color: #eeeeee;
   height: 100%; }
+
+.info_card.round {
+  border-top-left-radius: 40px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px; }
 
 .info_card h3 {
   font-size: 18px; }
@@ -12662,10 +12673,11 @@ html, body {
   border-bottom-right-radius: 10px;
   min-width: 50px;
   min-height: 50px;
-  background-color: white; }
+  background-color: white;
+  border: 1px solid #b4b4b6; }
 
 .link-back {
-  margin: 50px 0;
+  margin-bottom: 50px;
   display: flex;
   align-items: center;
   color: #2f3a26;
@@ -12785,6 +12797,17 @@ html, body {
   #detail_app .header-row .description {
     font-size: 12px; }
 
+#detail_app .flag {
+  width: 80px;
+  height: 80px; }
+
+#detail_app .link-back {
+  margin-top: 50px; }
+
+#detail_app .info_card {
+  padding: 40px;
+  height: auto; }
+
 #detail_app .access-btn {
   display: flex;
   align-items: center; }
@@ -12826,3 +12849,39 @@ html, body {
 
 #detail_app .detail-section.quality .issue svg {
   margin-right: 10px; }
+
+#detail_app .info_card.access {
+  background-color: #d6e100;
+  color: #2f3a26; }
+  #detail_app .info_card.access h2 {
+    margin: 0; }
+  #detail_app .info_card.access p {
+    margin: 20px 0; }
+  #detail_app .info_card.access svg {
+    color: #2f3a26; }
+  #detail_app .info_card.access button {
+    background-color: #343a40;
+    color: #d6e100;
+    padding: 15px 25px; }
+    #detail_app .info_card.access button svg {
+      margin-right: 15px; }
+    #detail_app .info_card.access button .circle {
+      color: #d6e100; }
+    #detail_app .info_card.access button .chevron {
+      color: #343a40; }
+
+#detail_app .info_card.helpdesk {
+  background-color: #6d78da;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px; }
+  #detail_app .info_card.helpdesk a {
+    color: white;
+    display: flex;
+    align-items: center; }
+    #detail_app .info_card.helpdesk a .circle {
+      color: white; }
+    #detail_app .info_card.helpdesk a .chevron {
+      color: #6d78da; }

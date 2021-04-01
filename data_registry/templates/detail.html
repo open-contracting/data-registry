@@ -4,16 +4,14 @@
 {% load static %}
 {% load vue %}
 
+{% block header %}
+    {% include 'header.html' with dark=True %}
+{% endblock %}
+
 {% block content %}
     <div id="detail_app" v-cloak>
         <div class="row">
-            <div class="col col-12">
-                <img class="logo" src="{% static 'img/logo.svg' %}">
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col col-12">
+            <div class="col col-auto">
                 <a href="{% url 'search' %}" class="link-back">
                     <chevron-btn class="mr-2 icon"></chevron-btn>
                     <span>{% translate "BACK TO DATASETS SEARCH" %}</span>
@@ -132,12 +130,51 @@
                 </template>
             </div>
         </div>
-    </div>
 
-    <div class="row detail-section">
-        <div class="col-12">
-            <div id="access" class="info_card access">
+        <div class="row detail-section">
+            <div class="col-12">
+                <div id="access" class="info_card round access">
+                    <h2>{% translate "Access data" %}</h2>
+                    <p>{% translate "Access data from <strong>OCDS Kingfisher Collect</strong> database for data range" %}
+                        <strong>[[ dateRange ]]</strong>.
+                    </p>
 
+                    <div class="row">
+                        <div class="col">
+                            <h3><b-icon icon="check-circle" class="mr-2"></b-icon>{% translate "JSON data" %}</h3>
+                            <p>
+                                {% blocktrans %}
+                                This is JSON bulk.
+                                {% endblocktrans %}
+                            </p>
+                            <button class="btn btn-md">
+                                <chevron-btn right></chevron-btn> {% translate "Access JSON data" %}
+                            </button>
+                        </div>
+                        <div class="col">
+                            <h3><b-icon icon="check-circle" class="mr-2"></b-icon>{% translate "Excel data via OCP Flatten tool" %}</h3>
+                            <p>
+                                {% blocktrans %}
+                                This is Excel bulk.
+                                {% endblocktrans %}
+                            </p>
+                            <button class="btn btn-md">
+                                <chevron-btn right></chevron-btn> {% translate "Access Excel data" %}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="info_card round helpdesk">
+                    <div><b-icon icon="question-circle" scale="1.5" class="mr-3"></b-icon> {% translate "Have questions, feedback on this dataset or content on this page?" %}</div>
+                    <a href="#">
+                        <chevron-btn right class="mr-3"></chevron-btn> {% translate "Contact OCP helpdesk" %}
+                    </a>
+                </div>
             </div>
         </div>
     </div>

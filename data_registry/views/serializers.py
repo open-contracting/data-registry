@@ -28,7 +28,7 @@ class CollectionSerializer(BasicSerializer):
     def serialize(data):
         result = BasicSerializer.serialize(data)
 
-        if data.issues:
+        if hasattr(data, "issues") and data.issues:
             result["issues"] = data.issues
 
         return result

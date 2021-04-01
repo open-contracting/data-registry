@@ -1,4 +1,5 @@
 from django.contrib.postgres.aggregates import ArrayAgg
+from django.db.models.query_utils import Q
 from django.shortcuts import render
 from django.urls import reverse
 
@@ -27,7 +28,7 @@ def search(request):
 def detail(request, id):
     data = CollectionSerializer.serialize(
         Collection.objects
-                  .annotate(issues=ArrayAgg("issue__description"))
+                  .annotate(issues=ArrayAgg("issue__description", filter=Q(issue__isnull=False)))
                   .get(id=id)
     )
 

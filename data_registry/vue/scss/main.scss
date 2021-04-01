@@ -19,17 +19,25 @@ html, body {
     margin: 0 auto -300px;
 }
 
+#header {
+    padding-top: 40px;
+    padding-bottom: 40px;
+
+    &.dark {
+        background-color: $background-dark;
+    }
+}
+
 #footer, .push {
     height: 300px;
 }
 
 .logo {
     width: 150px;
-    margin-top: 40px;
 }
 
 .motto {
-    margin-top: 60px;
+    margin-top: 10px;
 }
 
 .motto h1 {
@@ -52,6 +60,13 @@ html, body {
     border-top-left-radius: 40px;
     background-color: $background-light;
     height: 100%;
+}
+
+.info_card.round {
+    border-top-left-radius: 40px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .info_card h3 {
@@ -174,10 +189,11 @@ html, body {
     min-width: 50px;
     min-height: 50px;
     background-color: white;
+    border: 1px solid $light;
 }
 
 .link-back {
-    margin: 50px 0;
+    margin-bottom: 50px;
     display: flex;
     align-items: center;
     color: $body-color;
@@ -364,6 +380,19 @@ html, body {
         }
     }
 
+    .flag {
+        width: 80px;
+        height: 80px;
+    }
+
+    .link-back {
+        margin-top: 50px;
+    }
+
+    .info_card {
+        padding: 40px;
+        height: auto;
+    }
 
     .access-btn {
         display: flex;
@@ -429,6 +458,63 @@ html, body {
         .issue {
             svg {
                 margin-right: 10px;
+            }
+        }
+    }
+
+    .info_card.access {
+        background-color: $success;
+        color: $body-color;
+
+        h2 {
+            margin: 0;
+        }
+
+        p {
+            margin: 20px 0;
+        }
+
+        svg {
+            color: $body-color;
+        }
+
+        button {
+            background-color: $dark;
+            color: $primary;
+            padding: 15px 25px;
+
+            svg {
+                margin-right: 15px;
+            }
+
+            .circle {
+                color: $primary;
+            }
+
+            .chevron {
+                color: $dark;
+            }
+        }
+    }
+
+    .info_card.helpdesk {
+        background-color: $info;
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+
+        a {
+            color: white;
+            display: flex;
+            align-items: center;
+
+            .circle {
+                color: white;
+            }
+            .chevron {
+                color: $info;
             }
         }
     }
