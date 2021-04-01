@@ -4,6 +4,10 @@
 @import '~bootstrap-vue';
 @import "utils";
 
+*[v-cloak] {
+    display: none;
+}
+
 html, body {
     height: 100%;
     margin: 0;
@@ -15,17 +19,25 @@ html, body {
     margin: 0 auto -300px;
 }
 
+#header {
+    padding-top: 40px;
+    padding-bottom: 40px;
+
+    &.dark {
+        background-color: $background-dark;
+    }
+}
+
 #footer, .push {
     height: 300px;
 }
 
 .logo {
     width: 150px;
-    margin-top: 40px;
 }
 
 .motto {
-    margin-top: 60px;
+    margin-top: 10px;
 }
 
 .motto h1 {
@@ -48,6 +60,13 @@ html, body {
     border-top-left-radius: 40px;
     background-color: $background-light;
     height: 100%;
+}
+
+.info_card.round {
+    border-top-left-radius: 40px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .info_card h3 {
@@ -134,14 +153,6 @@ html, body {
     border-bottom-left-radius: 5px;
     padding: 20px 50px 20px 30px;
 
-    .badge {
-        background-color: $color-green;
-        color: white;
-        font-size: 14px;
-        font-family: $font-family-sans-serif;
-        padding: 10px 20px;
-    }
-
     .label {
         color: $light;
     }
@@ -152,32 +163,9 @@ html, body {
         justify-content: flex-end;
         align-items: center;
 
-        .icon {
-            font-size: 24px;
-
-            .chevron {
-                color: white;
-            }
-            .circle {
-                color: inherit;
-            }
-        }
-
-        &:hover .icon .circle {
+        .icon .circle {
             color: inherit;
         }
-    }
-
-    div[class^='format-'] i {
-        font-size: 18px;
-    }
-
-    .format-json svg {
-        color: $color-green;
-    }
-
-    .format-excel svg {
-        color: $light;
     }
 
     .description {
@@ -185,17 +173,62 @@ html, body {
     }
 
     .flag {
-        border-top-left-radius: 10px;
-        border-bottom-right-radius: 10px;
         width: 180px;
         height: 90px;
-        background-color: white;
         margin-bottom: 20px;
     }
 }
 
 .collection-box + .collection-box {
     margin-top: 20px;
+}
+
+.flag {
+    border-top-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    min-width: 50px;
+    min-height: 50px;
+    background-color: white;
+    border: 1px solid $light;
+}
+
+.link-back {
+    margin-bottom: 50px;
+    display: flex;
+    align-items: center;
+    color: $body-color;
+    font-size: 14px;
+
+    &:hover {
+        color: $body-color;
+    }
+}
+
+
+.chevron-btn {
+    font-size: 24px;
+
+    .chevron {
+        color: white;
+    }
+    .circle {
+        color: $light;
+    }
+}
+
+*:hover > .chevron-btn {
+    .circle {
+        color: inherit;
+    }
+}
+
+
+.collection-badge {
+    background-color: $color-green;
+    color: white;
+    font-size: 14px;
+    font-family: $font-family-sans-serif;
+    padding: 10px 20px;
 }
 
 #search_app {
@@ -216,30 +249,6 @@ html, body {
 
     div ~ h6 {
         margin-top: 30px;
-    }
-
-
-    .link-back {
-        margin: 50px 0;
-        display: flex;
-        align-items: center;
-        color: $body-color;
-        font-size: 14px;
-
-        .icon {
-            font-size: 24px;
-
-            .chevron {
-                color: white;
-            }
-            .circle {
-                color: $light;
-            }
-        }
-
-        &:hover .icon .circle {
-            color: inherit;
-        }
     }
 
     .filter {
@@ -341,6 +350,171 @@ html, body {
                 font-size: 16px;
                 color: $body-color !important;
                 order: 1;
+            }
+        }
+    }
+}
+
+.bi-check-circle {
+    font-size: 18px;
+    color: $color-green;
+}
+
+.bi-x-circle {
+    font-size: 18px;
+    color: $light;
+}
+
+.detail-section {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    border-top: 1px solid $light;
+}
+
+#detail_app {
+    .header-row {
+        padding-bottom: 40px;
+
+        .description {
+            font-size: 12px;
+        }
+    }
+
+    .flag {
+        width: 80px;
+        height: 80px;
+    }
+
+    .link-back {
+        margin-top: 50px;
+    }
+
+    .info_card {
+        padding: 40px;
+        height: auto;
+    }
+
+    .access-btn {
+        display: flex;
+        align-items: center;
+
+        svg {
+            font-size: 36px;
+        }
+
+        .circle {
+            color: inherit;
+        }
+
+        .chevron {
+            color: $primary;
+        }
+    }
+
+    .detail-section > .label {
+        text-align: right;
+
+        h4 {
+            margin-right: 40px;
+        }
+    }
+
+    .detail-section.overview .data {
+        .label {
+            display: inline-block;
+            color: $light;
+            margin-bottom: 10px;
+        }
+    }
+
+    .detail-section.data {
+        .item {
+            h6 {
+                font-family: $font-family-sans-serif;
+                svg {
+                    margin-right: 10px;
+                }
+            }
+            div {
+                margin-left: 28px;
+                color: $light;
+                margin-bottom: 20px;
+            }
+        }
+    }
+
+    .detail-section.quality {
+        h6 {
+            margin-bottom: 15px;
+        }
+
+        .summary {
+            border-radius: 10px;
+            background-color: $background-light;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .issue {
+            svg {
+                margin-right: 10px;
+            }
+        }
+    }
+
+    .info_card.access {
+        background-color: $success;
+        color: $body-color;
+
+        h2 {
+            margin: 0;
+        }
+
+        p {
+            margin: 20px 0;
+        }
+
+        svg {
+            color: $body-color;
+        }
+
+        button {
+            background-color: $dark;
+            color: $primary;
+            padding: 15px 25px;
+
+            svg {
+                margin-right: 15px;
+            }
+
+            .circle {
+                color: $primary;
+            }
+
+            .chevron {
+                color: $dark;
+            }
+        }
+    }
+
+    .info_card.helpdesk {
+        background-color: $info;
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+
+        a {
+            color: white;
+            display: flex;
+            align-items: center;
+
+            .circle {
+                color: white;
+            }
+            .chevron {
+                color: $info;
             }
         }
     }

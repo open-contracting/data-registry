@@ -11,6 +11,32 @@ Vue.use(VueMoment)
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 
+
+if (document.getElementById("chevron-btn-template")) {
+    Vue.component("chevron-btn", {
+        delimiters: ['[[', ']]'],
+        template: '#chevron-btn-template',
+        props: {
+            up: {type: Boolean, default: false},
+            right: {type: Boolean, default: false},
+            down: {type: Boolean, default: false}
+        },
+        computed: {
+            direction: function() {
+                if (this.up)            return "up"
+                else if (this.right)    return "right"
+                else if (this.down)     return "down"
+                else                    return "left"
+            }
+        },
+        data: function() {
+            return {};
+        },
+        methods: {
+        }
+    })
+}
+
 if (document.getElementById("search_app")) {
     new Vue({
         delimiters: ["[[", "]]"],
@@ -39,7 +65,7 @@ if (document.getElementById("search_app")) {
                     country: this.countryFilter,
                     frequency: this.frequencyFilter.length ? this.frequencyFilter : null,
                     data: this.dataFilter.length ? this.dataFilter : null,
-                    date: this.dateFilter.value
+                    date: this.dateFilter ? this.dateFilter.value : null
                 }
             },
             collections: function() {
@@ -96,10 +122,30 @@ if (document.getElementById("search_app")) {
             },
             collectionsData: function() {
                 return COLLECTIONS
+            },
+            detailDateRange: function() {
+                if (this.filter.date == "custom") {
+                    if (this.dateFrom && this.dateTo) {
+                        return `${this.$moment(this.dateFrom).format("MMM YYYY")} - ${this.$moment(this.dateTo).format("MMM YYYY")}`
+                    }
+                } else {
+                    var found = this.dateFilterOptions.findIndex(n => n.value == this.filter.date)
+                    if (found >= 0) {
+                        return this.dateFilterOptions[found].label.toLowerCase()
+                    }
+                }
+
+                return null
+            }
+        },
+        watch: {
+            detailDateRange: function() {
+                localStorage.setItem("detail-date-range", this.detailDateRange)
             }
         },
         created: function() {
             this.dateFilter = this.dateFilterOptions[0]
+            localStorage.setItem("detail-date-range", this.detailDateRange)
         },
         methods: {
             setCountryFilter: function(country) {
@@ -112,4 +158,22 @@ if (document.getElementById("search_app")) {
             }
         }
     });
+}
+
+if (document.getElementById("detail_app")) {
+    new Vue({
+        delimiters: ["[[", "]]"],
+        el: "#detail_app",
+        data: function() {
+            return {}
+        },
+        computed: {
+            data: function() {
+                return DATA
+            },
+            dateRange: function() {
+                return localStorage.getItem("detail-date-range")
+            }
+        }
+    })
 }

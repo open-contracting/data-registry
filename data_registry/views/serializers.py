@@ -24,4 +24,11 @@ class BasicSerializer():
 
 
 class CollectionSerializer(BasicSerializer):
-    pass
+    @staticmethod
+    def serialize(data):
+        result = BasicSerializer.serialize(data)
+
+        if hasattr(data, "issues") and data.issues:
+            result["issues"] = data.issues
+
+        return result

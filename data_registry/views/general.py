@@ -1,9 +1,10 @@
+from django.contrib.postgres.aggregates import ArrayAgg
+from django.db.models.query_utils import Q
 from django.shortcuts import render
+from django.urls import reverse
 
 from data_registry.models import Collection
 from data_registry.views.serializers import CollectionSerializer
-
-# from django.urls import reverse
 
 
 def index(request):
@@ -18,7 +19,17 @@ def search(request):
     collections = []
     for r in results:
         n = CollectionSerializer.serialize(r)
-        # n["detail_url"] = reverse("detail", kwargs={"id": r.id})
+        n["detail_url"] = reverse("detail", kwargs={"id": r.id})
         collections.append(n)
 
     return render(request, 'search.html', {"collections": collections})
+
+
+def detail(request, id):
+    data = CollectionSerializer.serialize(
+        Collection.objects
+                  .annotate(issues=ArrayAgg("issue__description", filter=Q(issue__isnull=False)))
+                  .get(id=id)
+    )
+
+    return render(request, 'detail.html', {'data': data})

@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load humanize %}
+{% load static %}
+{% load vue %}
+
+{% block header %}
+    {% include 'header.html' with dark=True %}
+{% endblock %}
+
+{% block content %}
+    <div id="detail_app" v-cloak>
+        <div class="row">
+            <div class="col col-auto">
+                <a href="{% url 'search' %}" class="link-back">
+                    <chevron-btn class="mr-2 icon"></chevron-btn>
+                    <span>{% translate "BACK TO DATASETS SEARCH" %}</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="row header-row">
+            <div class="col-auto">
+                <div class="flag"></div>
+            </div>
+            <div class="col">
+                <h2>[[ data.country ]] [[ data.title ]] <span class="badge badge-pill collection-badge">{% translate "OCDS" %}</span></h2>
+                <p class="description">[[ data.description ]]</p>
+            </div>
+            <div class="col">
+                <div class="label">{% translate "Available formats:" %}</div>
+                <div class="formats">
+                    <span class="format-json mr-4"><b-icon icon="check-circle" class="mr-2"></b-icon> JSON</span>
+                    <span class="format-excel"><b-icon icon="x-circle" class="mr-2"></b-icon> EXCEL</span>
+                </div>
+            </div>
+            <div class="col-auto">
+                <a class="btn btn-primary btn-md access-btn" href="#access">
+                    <chevron-btn class="mr-4 icon" right></chevron-btn>{% translate "ACCESS" %}
+                </a>
+            </div>
+        </div>
+
+        <div class="row detail-section overview">
+            <div class="col-3 label">
+                <h4>{% translate "Overview" %}</h4>
+            </div>
+            <div class="col-9 data">
+                <div>
+                    <span class="label">{% translate "Data date range:" %}</span>
+                    <span class="value">[[ data.date_from | moment("MMM YYYY") ]] - [[ data.date_to | moment("MMM YYYY") ]]</span>
+                </div>
+                <div>
+                    <span class="label">{% translate "Last updated:" %}</span>
+                    <span class="value">[[ data.last_update | moment("MMM YYYY") ]]</span>
+                </div>
+                <div>
+                    <span class="label">{% translate "Update frequency:" %}</span>
+                    <span class="value">
+                        <template v-if="data.update_frequency == 'MONTHLY'">{% translate "Monthly" %}</template>
+                        <template v-else-if="data.update_frequency == 'HALF_YEARLY'">{% translate "Every 6 months" %}</template>
+                        <template v-else-if="data.update_frequency == 'ANNUALLY'">{% translate "Annually" %}</template>
+                    </span>
+                </div>
+                <div>
+                    <span class="label">{% translate "OCID prefix:" %}</span>
+                    <span class="value">[[ data.ocds_prefix ]]</span>
+                </div>
+                <div>
+                    <span class="label">{% translate "License:" %}</span>
+                    <span class="value">[[ data.license ]]</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row detail-section data">
+            <div class="col-3 label">
+                <h4>{% translate "Data avaliable" %}</h4>
+            </div>
+            <div class="col-9">
+                <div class="row">
+                    <div class="col-4 item">
+                        <h6><b-icon :icon="data.parties_count ? 'check-circle' : 'x-circle'"></b-icon>{% translate "Parties" %}</h6>
+                        <div>{% translate "Count of parties:" %} [[ data.parties_count ]]</div>
+                    </div>
+                    <div class="col-4 item">
+                        <h6><b-icon :icon="data.plannings_count ? 'check-circle' : 'x-circle'"></b-icon>{% translate "Plannings" %}</h6>
+                        <div>{% translate "Count of planning activities:" %} [[ data.plannings_count ]]</div>
+                    </div>
+                    <div class="col-4 item">
+                        <h6><b-icon :icon="data.tenders_count ? 'check-circle' : 'x-circle'"></b-icon>{% translate "Tenders" %}</h6>
+                        <div>{% translate "Count of tenders:" %} [[ data.tenders_count ]]</div>
+                    </div>
+                    <div class="col-4 item">
+                        <h6><b-icon :icon="data.awards_count ? 'check-circle' : 'x-circle'"></b-icon>{% translate "Awards" %}</h6>
+                        <div>{% translate "Count of awards:" %} [[ data.awards_count ]]</div>
+                    </div>
+                    <div class="col-4 item">
+                        <h6><b-icon :icon="data.contracts_count ? 'check-circle' : 'x-circle'"></b-icon>{% translate "Contracts" %}</h6>
+                        <div>{% translate "Count of contracts:" %} [[ data.contracts_count ]]</div>
+                    </div>
+                    <div class="col-4 item">
+                        <h6><b-icon :icon="data.documents_count ? 'check-circle' : 'x-circle'"></b-icon>{% translate "Documents" %}</h6>
+                        <div>{% translate "Count of documents:" %} [[ data.documents_count ]]</div>
+                    </div>
+                    <div class="col-4 item">
+                        <h6><b-icon :icon="data.milestones_count ? 'check-circle' : 'x-circle'"></b-icon>{% translate "Milestones" %}</h6>
+                        <div>{% translate "Count of milestones:" %} [[ data.milestones_count ]]</div>
+                    </div>
+                    <div class="col-4 item">
+                        <h6><b-icon :icon="data.amendments_count ? 'check-circle' : 'x-circle'"></b-icon>{% translate "Amendments" %}</h6>
+                        <div>{% translate "Count of amendments:" %} [[ data.amendments_count ]]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row detail-section quality">
+            <div class="col-3 label">
+                <h4>{% translate "Data quality" %}</h4>
+            </div>
+            <div class="col-9">
+                <h6>{% translate "Summary" %}</h6>
+                <p class="summary">[[ data.summary ]]</p>
+
+                <template v-if="data.issues">
+                    <h6>{% translate "Issues found" %}</h6>
+
+                    <div v-for="n in data.issues" class="issue"><b-icon icon="exclamation-circle"></b-icon>[[ n ]]</div>
+                </template>
+            </div>
+        </div>
+
+        <div class="row detail-section">
+            <div class="col-12">
+                <div id="access" class="info_card round access">
+                    <h2>{% translate "Access data" %}</h2>
+                    <p>{% translate "Access data from <strong>OCDS Kingfisher Collect</strong> database for data range" %}
+                        <strong>[[ dateRange ]]</strong>.
+                    </p>
+
+                    <div class="row">
+                        <div class="col">
+                            <h3><b-icon icon="check-circle" class="mr-2"></b-icon>{% translate "JSON data" %}</h3>
+                            <p>
+                                {% blocktrans %}
+                                This is JSON bulk.
+                                {% endblocktrans %}
+                            </p>
+                            <button class="btn btn-md">
+                                <chevron-btn right></chevron-btn> {% translate "Access JSON data" %}
+                            </button>
+                        </div>
+                        <div class="col">
+                            <h3><b-icon icon="check-circle" class="mr-2"></b-icon>{% translate "Excel data via OCP Flatten tool" %}</h3>
+                            <p>
+                                {% blocktrans %}
+                                This is Excel bulk.
+                                {% endblocktrans %}
+                            </p>
+                            <button class="btn btn-md">
+                                <chevron-btn right></chevron-btn> {% translate "Access Excel data" %}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="info_card round helpdesk">
+                    <div><b-icon icon="question-circle" scale="1.5" class="mr-3"></b-icon> {% translate "Have questions, feedback on this dataset or content on this page?" %}</div>
+                    <a href="#">
+                        <chevron-btn right class="mr-3"></chevron-btn> {% translate "Contact OCP helpdesk" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% chevron_btn_vue_template %}
+
+    {{ data|json_script:"detail-data" }}
+
+    <script type="text/javascript">
+        const DATA = JSON.parse(document.getElementById('detail-data').textContent)
+    </script>
+{% endblock %}
