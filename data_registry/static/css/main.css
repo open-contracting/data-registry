@@ -12780,6 +12780,11 @@ html, body {
   padding-bottom: 40px;
   border-top: 1px solid #b4b4b6; }
 
+#detail_app .header-row {
+  padding-bottom: 40px; }
+  #detail_app .header-row .description {
+    font-size: 12px; }
+
 #detail_app .access-btn {
   display: flex;
   align-items: center; }
@@ -12799,3 +12804,25 @@ html, body {
   display: inline-block;
   color: #b4b4b6;
   margin-bottom: 10px; }
+
+#detail_app .detail-section.data .item h6 {
+  font-family: "GTEestiProText-Regular", "Helvetica Neue", Arial, sans-serif; }
+  #detail_app .detail-section.data .item h6 svg {
+    margin-right: 10px; }
+
+#detail_app .detail-section.data .item div {
+  margin-left: 28px;
+  color: #b4b4b6;
+  margin-bottom: 20px; }
+
+#detail_app .detail-section.quality h6 {
+  margin-bottom: 15px; }
+
+#detail_app .detail-section.quality .summary {
+  border-radius: 10px;
+  background-color: #eeeeee;
+  padding: 20px;
+  margin-bottom: 30px; }
+
+#detail_app .detail-section.quality .issue svg {
+  margin-right: 10px; }

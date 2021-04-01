@@ -21,7 +21,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row header-row">
             <div class="col-auto">
                 <div class="flag"></div>
             </div>
@@ -32,12 +32,12 @@
             <div class="col">
                 <div class="label">{% translate "Available formats:" %}</div>
                 <div class="formats">
-                    <div class="format-json"><b-icon icon="check-circle" class="mr-2"></b-icon> JSON</div>
-                    <div class="format-excel"><b-icon icon="x-circle" class="mr-2"></b-icon> EXCEL</div>
+                    <span class="format-json mr-4"><b-icon icon="check-circle" class="mr-2"></b-icon> JSON</span>
+                    <span class="format-excel"><b-icon icon="x-circle" class="mr-2"></b-icon> EXCEL</span>
                 </div>
             </div>
             <div class="col-auto">
-                <a class="btn btn-primary btn-lg access-btn" href="#access">
+                <a class="btn btn-primary btn-md access-btn" href="#access">
                     <chevron-btn class="mr-4 icon" right></chevron-btn>{% translate "ACCESS" %}
                 </a>
             </div>
@@ -75,53 +75,62 @@
             </div>
         </div>
 
-        <div class="row detail-section">
+        <div class="row detail-section data">
             <div class="col-3 label">
                 <h4>{% translate "Data avaliable" %}</h4>
             </div>
             <div class="col-9">
                 <div class="row">
-                    <div class="col-4">
-                        <b-icon :icon="data.parties_count ? 'check-circle' : 'x-circle'" class="mr-2"></b-icon> {% translate "Parties" %}
-                        {% translate "Count of parties:" %} [[ data.parties_count ]]
+                    <div class="col-4 item">
+                        <h6><b-icon :icon="data.parties_count ? 'check-circle' : 'x-circle'"></b-icon>{% translate "Parties" %}</h6>
+                        <div>{% translate "Count of parties:" %} [[ data.parties_count ]]</div>
                     </div>
-                    <div class="col-4">
-                        <b-icon :icon="data.plannings_count ? 'check-circle' : 'x-circle'" class="mr-2"></b-icon> {% translate "Plannings" %}
-                        {% translate "Count of planning activities:" %} [[ data.plannings_count ]]
+                    <div class="col-4 item">
+                        <h6><b-icon :icon="data.plannings_count ? 'check-circle' : 'x-circle'"></b-icon>{% translate "Plannings" %}</h6>
+                        <div>{% translate "Count of planning activities:" %} [[ data.plannings_count ]]</div>
                     </div>
-                    <div class="col-4">
-                        <b-icon :icon="data.tenders_count ? 'check-circle' : 'x-circle'" class="mr-2"></b-icon> {% translate "Tenders" %}
-                        {% translate "Count of tenders:" %} [[ data.tenders_count ]]
+                    <div class="col-4 item">
+                        <h6><b-icon :icon="data.tenders_count ? 'check-circle' : 'x-circle'"></b-icon>{% translate "Tenders" %}</h6>
+                        <div>{% translate "Count of tenders:" %} [[ data.tenders_count ]]</div>
                     </div>
-                    <div class="col-4">
-                        <b-icon :icon="data.awards_count ? 'check-circle' : 'x-circle'" class="mr-2"></b-icon> {% translate "Awards" %}
-                        {% translate "Count of awards:" %} [[ data.awards_count ]]
+                    <div class="col-4 item">
+                        <h6><b-icon :icon="data.awards_count ? 'check-circle' : 'x-circle'"></b-icon>{% translate "Awards" %}</h6>
+                        <div>{% translate "Count of awards:" %} [[ data.awards_count ]]</div>
                     </div>
-                    <div class="col-4">
-                        <b-icon :icon="data.contracts_count ? 'check-circle' : 'x-circle'" class="mr-2"></b-icon> {% translate "Contracts" %}
-                        {% translate "Count of contracts:" %} [[ data.contracts_count ]]
+                    <div class="col-4 item">
+                        <h6><b-icon :icon="data.contracts_count ? 'check-circle' : 'x-circle'"></b-icon>{% translate "Contracts" %}</h6>
+                        <div>{% translate "Count of contracts:" %} [[ data.contracts_count ]]</div>
                     </div>
-                    <div class="col-4">
-                        <b-icon :icon="data.documents_count ? 'check-circle' : 'x-circle'" class="mr-2"></b-icon> {% translate "Documents" %}
-                        {% translate "Count of documents:" %} [[ data.documents_count ]]
+                    <div class="col-4 item">
+                        <h6><b-icon :icon="data.documents_count ? 'check-circle' : 'x-circle'"></b-icon>{% translate "Documents" %}</h6>
+                        <div>{% translate "Count of documents:" %} [[ data.documents_count ]]</div>
                     </div>
-                    <div class="col-4">
-                        <b-icon :icon="data.milestones_count ? 'check-circle' : 'x-circle'" class="mr-2"></b-icon> {% translate "Milestones" %}
-                        {% translate "Count of milestones:" %} [[ data.milestones_count ]]
+                    <div class="col-4 item">
+                        <h6><b-icon :icon="data.milestones_count ? 'check-circle' : 'x-circle'"></b-icon>{% translate "Milestones" %}</h6>
+                        <div>{% translate "Count of milestones:" %} [[ data.milestones_count ]]</div>
                     </div>
-                    <div class="col-4">
-                        <b-icon :icon="data.amendments_count ? 'check-circle' : 'x-circle'" class="mr-2"></b-icon> {% translate "Amendments" %}
-                        {% translate "Count of amendments:" %} [[ data.amendments_count ]]
+                    <div class="col-4 item">
+                        <h6><b-icon :icon="data.amendments_count ? 'check-circle' : 'x-circle'"></b-icon>{% translate "Amendments" %}</h6>
+                        <div>{% translate "Count of amendments:" %} [[ data.amendments_count ]]</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row detail-section">
+        <div class="row detail-section quality">
             <div class="col-3 label">
                 <h4>{% translate "Data quality" %}</h4>
             </div>
-            <div class="col-9"></div>
+            <div class="col-9">
+                <h6>{% translate "Summary" %}</h6>
+                <p class="summary">[[ data.summary ]]</p>
+
+                <template v-if="data.issues">
+                    <h6>{% translate "Issues found" %}</h6>
+
+                    <div v-for="n in data.issues" class="issue"><b-icon icon="exclamation-circle"></b-icon>[[ n ]]</div>
+                </template>
+            </div>
         </div>
     </div>
 
