@@ -70,6 +70,9 @@ if (document.getElementById("search_app")) {
             },
             collections: function() {
                 return this.collectionsData.filter(n => {
+                    n.overlap_alert = false
+                    n.overlap_from = n.overlap_to = null
+
                     var result = true
 
                     if (this.filter.country) {
@@ -85,29 +88,32 @@ if (document.getElementById("search_app")) {
                     }
 
                     if (this.filter.date) {
-                        n.overlap_alert = false
-                        n.overlap_from = n.overlap_to = null
+                        var from = this.$moment(n.date_from)
+                        var to = this.$moment(n.date_to)
                         switch (this.filter.date) {
                             case "last-year":
-                                result &= this.$moment(n.date_from).isSameOrAfter(this.$moment().subtract(1, 'years'))
-                                    || this.$moment(n.date_to).isSameOrAfter(this.$moment().subtract(1, 'years'))
+                                result &= from.isSameOrAfter(this.$moment().subtract(1, 'years'))
+                                    || to.isSameOrAfter(this.$moment().subtract(1, 'years'))
                                 break
                             case "past-6-months":
-                                result &= this.$moment(n.date_from).isSameOrAfter(this.$moment().subtract(6, 'months'))
-                                    || this.$moment(n.date_to).isSameOrAfter(this.$moment().subtract(6, 'months'))
+                                result &= from.isSameOrAfter(this.$moment().subtract(6, 'months'))
+                                    || to.isSameOrAfter(this.$moment().subtract(6, 'months'))
                                 break
                             case "custom":
                                 if (this.dateFrom && this.dateTo) {
-                                    var isFrom = this.$moment(n.date_from).isSameOrAfter(this.$moment(this.dateFrom))
-                                    var isTo = this.$moment(n.date_to).isAfter(this.$moment(this.dateFrom))
-                                        && this.$moment(n.date_to).isSameOrBefore(this.$moment(this.dateTo))
-
-                                    result &= (isFrom || isTo)
-
-                                    n.overlap_alert = !isFrom || !isTo
-                                    n.overlap_from = n.date_from > this.dateFrom ? n.date_from : this.dateFrom
-                                    n.overlap_to = n.date_to < this.dateTo ? n.date_to : this.dateTo
+                                    if (from.isSameOrBefore(this.$moment(this.dateTo)) && to.isSameOrAfter(this.$moment(this.dateFrom))) {
+                                        var isFromIn = from.isAfter(this.$moment(this.dateFrom))
+                                        var isToIn = to.isBefore(this.$moment(this.dateTo))
+                                        if (isFromIn || isToIn) {
+                                            n.overlap_alert = true
+                                            n.overlap_from = isFromIn ? n.date_from : this.dateFrom
+                                            n.overlap_to = isToIn ? n.date_to : this.dateTo
+                                        }
+                                    } else {
+                                        result &= false
+                                    }
                                 }
+
                                 break
                             default:
                                 break
