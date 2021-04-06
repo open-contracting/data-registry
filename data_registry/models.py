@@ -1,6 +1,6 @@
 from django.db.models import Model, TextField
 from django.db.models.deletion import CASCADE
-from django.db.models.fields import CharField, DateField, DateTimeField, IntegerField
+from django.db.models.fields import BooleanField, CharField, DateField, DateTimeField, IntegerField
 from django.db.models.fields.related import ForeignKey
 
 
@@ -34,6 +34,9 @@ class Collection(Model):
     amendments_count = IntegerField(default=0)
 
     summary = TextField()
+
+    json_format = BooleanField(default=False)
+    excel_format = BooleanField(default=False)
 
     created = DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)
     modified = DateTimeField(auto_now=True, blank=True, null=True, db_index=True)

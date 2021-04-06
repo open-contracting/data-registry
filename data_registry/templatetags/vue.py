@@ -17,3 +17,8 @@ def template_script_end():
 @register.inclusion_tag('vue/chevron_btn.html')
 def chevron_btn_vue_template():
     return {}
+
+
+@register.inclusion_tag('vue/check_icon.html')
+def check_icon_vue_template():
+    return {}

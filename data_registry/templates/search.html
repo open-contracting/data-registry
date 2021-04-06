@@ -148,8 +148,8 @@
                         <div class="row">
                             <div class="col">
                                 <div class="label">{% translate "Available formats:" %}</div>
-                                <div class="format-json"><b-icon icon="check-circle" class="mr-2"></b-icon> JSON</div>
-                                <div class="format-excel"><b-icon icon="x-circle" class="mr-2"></b-icon> EXCEL</div>
+                                <div class="format-json"><check-icon :checked="c.json_format" class="mr-2"></check-icon>JSON</div>
+                                <div class="format-excel"><check-icon :checked="c.excel_format" class="mr-2"></check-icon>EXCEL</div>
                             </div>
                             <div class="col">
                                 <div>
@@ -184,6 +184,8 @@
     </div>
 
     {% chevron_btn_vue_template %}
+
+    {% check_icon_vue_template %}
 
     {{ collections|json_script:"collections-data" }}
 

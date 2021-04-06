@@ -37,6 +37,16 @@ if (document.getElementById("chevron-btn-template")) {
     })
 }
 
+if (document.getElementById("check-icon-template")) {
+    Vue.component("check-icon", {
+        delimiters: ['[[', ']]'],
+        template: '#check-icon-template',
+        props: {
+            checked: {type: [Boolean, Number, String], default: true}
+        }
+    })
+}
+
 if (document.getElementById("search_app")) {
     new Vue({
         delimiters: ["[[", "]]"],
