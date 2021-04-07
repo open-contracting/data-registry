@@ -30,8 +30,14 @@
             <div class="col">
                 <div class="label">{% translate "Available formats:" %}</div>
                 <div class="formats">
-                    <span class="format-json mr-4"><check-icon :checked="data.json_format" class="mr-2"></check-icon> JSON</span>
-                    <span class="format-excel"><check-icon :checked="data.excel_format" class="mr-2"></check-icon> EXCEL</span>
+                    <span class="format-json mr-4">
+                        <check-icon :checked="data.json_format" class="mr-2"></check-icon>
+                        <span>JSON</span>
+                    </span>
+                    <span class="format-excel">
+                        <check-icon :checked="data.excel_format" class="mr-2"></check-icon>
+                        <span>EXCEL</span>
+                    </span>
                 </div>
             </div>
             <div class="col-auto">
@@ -142,7 +148,7 @@
                     <div class="row">
                         <div class="col">
                             <h3><check-icon :checked="data.json_format" class="mr-2"></check-icon>{% translate "JSON data" %}</h3>
-                            <p>
+                            <p class="format-description">
                                 {% blocktrans %}
                                 This is JSON bulk.
                                 {% endblocktrans %}
@@ -153,7 +159,7 @@
                         </div>
                         <div class="col">
                             <h3><check-icon :checked="data.excel_format" class="mr-2"></check-icon>{% translate "Excel data via OCP Flatten tool" %}</h3>
-                            <p>
+                            <p class="format-description">
                                 {% blocktrans %}
                                 This is Excel bulk.
                                 {% endblocktrans %}

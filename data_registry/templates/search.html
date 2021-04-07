@@ -147,16 +147,16 @@
                         </div>
                         <div class="row">
                             <div class="col">
-                                <div class="label">{% translate "Available formats:" %}</div>
-                                <div class="format-json"><check-icon :checked="c.json_format" class="mr-2"></check-icon>JSON</div>
-                                <div class="format-excel"><check-icon :checked="c.excel_format" class="mr-2"></check-icon>EXCEL</div>
+                                <div class="label mb-2">{% translate "Available formats:" %}</div>
+                                <div class="format-json mb-2"><check-icon :checked="c.json_format" class="mr-2"></check-icon>JSON</div>
+                                <div class="format-excel mb-2"><check-icon :checked="c.excel_format" class="mr-2"></check-icon>EXCEL</div>
                             </div>
                             <div class="col">
-                                <div>
+                                <div class="mb-2">
                                     <span class="label">{% translate "Data date range:" %}</span>
                                     <span class="value">[[ c.date_from | moment("MMM YYYY") ]] - [[ c.date_to | moment("MMM YYYY") ]]</span>
                                 </div>
-                                <div>
+                                <div class="mb-2">
                                     <span class="label">{% translate "Update frequency:" %}</span>
                                     <span class="value">
                                         <template v-if="c.update_frequency == 'MONTHLY'">{% translate "Monthly" %}</template>
@@ -164,7 +164,7 @@
                                         <template v-else-if="c.update_frequency == 'ANNUALLY'">{% translate "Annually" %}</template>
                                     </span>
                                 </div>
-                                <div>
+                                <div class="mb-2">
                                     <span class="label">{% translate "Last updated:" %}</span>
                                     <span class="value">[[ c.last_update | moment("MMM YYYY") ]]</span>
                                 </div>
