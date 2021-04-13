@@ -21,12 +21,6 @@ jobs:
           - 5432/tcp
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: '12.x'
-      - run: cd data_registry/vue/; npm ci
-      - run: cd data_registry/vue/; npm run build --if-present
-      - run: cd data_registry/vue/; npm test
       - uses: actions/setup-python@v1
         with:
           python-version: 3.6
@@ -44,6 +38,12 @@ jobs:
       - run: curl -s -S --retry 3 $BASEDIR/tests/script.sh | bash -
       - run: pytest /tmp/test_requirements.py
       - run: coverage run --source core,data_registry manage.py test --settings core.settings.github
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - run: cd data_registry/vue/; npm ci
+      - run: cd data_registry/vue/; npm run build --if-present
+      - run: cd data_registry/vue/; npm test
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres?application_name=data_registry
         if: always()
