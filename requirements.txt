@@ -4,11 +4,11 @@
 #
 #    pip-compile --output-file=requirements.txt requirements.in
 #
-asgiref==3.3.1
+asgiref==3.3.4
     # via django
 dj-database-url==0.5.0
     # via -r requirements.in
-django==3.1.6
+django==3.2
     # via -r requirements.in
 psycopg2-binary==2.8.6
     # via -r requirements.in
@@ -16,3 +16,5 @@ pytz==2021.1
     # via django
 sqlparse==0.4.1
     # via django
+typing-extensions==3.7.4.3
+    # via asgiref
