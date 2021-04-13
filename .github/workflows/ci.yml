@@ -21,6 +21,12 @@ jobs:
           - 5432/tcp
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - run: cd data_registry/vue/; npm ci
+      - run: cd data_registry/vue/; npm run build --if-present
+      - run: cd data_registry/vue/; npm test
       - uses: actions/setup-python@v1
         with:
           python-version: 3.6
