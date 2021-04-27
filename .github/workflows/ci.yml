@@ -44,9 +44,9 @@ jobs:
       - run: cd data_registry/vue/; npm ci
       - run: cd data_registry/vue/; npm run build --if-present
       - run: cd data_registry/vue/; npm test
+        if: always()
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres?application_name=data_registry
-        if: always()
       - env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: coveralls --service=github
