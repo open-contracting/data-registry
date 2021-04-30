@@ -1,0 +1,9 @@
+[
+    {
+        "model": "data_registry.collection",
+        "pk": 1,
+        "fields": {
+            "title": "portugal"
+        }
+    }
+]

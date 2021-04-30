@@ -13,7 +13,7 @@ DEBUG = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'data_registry',
+        'NAME': 'data_registry_test',
         'USER': 'data_registry',
         'PASSWORD': 'data_registry',
         'HOST': '127.0.0.1',
