@@ -34,7 +34,7 @@ class Command(BaseCommand):
 
             for job in jobs:
                 tasks = Task.objects.filter(job=job).order_by("order")
-                last_running = None
+                run_next_planned = True
                 job_complete = True
 
                 for task in tasks:
@@ -46,15 +46,14 @@ class Command(BaseCommand):
 
                     try:
                         if task.status in ["WAITING", "RUNNING"]:
-                            _state = _task.get_status()
-                            if _state in ["WAITING", "RUNNING"]:
-                                last_running = task
+                            if _task.get_status() in ["WAITING", "RUNNING"]:
+                                run_next_planned = False
                                 continue
                             else:
                                 task.end = datetime.now()
                                 task.status = "COMPLETED"
                                 task.result = "OK"
-                        elif task.status == "PLANNED" and not last_running:
+                        elif task.status == "PLANNED" and run_next_planned:
                             if job.status == "PLANNED":
                                 job.start = datetime.now()
                                 job.status = "RUNNNIG"
@@ -64,7 +63,7 @@ class Command(BaseCommand):
                             _task.run()
                             task.start = datetime.now()
                             task.status = "RUNNING"
-                            last_running = task
+                            run_next_planned = False
 
                         task.save()
                         job_complete &= task.status == "COMPLETED"
