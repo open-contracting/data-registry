@@ -1,7 +1,8 @@
 import logging
-from datetime import datetime
 
+from django.conf import settings
 from django.db.models.query_utils import Q
+from django.utils import timezone
 
 from data_registry.cbom.tasks import TaskFactory
 from data_registry.models import Job, Task
@@ -35,18 +36,18 @@ def process(collection):
                         run_next_planned = False
                         continue
                     else:
-                        task.end = datetime.now()
+                        task.end = timezone.now()
                         task.status = "COMPLETED"
                         task.result = "OK"
                 elif task.status == "PLANNED" and run_next_planned:
                     if job.status == "PLANNED":
-                        job.start = datetime.now()
+                        job.start = timezone.now()
                         job.status = "RUNNNIG"
                         job.save()
 
                     # run task
                     _task.run()
-                    task.start = datetime.now()
+                    task.start = timezone.now()
                     task.status = "RUNNING"
                     run_next_planned = False
 
@@ -54,7 +55,7 @@ def process(collection):
                 job_complete &= task.status == "COMPLETED"
             except Exception as e:
                 job_complete = True
-                task.end = datetime.now()
+                task.end = timezone.now()
                 task.status = "COMPLETED"
                 task.result = "FAILED"
                 task.note = str(e)
@@ -63,7 +64,7 @@ def process(collection):
 
         if job_complete:
             job.status = "COMPLETED"
-            job.end = datetime.now()
+            job.end = timezone.now()
             job.save()
 
 
@@ -77,7 +78,7 @@ def should_be_planned(collection):
 
 def plan(collection):
     job = collection.job.create(
-        start=datetime.now(),
+        start=timezone.now(),
         status="PLANNED"
     )
 
