@@ -1,6 +1,5 @@
 from django.db.models import Model, TextChoices, TextField
 from django.db.models.deletion import CASCADE
-from django.db.models.enums import Choices
 from django.db.models.fields import BooleanField, CharField, DateField, DateTimeField, IntegerField
 from django.db.models.fields.related import ForeignKey
 
