@@ -1,3 +1,4 @@
 dj-database-url
 django==3.2
 psycopg2-binary
+requests
