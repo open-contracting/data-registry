@@ -77,12 +77,15 @@ def should_be_planned(collection):
 
 
 def plan(collection):
+    if not settings.JOB_TASKS_PLAN:
+        raise Exception("JOB_TASKS_PLAN is not set")
+
     job = collection.job.create(
         start=timezone.now(),
         status="PLANNED"
     )
 
-    tasks = ["scrape"]
+    tasks = settings.JOB_TASKS_PLAN
 
     for i, t in enumerate(tasks, start=1):
         job.task.create(status="PLANNED", type=t, order=i)

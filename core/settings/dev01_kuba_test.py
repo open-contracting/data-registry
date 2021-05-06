@@ -10,6 +10,8 @@ SECRET_KEY = 'x_ayh_$*yjafdafdsdfuh4jjsdfgvy536-g#gjes#4&4*yp%7li94n^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+JOB_TASKS_PLAN = ["test"]
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
