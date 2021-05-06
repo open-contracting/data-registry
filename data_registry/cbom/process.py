@@ -16,7 +16,7 @@ def process(collection):
     if should_be_planned(collection):
         plan(collection)
 
-    jobs = Job.objects.filter(collection=collection).filter(~Q(status="COMPLETED"))
+    jobs = Job.objects.filter(collection=collection).filter(~Q(status=Job.Status.COMPLETED))
 
     for job in jobs:
         tasks = Task.objects.filter(job=job).order_by("order")
@@ -25,45 +25,45 @@ def process(collection):
 
         for task in tasks:
             # finished task -> no action needed
-            if task.status == "COMPLETED":
+            if task.status == Task.Status.COMPLETED:
                 continue
 
             _task = TaskFactory.get_task(job, task)
 
             try:
-                if task.status in ["WAITING", "RUNNING"]:
-                    if _task.get_status() in ["WAITING", "RUNNING"]:
+                if task.status in [Task.Status.WAITING, Task.Status.RUNNING]:
+                    if _task.get_status() in [Task.Status.WAITING, Task.Status.RUNNING]:
                         run_next_planned = False
                         continue
                     else:
                         task.end = timezone.now()
-                        task.status = "COMPLETED"
-                        task.result = "OK"
-                elif task.status == "PLANNED" and run_next_planned:
-                    if job.status == "PLANNED":
+                        task.status = Task.Status.COMPLETED
+                        task.result = Task.Result.OK
+                elif task.status == Task.Status.PLANNED and run_next_planned:
+                    if job.status == Job.Status.PLANNED:
                         job.start = timezone.now()
-                        job.status = "RUNNNIG"
+                        job.status = Job.Status.RUNNING
                         job.save()
 
                     # run task
                     _task.run()
                     task.start = timezone.now()
-                    task.status = "RUNNING"
+                    task.status = Task.Status.RUNNING
                     run_next_planned = False
 
                 task.save()
-                job_complete &= task.status == "COMPLETED"
+                job_complete &= task.status == Task.Status.COMPLETED
             except Exception as e:
                 job_complete = True
                 task.end = timezone.now()
-                task.status = "COMPLETED"
-                task.result = "FAILED"
+                task.status = Task.Status.COMPLETED
+                task.result = Task.Result.FAILED
                 task.note = str(e)
                 task.save()
                 break
 
         if job_complete:
-            job.status = "COMPLETED"
+            job.status = Job.Status.COMPLETED
             job.end = timezone.now()
             job.save()
 
@@ -82,10 +82,10 @@ def plan(collection):
 
     job = collection.job.create(
         start=timezone.now(),
-        status="PLANNED"
+        status=Job.Status.PLANNED
     )
 
     tasks = settings.JOB_TASKS_PLAN
 
     for i, t in enumerate(tasks, start=1):
-        job.task.create(status="PLANNED", type=t, order=i)
+        job.task.create(status=Task.Status.PLANNED, type=t, order=i)

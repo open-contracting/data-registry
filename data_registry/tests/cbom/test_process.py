@@ -19,7 +19,7 @@ class ProcessTests(TransactionTestCase):
 
         task = Task.objects.filter(job=job).order_by("order").first()
 
-        self.assertEqual("RUNNING", task.status)
+        self.assertEqual(Task.Status.RUNNING, task.status)
         self.assertIsNotNone(task.start)
         self.assertIsNone(task.result)
 
@@ -28,7 +28,7 @@ class ProcessTests(TransactionTestCase):
 
         task = Task.objects.filter(job=job).order_by("order").first()
 
-        self.assertEqual("COMPLETED", task.status)
+        self.assertEqual(Task.Status.COMPLETED, task.status)
         self.assertIsNotNone(task.end)
         self.assertEqual("OK", task.result)
 
@@ -36,4 +36,4 @@ class ProcessTests(TransactionTestCase):
         # after completion of that task
         job = Job.objects.filter(collection=collection).first()
         self.assertIsNotNone(job.end)
-        self.assertEqual("COMPLETED", job.status)
+        self.assertEqual(Job.Status.COMPLETED, job.status)
