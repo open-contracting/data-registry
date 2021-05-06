@@ -1,5 +1,3 @@
-import asyncio
-
 import requests
 from django.conf import settings
 
@@ -28,13 +26,13 @@ class Task:
 class Test(Task):
     running = False
 
-    async def run(self):
+    def run(self):
         self.running = True
-        await asyncio.sleep(100)
-        self.running = False
 
     def get_status(self):
-        return "RUNNING" if self.running else "COMPLETE"
+        status = "RUNNING" if self.running else "COMPLETE"
+        self.running = False
+        return status
 
 
 class Scrape(Task):
