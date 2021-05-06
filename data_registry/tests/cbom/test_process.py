@@ -17,20 +17,20 @@ class ProcessTests(TransactionTestCase):
         self.assertIsNotNone(job)
         self.assertIsNotNone(job.start)
 
-        tasks = Task.objects.filter(job=job).order_by("order")
+        task = Task.objects.filter(job=job).order_by("order").first()
 
-        self.assertEqual("RUNNING", tasks[0].status)
-        self.assertIsNotNone(tasks[0].start)
-        self.assertIsNone(tasks[0].result)
+        self.assertEqual("RUNNING", task.status)
+        self.assertIsNotNone(task.start)
+        self.assertIsNone(task.result)
 
         # next call updates running task state
         process(collection)
 
-        tasks = Task.objects.filter(job=job).order_by("order")
+        task = Task.objects.filter(job=job).order_by("order").first()
 
-        self.assertEqual("COMPLETED", tasks[0].status)
-        self.assertIsNotNone(tasks[0].end)
-        self.assertEqual("OK", tasks[0].result)
+        self.assertEqual("COMPLETED", task.status)
+        self.assertIsNotNone(task.end)
+        self.assertEqual("OK", task.result)
 
         # the job plan contains only one task, therefore the job should be completed
         # after completion of that task
