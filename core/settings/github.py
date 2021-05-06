@@ -19,6 +19,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
+JOB_TASKS_PLAN = ["test"]
+
 DATABASES = {
     # https://docs.djangoproject.com/en/3.0/ref/databases/#postgresql-connection-settings
     'default': dj_database_url.config(
