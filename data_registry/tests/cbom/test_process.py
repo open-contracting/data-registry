@@ -1,5 +1,6 @@
 from unittest.mock import patch
 
+from django.conf import settings
 from django.test import TransactionTestCase
 
 from data_registry.cbom.process import process
@@ -23,6 +24,7 @@ class ProcessTests(TransactionTestCase):
 
         with patch('data_registry.cbom.process.TaskFactory') as mock_factory:
             mock_factory.get_task.return_value = TestTask()
+            settings.JOB_TASKS_PLAN = ["test"]
 
             # first call initializes job and runs first task
             process(collection)
