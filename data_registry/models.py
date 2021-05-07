@@ -15,7 +15,7 @@ class Collection(Model):
     country = CharField(max_length=2048, blank=True, null=True)
     ocid_prefix = CharField(max_length=2048, blank=True, null=True)
     license = CharField(max_length=2048, blank=True, null=True)
-    spider = CharField(max_length=2048, blank=True, null=True)
+    source_id = CharField(max_length=2048, blank=True, null=True)
 
     class Frequency(TextChoices):
         MONTHLY = "MONTHLY", "MONTHLY"

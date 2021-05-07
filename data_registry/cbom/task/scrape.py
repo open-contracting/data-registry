@@ -16,7 +16,7 @@ class Scrape(BaseTask):
 
         self.task = task
         self.host = settings.TASK_SCRAPE_HOST
-        self.spider = collection.spider
+        self.spider = collection.source_id
 
     def run(self):
         resp = requests.post(
