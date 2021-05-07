@@ -1,4 +1,4 @@
-from django.db.models import Model, TextChoices, TextField
+from django.db.models import JSONField, Model, TextChoices, TextField
 from django.db.models.deletion import CASCADE
 from django.db.models.fields import BooleanField, CharField, DateField, DateTimeField, IntegerField
 from django.db.models.fields.related import ForeignKey
@@ -15,6 +15,7 @@ class Collection(Model):
     country = CharField(max_length=2048, blank=True, null=True)
     ocid_prefix = CharField(max_length=2048, blank=True, null=True)
     license = CharField(max_length=2048, blank=True, null=True)
+    spider = CharField(max_length=2048, blank=True, null=True)
 
     class Frequency(TextChoices):
         MONTHLY = "MONTHLY", "MONTHLY"
@@ -65,6 +66,9 @@ class Job(Model):
     created = DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)
     modified = DateTimeField(auto_now=True, blank=True, null=True, db_index=True)
 
+    def __str__(self):
+        return "#" + str(self.id)
+
 
 class Task(Model):
     job = ForeignKey("Job", related_name="task", on_delete=CASCADE)
@@ -85,9 +89,13 @@ class Task(Model):
 
     result = CharField(max_length=2048, choices=Result.choices, blank=True, null=True)
     note = TextField()
+    context = JSONField(blank=True, null=True)
 
     type = CharField(max_length=2048, blank=True, null=True)
     order = IntegerField(blank=True, null=True)
 
     created = DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)
     modified = DateTimeField(auto_now=True, blank=True, null=True, db_index=True)
+
+    def __str__(self):
+        return "#{}({})".format(str(self.id), self.type)

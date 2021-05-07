@@ -4,7 +4,7 @@ from django.conf import settings
 from django.db.models.query_utils import Q
 from django.utils import timezone
 
-from data_registry.cbom.tasks import TaskFactory
+from data_registry.cbom.task.factory import TaskFactory
 from data_registry.models import Job, Task
 
 logger = logging.getLogger('cbom')
@@ -19,6 +19,7 @@ def process(collection):
     jobs = Job.objects.filter(collection=collection).filter(~Q(status=Job.Status.COMPLETED))
 
     for job in jobs:
+        # list of job tasks sorted by priority
         tasks = Task.objects.filter(job=job).order_by("order")
         run_next_planned = True
         job_complete = True
@@ -28,28 +29,36 @@ def process(collection):
             if task.status == Task.Status.COMPLETED:
                 continue
 
-            _task = TaskFactory.get_task(job, task)
+            _task = TaskFactory.get_task(collection, job, task)
 
             try:
                 if task.status in [Task.Status.WAITING, Task.Status.RUNNING]:
                     if _task.get_status() in [Task.Status.WAITING, Task.Status.RUNNING]:
+                        # do nothing, the task is still running
                         run_next_planned = False
                         continue
                     else:
+                        # complete the task
                         task.end = timezone.now()
                         task.status = Task.Status.COMPLETED
                         task.result = Task.Result.OK
+
+                        logger.debug("Task {} completed".format(task))
                 elif task.status == Task.Status.PLANNED and run_next_planned:
                     if job.status == Job.Status.PLANNED:
                         job.start = timezone.now()
                         job.status = Job.Status.RUNNING
                         job.save()
 
-                    # run task
+                        logger.debug("Job {} started".format(job))
+
+                    # run the task
                     _task.run()
                     task.start = timezone.now()
                     task.status = Task.Status.RUNNING
                     run_next_planned = False
+
+                    logger.debug("Task {} started".format(task))
 
                 task.save()
                 job_complete &= task.status == Task.Status.COMPLETED
@@ -60,16 +69,21 @@ def process(collection):
                 task.result = Task.Result.FAILED
                 task.note = str(e)
                 task.save()
+
+                logger.exception(e)
                 break
 
+        # complete the job if all of its tasks are completed
         if job_complete:
             job.status = Job.Status.COMPLETED
             job.end = timezone.now()
             job.save()
 
+            logger.debug("Job {} completed".format(job))
+
 
 def should_be_planned(collection):
-    jobs = Job.objects.filter(collection=collection)
+    jobs = Job.objects.filter(collection=collection).filter(~Q(status=Job.Status.COMPLETED))
     if not jobs:
         return True
     else:
@@ -89,3 +103,5 @@ def plan(collection):
 
     for i, t in enumerate(tasks, start=1):
         job.task.create(status=Task.Status.PLANNED, type=t, order=i)
+
+    logger.debug("New job {} planned".format(job))
