@@ -63,6 +63,8 @@ class Job(Model):
 
     status = CharField(max_length=2048, choices=Status.choices, blank=True, null=True)
 
+    context = JSONField(blank=True, null=True)
+
     created = DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)
     modified = DateTimeField(auto_now=True, blank=True, null=True, db_index=True)
 

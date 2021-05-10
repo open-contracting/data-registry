@@ -1,6 +1,7 @@
 import logging
 
 from django.conf import settings
+from django.db import transaction
 from django.db.models.query_utils import Q
 from django.utils import timezone
 
@@ -19,67 +20,74 @@ def process(collection):
     jobs = Job.objects.filter(collection=collection).filter(~Q(status=Job.Status.COMPLETED))
 
     for job in jobs:
-        # list of job tasks sorted by priority
-        tasks = Task.objects.filter(job=job).order_by("order")
-        run_next_planned = True
-        job_complete = True
+        with transaction.atomic():
+            # initiate job context
+            if job.context is None:
+                job.context = {}
+                job.save()
 
-        for task in tasks:
-            # finished task -> no action needed
-            if task.status == Task.Status.COMPLETED:
-                continue
+            # list of job tasks sorted by priority
+            tasks = Task.objects.filter(job=job).order_by("order")
+            run_next_planned = True
+            job_complete = True
 
-            _task = TaskFactory.get_task(collection, job, task)
+            for task in tasks:
+                # finished task -> no action needed
+                if task.status == Task.Status.COMPLETED:
+                    continue
 
-            try:
-                if task.status in [Task.Status.WAITING, Task.Status.RUNNING]:
-                    if _task.get_status() in [Task.Status.WAITING, Task.Status.RUNNING]:
-                        # do nothing, the task is still running
+                _task = TaskFactory.get_task(collection, job, task)
+
+                try:
+                    if task.status in [Task.Status.WAITING, Task.Status.RUNNING]:
+                        status = _task.get_status()
+                        if status in [Task.Status.WAITING, Task.Status.RUNNING]:
+                            # do nothing, the task is still running
+                            run_next_planned = False
+                            continue
+                        elif status == Task.Status.COMPLETED:
+                            # complete the task
+                            task.end = timezone.now()
+                            task.status = Task.Status.COMPLETED
+                            task.result = Task.Result.OK
+
+                            logger.debug("Task {} completed".format(task))
+                    elif task.status == Task.Status.PLANNED and run_next_planned:
+                        if job.status == Job.Status.PLANNED:
+                            job.start = timezone.now()
+                            job.status = Job.Status.RUNNING
+                            job.save()
+
+                            logger.debug("Job {} started".format(job))
+
+                        # run the task
+                        _task.run()
+                        task.start = timezone.now()
+                        task.status = Task.Status.RUNNING
                         run_next_planned = False
-                        continue
-                    else:
-                        # complete the task
-                        task.end = timezone.now()
-                        task.status = Task.Status.COMPLETED
-                        task.result = Task.Result.OK
 
-                        logger.debug("Task {} completed".format(task))
-                elif task.status == Task.Status.PLANNED and run_next_planned:
-                    if job.status == Job.Status.PLANNED:
-                        job.start = timezone.now()
-                        job.status = Job.Status.RUNNING
-                        job.save()
+                        logger.debug("Task {} started".format(task))
 
-                        logger.debug("Job {} started".format(job))
+                    task.save()
+                    job_complete &= task.status == Task.Status.COMPLETED
+                except Exception as e:
+                    job_complete = True
+                    task.end = timezone.now()
+                    task.status = Task.Status.COMPLETED
+                    task.result = Task.Result.FAILED
+                    task.note = str(e)
+                    task.save()
 
-                    # run the task
-                    _task.run()
-                    task.start = timezone.now()
-                    task.status = Task.Status.RUNNING
-                    run_next_planned = False
+                    logger.exception(e)
+                    break
 
-                    logger.debug("Task {} started".format(task))
+            # complete the job if all of its tasks are completed
+            if job_complete:
+                job.status = Job.Status.COMPLETED
+                job.end = timezone.now()
+                job.save()
 
-                task.save()
-                job_complete &= task.status == Task.Status.COMPLETED
-            except Exception as e:
-                job_complete = True
-                task.end = timezone.now()
-                task.status = Task.Status.COMPLETED
-                task.result = Task.Result.FAILED
-                task.note = str(e)
-                task.save()
-
-                logger.exception(e)
-                break
-
-        # complete the job if all of its tasks are completed
-        if job_complete:
-            job.status = Job.Status.COMPLETED
-            job.end = timezone.now()
-            job.save()
-
-            logger.debug("Job {} completed".format(job))
+                logger.debug("Job {} completed".format(job))
 
 
 def should_be_planned(collection):

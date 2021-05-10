@@ -1,4 +1,5 @@
 
+from data_registry.cbom.task.process import Process
 from data_registry.cbom.task.scrape import Scrape
 
 
@@ -8,6 +9,8 @@ class TaskFactory:
         type = task.type
 
         if type == "scrape":
-            return Scrape(collection, task)
+            return Scrape(collection, job)
+        elif type == "process":
+            return Process(job)
         else:
             raise Exception("Unsupported task type")

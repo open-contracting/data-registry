@@ -13,7 +13,7 @@ class TestTask(BaseTask):
         pass
 
     def get_status(self):
-        return "COMPLETE"
+        return Task.Status.COMPLETED
 
 
 class ProcessTests(TransactionTestCase):

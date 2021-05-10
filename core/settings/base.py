@@ -15,7 +15,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = []
 
-JOB_TASKS_PLAN = ["scrape"]
+JOB_TASKS_PLAN = ["scrape", "process"]
 
 # Application definition
 
