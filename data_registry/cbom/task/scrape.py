@@ -8,15 +8,17 @@ from data_registry.models import Task
 class Scrape(BaseTask):
     host = None
     job = None
-
-    project = "kingfisher"
+    project = None
 
     def __init__(self, collection, job):
-        if not settings.TASK_SCRAPE_HOST:
-            raise Exception("TASK_SCRAPE_HOST is not set")
+        if not settings.SCRAPY_HOST:
+            raise Exception("SCRAPY_HOST is not set")
+        if not settings.SCRAPY_PROJECT:
+            raise Exception("SCRAPY_PROJECT is not set")
 
         self.job = job
-        self.host = settings.TASK_SCRAPE_HOST
+        self.host = settings.SCRAPY_HOST
+        self.project = settings.SCRAPY_PROJECT
         self.spider = collection.source_id
 
     def run(self):
@@ -44,7 +46,7 @@ class Scrape(BaseTask):
     def get_status(self):
         resp = requests.get(
             self.host + "listjobs.json",
-            data={
+            params={
                 "project": self.project
             }
         )
