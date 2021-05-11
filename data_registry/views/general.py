@@ -1,9 +1,14 @@
+import requests
+from django.conf import settings
+from django.contrib.auth.decorators import login_required
 from django.contrib.postgres.aggregates import ArrayAgg
+from django.db.models.expressions import Exists, OuterRef
 from django.db.models.query_utils import Q
+from django.http.response import JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 
-from data_registry.models import Collection
+from data_registry.models import Collection, Job
 from data_registry.views.serializers import CollectionSerializer
 
 
@@ -15,6 +20,11 @@ def index(request):
 
 def search(request):
     results = Collection.objects.all()
+    if not request.user.is_authenticated:
+        # for unauthenticated user show only public collections with an active job.
+        results = results\
+            .filter(public=True)\
+            .filter(Exists(Job.objects.filter(collection=OuterRef('pk'), active=True)))
 
     collections = []
     for r in results:

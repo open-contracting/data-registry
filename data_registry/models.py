@@ -1,3 +1,7 @@
+import requests
+from django import forms
+from django.conf import settings
+from django.contrib import admin
 from django.db.models import JSONField, Model, TextChoices, TextField
 from django.db.models.deletion import CASCADE
 from django.db.models.fields import BooleanField, CharField, DateField, DateTimeField, IntegerField
@@ -6,16 +10,18 @@ from django.db.models.fields.related import ForeignKey
 
 class Collection(Model):
     title = TextField()
-    ocds_label = TextField()
-    country = TextField()
+    ocds_label = CharField(max_length=2048, blank=True, null=True)
+    country = CharField(max_length=2048, blank=True, null=True)
+    language = CharField(max_length=2048, blank=True, null=True)
     description = TextField(blank=True, null=True)
+    description_long = TextField(blank=True, null=True)
     date_from = DateField(blank=True, null=True)
     date_to = DateField(blank=True, null=True)
     last_update = DateField(blank=True, null=True)
     country = CharField(max_length=2048, blank=True, null=True)
     ocid_prefix = CharField(max_length=2048, blank=True, null=True)
     license = CharField(max_length=2048, blank=True, null=True)
-    source_id = CharField(max_length=2048, blank=True, null=True)
+    source_id = CharField(max_length=2048)
 
     class Frequency(TextChoices):
         MONTHLY = "MONTHLY", "MONTHLY"
@@ -33,13 +39,41 @@ class Collection(Model):
     milestones_count = IntegerField(default=0)
     amendments_count = IntegerField(default=0)
 
-    summary = TextField()
+    summary = TextField(blank=True, null=True)
+
+    additional_data = TextField(blank=True, null=True)
 
     json_format = BooleanField(default=False)
     excel_format = BooleanField(default=False)
 
+    public = BooleanField(default=True)
+    frozen = BooleanField(default=False)
+
     created = DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)
     modified = DateTimeField(auto_now=True, blank=True, null=True, db_index=True)
+
+
+class CollectionAdminForm(forms.ModelForm):
+    source_id = forms.ChoiceField(choices=[(None, "-----------")])
+
+    def __init__(self, *args, **kwargs):
+        super(CollectionAdminForm, self).__init__(*args, **kwargs)
+
+        resp = requests.get(
+            settings.SCRAPY_HOST + "listspiders.json",
+            params={
+                "project": settings.SCRAPY_PROJECT
+            }
+        )
+
+        json = resp.json()
+
+        if json.get("status") == "ok":
+            self.fields['source_id'].choices += tuple([(n, n) for n in json.get("spiders")])
+
+
+class CollectionAdmin(admin.ModelAdmin):
+    form = CollectionAdminForm
 
 
 class Issue(Model):
@@ -64,6 +98,8 @@ class Job(Model):
     status = CharField(max_length=2048, choices=Status.choices, blank=True, null=True)
 
     context = JSONField(blank=True, null=True)
+
+    active = BooleanField(default=False)
 
     created = DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)
     modified = DateTimeField(auto_now=True, blank=True, null=True, db_index=True)
@@ -90,7 +126,7 @@ class Task(Model):
         FAILED = "FAILED", "FAILED"
 
     result = CharField(max_length=2048, choices=Result.choices, blank=True, null=True)
-    note = TextField()
+    note = TextField(blank=True, null=True)
     context = JSONField(blank=True, null=True)
 
     type = CharField(max_length=2048, blank=True, null=True)

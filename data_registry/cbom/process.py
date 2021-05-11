@@ -91,6 +91,10 @@ def process(collection):
 
 
 def should_be_planned(collection):
+    # frozen collections shouldn't be planned
+    if collection.frozen:
+        return False
+
     jobs = Job.objects.filter(collection=collection).filter(~Q(status=Job.Status.COMPLETED))
     if not jobs:
         return True
