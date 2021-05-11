@@ -11,9 +11,13 @@ asgiref==3.3.4
 attrs==20.3.0
     # via pytest
 certifi==2020.12.5
-    # via requests
+    # via
+    #   -r requirements.txt
+    #   requests
 chardet==4.0.0
-    # via requests
+    # via
+    #   -r requirements.txt
+    #   requests
 click==7.1.2
     # via pip-tools
 coverage==5.4
@@ -24,14 +28,20 @@ dj-database-url==0.5.0
     # via
     #   -r requirements.txt
     #   -r requirements_dev.in
-django==3.2
+django-modeltranslation==0.17.1
     # via -r requirements.txt
+django==3.2
+    # via
+    #   -r requirements.txt
+    #   django-modeltranslation
 docopt==0.6.2
     # via coveralls
 flake8==3.8.4
     # via -r requirements_dev.in
 idna==2.10
-    # via requests
+    # via
+    #   -r requirements.txt
+    #   requests
 iniconfig==1.1.1
     # via pytest
 isort==5.7.0
@@ -61,17 +71,23 @@ pytz==2021.1
     #   -r requirements.txt
     #   django
 requests==2.25.1
-    # via coveralls
+    # via
+    #   -r requirements.txt
+    #   coveralls
+six==1.16.0
+    # via
+    #   -r requirements.txt
+    #   django-modeltranslation
 sqlparse==0.4.1
     # via
     #   -r requirements.txt
     #   django
 toml==0.10.2
     # via pytest
-typing-extensions==3.7.4.3
-    # via -r requirements.txt
-urllib3==1.26.3
-    # via requests
+urllib3==1.26.4
+    # via
+    #   -r requirements.txt
+    #   requests
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip

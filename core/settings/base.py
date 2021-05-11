@@ -20,6 +20,7 @@ JOB_TASKS_PLAN = ["scrape", "process"]
 # Application definition
 
 INSTALLED_APPS = [
+    'modeltranslation',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -112,3 +113,10 @@ USE_THOUSAND_SEPARATOR = True
 STATIC_ROOT = 'data_registry/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LANGUAGES = (
+    ('en', 'English'),
+    ('es', 'Spanish'),
+)
+
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
