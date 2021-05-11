@@ -38,8 +38,24 @@ def search(request):
 def detail(request, id):
     data = CollectionSerializer.serialize(
         Collection.objects
-                  .annotate(issues=ArrayAgg("issue__description", filter=Q(issue__isnull=False)))
-                  .get(id=id)
+        .annotate(issues=ArrayAgg("issue__description", filter=Q(issue__isnull=False)))
+        .get(id=id)
     )
 
     return render(request, 'detail.html', {'data': data})
+
+
+@login_required
+def spiders(request):
+    resp = requests.get(
+        settings.SCRAPY_HOST + "listspiders.json",
+        params={
+            "project": settings.SCRAPY_PROJECT
+        }
+    )
+
+    json = resp.json()
+    if json.get("status") == "error":
+        raise JsonResponse(json, status=503, safe=False)
+
+    return JsonResponse(json.get("spiders"), safe=False)
