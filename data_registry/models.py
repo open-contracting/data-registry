@@ -21,7 +21,10 @@ class Collection(Model):
     last_update = DateField(blank=True, null=True)
     country = CharField(max_length=2048, blank=True, null=True)
     ocid_prefix = CharField(max_length=2048, blank=True, null=True)
+
     license = CharField(max_length=2048, blank=True, null=True)
+    license_custom = ForeignKey("License", related_name="collection", on_delete=CASCADE, blank=True, null=True)
+
     source_id = CharField(max_length=2048)
 
     class Frequency(TextChoices):
@@ -55,6 +58,18 @@ class Collection(Model):
 
     def __str__(self):
         return f"{self.title} ({self.id})"
+
+
+class License(Model):
+    name = CharField(max_length=2048, blank=True, null=True)
+    description = TextField()
+    url = CharField(max_length=2048, blank=True, null=True)
+
+    created = DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)
+    modified = DateTimeField(auto_now=True, blank=True, null=True, db_index=True)
+
+    def __str__(self):
+        return f"{self.name} ({self.id})"
 
 
 class Issue(Model):
@@ -179,3 +194,11 @@ class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
 
     def active_job(self, obj):
         return Job.objects.filter(collection=obj, active=True).first()
+
+
+class LicenseAdmin(TabbedDjangoJqueryTranslationAdmin):
+    pass
+
+
+class IssueAdmin(TabbedDjangoJqueryTranslationAdmin):
+    pass
