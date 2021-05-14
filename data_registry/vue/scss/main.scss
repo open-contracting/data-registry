@@ -270,6 +270,18 @@ html, body {
 
     .filter {
         font-size: 18px;
+
+        .country-title {
+            display: flex;
+            margin-bottom: 20px;
+            align-items: center;
+            justify-content: space-between;
+
+            h6 {
+                margin-bottom: 0;
+            }
+        }
+
         .country {
             display: flex;
             flex-wrap: wrap;
@@ -278,20 +290,30 @@ html, body {
                 margin-bottom: 15px;
             }
 
-            .delimiter {
-                margin: 0 15px;
-            }
-
             .letter {
                 cursor: pointer;
+                border-radius: 40px;
+                background-color: transparent;
+                width: 40px;
+                height: 40px;
+                display: inline-block;
+                text-align: center;
+                line-height: 40px;
 
                 &:hover {
                     text-decoration: underline;
                 }
 
                 &.selected {
+                    background-color: rgba($info, 0.2);
                     font-weight: 700;
                     text-decoration: underline;
+                    color: $info;
+                }
+
+                &.has-data {
+                    text-decoration: underline;
+                    color: $info;
                 }
             }
         }

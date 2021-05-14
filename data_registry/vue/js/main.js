@@ -152,6 +152,16 @@ if (document.getElementById("search_app")) {
                 }
 
                 return null
+            },
+            countriesWithData: function() {
+                return this.collectionsData.reduce((list, n) => {
+                    var letter = n.country[0]
+                    if (!list.includes(letter)) {
+                        list.push(letter)
+                    }
+
+                    return list
+                }, [])
             }
         },
         watch: {
@@ -165,7 +175,7 @@ if (document.getElementById("search_app")) {
         },
         methods: {
             setCountryFilter: function(country) {
-                if (this.countryFilter == country) {
+                if (typeof country === 'undefined' || this.countryFilter == country) {
                     this.countryFilter = null
                     return
                 }
