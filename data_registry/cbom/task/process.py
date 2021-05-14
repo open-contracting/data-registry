@@ -17,6 +17,7 @@ class Process(BaseTask):
         if not self.process_id:
             self.process_id = self.get_process_id()
             self.job.context["process_id"] = self.process_id
+            self.job.save()
 
     def run(self):
         # process is started throught scrape-process integration
