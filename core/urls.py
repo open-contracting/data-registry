@@ -7,6 +7,7 @@ from django.views import static
 urlpatterns = [
     path('', include('data_registry.urls'), name='data_registry'),
     path('admin/', admin.site.urls),
+    url(r'^markdownx/', include('markdownx.urls')),
 ]
 
 if settings.DEBUG:

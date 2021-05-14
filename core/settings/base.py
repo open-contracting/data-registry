@@ -28,7 +28,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    'data_registry'
+    'data_registry',
+    'markdownx',
 ]
 
 MIDDLEWARE = [
@@ -120,3 +121,16 @@ LANGUAGES = (
 )
 
 MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
+
+MARKDOWNX_MARKDOWN_EXTENSIONS = [
+    'markdown.extensions.extra',
+    'markdown.extensions.admonition',
+    'markdown.extensions.codehilite',
+    'markdown.extensions.sane_lists',
+    'markdown.extensions.smarty',
+    'pymdownx.mark',
+    'pymdownx.tasklist'
+]
+
+MARKDOWNX_MARKDOWN_EXTENSION_CONFIGS = {
+}

@@ -28,11 +28,14 @@ dj-database-url==0.5.0
     # via
     #   -r requirements.txt
     #   -r requirements_dev.in
+django-markdownx==3.0.1
+    # via -r requirements.txt
 django-modeltranslation==0.17.1
     # via -r requirements.txt
 django==3.2
     # via
     #   -r requirements.txt
+    #   django-markdownx
     #   django-modeltranslation
 docopt==0.6.2
     # via coveralls
@@ -46,10 +49,18 @@ iniconfig==1.1.1
     # via pytest
 isort==5.7.0
     # via -r requirements_dev.in
+markdown==3.3.4
+    # via
+    #   -r requirements.txt
+    #   django-markdownx
 mccabe==0.6.1
     # via flake8
 packaging==20.9
     # via pytest
+pillow==8.2.0
+    # via
+    #   -r requirements.txt
+    #   django-markdownx
 pip-tools==5.5.0
     # via -r requirements_dev.in
 pluggy==0.13.1

@@ -6,6 +6,7 @@ from django.db.models.deletion import CASCADE
 from django.db.models.expressions import Case, When
 from django.db.models.fields import BooleanField, CharField, DateField, DateTimeField, IntegerField
 from django.db.models.fields.related import ForeignKey
+from markdownx.models import MarkdownxField
 from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, TranslationTabularInline
 
 
@@ -15,7 +16,7 @@ class Collection(Model):
     country = CharField(max_length=2048, blank=True, null=True)
     language = CharField(max_length=2048, blank=True, null=True)
     description = TextField(blank=True, null=True)
-    description_long = TextField(blank=True, null=True)
+    description_long = MarkdownxField(blank=True, null=True)
     date_from = DateField(blank=True, null=True)
     date_to = DateField(blank=True, null=True)
     last_update = DateField(blank=True, null=True)
@@ -43,9 +44,9 @@ class Collection(Model):
     milestones_count = IntegerField(default=0)
     amendments_count = IntegerField(default=0)
 
-    summary = TextField(blank=True, null=True)
+    summary = MarkdownxField(blank=True, null=True)
 
-    additional_data = TextField(blank=True, null=True)
+    additional_data = MarkdownxField(blank=True, null=True)
 
     json_format = BooleanField(default=False)
     excel_format = BooleanField(default=False)

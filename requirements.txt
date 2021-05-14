@@ -12,15 +12,26 @@ chardet==4.0.0
     # via requests
 dj-database-url==0.5.0
     # via -r requirements.in
+django-markdownx==3.0.1
+    # via -r requirements.in
 django-modeltranslation==0.17.1
     # via -r requirements.in
 django==3.2
     # via
     #   -r requirements.in
+    #   django-markdownx
     #   django-modeltranslation
 idna==2.10
     # via requests
+markdown==3.3.4
+    # via
+    #   django-markdownx
+    #   pymdown-extensions
+pillow==8.2.0
+    # via django-markdownx
 psycopg2-binary==2.8.6
+    # via -r requirements.in
+pymdown-extensions==8.2
     # via -r requirements.in
 pytz==2021.1
     # via django

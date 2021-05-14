@@ -3,3 +3,5 @@ django==3.2
 psycopg2-binary
 requests
 django-modeltranslation
+django-markdownx
+pymdown-extensions
