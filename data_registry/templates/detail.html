@@ -118,6 +118,15 @@
                         <div>{% translate "Count of amendments:" %} [[ data.amendments_count ]]</div>
                     </div>
                 </div>
+
+                <div class="row" v-if="data.additional_data">
+                    <div class="col">
+                        <div class="additional_data">
+                            <b-icon class="diamond-icon" icon="gem" scale="1.5"></b-icon>
+                            <div v-html="data.additional_data"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -127,12 +136,15 @@
             </div>
             <div class="col-9">
                 <h6>{% translate "Summary" %}</h6>
-                <p class="summary">[[ data.summary ]]</p>
+                <p class="summary" v-html="data.summary"></p>
 
                 <template v-if="data.issues">
                     <h6>{% translate "Issues found" %}</h6>
 
-                    <div v-for="n in data.issues" class="issue"><b-icon icon="exclamation-circle"></b-icon>[[ n ]]</div>
+                    <div v-for="n in data.issues" class="issue">
+                        <b-icon icon="exclamation-circle"></b-icon>
+                        <span v-html="n"></div>
+                    </div>
                 </template>
             </div>
         </div>

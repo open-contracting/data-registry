@@ -521,6 +521,7 @@ html, body {
         }
 
         .issue {
+            display: flex;
             svg {
                 margin-right: 10px;
             }
@@ -596,5 +597,30 @@ html, body {
                 color: $info;
             }
         }
+    }
+
+    .additional_data {
+        border-radius: 10px;
+        background-color: rgba($info, 0.2);
+        color: $info;
+        position: relative;
+
+        a {
+            color: inherit;
+            text-decoration: underline;
+
+            &:hover {
+                text-decoration: none;
+            }
+        }
+
+        .diamond-icon {
+            position: absolute;
+            left: 30px;
+            top: 25px
+        }
+
+        padding: 20px 20px 20px 70px;
+        margin-top: 20px;
     }
 }

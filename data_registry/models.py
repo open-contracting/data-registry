@@ -74,7 +74,7 @@ class License(Model):
 
 
 class Issue(Model):
-    description = TextField()
+    description = MarkdownxField()
     collection = ForeignKey("Collection", related_name="issue", on_delete=CASCADE)
 
     created = DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)
