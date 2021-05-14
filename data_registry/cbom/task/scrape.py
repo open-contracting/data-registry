@@ -38,9 +38,7 @@ class Scrape(BaseTask):
 
         self.job.context["job_id"] = jobid
         self.job.context["spider"] = self.spider
-        self.job.context["scrapy_log"] = "{host}logs/{project}/{spider}/{jobid}.log".format(
-            host=self.host, project=self.project, spider=self.spider, jobid=jobid
-        )
+        self.job.context["scrapy_log"] = f"{self.host}logs/{self.project}/{self.spider}/{jobid}.log"
         self.job.save()
 
     def get_status(self):

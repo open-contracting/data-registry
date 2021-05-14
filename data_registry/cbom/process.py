@@ -12,7 +12,7 @@ logger = logging.getLogger('cbom')
 
 
 def process(collection):
-    logger.debug("Processing collection {}".format(collection))
+    logger.debug(f"Processing collection {collection}")
 
     if should_be_planned(collection):
         plan(collection)
@@ -28,7 +28,6 @@ def process(collection):
 
             # list of job tasks sorted by priority
             tasks = Task.objects.filter(job=job).order_by("order")
-            run_next_planned = True
             job_complete = True
 
             for task in tasks:
@@ -43,33 +42,36 @@ def process(collection):
                         status = _task.get_status()
                         if status in [Task.Status.WAITING, Task.Status.RUNNING]:
                             # do nothing, the task is still running
-                            run_next_planned = False
-                            continue
+                            job_complete = False
+                            logger.debug(f"Task {task} is running")
+                            break
                         elif status == Task.Status.COMPLETED:
                             # complete the task
                             task.end = timezone.now()
                             task.status = Task.Status.COMPLETED
                             task.result = Task.Result.OK
 
-                            logger.debug("Task {} completed".format(task))
-                    elif task.status == Task.Status.PLANNED and run_next_planned:
+                            logger.debug(f"Task {task} completed")
+                            task.save()
+                    elif task.status == Task.Status.PLANNED:
                         if job.status == Job.Status.PLANNED:
                             job.start = timezone.now()
                             job.status = Job.Status.RUNNING
                             job.save()
 
-                            logger.debug("Job {} started".format(job))
+                            logger.debug(f"Job {job} started")
 
                         # run the task
                         _task.run()
                         task.start = timezone.now()
                         task.status = Task.Status.RUNNING
-                        run_next_planned = False
+                        job_complete = False
 
-                        logger.debug("Task {} started".format(task))
+                        logger.debug(f"Task {task} started")
 
-                    task.save()
-                    job_complete &= task.status == Task.Status.COMPLETED
+                        task.save()
+
+                        break
                 except Exception as e:
                     job_complete = True
                     task.end = timezone.now()
@@ -87,7 +89,7 @@ def process(collection):
                 job.end = timezone.now()
                 job.save()
 
-                logger.debug("Job {} completed".format(job))
+                logger.debug(f"Job {job} completed")
 
 
 def should_be_planned(collection):
@@ -116,4 +118,4 @@ def plan(collection):
     for i, t in enumerate(tasks, start=1):
         job.task.create(status=Task.Status.PLANNED, type=t, order=i)
 
-    logger.debug("New job {} planned".format(job))
+    logger.debug(f"New job {job} planned")

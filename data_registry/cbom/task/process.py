@@ -37,4 +37,4 @@ class Process(BaseTask):
         resp = requests.get(log)
 
         m = re.search('Created collection in Kingfisher process with id (.+)', resp.text)
-        return m.group(0) if m else None
+        return m.group(1) if m else None
