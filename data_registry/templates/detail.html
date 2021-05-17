@@ -26,6 +26,15 @@
             <div class="col">
                 <h2>[[ data.country ]] [[ data.title ]] <span class="badge badge-pill collection-badge">{% translate "OCDS" %}</span></h2>
                 <p class="description">[[ data.description ]]</p>
+                <template v-if="data.description_long">
+                    <p class="description-long" v-if="descriptionExpanded" v-html="data.description_long"></p>
+                    <button
+                        class="btn btn-link text-info description-long-btn"
+                        @click="() => descriptionExpanded = !descriptionExpanded">
+                        <template v-if="descriptionExpanded">{% translate "Show less" %}</template>
+                        <template v-else>{% translate "Show more" %}</template>
+                    </button>
+                </template>
             </div>
             <div class="col">
                 <div class="label">{% translate "Available formats:" %}</div>

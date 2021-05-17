@@ -623,4 +623,20 @@ html, body {
         padding: 20px 20px 20px 70px;
         margin-top: 20px;
     }
+
+    .description-long-btn {
+        padding: 5px 0;
+        text-decoration: underline;
+        font-size: 14px;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
+    .description-long {
+        font-size: 14px;
+        margin-top: 20px;
+        margin-bottom: 0;
+    }
 }

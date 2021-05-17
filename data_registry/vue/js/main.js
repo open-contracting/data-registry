@@ -191,7 +191,9 @@ if (document.getElementById("detail_app")) {
         delimiters: ["[[", "]]"],
         el: "#detail_app",
         data: function() {
-            return {}
+            return {
+                descriptionExpanded: false
+            }
         },
         computed: {
             data: function() {
