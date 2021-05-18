@@ -30,7 +30,7 @@ class Pelican(BaseTask):
 
     def get_status(self):
         try:
-            resp = requests.get(f"{settings.PELICAN_HOST}api/dataset_progress/{self.process_id}")
+            resp = requests.get(f"{settings.PELICAN_HOST}api/dataset_status/{self.process_id}")
             resp.raise_for_status()
 
             json = resp.json()
