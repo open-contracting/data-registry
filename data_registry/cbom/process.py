@@ -40,10 +40,10 @@ def process(collection):
                 try:
                     if task.status in [Task.Status.WAITING, Task.Status.RUNNING]:
                         status = _task.get_status()
+                        logger.debug(f"Task {task} {status}")
                         if status in [Task.Status.WAITING, Task.Status.RUNNING]:
                             # do nothing, the task is still running
                             job_complete = False
-                            logger.debug(f"Task {task} is running")
                             break
                         elif status == Task.Status.COMPLETED:
                             # complete the task
@@ -51,7 +51,6 @@ def process(collection):
                             task.status = Task.Status.COMPLETED
                             task.result = Task.Result.OK
 
-                            logger.debug(f"Task {task} completed")
                             task.save()
                     elif task.status == Task.Status.PLANNED:
                         if job.status == Job.Status.PLANNED:

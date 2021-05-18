@@ -27,25 +27,30 @@ class Process(BaseTask):
 
     def get_status(self):
         if not self.process_id:
-            return None
-        else:
-            try:
-                resp = requests.get(f"{settings.PROCESS_HOST}api/v1/tree/{self.process_id}/")
-                resp.raise_for_status()
-            except HTTPError as e:
-                raise Exception(f"Unable to get status of process #{self.process_id}") from e
+            raise Exception("Process id is not set")
 
-            json = resp.json()
+        try:
+            resp = requests.get(f"{settings.PROCESS_HOST}api/v1/tree/{self.process_id}/")
+            resp.raise_for_status()
+        except HTTPError as e:
+            raise Exception(f"Unable to get status of process #{self.process_id}") from e
 
-            is_last_completed = json[-1].get("completed_at", None) is not None
+        json = resp.json()
 
-            return Task.Status.COMPLETED if is_last_completed else Task.Status.RUNNING
+        last_child = json[-1]
+        is_last_completed = last_child.get("completed_at", None) is not None
+
+        if "process_data_version" not in self.job.context:
+            self.job.context["process_data_version"] = last_child.get("data_version")
+            self.job.save()
+
+        return Task.Status.COMPLETED if is_last_completed else Task.Status.RUNNING
 
     def get_process_id(self):
         # process id is published in scrapy log
         log = self.job.context.get("scrapy_log", None)
         if not log:
-            return None
+            raise Exception("Scrapy log is not set")
 
         resp = requests.get(log)
 
