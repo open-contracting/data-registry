@@ -38,6 +38,9 @@ class Pelican(BaseTask):
             resp.raise_for_status()
 
             json = resp.json().get("data")
+            if not json:
+                return Task.Status.WAITING
+
             state = json.get("state")
             phase = json.get("phase")
 
