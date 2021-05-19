@@ -37,11 +37,12 @@ class Process(BaseTask):
 
         json = resp.json()
 
-        last_child = json[-1]
-        is_last_completed = last_child.get("completed_at", None) is not None
+        compile_releases = next(n for n in json if n.get("transform_type", None) == "compile-releases")
+        is_last_completed = compile_releases.get("completed_at", None) is not None
 
-        if "process_data_version" not in self.job.context:
-            self.job.context["process_data_version"] = last_child.get("data_version")
+        if "process_id_pelican" not in self.job.context:
+            self.job.context["process_id_pelican"] = compile_releases.get("id")
+            self.job.context["process_data_version"] = compile_releases.get("data_version")
             self.job.save()
 
         return Task.Status.COMPLETED if is_last_completed else Task.Status.RUNNING
