@@ -61,7 +61,7 @@ class Scrape(BaseTask):
             params={
                 "project": self.project
             },
-            error_msg=f"Unable to get status of scrape job #{self.jobid}"
+            error_msg=f"Unable to get status of scrape job #{jobid}"
         )
 
         json = resp.json()
@@ -88,7 +88,7 @@ class Scrape(BaseTask):
         if not log:
             raise Exception("Scrapy log is not set")
 
-        resp = request("get", log, f"Unable to read scrapy log {log}")
+        resp = request("get", log, error_msg=f"Unable to read scrapy log {log}")
 
         m = re.search('Created collection in Kingfisher process with id (.+)', resp.text)
         return m.group(1) if m else None
