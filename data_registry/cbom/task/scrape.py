@@ -1,7 +1,10 @@
-import requests
+import re
+
 from django.conf import settings
 
+from data_registry.cbom.task.exceptions import RecoverableException
 from data_registry.cbom.task.task import BaseTask
+from data_registry.cbom.task.utils import request
 from data_registry.models import Task
 
 
@@ -22,12 +25,14 @@ class Scrape(BaseTask):
         self.spider = collection.source_id
 
     def run(self):
-        resp = requests.post(
-            self.host + "schedule.json",
+        resp = request(
+            "POST",
+            f"{self.host}schedule.json",
             data={
                 "project": self.project,
                 "spider": self.spider
-            }
+            },
+            error_msg=f"Unable to schedule scraping for project {self.project} and spider {self.spider}"
         )
 
         json = resp.json()
@@ -42,11 +47,21 @@ class Scrape(BaseTask):
         self.job.save()
 
     def get_status(self):
-        resp = requests.get(
-            self.host + "listjobs.json",
+        jobid = self.job.context.get("job_id")
+        process_id = self.job.context.get("process_id", None)
+
+        if not process_id:
+            process_id = self.get_process_id()
+            self.job.context["process_id"] = process_id
+            self.job.save()
+
+        resp = request(
+            "GET",
+            f"{self.host}listjobs.json",
             params={
                 "project": self.project
-            }
+            },
+            error_msg=f"Unable to get status of scrape job #{self.jobid}"
         )
 
         json = resp.json()
@@ -54,13 +69,26 @@ class Scrape(BaseTask):
         if json.get("status") == "error":
             raise Exception(json)
 
-        jobid = self.job.context.get("job_id")
-
         if any(n["id"] == jobid for n in json.get("pending", [])):
             return Task.Status.WAITING
         if any(n["id"] == jobid for n in json.get("running", [])):
             return Task.Status.RUNNING
         if any(n["id"] == jobid for n in json.get("finished", [])):
+            # process id must be set on the end of scrape task
+            if not process_id:
+                raise Exception("Process id is not set")
+
             return Task.Status.COMPLETED
 
-        raise Exception("Unable to get task state")
+        raise RecoverableException("Scrape job is in undefined state")
+
+    def get_process_id(self):
+        # process id is published in scrapy log
+        log = self.job.context.get("scrapy_log", None)
+        if not log:
+            raise Exception("Scrapy log is not set")
+
+        resp = request("get", log, f"Unable to read scrapy log {log}")
+
+        m = re.search('Created collection in Kingfisher process with id (.+)', resp.text)
+        return m.group(1) if m else None

@@ -1,8 +1,7 @@
-import requests
 from django.conf import settings
-from requests.models import HTTPError
 
 from data_registry.cbom.task.task import BaseTask
+from data_registry.cbom.task.utils import request
 from data_registry.models import Task
 
 
@@ -17,59 +16,58 @@ class Pelican(BaseTask):
             raise Exception("Process id is not set")
 
     def run(self):
-        try:
-            resp = requests.post(
-                f"{settings.PELICAN_HOST}api/dataset_start",
-                json={
-                    "name": self.get_pelican_dataset_name(),
-                    "collection_id": self.collection_id
-                })
-            resp.raise_for_status()
-        except HTTPError as e:
-            raise Exception(f"Unable to run Pelican for collection {self.job.collection}") from e
+        request(
+            "POST",
+            f"{settings.PELICAN_HOST}api/dataset_start",
+            json={
+                "name": self.get_pelican_dataset_name(),
+                "collection_id": self.collection_id
+            },
+            error_msg=f"Unable to run Pelican for collection {self.job.collection}"
+        )
 
     def get_status(self):
         pelican_id = self.get_pelican_id()
         if not pelican_id:
             return Task.Status.WAITING
 
-        try:
-            resp = requests.get(f"{settings.PELICAN_HOST}api/dataset_status/{pelican_id}")
-            resp.raise_for_status()
+        resp = request(
+            "GET",
+            f"{settings.PELICAN_HOST}api/dataset_status/{pelican_id}",
+            error_msg=f"Unable get status of collection {self.job.collection} from Pelican"
+        )
 
-            json = resp.json().get("data")
-            if not json:
-                return Task.Status.WAITING
+        json = resp.json().get("data")
+        if not json:
+            return Task.Status.WAITING
 
-            state = json.get("state")
-            phase = json.get("phase")
+        state = json.get("state")
+        phase = json.get("phase")
 
-            if state == "FAILED":
-                raise Exception("Pelican failed")
+        if state == "FAILED":
+            raise Exception("Pelican failed")
 
-            if phase == "CHECKED" and state == "OK":
-                return Task.Status.COMPLETED
-            else:
-                return Task.Status.RUNNING
-        except HTTPError as e:
-            raise Exception(f"Unable get status of collection {self.job.collection} from Pelican") from e
+        if phase == "CHECKED" and state == "OK":
+            return Task.Status.COMPLETED
+        else:
+            return Task.Status.RUNNING
 
     def get_pelican_id(self):
         pelican_id = self.job.context.get("pelican_id", None)
         if not pelican_id:
-            try:
-                resp = requests.post(
-                    f"{settings.PELICAN_HOST}api/dataset_id",
-                    json={"name": self.get_pelican_dataset_name()}
-                )
-                resp.raise_for_status()
+            resp = request(
+                "POST",
+                f"{settings.PELICAN_HOST}api/dataset_id",
+                json={
+                    "name": self.get_pelican_dataset_name()
+                },
+                error_msg="Unable to get pelican dataset id"
+            )
 
-                pelican_id = resp.json().get("data", None)
-                if pelican_id:
-                    self.job.context["pelican_id"] = pelican_id
-                    self.job.save()
-            except HTTPError as e:
-                raise Exception("Unable to get pelican dataset id") from e
+            pelican_id = resp.json().get("data", None)
+            if pelican_id:
+                self.job.context["pelican_id"] = pelican_id
+                self.job.save()
 
         return pelican_id
 

@@ -5,6 +5,7 @@ from django.db import transaction
 from django.db.models.query_utils import Q
 from django.utils import timezone
 
+from data_registry.cbom.task.exceptions import RecoverableException
 from data_registry.cbom.task.factory import TaskFactory
 from data_registry.models import Job, Task
 
@@ -71,6 +72,14 @@ def process(collection):
                         task.save()
 
                         break
+                except RecoverableException as e:
+                    job_complete = False
+                    task.result = Task.Result.FAILED
+                    task.note = str(e)
+                    task.save()
+
+                    logger.exception(e)
+                    break
                 except Exception as e:
                     job_complete = True
                     task.end = timezone.now()
