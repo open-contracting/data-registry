@@ -5,3 +5,4 @@ requests
 django-modeltranslation
 django-markdownx
 pymdown-extensions
+gunicorn

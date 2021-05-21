@@ -21,6 +21,8 @@ django==3.2
     #   -r requirements.in
     #   django-markdownx
     #   django-modeltranslation
+gunicorn==20.1.0
+    # via -r requirements.in
 idna==2.10
     # via requests
 markdown==3.3.4
@@ -43,3 +45,6 @@ sqlparse==0.4.1
     # via django
 urllib3==1.26.4
     # via requests
+
+# The following packages are considered to be unsafe in a requirements file:
+# setuptools

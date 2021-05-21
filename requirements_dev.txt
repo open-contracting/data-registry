@@ -41,6 +41,8 @@ docopt==0.6.2
     # via coveralls
 flake8==3.8.4
     # via -r requirements_dev.in
+gunicorn==20.1.0
+    # via -r requirements.txt
 idna==2.10
     # via
     #   -r requirements.txt
@@ -53,6 +55,7 @@ markdown==3.3.4
     # via
     #   -r requirements.txt
     #   django-markdownx
+    #   pymdown-extensions
 mccabe==0.6.1
     # via flake8
 packaging==20.9
@@ -73,6 +76,8 @@ pycodestyle==2.6.0
     # via flake8
 pyflakes==2.2.0
     # via flake8
+pymdown-extensions==8.2
+    # via -r requirements.txt
 pyparsing==2.4.7
     # via packaging
 pytest==6.2.2
@@ -102,3 +107,4 @@ urllib3==1.26.4
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip
+# setuptools
