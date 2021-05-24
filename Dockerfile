@@ -19,4 +19,4 @@ RUN apt-get -y install nodejs
 RUN cd /usr/src/app/data_registry/vue && npm install
 RUN cd /usr/src/app/data_registry/vue && npm run build
 
-ENTRYPOINT [ "./gunicorn_runner.sh" ]
+ENTRYPOINT [ "" ]
