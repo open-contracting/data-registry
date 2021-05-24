@@ -6,6 +6,7 @@ from django.views import static
 
 urlpatterns = [
     path('', include('data_registry.urls'), name='data_registry'),
+    path('', include('exporter.urls'), name='exporter'),
     path('admin/', admin.site.urls),
     url(r'^markdownx/', include('markdownx.urls')),
 ]

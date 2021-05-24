@@ -19,6 +19,14 @@ DATABASES = {
         'PASSWORD': 'mnabisadnf7g9y24589thkadv',
         'HOST': '127.0.0.1',
         'PORT': '5432',
+    },
+    'kf_process': {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "kingfisher",
+        "USER": "kingfisher",
+        "PASSWORD": "kingfisher",
+        "HOST": "127.0.0.1",
+        "PORT": "5432",
     }
 }
 
@@ -28,6 +36,16 @@ SCRAPY_PROJECT = "kingfisher"
 PROCESS_HOST = "http://localhost:8000/"
 
 PELICAN_HOST = "http://localhost:8001/"
+
+EXPORTER_HOST = "https://data-registry.datlab.eu/"
+
+RABBIT = {
+    "host": "localhost",
+    "port": "5672",
+    "username": "datlab",
+    "password": "datlab",
+    "exchange_name": "data-registry_production",
+}
 
 LOGGING = {
     'version': 1,
@@ -62,5 +80,9 @@ LOGGING = {
             'handlers': ['console'],
             'level': 'DEBUG',
         },
+        'exporter': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        }
     }
 }

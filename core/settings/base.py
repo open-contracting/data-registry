@@ -17,7 +17,10 @@ DEBUG = False
 
 ALLOWED_HOSTS = []
 
-JOB_TASKS_PLAN = ["scrape", "process", "pelican"]
+JOB_TASKS_PLAN = ["scrape", "process", "pelican", "exporter"]
+
+EXPORTER_DIR = "exporter_dumps"
+EXPORTER_PAGE_SIZE = 100
 
 # Application definition
 
@@ -32,6 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'data_registry',
     'markdownx',
+    'exporter'
 ]
 
 MIDDLEWARE = [
