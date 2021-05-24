@@ -37,13 +37,13 @@ PROCESS_HOST = "http://localhost:8000/"
 
 PELICAN_HOST = "http://localhost:8001/"
 
-EXPORTER_HOST = "https://data-registry.datlab.eu/"
+EXPORTER_HOST = "http://localhost:8002/"
 
 RABBIT = {
     "host": "localhost",
     "port": "5672",
-    "username": "datlab",
-    "password": "datlab",
+    "username": "rabbit",
+    "password": "rabbit",
     "exchange_name": "data-registry_production",
 }
 
@@ -81,6 +81,10 @@ LOGGING = {
             'level': 'DEBUG',
         },
         'exporter': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+        'cbom': {
             'handlers': ['console'],
             'level': 'DEBUG',
         }
