@@ -499,10 +499,14 @@ html, body {
                     margin-right: 10px;
                 }
             }
-            div {
+
+            & > div {
                 margin-left: 28px;
                 color: $light;
-                margin-bottom: 20px;
+
+                &:last-of-type {
+                    margin-bottom: 20px;
+                }
             }
         }
     }

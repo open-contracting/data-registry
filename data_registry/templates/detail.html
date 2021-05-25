@@ -105,14 +105,20 @@
                     <div class="col-4 item">
                         <h6><check-icon :checked="data.tenders_count" class="mr-2"></check-icon>{% translate "Tenders" %}</h6>
                         <div>{% translate "Count of tenders:" %} [[ data.tenders_count ]]</div>
+                        <div>{% translate "Count of tenderers:" %} [[ data.tenderers_count ]]</div>
+                        <div>{% translate "Count of tender items:" %} [[ data.tenders_items_count ]]</div>
                     </div>
                     <div class="col-4 item">
                         <h6><check-icon :checked="data.awards_count" class="mr-2"></check-icon>{% translate "Awards" %}</h6>
                         <div>{% translate "Count of awards:" %} [[ data.awards_count ]]</div>
+                        <div>{% translate "Count of award items:" %} [[ data.awards_items_count ]]</div>
+                        <div>{% translate "Count of award suppliers:" %} [[ data.awards_suppliers_count ]]</div>
                     </div>
                     <div class="col-4 item">
                         <h6><check-icon :checked="data.contracts_count" class="mr-2"></check-icon>{% translate "Contracts" %}</h6>
                         <div>{% translate "Count of contracts:" %} [[ data.contracts_count ]]</div>
+                        <div>{% translate "Count of contract items:" %} [[ data.contracts_items_count ]]</div>
+                        <div>{% translate "Count of contract transactions:" %} [[ data.contracts_transactions_count ]]</div>
                     </div>
                     <div class="col-4 item">
                         <h6><check-icon :checked="data.documents_count" class="mr-2"></check-icon>{% translate "Documents" %}</h6>

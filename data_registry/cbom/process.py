@@ -7,6 +7,7 @@ from django.utils import timezone
 
 from data_registry.cbom.task.exceptions import RecoverableException
 from data_registry.cbom.task.factory import TaskFactory
+from data_registry.cbom.utils import request
 from data_registry.models import Job, Task
 
 logger = logging.getLogger('cbom')
@@ -93,11 +94,40 @@ def process(collection):
 
             # complete the job if all of its tasks are completed
             if job_complete:
-                job.status = Job.Status.COMPLETED
-                job.end = timezone.now()
-                job.save()
+                # completed job postprocessing
+                try:
+                    # get dataset availability
+                    pelican_id = job.context.get("pelican_id")
+                    resp = request(
+                        "GET",
+                        f"{settings.PELICAN_HOST}api/dataset_availability/{pelican_id}"
+                    )
 
-                logger.debug(f"Job {job} completed")
+                    counts = resp.json().get("data")
+
+                    job.collection.tenders_count = counts.get("tenders")
+                    job.collection.tenderers_count = counts.get("tenderers")
+                    job.collection.tenders_items_count = counts.get("tenders_items")
+                    job.collection.parties_count = counts.get("parties")
+                    job.collection.awards_count = counts.get("awards")
+                    job.collection.awards_items_count = counts.get("awards_items")
+                    job.collection.awards_suppliers_count = counts.get("awards_suppliers")
+                    job.collection.contracts_count = counts.get("contracts")
+                    job.collection.contracts_items_count = counts.get("contracts_items")
+                    job.collection.contracts_transactions_count = counts.get("contracts_transactions")
+                    job.collection.documents_count = counts.get("documents")
+                    job.collection.plannings_count = counts.get("planning")
+                    job.collection.milestones_count = counts.get("milestones")
+                    job.collection.amendments_count = counts.get("amendments")
+                    job.collection.save()
+                except Exception:
+                    logger.exception("Unable get dataset availability from pelican")
+                else:
+                    job.status = Job.Status.COMPLETED
+                    job.end = timezone.now()
+                    job.save()
+
+                    logger.debug(f"Job {job} completed")
 
 
 def should_be_planned(collection):

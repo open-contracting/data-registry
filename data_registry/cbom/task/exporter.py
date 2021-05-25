@@ -1,7 +1,7 @@
 from django.conf import settings
 
 from data_registry.cbom.task.task import BaseTask
-from data_registry.cbom.task.utils import request
+from data_registry.cbom.utils import request
 from data_registry.models import Task
 
 
