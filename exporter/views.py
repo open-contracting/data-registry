@@ -14,8 +14,7 @@ def exporter_start(request):
 
     input_message = json.loads(request.body.decode("utf8"))
     collection_id = input_message.get("collection_id")
-
-    publish(json.dumps(request.body), routing_key)
+    publish(json.dumps(request.body.decode("utf-8")), routing_key)
 
     return JsonResponse(
         {"status": "ok", "data": {"message": f"Export of collection {collection_id} started"}}, safe=False
