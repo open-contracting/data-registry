@@ -2,6 +2,8 @@ import logging
 
 from django.conf import settings
 from django.db import transaction
+from django.db.models.expressions import Case, When
+from django.db.models.fields import BooleanField
 from django.db.models.query_utils import Q
 from django.utils import timezone
 
@@ -126,6 +128,15 @@ def process(collection):
                     job.status = Job.Status.COMPLETED
                     job.end = timezone.now()
                     job.save()
+
+                    # set active job
+                    Job.objects\
+                        .filter(collection=job.collection)\
+                        .update(active=Case(
+                            When(id=job.id, then=True),
+                            default=False,
+                            output_field=BooleanField()
+                        ))
 
                     logger.debug(f"Job {job} completed")
 
