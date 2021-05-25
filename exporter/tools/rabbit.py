@@ -17,7 +17,7 @@ def publish(message, routing_key):
 
     channel.basic_publish(
         exchange=exchange,
-        routing_key=exchange + routing_key,
+        routing_key=routing_key,
         body=message,
         properties=pika.BasicProperties(delivery_mode=2),
     )
