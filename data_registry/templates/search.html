@@ -46,28 +46,13 @@
 
                 <h6>{% translate "Data date range" %}</h6>
 
-                <b-dropdown
+                <dropdown
+                    :options="dateFilterOptions"
+                    v-model="dateFilter"
                     class="date"
-                    toggle-tag="div"
-                    no-caret
+                    preselect-first
                 >
-                    <b-dropdown-item
-                        v-for="(o, i) in dateFilterOptions"
-                        :key="`date-options-${i}`"
-                        :active="o == dateFilter"
-                        @click="dateFilter = o"
-                    >
-                        [[ o.label ]]
-                    </b-dropdown-item>
-
-                    <template #button-content>
-                        <div class="row justify-content-between no-gutters">
-                            <div class="col">[[ dateFilter.label ]]</div>
-
-                            <chevron-btn class="col-auto icon" down></chevron-btn>
-                        </div>
-                    </template>
-                </b-dropdown>
+                </dropdown>
 
                 <template v-if="filter.date == 'custom'">
                     <b-form-datepicker
@@ -197,6 +182,8 @@
     {% chevron_btn_vue_template %}
 
     {% check_icon_vue_template %}
+
+    {% dropdown_vue_template %}
 
     {{ collections|json_script:"collections-data" }}
 

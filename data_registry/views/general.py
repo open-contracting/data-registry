@@ -1,7 +1,10 @@
+import json
+
 import requests
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.postgres.aggregates import ArrayAgg
+from django.core.mail import send_mail
 from django.db.models.expressions import Exists, OuterRef
 from django.db.models.query_utils import Q
 from django.http.response import JsonResponse
@@ -68,3 +71,19 @@ def spiders(request):
         raise JsonResponse(json, status=503, safe=False)
 
     return JsonResponse(json.get("spiders"), safe=False)
+
+
+def send_feedback(request):
+    body = json.loads(request.body.decode("utf8"))
+    feedback_type = body.get("type")
+    feedback_text = body.get("text")
+
+    send_mail(
+        f'Data registry feedback - {feedback_type}',
+        feedback_text,
+        'feedback@data-registry',
+        [settings.FEEDBACK_EMAIL],
+        fail_silently=False,
+    )
+
+    return JsonResponse(True, safe=False)

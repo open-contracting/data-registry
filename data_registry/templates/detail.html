@@ -204,9 +204,57 @@
             <div class="col-12">
                 <div class="info_card round helpdesk">
                     <div><b-icon icon="question-circle" scale="1.5" class="mr-3"></b-icon> {% translate "Have questions, feedback on this dataset or content on this page?" %}</div>
-                    <a href="#">
+
+                    <button v-b-modal.feedback-form>
                         <chevron-btn right class="mr-3"></chevron-btn> {% translate "Contact OCP helpdesk" %}
-                    </a>
+                    </button>
+
+                    <b-modal id="feedback-form" size="xl" title-class="title">
+                        <p class="light">
+                            {% blocktrans %}
+                            Our mission is to continually improve the quality of procurement data. We welcome feedback from the users of data and the open data community.
+                            {% endblocktrans %}
+                        </p>
+
+                        <p class="light">
+                            {% blocktrans %}
+                            To provide specific feedback on the data source, please complete the form below.
+                            {% endblocktrans %}
+                        </p>
+
+                        <h3 class="subtitle">{% translate "Type of feedback" %}</h3>
+                        <dropdown
+                            v-model="feedbackType"
+                            :options="feedbackTypeOptions"
+                            preselect-first
+                        >
+                        </dropdown>
+
+                        <h3 class="subtitle">{% translate "Please provide your feedback in more detail below" %}</h3>
+                        <textarea v-model="feedback" rows="10">
+
+                        </textarea>
+
+                        <template #modal-footer>
+                            <div>
+                                {% blocktrans %}
+                                <span class="light">You can also email us at</span>
+                                <span>caumnau@open-contracting.org</span><span class="light">. We try to read and respond to all your requests.</span>
+                                {% endblocktrans %}
+                            </div>
+                            <div>
+                                <button class="btn" @click="submitFeedback" :disabled="!feedback || !feedbackType">
+                                    <chevron-btn right class="mr-3"></chevron-btn> {% translate "Submit feedback" %}
+                                </button>
+                            </div>
+                        </template>
+
+                        <template #modal-title>
+                            {% blocktrans %}
+                            Send feedback for "UK Contracts Finder"
+                            {% endblocktrans %}
+                        </template>
+                    </b-modal>
                 </div>
             </div>
         </div>
@@ -216,9 +264,19 @@
 
     {% check_icon_vue_template %}
 
+    {% dropdown_vue_template %}
+
     {{ data|json_script:"detail-data" }}
 
     <script type="text/javascript">
         const DATA = JSON.parse(document.getElementById('detail-data').textContent)
+
+        const FEEDBACK_TYPE_OPTIONS = [
+            '{% trans "Broken link" %}',
+            '{% trans "Incorrect metadata" %}',
+            '{% trans "New data quality issue found" %}',
+            '{% trans "Advice for users of this data source" %}',
+            '{% trans "Other" %}',
+        ]
     </script>
 {% endblock %}

@@ -2,6 +2,7 @@
 @import "breakpoints";
 @import '~bootstrap';
 @import '~bootstrap-vue';
+@import "~bootstrap/scss/mixins";
 @import "utils";
 
 *[v-cloak] {
@@ -326,50 +327,6 @@ html, body {
             }
         }
 
-        .date {
-            width: 100%;
-
-            .dropdown-toggle {
-                background-color: transparent;
-                border: 1px solid $light;
-                border-top-left-radius: 3px;
-                border-bottom-left-radius: 3px;
-                border-top-right-radius: 24px;
-                border-bottom-right-radius: 24px;
-                padding: 5px 5px 5px 10px;
-                color: $body-color;
-                text-align: left;
-
-                .icon {
-                    font-size: 24px;
-
-                    .circle {
-                        color: $light;
-                    }
-
-                    .chevron {
-                        color: $dark;
-                    }
-                }
-
-                &:hover, &[aria-expanded="true"] {
-                    .icon {
-                        .circle {
-                            color: $dark;
-                        }
-
-                        .chevron {
-                            color: $light;
-                        }
-                    }
-                }
-
-                &:focus {
-                    box-shadow: none;
-                }
-            }
-        }
-
         .b-form-datepicker {
             margin-top: 15px;
             background-color: transparent;
@@ -391,6 +348,50 @@ html, body {
                 color: $body-color !important;
                 order: 1;
             }
+        }
+    }
+}
+
+.dropdown {
+    width: 100%;
+
+    .dropdown-toggle {
+        background-color: transparent;
+        border: 1px solid $light;
+        border-top-left-radius: 3px;
+        border-bottom-left-radius: 3px;
+        border-top-right-radius: 24px;
+        border-bottom-right-radius: 24px;
+        padding: 5px 5px 5px 10px;
+        color: $body-color;
+        text-align: left;
+
+        .icon {
+            font-size: 24px;
+
+            .circle {
+                color: $light;
+            }
+
+            .chevron {
+                color: $dark;
+            }
+        }
+
+        &:hover, &[aria-expanded="true"] {
+            .icon {
+                .circle {
+                    color: $dark;
+                }
+
+                .chevron {
+                    color: $light;
+                }
+            }
+        }
+
+        &:focus {
+            box-shadow: none;
         }
     }
 }
@@ -589,10 +590,16 @@ html, body {
         margin-bottom: 40px;
         font-size: 18px;
 
-        a {
+        button {
             color: white;
             display: flex;
             align-items: center;
+            border: none;
+            background: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
 
             .circle {
                 color: white;
@@ -642,5 +649,110 @@ html, body {
         font-size: 14px;
         margin-top: 20px;
         margin-bottom: 0;
+    }
+}
+
+.modal-dialog {
+    .modal-header {
+        border: none;
+        align-items: center;
+        padding: 0;
+        margin-bottom: 16px;
+
+        .title {
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        button.close {
+            width: 32px;
+            min-width: 32px;
+            height: 32px;
+            border-radius: 32px;
+            color: white;
+            padding: 1px;
+            background-color: #c4c4c4;
+            margin: 0;
+            font-weight: 400;
+            line-height: 32px;
+        }
+    }
+
+    .modal-footer {
+        border: none;
+        padding: 0;
+        margin-top: 48px;
+    }
+
+    .modal-body {
+        padding: 0;
+    }
+
+    .modal-content {
+        padding: 48px;
+        border-radius: 20px;
+        box-shadow: 0 2px 30px -4px rgba(0, 0, 0, 0.5);
+        border: none;
+    }
+
+    .subtitle {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 16px;
+    }
+
+    .subtitle:not(:first-child) {
+        margin-top: 32px;
+    }
+
+    .light {
+        opacity: 0.6;
+        color: $body-color;
+    }
+
+    p {
+        margin-bottom: 0;
+    }
+}
+
+#feedback-form {
+    .dropdown {
+        width: 100%;
+        @include media-breakpoint-up(md) {
+            width: 50%;
+        }
+    }
+
+    textarea {
+        border-radius: 4px;
+        border: solid 1px $light;
+        width: 100%;
+    }
+
+    .modal-footer {
+        justify-content: space-between;
+
+        button {
+            color: white;
+            display: flex;
+            align-items: center;
+            border: none;
+            border-radius: 4px;
+            padding: 16px 32px;
+            font-size: 18px;
+            font-weight: 500;
+            background-color: $info;
+
+            &:not([disabled]) {
+                @include colorize-clickable($info);
+            }
+
+            .circle {
+                color: white;
+            }
+            .chevron {
+                color: $info;
+            }
+        }
     }
 }

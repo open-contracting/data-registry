@@ -22,3 +22,8 @@ def chevron_btn_vue_template():
 @register.inclusion_tag('vue/check_icon.html')
 def check_icon_vue_template():
     return {}
+
+
+@register.inclusion_tag('vue/dropdown.html')
+def dropdown_vue_template():
+    return {}

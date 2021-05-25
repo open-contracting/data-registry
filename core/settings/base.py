@@ -22,6 +22,9 @@ JOB_TASKS_PLAN = ["scrape", "process", "pelican", "exporter"]
 EXPORTER_DIR = "exporter_dumps"
 EXPORTER_PAGE_SIZE = 100
 
+FEEDBACK_EMAIL = "caumnau@open-contracting.org"
+EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+
 # Application definition
 
 INSTALLED_APPS = [

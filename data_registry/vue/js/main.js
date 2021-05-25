@@ -4,6 +4,7 @@ require('es6-promise').polyfill();
 
 import Vue from "vue/dist/vue.js";
 import VueMoment from 'vue-moment';
+import axios from 'axios';
 
 import {BootstrapVue, IconsPlugin} from 'bootstrap-vue'
 
@@ -11,6 +12,11 @@ Vue.use(VueMoment)
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 
+const api = axios.create({
+    baseURL: "/",
+    xsrfCookieName: "csrftoken",
+    xsrfHeaderName: "X-CSRFToken"
+})
 
 if (document.getElementById("chevron-btn-template")) {
     Vue.component("chevron-btn", {
@@ -43,6 +49,43 @@ if (document.getElementById("check-icon-template")) {
         template: '#check-icon-template',
         props: {
             checked: {type: [Boolean, Number, String], default: true}
+        }
+    })
+}
+
+if (document.getElementById("dropdown-template")) {
+    Vue.component("dropdown", {
+        delimiters: ['[[', ']]'],
+        template: '#dropdown-template',
+        model: {
+            prop: 'selected',
+            event: 'option-selected'
+        },
+        props: {
+            options: {type: Array, default: () => []},
+            selected: {default: null},
+            preselectFirst: {type: Boolean, default: false}
+        },
+        created: function() {
+            // preselect first option if needed
+            if (this.selected === null && this.preselectFirst) {
+                this.selectOption(this.options[0])
+            }
+        },
+        methods: {
+            getOptionLabel: function (option) {
+                if (option === null || option === undefined) {
+                    return ''
+                }
+
+                return Object.prototype.hasOwnProperty.call(option, 'label') ? option.label : option
+            },
+            selectOption: function(option) {
+                this.$emit('option-selected', option)
+            },
+            isOptionSelected: function(option) {
+                return option == this.selected
+            }
         }
     })
 }
@@ -170,7 +213,6 @@ if (document.getElementById("search_app")) {
             }
         },
         created: function() {
-            this.dateFilter = this.dateFilterOptions[0]
             localStorage.setItem("detail-date-range", this.detailDateRange)
         },
         methods: {
@@ -192,7 +234,9 @@ if (document.getElementById("detail_app")) {
         el: "#detail_app",
         data: function() {
             return {
-                descriptionExpanded: false
+                descriptionExpanded: false,
+                feedbackType: null,
+                feedback: null
             }
         },
         computed: {
@@ -201,6 +245,17 @@ if (document.getElementById("detail_app")) {
             },
             dateRange: function() {
                 return localStorage.getItem("detail-date-range")
+            },
+            feedbackTypeOptions: () => FEEDBACK_TYPE_OPTIONS
+        },
+        methods: {
+            submitFeedback: function() {
+                api.post("send_feedback/", {
+                    type: this.feedbackType,
+                    text: this.feedback
+                })
+                .then(() => console.log("Feedback sent"))
+                .catch(e => console.log(e))
             }
         }
     })
