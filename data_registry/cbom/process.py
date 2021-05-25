@@ -116,7 +116,7 @@ def process(collection):
                     job.collection.contracts_items_count = counts.get("contracts_items")
                     job.collection.contracts_transactions_count = counts.get("contracts_transactions")
                     job.collection.documents_count = counts.get("documents")
-                    job.collection.plannings_count = counts.get("planning")
+                    job.collection.plannings_count = counts.get("plannings")
                     job.collection.milestones_count = counts.get("milestones")
                     job.collection.amendments_count = counts.get("amendments")
                     job.collection.save()
