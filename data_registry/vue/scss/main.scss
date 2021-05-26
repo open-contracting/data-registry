@@ -355,6 +355,10 @@ html, body {
 .dropdown {
     width: 100%;
 
+    .placeholder {
+        color: $light;
+    }
+
     .dropdown-toggle {
         background-color: transparent;
         border: 1px solid $light;
@@ -752,6 +756,49 @@ html, body {
             }
             .chevron {
                 color: $info;
+            }
+        }
+    }
+}
+
+#json-export-form {
+    .dropdown {
+        width: 200px;
+    }
+
+    .custom-radio {
+        align-items: center;
+
+        label {
+            font-size: 18px;
+        }
+    }
+
+    .indention {
+        margin-left: 1.5rem;
+    }
+
+    .modal-footer {
+        button {
+            color: $body-color;
+            display: flex;
+            align-items: center;
+            border: none;
+            border-radius: 4px;
+            padding: 16px 32px;
+            font-size: 18px;
+            font-weight: 500;
+            background-color: $primary;
+
+            &:not([disabled]) {
+                @include colorize-clickable($primary);
+            }
+
+            .circle {
+                color: $body-color;
+            }
+            .chevron {
+                color: $primary;
             }
         }
     }

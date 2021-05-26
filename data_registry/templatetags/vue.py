@@ -27,3 +27,8 @@ def check_icon_vue_template():
 @register.inclusion_tag('vue/dropdown.html')
 def dropdown_vue_template():
     return {}
+
+
+@register.inclusion_tag('vue/modal.html')
+def modal_vue_template():
+    return {}

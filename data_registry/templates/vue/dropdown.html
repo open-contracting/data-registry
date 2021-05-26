@@ -16,7 +16,14 @@
 
     <template #button-content>
         <div class="row justify-content-between no-gutters">
-            <div class="col">[[ getOptionLabel(selected) ]]</div>
+            <div class="col">
+                <span
+                    v-if="selected === null && placeholder"
+                    class="placeholder"
+                >
+                    [[ placeholder ]]</span>
+                <template v-if="selected">[[ getOptionLabel(selected) ]]</template>
+            </div>
 
             <chevron-btn class="col-auto icon" down></chevron-btn>
         </div>

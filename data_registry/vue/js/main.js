@@ -53,6 +53,13 @@ if (document.getElementById("check-icon-template")) {
     })
 }
 
+if (document.getElementById("modal-template")) {
+    Vue.component("modal", {
+        delimiters: ['[[', ']]'],
+        template: '#modal-template'
+    })
+}
+
 if (document.getElementById("dropdown-template")) {
     Vue.component("dropdown", {
         delimiters: ['[[', ']]'],
@@ -64,7 +71,8 @@ if (document.getElementById("dropdown-template")) {
         props: {
             options: {type: Array, default: () => []},
             selected: {default: null},
-            preselectFirst: {type: Boolean, default: false}
+            preselectFirst: {type: Boolean, default: false},
+            placeholder: {type: String, default: null}
         },
         created: function() {
             // preselect first option if needed
@@ -236,7 +244,9 @@ if (document.getElementById("detail_app")) {
             return {
                 descriptionExpanded: false,
                 feedbackType: null,
-                feedback: null
+                feedback: null,
+                jsonYear: null,
+                jsonType: "full"
             }
         },
         computed: {
@@ -246,7 +256,8 @@ if (document.getElementById("detail_app")) {
             dateRange: function() {
                 return localStorage.getItem("detail-date-range")
             },
-            feedbackTypeOptions: () => FEEDBACK_TYPE_OPTIONS
+            feedbackTypeOptions: () => FEEDBACK_TYPE_OPTIONS,
+            jsonYearOptions: () => JSON_YEAR_OPTIONS
         },
         methods: {
             submitFeedback: function() {
@@ -256,6 +267,9 @@ if (document.getElementById("detail_app")) {
                 })
                 .then(() => console.log("Feedback sent"))
                 .catch(e => console.log(e))
+            },
+            submitJsonDownload: function() {
+
             }
         }
     })

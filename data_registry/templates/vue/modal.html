@@ -1,7 +1,18 @@
 {% load vue %}
 
-{% template_script "chevron-btn-template" %
-<b-modal id="modal-1" title="BootstrapVue">
-    <p class="my-4">Hello from modal!</p>
+{% template_script "modal-template" %}
+<b-modal
+    size="xl"
+    title-class="title"
+    v-bind="$attrs"
+    no-stacking
+>
+    <template v-for="(index, name) in $slots" v-slot:[name]>
+        <slot :name="name"></slot>
+    </template>
+
+    <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
+        <slot :name="name" v-bind="data"></slot>
+    </template>
 </b-modal>
 {% template_script_end %}

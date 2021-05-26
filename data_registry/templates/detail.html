@@ -180,9 +180,64 @@
                                 This is JSON bulk.
                                 {% endblocktrans %}
                             </p>
-                            <button class="btn btn-md">
+
+                            <button class="btn btn-md" v-b-modal.json-export-form>
                                 <chevron-btn right></chevron-btn> {% translate "Access JSON data" %}
                             </button>
+
+                            <modal id="json-export-form" title="{% translate 'Access JSON data' %}">
+                                <p class="light">
+                                    {% blocktrans %}
+                                    Please, choose how you would like to access the JSON data. You can either download the full history as one dataset
+                                    or choose particular year that you are interested in.
+                                    {% endblocktrans %}
+                                </p>
+
+                                <div class="subtitle">
+                                    <b-radio value="full" v-model="jsonType" id="json-full" size="lg" inline>
+                                        {% translate "Full history dataset" %}
+                                    </b-radio>
+                                </div>
+                                <p class="light indention">
+                                    {% blocktrans %}
+                                    Dataset containing the full history of available data for given source. Depending on the source, the file may be
+                                    extremely large and might take some time process.
+                                    {% endblocktrans %}
+                                </p>
+
+                                <div class="subtitle">
+                                    <b-radio value="annual" v-model="jsonType" id="json-annual" size="lg" inline>
+                                        {% translate "Particular year dataset" %}
+                                    </b-radio>
+                                </div>
+                                <p class="light indention">
+                                    {% blocktrans %}
+                                    Dataset containing the full history of available data for given source. Depending on the source, the file may be
+                                    extremely large and might take some time process.
+                                    {% endblocktrans %}
+                                </p>
+
+                                <dropdown
+                                    v-model="jsonYear"
+                                    :options="jsonYearOptions"
+                                    preselect-first
+                                    class="indention"
+                                    placeholder="{% translate 'Choose year' %}"
+                                >
+                                </dropdown>
+
+                                <template #modal-footer>
+                                    <div>
+                                        <button
+                                            class="btn"
+                                            @click="submitJsonDownload"
+                                            :disabled="jsonType === 'annual' && !jsonYear"
+                                        >
+                                            <chevron-btn right class="mr-3"></chevron-btn> {% translate "Download data" %}
+                                        </button>
+                                    </div>
+                                </template>
+                            </modal>
                         </div>
                         <div class="col">
                             <h3><check-icon :checked="data.excel_format" class="mr-2"></check-icon>{% translate "Excel data via OCP Flatten tool" %}</h3>
@@ -209,7 +264,7 @@
                         <chevron-btn right class="mr-3"></chevron-btn> {% translate "Contact OCP helpdesk" %}
                     </button>
 
-                    <b-modal id="feedback-form" size="xl" title-class="title">
+                    <modal id="feedback-form">
                         <p class="light">
                             {% blocktrans %}
                             Our mission is to continually improve the quality of procurement data. We welcome feedback from the users of data and the open data community.
@@ -254,7 +309,7 @@
                             Send feedback for "UK Contracts Finder"
                             {% endblocktrans %}
                         </template>
-                    </b-modal>
+                    </modal>
                 </div>
             </div>
         </div>
@@ -265,6 +320,8 @@
     {% check_icon_vue_template %}
 
     {% dropdown_vue_template %}
+
+    {% modal_vue_template %}
 
     {{ data|json_script:"detail-data" }}
 
@@ -278,5 +335,7 @@
             '{% trans "Advice for users of this data source" %}',
             '{% trans "Other" %}',
         ]
+
+        const JSON_YEAR_OPTIONS = []
     </script>
 {% endblock %}
