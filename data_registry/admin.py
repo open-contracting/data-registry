@@ -102,7 +102,7 @@ class JobAdmin(ModelAdmin):
 class TaskAdmin(ModelAdmin):
     list_display = ["__str__", "type", "job", "status", "result"]
 
-    list_editable = ["status", "type", "job"]
+    list_editable = ["status"]
 
 
 admin.site.register(Collection, CollectionAdmin)
