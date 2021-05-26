@@ -1,13 +1,8 @@
-import requests
-from django import forms
-from django.conf import settings
 from django.db.models import JSONField, Model, TextChoices, TextField
 from django.db.models.deletion import CASCADE
-from django.db.models.expressions import Case, When
 from django.db.models.fields import BooleanField, CharField, DateField, DateTimeField, IntegerField
 from django.db.models.fields.related import ForeignKey
 from markdownx.models import MarkdownxField
-from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, TranslationTabularInline
 
 
 class Collection(Model):
@@ -143,69 +138,3 @@ class Task(Model):
 
     def __str__(self):
         return f"#{self.id}({self.type})"
-
-
-class IssueInLine(TranslationTabularInline):
-    model = Issue
-    extra = 0
-
-
-class CollectionAdminForm(forms.ModelForm):
-    source_id = forms.ChoiceField(choices=[])
-    active_job = forms.ModelChoiceField(queryset=None, required=False)
-
-    def __init__(self, *args, **kwargs):
-        super(CollectionAdminForm, self).__init__(*args, **kwargs)
-
-        resp = requests.get(
-            settings.SCRAPY_HOST + "listspiders.json",
-            params={
-                "project": settings.SCRAPY_PROJECT
-            }
-        )
-
-        json = resp.json()
-
-        if json.get("status") == "ok":
-            self.fields['source_id'].choices += tuple([(n, n) for n in json.get("spiders")])
-
-        self.fields["active_job"].queryset = Job.objects.filter(collection=kwargs.get("instance"),
-                                                                status=Job.Status.COMPLETED)
-        self.fields["active_job"].initial = Job.objects.filter(collection=kwargs.get("instance"), active=True).first()
-
-    def save(self, *args, **kwargs):
-        jobs = Job.objects.filter(collection=self.instance)
-
-        active_job = self.cleaned_data["active_job"]
-        if active_job:
-            jobs.update(active=Case(
-                When(id=active_job.id, then=True),
-                default=False,
-                output_field=BooleanField()
-            ))
-        else:
-            jobs.update(active=False)
-
-        return super(CollectionAdminForm, self).save(*args, **kwargs)
-
-
-class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
-    form = CollectionAdminForm
-    list_display = ["__str__", "country", "public", "frozen", "active_job"]
-
-    list_editable = ["public", "frozen"]
-
-    inlines = [
-        IssueInLine
-    ]
-
-    def active_job(self, obj):
-        return Job.objects.filter(collection=obj, active=True).first()
-
-
-class LicenseAdmin(TabbedDjangoJqueryTranslationAdmin):
-    pass
-
-
-class IssueAdmin(TabbedDjangoJqueryTranslationAdmin):
-    pass
