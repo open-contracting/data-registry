@@ -13,7 +13,7 @@ from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, Translati
 class Collection(Model):
     title = TextField()
     ocds_label = CharField(max_length=2048, blank=True, null=True)
-    country = CharField(max_length=2048, blank=True, null=True)
+    country = CharField(max_length=2048)
     language = CharField(max_length=2048, blank=True, null=True)
     description = TextField(blank=True, null=True)
     description_long = MarkdownxField(blank=True, null=True)
