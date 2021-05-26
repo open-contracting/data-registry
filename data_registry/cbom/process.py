@@ -98,32 +98,9 @@ def process(collection):
             if job_complete:
                 # completed job postprocessing
                 try:
-                    # get dataset availability
-                    pelican_id = job.context.get("pelican_id")
-                    resp = request(
-                        "GET",
-                        f"{settings.PELICAN_HOST}api/dataset_availability/{pelican_id}"
-                    )
-
-                    counts = resp.json().get("data")
-
-                    job.collection.tenders_count = counts.get("tenders")
-                    job.collection.tenderers_count = counts.get("tenderers")
-                    job.collection.tenders_items_count = counts.get("tenders_items")
-                    job.collection.parties_count = counts.get("parties")
-                    job.collection.awards_count = counts.get("awards")
-                    job.collection.awards_items_count = counts.get("awards_items")
-                    job.collection.awards_suppliers_count = counts.get("awards_suppliers")
-                    job.collection.contracts_count = counts.get("contracts")
-                    job.collection.contracts_items_count = counts.get("contracts_items")
-                    job.collection.contracts_transactions_count = counts.get("contracts_transactions")
-                    job.collection.documents_count = counts.get("documents")
-                    job.collection.plannings_count = counts.get("plannings")
-                    job.collection.milestones_count = counts.get("milestones")
-                    job.collection.amendments_count = counts.get("amendments")
-                    job.collection.save()
-                except Exception:
-                    logger.exception("Unable get dataset availability from pelican")
+                    update_collection_availability(job)
+                except Exception as e:
+                    logger.exception(e)
                 else:
                     job.status = Job.Status.COMPLETED
                     job.end = timezone.now()
@@ -168,3 +145,33 @@ def plan(collection):
         job.task.create(status=Task.Status.PLANNED, type=t, order=i)
 
     logger.debug(f"New job {job} planned")
+
+
+def update_collection_availability(job):
+    try:
+        pelican_id = job.context.get("pelican_id")
+        resp = request(
+            "GET",
+            f"{settings.PELICAN_HOST}api/dataset_availability/{pelican_id}"
+        )
+    except Exception as e:
+        raise Exception("Unable get dataset availability from pelican") from e
+
+    counts = resp.json().get("data")
+
+    c = job.collection
+    c.tenders_count = counts.get("tenders")
+    c.tenderers_count = counts.get("tenderers")
+    c.tenders_items_count = counts.get("tenders_items")
+    c.parties_count = counts.get("parties")
+    c.awards_count = counts.get("awards")
+    c.awards_items_count = counts.get("awards_items")
+    c.awards_suppliers_count = counts.get("awards_suppliers")
+    c.contracts_count = counts.get("contracts")
+    c.contracts_items_count = counts.get("contracts_items")
+    c.contracts_transactions_count = counts.get("contracts_transactions")
+    c.documents_count = counts.get("documents")
+    c.plannings_count = counts.get("plannings")
+    c.milestones_count = counts.get("milestones")
+    c.amendments_count = counts.get("amendments")
+    c.save()

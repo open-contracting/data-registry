@@ -22,8 +22,13 @@ class ProcessTests(TransactionTestCase):
     def test(self):
         collection = Collection.objects.get(pk=1)
 
-        with patch('data_registry.cbom.process.TaskFactory') as mock_factory:
+        with patch('data_registry.cbom.process.TaskFactory') as mock_factory,\
+             patch('data_registry.cbom.process.update_collection_availability') as mock_update_collection_availability:
+            # factory returns only TestTask
             mock_factory.get_task.return_value = TestTask()
+            # skip update_collection_availability (does nothing, counts are not set!)
+            mock_update_collection_availability.return_value = None
+
             settings.JOB_TASKS_PLAN = ["test"]
 
             # first call initializes job and runs first task
