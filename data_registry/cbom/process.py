@@ -99,6 +99,8 @@ def process(collection):
                 # completed job postprocessing
                 try:
                     update_collection_availability(job)
+
+                    update_collection_matadata(job)
                 except Exception as e:
                     logger.exception(e)
                 else:
@@ -175,3 +177,25 @@ def update_collection_availability(job):
     c.milestones_count = counts.get("milestones")
     c.amendments_count = counts.get("amendments")
     c.save()
+
+
+def update_collection_matadata(job):
+    try:
+        pelican_id = job.context.get("pelican_id")
+        resp = request(
+            "GET",
+            f"{settings.PELICAN_HOST}api/dataset_metadata/{pelican_id}"
+        )
+    except Exception as e:
+        raise Exception("Unable get dataset matadata from pelican") from e
+
+    meta = resp.json().get("data")
+
+    c = job.collection
+    if meta:
+        c.date_from = meta.get("published_from")
+        c.date_to = meta.get("published_to")
+        c.license = meta.get("data_license")
+        c.ocid_prefix = meta.get("ocid_prefix")
+
+        c.save()
