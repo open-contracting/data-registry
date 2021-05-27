@@ -246,7 +246,8 @@ if (document.getElementById("detail_app")) {
                 feedbackType: null,
                 feedback: null,
                 jsonYear: null,
-                jsonType: "full"
+                jsonType: "full",
+                jsonDownloadBusy: false
             }
         },
         computed: {
@@ -257,7 +258,8 @@ if (document.getElementById("detail_app")) {
                 return localStorage.getItem("detail-date-range")
             },
             feedbackTypeOptions: () => FEEDBACK_TYPE_OPTIONS,
-            jsonYearOptions: () => JSON_YEAR_OPTIONS
+            jsonYearOptions: () => JSON_YEAR_OPTIONS,
+            exporterApiUrl: () => `${EXPORTER_HOST}api/`
         },
         methods: {
             submitFeedback: function() {
@@ -269,7 +271,34 @@ if (document.getElementById("detail_app")) {
                 .catch(e => console.log(e))
             },
             submitJsonDownload: function() {
+                this.jsonDownloadBusy = true
 
+                axios.post(
+                    `${this.exporterApiUrl}download_export`,
+                    {
+                        spider: this.data.source_id,
+                        job_id: this.data.active_job,
+                        year: this.jsonType == "full" ? null : this.jsonYear
+                    },
+                    {
+                        responseType: 'arraybuffer'
+                    }
+                )
+                .then(r => {
+                    var fileURL = window.URL.createObjectURL(new Blob([r.data], { type: 'application/json' }));
+                    var fileLink = document.createElement('a');
+                    var fileNameMatch = /filename="(?<name>[^"]+)"/.exec(r.headers["content-disposition"])
+                    var fileName = fileNameMatch.groups.name
+
+                    fileLink.href = fileURL;
+                    fileLink.setAttribute('download', fileName);
+                    document.body.appendChild(fileLink);
+
+                    fileLink.click();
+                    fileLink.remove()
+                })
+                .catch(e => console.log(e))
+                .finally(() => this.jsonDownloadBusy = false)
             }
         }
     })

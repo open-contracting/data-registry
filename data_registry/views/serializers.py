@@ -30,5 +30,7 @@ class CollectionSerializer(BasicSerializer):
 
         if hasattr(data, "issues") and data.issues:
             result["issues"] = data.issues
+        if hasattr(data, "active_job") and data.active_job:
+            result["active_job"] = data.active_job
 
         return result

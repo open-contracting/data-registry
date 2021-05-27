@@ -220,7 +220,6 @@
                                 <dropdown
                                     v-model="jsonYear"
                                     :options="jsonYearOptions"
-                                    preselect-first
                                     class="indention"
                                     placeholder="{% translate 'Choose year' %}"
                                 >
@@ -231,7 +230,7 @@
                                         <button
                                             class="btn"
                                             @click="submitJsonDownload"
-                                            :disabled="jsonType === 'annual' && !jsonYear"
+                                            :disabled="jsonDownloadBusy || (jsonType === 'annual' && !jsonYear)"
                                         >
                                             <chevron-btn right class="mr-3"></chevron-btn> {% translate "Download data" %}
                                         </button>
@@ -336,6 +335,8 @@
             '{% trans "Other" %}',
         ]
 
-        const JSON_YEAR_OPTIONS = []
+        const JSON_YEAR_OPTIONS = JSON.parse("{{ export_years }}")
+
+        const EXPORTER_HOST = "{{ exporter_host }}"
     </script>
 {% endblock %}
