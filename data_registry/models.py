@@ -49,8 +49,8 @@ class Collection(Model):
 
     additional_data = MarkdownxField(blank=True, null=True)
 
-    json_format = BooleanField(default=False)
-    excel_format = BooleanField(default=False)
+    json_format = BooleanField(default=True)
+    excel_format = BooleanField(default=True)
 
     public = BooleanField(default=True)
     frozen = BooleanField(default=False)

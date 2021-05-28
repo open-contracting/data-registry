@@ -5,6 +5,7 @@ from django.contrib import admin
 from django.contrib.admin.options import ModelAdmin, TabularInline
 from django.db.models.expressions import Case, When
 from django.db.models.fields import BooleanField
+from django.forms.widgets import Textarea, TextInput
 from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, TranslationTabularInline
 
 from data_registry.cbom.process import update_collection_availability, update_collection_matadata
@@ -60,6 +61,15 @@ class CollectionAdminForm(forms.ModelForm):
 
         return super(CollectionAdminForm, self).save(*args, **kwargs)
 
+    class Meta:
+        widgets = {
+            'title': TextInput(attrs={"class": "vTextField"}),
+            'description': Textarea(attrs={'cols': 100, 'rows': 3}),
+            'description_long': Textarea(attrs={'cols': 100, 'rows': 6}),
+            'summary': Textarea(attrs={'cols': 100, 'rows': 6}),
+            'additional_data': Textarea(attrs={'cols': 100, 'rows': 6})
+        }
+
 
 class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
     form = CollectionAdminForm
@@ -71,6 +81,17 @@ class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
         IssueInLine
     ]
 
+    def get_fields(self, request, obj=None):
+        fields = super().get_fields(request, obj)
+        print(fields)
+        fields.remove('source_id')
+        fields.insert(0, 'source_id')
+
+        fields.remove('active_job')
+        fields.insert(1, 'active_job')
+
+        return fields
+
     def active_job(self, obj):
         return Job.objects.filter(collection=obj, active=True).first()
 
@@ -79,8 +100,15 @@ class LicenseAdmin(TabbedDjangoJqueryTranslationAdmin):
     pass
 
 
+class IssueAdminForm(forms.ModelForm):
+    class Meta:
+        widgets = {
+            'description': Textarea(attrs={'cols': 100, 'rows': 3})
+        }
+
+
 class IssueAdmin(TabbedDjangoJqueryTranslationAdmin):
-    pass
+    form = IssueAdminForm
 
 
 class TaskInLine(TabularInline):
