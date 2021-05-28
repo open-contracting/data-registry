@@ -1,5 +1,5 @@
 import logging
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 
 from django.conf import settings
 from django.db import transaction
@@ -207,9 +207,17 @@ def update_collection_matadata(job):
 
     c = job.collection
     if meta:
-        c.date_from = meta.get("published_from")
-        c.date_to = meta.get("published_to")
+        c.date_from = parse_date(meta.get("published_from"))
+        c.date_to = parse_date(meta.get("published_to"))
         c.license = meta.get("data_license")
         c.ocid_prefix = meta.get("ocid_prefix")
 
         c.save()
+
+
+def parse_date(datetime_str):
+    if not datetime_str:
+        return None
+
+    datetime_obj = datetime.strptime(datetime_str, '%Y-%m-%d %H.%M.%S')
+    return datetime_obj.date()
