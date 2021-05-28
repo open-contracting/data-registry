@@ -7,6 +7,8 @@ from django.db.models.expressions import Case, When
 from django.db.models.fields import BooleanField
 from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, TranslationTabularInline
 
+from data_registry.cbom.process import update_collection_availability, update_collection_matadata
+
 from .models import Collection, Issue, Job, License, Task
 
 
@@ -43,11 +45,16 @@ class CollectionAdminForm(forms.ModelForm):
 
         active_job = self.cleaned_data["active_job"]
         if active_job:
-            jobs.update(active=Case(
-                When(id=active_job.id, then=True),
-                default=False,
-                output_field=BooleanField()
-            ))
+            if not active_job.active:
+                jobs.update(active=Case(
+                    When(id=active_job.id, then=True),
+                    default=False,
+                    output_field=BooleanField()
+                ))
+
+                update_collection_availability(active_job)
+
+                update_collection_matadata(active_job)
         else:
             jobs.update(active=False)
 
