@@ -1,4 +1,5 @@
 import logging
+from datetime import date, timedelta
 
 from django.conf import settings
 from django.db import transaction
@@ -127,7 +128,20 @@ def should_be_planned(collection):
 
     jobs = Job.objects.filter(collection=collection).filter(~Q(status=Job.Status.COMPLETED))
     if not jobs:
-        return True
+        # update frequency is not set, plan next job
+        if not collection.update_frequency:
+            return True
+
+        # plan next job depending on update frequency
+        last_job = Job.objects.filter(collection=collection, status=Job.Status.COMPLETED).order_by("-start").first()
+
+        delta = timedelta(days=30)  # MONTHLY
+        if collection.update_frequency == "HALF_YEARLY":
+            delta = timedelta(days=180)
+        elif collection.update_frequency == "ANNUALLY":
+            delta = timedelta(days=365)
+
+        return date.today() >= (last_job.start + delta).date()
     else:
         return False
 
