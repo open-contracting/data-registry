@@ -6,6 +6,7 @@ from django.contrib.admin.options import ModelAdmin, TabularInline
 from django.db.models.expressions import Case, When
 from django.db.models.fields import BooleanField
 from django.forms.widgets import Textarea, TextInput
+from markdownx.widgets import AdminMarkdownxWidget
 from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, TranslationTabularInline
 
 from data_registry.cbom.process import update_collection_availability, update_collection_matadata
@@ -65,9 +66,9 @@ class CollectionAdminForm(forms.ModelForm):
         widgets = {
             'title': TextInput(attrs={"class": "vTextField"}),
             'description': Textarea(attrs={'cols': 100, 'rows': 3}),
-            'description_long': Textarea(attrs={'cols': 100, 'rows': 6}),
-            'summary': Textarea(attrs={'cols': 100, 'rows': 6}),
-            'additional_data': Textarea(attrs={'cols': 100, 'rows': 6})
+            'description_long': AdminMarkdownxWidget(attrs={'cols': 100, 'rows': 6}),
+            'summary': AdminMarkdownxWidget(attrs={'cols': 100, 'rows': 6}),
+            'additional_data': AdminMarkdownxWidget(attrs={'cols': 100, 'rows': 6})
         }
 
 
@@ -81,9 +82,11 @@ class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
         IssueInLine
     ]
 
+    def _get_declared_fieldsets(self, request, obj=None):
+        return [(None, {'fields': self.replace_orig_field(self.get_fields(request, obj))})]
+
     def get_fields(self, request, obj=None):
         fields = super().get_fields(request, obj)
-        print(fields)
         fields.remove('source_id')
         fields.insert(0, 'source_id')
 
@@ -103,7 +106,7 @@ class LicenseAdmin(TabbedDjangoJqueryTranslationAdmin):
 class IssueAdminForm(forms.ModelForm):
     class Meta:
         widgets = {
-            'description': Textarea(attrs={'cols': 100, 'rows': 3})
+            'description': AdminMarkdownxWidget(attrs={'cols': 100, 'rows': 3})
         }
 
 
