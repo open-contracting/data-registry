@@ -23,7 +23,8 @@ class ProcessTests(TransactionTestCase):
         collection = Collection.objects.get(pk=1)
 
         with patch('data_registry.cbom.process.TaskFactory') as mock_factory,\
-             patch('data_registry.cbom.process.update_collection_availability') as mock_update_collection_availability,\
+             patch('data_registry.cbom.process.update_collection_availability')\
+                as mock_update_collection_availability,\
              patch('data_registry.cbom.process.update_collection_metadata') as mock_update_collection_metadata:
             # factory returns only TestTask
             mock_factory.get_task.return_value = TestTask()
