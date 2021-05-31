@@ -23,6 +23,10 @@ class BasicSerializer():
         return result
 
 
+class LicenseSerializer(BasicSerializer):
+    pass
+
+
 class CollectionSerializer(BasicSerializer):
     @staticmethod
     def serialize(data):
@@ -32,5 +36,7 @@ class CollectionSerializer(BasicSerializer):
             result["issues"] = data.issues
         if hasattr(data, "active_job") and data.active_job:
             result["active_job"] = data.active_job
+        if hasattr(data, "license_custom") and data.license_custom:
+            result["license_custom"] = LicenseSerializer.serialize(data.license_custom)
 
         return result

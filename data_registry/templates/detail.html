@@ -81,9 +81,19 @@
                     <span class="label">{% translate "OCID prefix:" %}</span>
                     <span class="value">[[ data.ocds_prefix ]]</span>
                 </div>
-                <div>
+                <div class="license">
                     <span class="label">{% translate "License:" %}</span>
-                    <span class="value">[[ data.license ]]</span>
+                    <span class="value">
+                        <template v-if="data.license_custom">
+                            <a :href="data.license_custom.url" target="_blank">[[ data.license_custom.name ]]</a>
+                            <div class="small">[[ data.license_custom.description ]]</div>
+                        </template>
+                        <template v-else>[[ data.license ]]</template>
+                    </span>
+                </div>
+                <div>
+                    <span class="label">{% translate "Language:" %}</span>
+                    <span class="value">[[ data.language ]]</span>
                 </div>
             </div>
         </div>

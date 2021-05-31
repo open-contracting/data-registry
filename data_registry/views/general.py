@@ -43,6 +43,7 @@ def search(request):
 def detail(request, id):
     data = CollectionSerializer.serialize(
         Collection.objects
+        .select_related("license_custom")
         .annotate(issues=ArrayAgg("issue__description", filter=Q(issue__isnull=False)))
         .annotate(active_job=Max("job__id", filter=Q(job__active=True)))
         .get(id=id)

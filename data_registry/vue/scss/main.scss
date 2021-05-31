@@ -488,10 +488,27 @@ html, body {
     }
 
     .detail-section.overview .data {
+        & > * {
+            display: flex;
+        }
+
         .label {
             display: inline-block;
             color: $light;
             margin-bottom: 10px;
+            padding-right: 1ch;
+        }
+
+        .license a {
+            text-decoration: none;
+
+            &[href] {
+                color: $info;
+                text-decoration: underline;
+                &:hover{
+                    text-decoration: none;
+                }
+            }
         }
     }
 
