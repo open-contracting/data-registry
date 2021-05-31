@@ -3,7 +3,8 @@
         "model": "data_registry.collection",
         "pk": 1,
         "fields": {
-            "title": "portugal"
+            "title": "portugal",
+            "country": "PT"
         }
     }
 ]

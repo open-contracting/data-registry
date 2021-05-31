@@ -9,7 +9,7 @@ from django.forms.widgets import Textarea, TextInput
 from markdownx.widgets import AdminMarkdownxWidget
 from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, TranslationTabularInline
 
-from data_registry.cbom.process import update_collection_availability, update_collection_matadata
+from data_registry.cbom.process import update_collection_availability, update_collection_metadata
 
 from .models import Collection, Issue, Job, License, Task
 
@@ -56,7 +56,7 @@ class CollectionAdminForm(forms.ModelForm):
 
                 update_collection_availability(active_job)
 
-                update_collection_matadata(active_job)
+                update_collection_metadata(active_job)
         else:
             jobs.update(active=False)
 

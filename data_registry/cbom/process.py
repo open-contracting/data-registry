@@ -101,7 +101,7 @@ def process(collection):
                 try:
                     update_collection_availability(job)
 
-                    update_collection_matadata(job)
+                    update_collection_metadata(job)
                 except Exception as e:
                     logger.exception(e)
                 else:
@@ -193,7 +193,7 @@ def update_collection_availability(job):
     c.save()
 
 
-def update_collection_matadata(job):
+def update_collection_metadata(job):
     try:
         pelican_id = job.context.get("pelican_id")
         resp = request(
