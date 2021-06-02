@@ -77,8 +77,9 @@ def callback(channel, method, properties, body):
                     append_file_line(full, r[0])
 
                     # annual dump
-                    with open(f"{dump_dir}/{int(r[1])}", 'a') as annual:
-                        append_file_line(annual, r[0])
+                    if r[1] is not None:
+                        with open(f"{dump_dir}/{int(r[1])}", 'a') as annual:
+                            append_file_line(annual, r[0])
 
             # last page
             if len(records) < settings.EXPORTER_PAGE_SIZE:
