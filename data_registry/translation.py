@@ -5,7 +5,7 @@ from data_registry.models import Collection, Issue, License
 
 @register(Collection)
 class CollectionTranslation(TranslationOptions):
-    fields = ['title', 'description', 'description_long', 'summary', 'additional_data']
+    fields = ['title', 'description', 'description_long', 'summary', 'additional_data', 'country']
 
 
 @register(Issue)
