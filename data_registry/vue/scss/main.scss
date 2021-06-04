@@ -187,6 +187,11 @@ html, body {
         width: 110px;
         height: 70px;
         margin-bottom: 40px;
+
+        img {
+            width: 120%;
+            margin-top: -25px;
+        }
     }
 
     h2 {
@@ -205,6 +210,12 @@ html, body {
     min-height: 50px;
     background-color: white;
     border: 1px solid $light;
+    overflow: hidden;
+
+    img {
+        width: 130%;
+        margin-top: -25%;
+    }
 }
 
 .link-back {
@@ -445,6 +456,11 @@ html, body {
     .flag {
         width: 80px;
         height: 80px;
+
+        img {
+            width: 150%;
+            margin-top: -20px;
+        }
     }
 
     .link-back {

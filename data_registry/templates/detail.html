@@ -21,7 +21,9 @@
 
         <div class="row header-row">
             <div class="col-auto">
-                <div class="flag"></div>
+                <div class="flag">
+                    <img v-if="data.country_flag" :src="`{% static 'img/flags/' %}${data.country_flag}`">
+                </div>
             </div>
             <div class="col">
                 <h2>[[ data.country ]] [[ data.title ]] <span class="badge badge-pill collection-badge">{% translate "OCDS" %}</span></h2>

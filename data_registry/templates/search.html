@@ -129,7 +129,9 @@
                     <div v-for="c in collections" :key="`collection-${c.id}`" class="collection-box">
                         <div class="row">
                             <div class="col-auto">
-                                <div class="flag"></div>
+                                <div class="flag">
+                                    <img v-if="c.country_flag" :src="`{% static 'img/flags/' %}${c.country_flag}`">
+                                </div>
                             </div>
                             <div class="col">
                                 <h2>[[ c.country ]] [[ c.title ]] <span class="badge badge-pill collection-badge">{% translate "OCDS" %}</span></h2>

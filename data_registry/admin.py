@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import requests
 from django import forms
 from django.conf import settings
@@ -22,6 +24,7 @@ class IssueInLine(TranslationTabularInline):
 class CollectionAdminForm(forms.ModelForm):
     source_id = forms.ChoiceField(choices=[])
     active_job = forms.ModelChoiceField(queryset=None, required=False)
+    country_flag = forms.ChoiceField(choices=[(None, '---------')], required=False)
 
     def __init__(self, *args, **kwargs):
         super(CollectionAdminForm, self).__init__(*args, **kwargs)
@@ -41,6 +44,12 @@ class CollectionAdminForm(forms.ModelForm):
         self.fields["active_job"].queryset = Job.objects.filter(collection=kwargs.get("instance"),
                                                                 status=Job.Status.COMPLETED)
         self.fields["active_job"].initial = Job.objects.filter(collection=kwargs.get("instance"), active=True).first()
+
+        # collect all years from annual dump files names
+        flags_dir = "data_registry/static/img/flags"
+        files = [f.name for f in Path(flags_dir).glob("*") if f.is_file()]
+        files.sort()
+        self.fields['country_flag'].choices += tuple([(n, n) for n in files])
 
     def save(self, *args, **kwargs):
         jobs = Job.objects.filter(collection=self.instance)

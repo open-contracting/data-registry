@@ -206,6 +206,10 @@ if (document.getElementById("search_app")) {
             },
             countriesWithData: function() {
                 return this.collectionsData.reduce((list, n) => {
+                    if (!n.country) {
+                        return list
+                    }
+
                     var letter = n.country[0]
                     if (!list.includes(letter)) {
                         list.push(letter)
