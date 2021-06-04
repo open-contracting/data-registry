@@ -15,9 +15,9 @@ class BasicSerializer():
             if isinstance(value, datetime.date):
                 result[key] = value.strftime("%Y-%m-%d")
 
-            if key in cls.markdown_fields:
+            if key in cls.markdown_fields and value:
                 if type(value) == list:
-                    result[key] = [markdownify(n) for n in value]
+                    result[key] = [markdownify(n) for n in value if n]
                 else:
                     result[key] = markdownify(value)
 
