@@ -189,6 +189,8 @@
 
     {{ collections|json_script:"collections-data" }}
 
+    {% get_current_language as LANGUAGE_CODE %}
+
     <script type="text/javascript">
         const DATE_FILTER_OPTIONS = [
             {"value": null, "label": '{% trans "All" %}'},
@@ -198,5 +200,7 @@
         ]
 
         const COLLECTIONS = JSON.parse(document.getElementById('collections-data').textContent)
+
+        var CURRENT_LANGUAGE = "{{ LANGUAGE_CODE }}"
     </script>
 {% endblock %}

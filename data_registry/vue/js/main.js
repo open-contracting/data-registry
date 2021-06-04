@@ -72,12 +72,24 @@ if (document.getElementById("dropdown-template")) {
             options: {type: Array, default: () => []},
             selected: {default: null},
             preselectFirst: {type: Boolean, default: false},
-            placeholder: {type: String, default: null}
+            placeholder: {type: String, default: null},
+            labelProperty: {type: String, default: "label"},
+            valueProperty: {type: String, default: null},
         },
         created: function() {
             // preselect first option if needed
             if (this.selected === null && this.preselectFirst) {
                 this.selectOption(this.options[0])
+            }
+        },
+        computed: {
+            selectedOption: function() {
+                if (this.valueProperty && this.options) {
+                    var selected = this.options.find(n => n[this.valueProperty] == this.selected)
+                    return selected ? selected : null
+                }
+
+                return this.selected
             }
         },
         methods: {
@@ -86,13 +98,21 @@ if (document.getElementById("dropdown-template")) {
                     return ''
                 }
 
-                return Object.prototype.hasOwnProperty.call(option, 'label') ? option.label : option
+                if (this.labelProperty === null) {
+                    return option
+                }
+
+                return Object.prototype.hasOwnProperty.call(option, this.labelProperty) ? option[this.labelProperty] : option
             },
             selectOption: function(option) {
-                this.$emit('option-selected', option)
+                this.$emit('option-selected', option && this.valueProperty ? option[this.valueProperty] : option)
             },
             isOptionSelected: function(option) {
-                return option == this.selected
+                if (this.valueProperty === null) {
+                    return option == this.selected
+                }
+
+                return option[this.valueProperty] == this.selected
             }
         }
     })
@@ -137,7 +157,12 @@ if (document.getElementById("search_app")) {
                     var result = true
 
                     if (this.filter.country) {
-                        result &= n.country.startsWith(this.filter.country)
+                        var key = `country_${this.currentLanguageCode}`
+                        if (n[key]) {
+                            result &= n[key].toLowerCase().startsWith(this.filter.country.toLowerCase())
+                        } else {
+                            result &= false
+                        }
                     }
 
                     if (this.filter.frequency) {
@@ -206,18 +231,20 @@ if (document.getElementById("search_app")) {
             },
             countriesWithData: function() {
                 return this.collectionsData.reduce((list, n) => {
-                    if (!n.country) {
+                    var key = `country_${this.currentLanguageCode}`
+                    if (!n[key]) {
                         return list
                     }
 
-                    var letter = n.country[0]
+                    var letter = n[key][0].toUpperCase()
                     if (!list.includes(letter)) {
                         list.push(letter)
                     }
 
                     return list
                 }, [])
-            }
+            },
+            currentLanguageCode: () => CURRENT_LANGUAGE
         },
         watch: {
             detailDateRange: function() {
@@ -303,6 +330,34 @@ if (document.getElementById("detail_app")) {
                 })
                 .catch(e => console.log(e))
                 .finally(() => this.jsonDownloadBusy = false)
+            }
+        }
+    })
+}
+
+if (document.getElementById("header")) {
+    new Vue({
+        delimiters: ["[[", "]]"],
+        el: "#header",
+        data: function() {
+            return {
+                language: null
+            }
+        },
+        created: function() {
+            this.language = this.languages.find(n => n.code == this.currentLanguageCode)
+        },
+        computed: {
+            currentLanguageCode: () => CURRENT_LANGUAGE,
+            languages: () => LANGUAGES
+        },
+        methods: {
+            submit: function() {
+                this.$nextTick(() => this.$refs.language_form.submit())
+            },
+            setAndSubmit: function(lang) {
+                this.language = lang
+                this.submit()
             }
         }
     })

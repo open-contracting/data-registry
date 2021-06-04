@@ -1,6 +1,8 @@
+from os.path import join
 from pathlib import Path
 
 import pymdownx  # noqa: F403,F401
+from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -44,6 +46,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -64,6 +67,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.i18n'
             ],
         },
     },
@@ -125,8 +129,8 @@ STATIC_ROOT = 'data_registry/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LANGUAGES = (
-    ('en', 'English'),
-    ('es', 'Spanish'),
+    ('en', _('English')),
+    ('es', _('Spanish')),
 )
 
 MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
@@ -143,3 +147,7 @@ MARKDOWNX_MARKDOWN_EXTENSIONS = [
 
 MARKDOWNX_MARKDOWN_EXTENSION_CONFIGS = {
 }
+
+LOCALE_PATHS = [
+    join(BASE_DIR, 'data_registry', 'locale'),
+]

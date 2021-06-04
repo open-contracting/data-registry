@@ -22,7 +22,7 @@
                     class="placeholder"
                 >
                     [[ placeholder ]]</span>
-                <template v-if="selected">[[ getOptionLabel(selected) ]]</template>
+                <template v-if="selected">[[ getOptionLabel(selectedOption) ]]</template>
             </div>
 
             <chevron-btn class="col-auto icon" down></chevron-btn>
@@ -30,3 +30,5 @@
     </template>
 </b-dropdown>
 {% template_script_end %}
+
+{% chevron_btn_vue_template %}

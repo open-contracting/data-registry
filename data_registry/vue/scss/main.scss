@@ -836,3 +836,105 @@ html, body {
         }
     }
 }
+
+#lang-switch {
+    font-size: 18px;
+    font-weight: 600;
+    padding: 5px;
+    color: $body-color;
+    cursor: pointer;
+    position: relative;
+
+    &:hover ul {
+        display: block;
+    }
+
+    ul {
+        border: 1px solid $light;
+        position: absolute;
+        margin: 0;
+        padding: 0;
+        left: 0;
+        background-color: $body-bg;
+        display: none;
+        width: 100%;
+
+        li {
+            list-style-type: none;
+            cursor: pointer;
+            padding: 5px;
+            color: $body-color;
+
+            &:hover {
+                background-color: $primary;
+                color: $body-color;
+            }
+        }
+    }
+
+    .icon {
+        transition: transform .3s ease;
+    }
+
+    &:hover .icon {
+        transform: rotate(180deg);
+    }
+}
+
+#header.dark #lang-switch {
+    color: $body-bg;
+
+    &:hover {
+        background-color: $body-bg;
+        color: $body-color;
+
+        .icon .chevron {
+            color: $body-color;
+        }
+    }
+
+    ul {
+        border: none;
+    }
+
+    .icon .circle {
+        color: transparent;
+    }
+}
+
+#header:not(.dark) #lang-switch {
+    color: $body-color;
+    border: 1px solid transparent;
+
+    &:hover {
+        background-color: $body-bg;
+        color: $body-color;
+        border: 1px solid $light;
+        border-bottom: none;
+
+        .icon .chevron {
+            color: $body-color;
+        }
+
+        ul {
+            border: 1px solid $light;
+            border-top: none;
+        }
+    }
+
+    ul {
+        width: calc(100% + 2px);
+        left: -1px;
+    }
+
+
+    .icon {
+        .circle {
+            color: transparent;
+        }
+
+        .chevron {
+            color: $body-color;
+        }
+    }
+}
