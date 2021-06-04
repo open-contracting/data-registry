@@ -1,16 +1,25 @@
 import datetime
 
 from django.forms.models import model_to_dict
+from markdownx.utils import markdownify
 
 
 class BasicSerializer():
-    @staticmethod
-    def serialize(data):
+    markdown_fields = []
+
+    @classmethod
+    def serialize(cls, data):
         result = model_to_dict(data)
 
         for key, value in result.items():
             if isinstance(value, datetime.date):
                 result[key] = value.strftime("%Y-%m-%d")
+
+            if key in cls.markdown_fields:
+                if type(value) == list:
+                    result[key] = [markdownify(n) for n in value]
+                else:
+                    result[key] = markdownify(value)
 
         return result
 
@@ -24,13 +33,16 @@ class BasicSerializer():
 
 
 class LicenseSerializer(BasicSerializer):
+    markdown_fields = ["description"]
     pass
 
 
 class CollectionSerializer(BasicSerializer):
-    @staticmethod
-    def serialize(data):
-        result = BasicSerializer.serialize(data)
+    markdown_fields = ["additional_data", "description_long", "summary", "issues"]
+
+    @classmethod
+    def serialize(cls, data):
+        result = super(CollectionSerializer, cls).serialize(data)
 
         if hasattr(data, "issues") and data.issues:
             result["issues"] = data.issues

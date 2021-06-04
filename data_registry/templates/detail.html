@@ -88,7 +88,7 @@
                     <span class="value">
                         <template v-if="data.license_custom">
                             <a :href="data.license_custom.url" target="_blank">[[ data.license_custom.name ]]</a>
-                            <div class="small">[[ data.license_custom.description ]]</div>
+                            <div class="small" v-html="data.license_custom.description"></div>
                         </template>
                         <template v-else>[[ data.license ]]</template>
                     </span>

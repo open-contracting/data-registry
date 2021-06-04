@@ -67,7 +67,7 @@ class Collection(Model):
 
 class License(Model):
     name = CharField(max_length=2048, blank=True, null=True)
-    description = TextField()
+    description = MarkdownxField(blank=True, null=True)
     url = CharField(max_length=2048, blank=True, null=True)
 
     created = DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)

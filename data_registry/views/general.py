@@ -11,7 +11,6 @@ from django.db.models.query_utils import Q
 from django.http.response import JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
-from markdownx.utils import markdownify
 
 from data_registry.models import Collection, Job
 from data_registry.views.serializers import CollectionSerializer
@@ -48,14 +47,6 @@ def detail(request, id):
         .annotate(active_job=Max("job__id", filter=Q(job__active=True)))
         .get(id=id)
     )
-
-    markdown_fields = ["additional_data", "description_long", "summary", "issues"]
-    for f in markdown_fields:
-        if f in data and data[f] is not None:
-            if type(data[f]) == list:
-                data[f] = [markdownify(n) for n in data[f]]
-            else:
-                data[f] = markdownify(data[f])
 
     resp = requests.post(
         f"{settings.EXPORTER_HOST}api/export_years",
