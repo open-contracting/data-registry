@@ -276,6 +276,7 @@ if (document.getElementById("detail_app")) {
                 descriptionExpanded: false,
                 feedbackType: null,
                 feedback: null,
+                feedbackSent: false,
                 jsonYear: null,
                 jsonType: "full",
                 jsonDownloadBusy: false
@@ -298,7 +299,12 @@ if (document.getElementById("detail_app")) {
                     type: this.feedbackType,
                     text: this.feedback
                 })
-                .then(() => console.log("Feedback sent"))
+                .then(() => {
+                    this.feedbackSent = true
+
+                    this.feedbackType = null
+                    this.feedback = null
+                })
                 .catch(e => console.log(e))
             },
             submitJsonDownload: function() {

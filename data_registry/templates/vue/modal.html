@@ -5,6 +5,7 @@
     size="xl"
     title-class="title"
     v-bind="$attrs"
+    v-on="$listeners"
     no-stacking
 >
     <template v-for="(index, name) in $slots" v-slot:[name]>

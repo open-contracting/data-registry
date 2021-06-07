@@ -275,33 +275,45 @@
                         <chevron-btn right class="mr-3"></chevron-btn> {% translate "Contact OCP helpdesk" %}
                     </button>
 
-                    <modal id="feedback-form">
-                        <p class="light">
+                    <modal id="feedback-form" @hidden="feedbackSent = false" :content-class="{centered: feedbackSent}">
+                        <template v-if="feedbackSent" #default>
                             {% blocktrans %}
-                            Our mission is to continually improve the quality of procurement data. We welcome feedback from the users of data and the open data community.
+                            <span class="light">You can also email us at</span>
+                            <span>caumnau@open-contracting.org</span><span class="light">. We try to read and respond to all your requests.</span>
                             {% endblocktrans %}
-                        </p>
+                        </template>
+                        <template v-else #default>
+                            <p class="light">
+                                {% blocktrans %}
+                                Our mission is to continually improve the quality of procurement data. We welcome feedback from the users of data and the open data community.
+                                {% endblocktrans %}
+                            </p>
 
-                        <p class="light">
-                            {% blocktrans %}
-                            To provide specific feedback on the data source, please complete the form below.
-                            {% endblocktrans %}
-                        </p>
+                            <p class="light">
+                                {% blocktrans %}
+                                To provide specific feedback on the data source, please complete the form below.
+                                {% endblocktrans %}
+                            </p>
 
-                        <h3 class="subtitle">{% translate "Type of feedback" %}</h3>
-                        <dropdown
-                            v-model="feedbackType"
-                            :options="feedbackTypeOptions"
-                            preselect-first
-                        >
-                        </dropdown>
+                            <h3 class="subtitle">{% translate "Type of feedback" %}</h3>
+                            <dropdown
+                                v-model="feedbackType"
+                                :options="feedbackTypeOptions"
+                                preselect-first
+                            >
+                            </dropdown>
 
-                        <h3 class="subtitle">{% translate "Please provide your feedback in more detail below" %}</h3>
-                        <textarea v-model="feedback" rows="10">
+                            <h3 class="subtitle">{% translate "Please provide your feedback in more detail below" %}</h3>
+                            <textarea v-model="feedback" rows="10">
+                            </textarea>
+                        </template>
 
-                        </textarea>
-
-                        <template #modal-footer>
+                        <template v-if="feedbackSent" #modal-footer="{ close }">
+                            <button class="btn btn-close" @click="close">
+                                <chevron-btn right class="mr-3"></chevron-btn> {% translate "Close" %}
+                            </button>
+                        </template>
+                        <template v-else #modal-footer>
                             <div>
                                 {% blocktrans %}
                                 <span class="light">You can also email us at</span>
@@ -309,13 +321,16 @@
                                 {% endblocktrans %}
                             </div>
                             <div>
-                                <button class="btn" @click="submitFeedback" :disabled="!feedback || !feedbackType">
+                                <button class="btn btn-submit" @click="submitFeedback" :disabled="!feedback || !feedbackType">
                                     <chevron-btn right class="mr-3"></chevron-btn> {% translate "Submit feedback" %}
                                 </button>
                             </div>
                         </template>
 
-                        <template #modal-title>
+                        <template v-if="feedbackSent" #modal-title>
+                            <check-icon></check-icon>{% translate "Thanks for your feedback!" %}
+                        </template>
+                        <template v-else #modal-title>
                             {% blocktrans %}
                             Send feedback for "UK Contracts Finder"
                             {% endblocktrans %}

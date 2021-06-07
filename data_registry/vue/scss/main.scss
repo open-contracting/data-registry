@@ -699,6 +699,11 @@ html, body {
         .title {
             font-size: 30px;
             font-weight: 700;
+
+            svg {
+                font-size: 30px;
+                margin-right: 20px;
+            }
         }
 
         button.close {
@@ -719,6 +724,7 @@ html, body {
         border: none;
         padding: 0;
         margin-top: 48px;
+        justify-content: space-between;
     }
 
     .modal-body {
@@ -730,6 +736,20 @@ html, body {
         border-radius: 20px;
         box-shadow: 0 2px 30px -4px rgba(0, 0, 0, 0.5);
         border: none;
+
+        &.centered {
+            .modal-title {
+                margin: auto;
+            }
+
+            .modal-body {
+                text-align: center;
+            }
+
+            .modal-footer {
+                justify-content: center;
+            }
+        }
     }
 
     .subtitle {
@@ -767,8 +787,6 @@ html, body {
     }
 
     .modal-footer {
-        justify-content: space-between;
-
         button {
             color: white;
             display: flex;
