@@ -355,7 +355,17 @@ if (document.getElementById("header")) {
         },
         computed: {
             currentLanguageCode: () => CURRENT_LANGUAGE,
-            languages: () => LANGUAGES
+            languages: () => LANGUAGES,
+            next: function() {
+                var url = window.location.pathname
+
+                // check if url starts with language
+                if (url.startsWith(`/${this.currentLanguageCode}/`)) {
+                    return url.substring(3)
+                }
+
+                return url
+            }
         },
         methods: {
             submit: function() {
