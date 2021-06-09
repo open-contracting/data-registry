@@ -37,7 +37,7 @@ PROCESS_HOST = "http://localhost:8000/"
 
 PELICAN_HOST = "http://localhost:8001/"
 
-EXPORTER_HOST = "http://localhost:8002/"
+EXPORTER_HOST = "https://data-registry.datlab.eu/"
 
 EXPORTER_DIR = "/data/exporter_dumps"
 
