@@ -16,7 +16,7 @@ django-markdownx==3.0.1
     # via -r requirements.in
 django-modeltranslation==0.17.1
     # via -r requirements.in
-django==3.2
+django==3.2.4
     # via
     #   -r requirements.in
     #   django-markdownx
@@ -51,7 +51,7 @@ typing-extensions==3.10.0.0
     # via
     #   asgiref
     #   importlib-metadata
-urllib3==1.26.4
+urllib3==1.26.5
     # via requests
 zipp==3.4.1
     # via importlib-metadata
