@@ -291,7 +291,7 @@ if (document.getElementById("detail_app")) {
             },
             feedbackTypeOptions: () => FEEDBACK_TYPE_OPTIONS,
             jsonYearOptions: () => JSON_YEAR_OPTIONS,
-            exporterApiUrl: () => `${EXPORTER_HOST}api/`
+            exporterApiUrl: () => CONFIG.exporterApiBaseUrl
         },
         methods: {
             submitFeedback: function() {
