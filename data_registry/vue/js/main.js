@@ -8,6 +8,8 @@ import axios from 'axios';
 
 import {BootstrapVue, IconsPlugin} from 'bootstrap-vue'
 
+import { CONFIG } from "./config.js"
+
 Vue.use(VueMoment)
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
