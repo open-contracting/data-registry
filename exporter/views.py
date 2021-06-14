@@ -55,8 +55,8 @@ def download_export(request):
     dump_file = f"{dump_dir}/{year}" if year else f"{dump_dir}/full"
     lock_file = f"{dump_dir}/exporter.lock"
 
-    # reject download if the lock file exists (file is incomplete)
-    if os.path.exists(lock_file):
+    # reject download if the lock file exists (file is incomplete) or dump file doesn't exist
+    if os.path.exists(lock_file) or not os.path.exists(dump_file):
         return HttpResponseNotFound("Unable to find export file")
 
     return FileResponse(
