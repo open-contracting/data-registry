@@ -134,6 +134,8 @@ def should_be_planned(collection):
 
         # plan next job depending on update frequency
         last_job = Job.objects.filter(collection=collection, status=Job.Status.COMPLETED).order_by("-start").first()
+        if not last_job:
+            return True
 
         delta = timedelta(days=30)  # MONTHLY
         if collection.update_frequency == "HALF_YEARLY":
