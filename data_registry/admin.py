@@ -7,7 +7,7 @@ from django.contrib import admin
 from django.contrib.admin.options import ModelAdmin, TabularInline
 from django.db.models.expressions import Case, When
 from django.db.models.fields import BooleanField
-from django.forms.widgets import Textarea, TextInput
+from django.forms.widgets import TextInput
 from markdownx.widgets import AdminMarkdownxWidget
 from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, TranslationTabularInline
 
@@ -74,7 +74,7 @@ class CollectionAdminForm(forms.ModelForm):
     class Meta:
         widgets = {
             'title': TextInput(attrs={"class": "vTextField"}),
-            'description': Textarea(attrs={'cols': 100, 'rows': 3}),
+            'description': AdminMarkdownxWidget(attrs={'cols': 100, 'rows': 3}),
             'description_long': AdminMarkdownxWidget(attrs={'cols': 100, 'rows': 6}),
             'summary': AdminMarkdownxWidget(attrs={'cols': 100, 'rows': 6}),
             'additional_data': AdminMarkdownxWidget(attrs={'cols': 100, 'rows': 6})

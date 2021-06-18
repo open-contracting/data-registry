@@ -135,7 +135,7 @@
                             </div>
                             <div class="col">
                                 <h2>[[ c.country ]] [[ c.title ]] <span class="badge badge-pill collection-badge">{% translate "OCDS" %}</span></h2>
-                                <p class="description">[[ c.description ]]</p>
+                                <p class="description" v-html="c.description"></p>
                             </div>
                         </div>
                         <div v-if="c.overlap_alert" class="alert alert-danger">

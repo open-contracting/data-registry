@@ -27,7 +27,7 @@
             </div>
             <div class="col">
                 <h2>[[ data.country ]] [[ data.title ]] <span class="badge badge-pill collection-badge">{% translate "OCDS" %}</span></h2>
-                <p class="description">[[ data.description ]]</p>
+                <p class="description" v-html="data.description"></p>
                 <template v-if="data.description_long">
                     <p class="description-long" v-if="descriptionExpanded" v-html="data.description_long"></p>
                     <button
