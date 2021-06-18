@@ -17,7 +17,7 @@ logger = logging.getLogger('cbom')
 
 
 def process(collection):
-    logger.debug(f"Processing collection {collection}")
+    logger.debug(f"Processing collection {collection.country} - {collection}")
 
     if should_be_planned(collection):
         plan(collection)
