@@ -137,13 +137,17 @@ class TaskInLine(TabularInline):
 
 
 class JobAdmin(ModelAdmin):
-    list_display = ["__str__", "collection", "status", "active"]
+    list_display = ["__str__", "country", "collection", "status", "active"]
 
     list_editable = ["active", "status"]
 
     inlines = [
         TaskInLine
     ]
+
+    @admin.display(description='Country')
+    def country(self, obj):
+        return obj.collection.country
 
 
 class TaskAdmin(ModelAdmin):
