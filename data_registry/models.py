@@ -7,7 +7,6 @@ from markdownx.models import MarkdownxField
 
 class Collection(Model):
     title = TextField()
-    ocds_label = CharField(max_length=2048, blank=True, null=True)
 
     country = CharField(max_length=2048)
     country_flag = CharField(max_length=2048, blank=True, null=True)
