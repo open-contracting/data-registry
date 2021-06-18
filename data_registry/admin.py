@@ -96,13 +96,44 @@ class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
 
     def get_fields(self, request, obj=None):
         fields = super().get_fields(request, obj)
-        fields.remove('source_id')
-        fields.insert(0, 'source_id')
 
-        fields.remove('active_job')
-        fields.insert(1, 'active_job')
+        self._f_move(fields, 'source_id', 0)
+        self._f_move(fields, 'active_job', 1)
+        self._f_move(fields, 'country_en', 2)
+
+        self._f_move_relative(fields, 'country_en', 'country_es')
+        self._f_move_relative(fields, 'country_en', 'country_flag')
+        self._f_move_relative(fields, 'license', 'license_custom')
+
+        bottom_fields = ["date_from", "date_to", "last_update", "ocid_prefix", "json_format", "excel_format",
+                         "tenders_count", "tenderers_count", "tenders_items_count", "parties_count", "awards_count",
+                         "awards_items_count", "awards_suppliers_count", "contracts_count", "contracts_items_count",
+                         "contracts_transactions_count", "documents_count", "plannings_count", "milestones_count",
+                         "amendments_count"]
+
+        for field in bottom_fields:
+            self._f_move_revert(fields, field)
+
+        # country, update frequency, License + License custom, Summary, Additional data, Issues
 
         return fields
+
+    def _f_move(self, fields, field, index):
+        fields.remove(field)
+        fields.insert(index, field)
+
+    def _f_move_relative(self, fields, origin, field):
+        index = fields.index(origin) + 1
+        if index > len(fields) - 1:
+            index = len(fields) - 1
+
+        fields.remove(field)
+        fields.insert(index, field)
+
+    def _f_move_revert(self, fields, field, index=0):
+        index = len(fields) - 1 - index
+        fields.remove(field)
+        fields.insert(index, field)
 
     def active_job(self, obj):
         return Job.objects.filter(collection=obj, active=True).first()
