@@ -2,7 +2,7 @@ version: "2.2"
 services:
   django:
     image: "ghcr.io/open-contracting/data-registry:latest"
-    command: "./gunicorn_runner.sh"
+    command: "./gunicorn_runner.sh 8002"
     network_mode: "host"
     env_file:
       - data-registry.env
