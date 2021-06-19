@@ -4,20 +4,26 @@ services:
     image: "ghcr.io/open-contracting/data-registry:latest"
     command: "./gunicorn_runner.sh"
     network_mode: "host"
+    env_file:
+      - data-registry.env
     restart: unless-stopped
     volumes:
       - /data:/data
   exporter:
     image: "ghcr.io/open-contracting/data-registry:latest"
-    command: "python manage.py exporter --settings=core.settings.amy01"
+    command: "python manage.py exporter --settings=core.settings.docker"
     network_mode: "host"
+    env_file:
+      - data-registry.env
     restart: unless-stopped
     volumes:
       - /data:/data
     scale: 2
   cbom:
     image: "ghcr.io/open-contracting/data-registry:latest"
-    command: "python manage.py cbom --settings=core.settings.amy01"
+    command: "python manage.py cbom --settings=core.settings.docker"
     network_mode: "host"
+    env_file:
+      - data-registry.env
     volumes:
       - /data:/data
