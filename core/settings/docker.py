@@ -1,52 +1,53 @@
+import os
+
 from .base import *  # noqa: F403,F401
 
-ENVIRONMENT = "development"
-
-STATIC_VERSION = "v1"
+STATIC_VERSION = os.getenv("STATIC_VERSION")
 STATIC_URL = "/static/{}/".format(STATIC_VERSION)
 
+FATHOM_KEY = os.getenv("FATHOM_KEY")
+FATHOM_ANALYTICS_DOMAIN = os.getenv("FATHOM_ANALYTICS_DOMAIN")
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'x_ayh_$*yjafdafdsdfuh4jjsdfgvy536-g#gjes#4&4*yp%7li94n^'
+SECRET_KEY = os.getenv("SECRET_KEY", "nasbdvn278ogurihlbkansbrb2uf")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "NO").lower() in ("on", "true", "y", "yes")
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'data_registry',
-        'USER': 'data_registry',
-        'PASSWORD': 'mnabisadnf7g9y24589thkadv',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'NAME': os.getenv("DB_NAME"),
+        'USER': os.getenv("DB_USER"),
+        'PASSWORD': os.getenv("DB_PASSWORD"),
+        'HOST': os.getenv("DB_HOST"),
+        'PORT': os.getenv("DB_PORT"),
     },
     'kf_process': {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "kingfisher",
-        "USER": "kingfisher",
-        "PASSWORD": "kingfisher",
-        "HOST": "127.0.0.1",
-        "PORT": "5432",
+        'NAME': os.getenv("PROCESS_DB_NAME"),
+        'USER': os.getenv("PROCESS_DB_USER"),
+        'PASSWORD': os.getenv("PROCESS_DB_PASSWORD"),
+        'HOST': os.getenv("PROCESS_DB_HOST"),
+        'PORT': os.getenv("PROCESS_DB_PORT"),
     }
 }
 
-SCRAPY_HOST = "http://localhost:6800/"
-SCRAPY_PROJECT = "kingfisher"
+SCRAPY_HOST = os.getenv("SCRAPY_HOST")
+SCRAPY_PROJECT = os.getenv("SCRAPY_PROJECT")
 
-PROCESS_HOST = "http://localhost:8000/"
+PROCESS_HOST = os.getenv("PROCESS_HOST")
+PELICAN_HOST = os.getenv("PELICAN_HOST")
 
-PELICAN_HOST = "http://localhost:8001/"
-
-EXPORTER_HOST = "http://localhost:8002/"
-
-EXPORTER_DIR = "/data/exporter_dumps"
+EXPORTER_HOST = os.getenv("EXPORTER_HOST")
+EXPORTER_DIR = os.getenv("EXPORTER_DIR")
 
 RABBIT = {
-    "host": "localhost",
-    "port": "5672",
-    "username": "rabbit",
-    "password": "rabbit",
-    "exchange_name": "data-registry_production",
+    "host": os.getenv("RABBIT_HOST"),
+    "port": os.getenv("RABBIT_PORT"),
+    "username": os.getenv("RABBIT_USERNAME"),
+    "password": os.getenv("RABBIT_PASSWORD"),
+    "exchange_name": os.getenv("RABBIT_EXCHANGE_NAME")
 }
 
 LOGGING = {
