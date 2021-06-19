@@ -21,4 +21,4 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ghcr.io/${{ secrets.REGISTRY_PATH }}/data-registry:latest
+          tags: ghcr.io/open-contracting/data-registry:latest
