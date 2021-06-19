@@ -1,14 +1,14 @@
 version: "2.2"
 services:
   django:
-    image: "170654793963.dkr.ecr.eu-central-1.amazonaws.com/data-registry:production"
+    image: "ghcr.io/open-contracting/data-registry:latest"
     command: "./gunicorn_runner.sh"
     network_mode: "host"
     restart: unless-stopped
     volumes:
       - /data:/data
   exporter:
-    image: "170654793963.dkr.ecr.eu-central-1.amazonaws.com/data-registry:production"
+    image: "ghcr.io/open-contracting/data-registry:latest"
     command: "python manage.py exporter --settings=core.settings.amy01"
     network_mode: "host"
     restart: unless-stopped
@@ -16,7 +16,7 @@ services:
       - /data:/data
     scale: 2
   cbom:
-    image: "170654793963.dkr.ecr.eu-central-1.amazonaws.com/data-registry:production"
+    image: "ghcr.io/open-contracting/data-registry:latest"
     command: "python manage.py cbom --settings=core.settings.amy01"
     network_mode: "host"
     volumes:
