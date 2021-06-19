@@ -20,3 +20,4 @@ services:
     command: "python manage.py cbom --settings=core.settings.amy01"
     network_mode: "host"
     volumes:
+      - /data:/data
