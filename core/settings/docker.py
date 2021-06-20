@@ -2,6 +2,8 @@ import os
 
 from .base import *  # noqa: F403,F401
 
+ALLOWED_HOSTS = ['*']
+
 STATIC_VERSION = os.getenv("STATIC_VERSION")
 STATIC_URL = "/static/{}/".format(STATIC_VERSION)
 
