@@ -1,14 +1,8 @@
-FROM python:3
+FROM python:3 as build-stage
 
 WORKDIR /usr/src/app
 
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
-
 COPY . .
-
-RUN mkdir /data
-RUN mkdir /data/logs
 
 RUN apt-get update
 RUN apt-get -y install curl gnupg
@@ -20,4 +14,8 @@ RUN cd /usr/src/app/data_registry/vue && rm -Rf node_modules
 RUN cd /usr/src/app/data_registry/vue && npm install
 RUN cd /usr/src/app/data_registry/vue && npm run build
 
-ENTRYPOINT [ "" ]
+# production stage
+FROM nginx:stable-alpine as production-stage
+COPY --from=build-stage /usr/src/app/data_registry/static /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
