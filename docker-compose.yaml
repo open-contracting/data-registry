@@ -1,7 +1,7 @@
 version: "2.2"
 services:
   django:
-    image: "ghcr.io/open-contracting/data-registry:latest"
+    image: "ghcr.io/open-contracting/data-registry-django:latest"
     command: "./gunicorn_runner.sh 8002"
     network_mode: "host"
     env_file:
@@ -10,7 +10,7 @@ services:
     volumes:
       - /data:/data
   exporter:
-    image: "ghcr.io/open-contracting/data-registry:latest"
+    image: "ghcr.io/open-contracting/data-registry-django:latest"
     command: "python manage.py exporter --settings=core.settings.docker"
     network_mode: "host"
     env_file:
@@ -20,9 +20,17 @@ services:
       - /data:/data
     scale: 2
   cbom:
-    image: "ghcr.io/open-contracting/data-registry:latest"
+    image: "ghcr.io/open-contracting/data-registry-django:latest"
     command: "python manage.py cbom --settings=core.settings.docker"
     network_mode: "host"
+    env_file:
+      - data-registry.env
+    volumes:
+      - /data:/data
+  static:
+    image: "ghcr.io/open-contracting/data-registry-static:latest"
+    ports:
+      - "8003:80"
     env_file:
       - data-registry.env
     volumes:

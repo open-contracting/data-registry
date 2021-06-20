@@ -16,6 +16,7 @@ RUN cd /usr/src/app/data_registry/vue && npm run build
 
 # production stage
 FROM nginx:stable-alpine as production-stage
-COPY --from=build-stage /usr/src/app/data_registry/static /usr/share/nginx/html
+RUN mkdir /usr/share/nginx/html/static
+COPY --from=build-stage /usr/src/app/data_registry/static /usr/share/nginx/html/static
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
