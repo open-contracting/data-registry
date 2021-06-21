@@ -85,14 +85,23 @@ def process(collection):
                     logger.exception(e)
                     break
                 except Exception as e:
-                    job_complete = True
+                    job_complete = False
+
+                    logger.exception(e)
+
+                    # close task as failed
                     task.end = timezone.now()
                     task.status = Task.Status.COMPLETED
                     task.result = Task.Result.FAILED
                     task.note = str(e)
                     task.save()
 
-                    logger.exception(e)
+                    # close job
+                    job.status = Job.Status.COMPLETED
+                    job.end = timezone.now()
+                    job.save()
+
+                    logger.debug(f"Job {job} failed")
                     break
 
             # complete the job if all of its tasks are completed

@@ -2,6 +2,7 @@ import re
 from datetime import date
 
 from django.conf import settings
+from requests.exceptions import HTTPError
 
 from data_registry.cbom.task.exceptions import RecoverableException
 from data_registry.cbom.task.task import BaseTask
@@ -94,7 +95,17 @@ class Scrape(BaseTask):
         if not log:
             raise Exception("Scrapy log is not set")
 
-        resp = request("get", log, error_msg=f"Unable to read scrapy log {log}")
+        try:
+            resp = request("get", log, error_msg=f"Unable to read scrapy log {log}")
+        except RecoverableException as e:
+            ex_cause = e.__cause__
+
+            # If the request on the log file returns the error 404, something went wrong with the scrapy.
+            # The file was probably lost, and the job will never be able to continue
+            if isinstance(ex_cause, HTTPError) and ex_cause.response.status_code == 404:
+                raise Exception("Scrapy log file doesn't exist")
+
+            raise e
 
         m = re.search('Created collection in Kingfisher process with id (.+)', resp.text)
         return m.group(1) if m else None
