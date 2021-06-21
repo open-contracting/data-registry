@@ -169,7 +169,7 @@ class TaskInLine(TabularInline):
 
 
 class JobAdmin(ModelAdmin):
-    list_display = ["__str__", "country", "collection", "status", "active"]
+    list_display = ["__str__", "country", "collection", "status", "last_task", "active"]
 
     list_editable = ["active", "status"]
 
@@ -180,6 +180,16 @@ class JobAdmin(ModelAdmin):
     @admin.display(description='Country')
     def country(self, obj):
         return obj.collection.country
+
+    @admin.display(description='Last completed task')
+    def last_task(self, obj):
+        last_completed_task = obj.task.values("type", "order")\
+            .filter(status=Task.Status.COMPLETED).order_by('-order').first()
+
+        if last_completed_task:
+            return f"{last_completed_task.get('type')} ({last_completed_task.get('order')}/4)"
+
+        return None
 
 
 class TaskAdmin(ModelAdmin):
