@@ -30,6 +30,8 @@ def search(request):
             .filter(public=True)\
             .filter(Exists(Job.objects.filter(collection=OuterRef('pk'), active=True)))
 
+    results = results.order_by('country', 'title')
+
     collections = []
     for r in results:
         n = CollectionSerializer.serialize(r)
