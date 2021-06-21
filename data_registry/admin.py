@@ -159,6 +159,7 @@ class TaskInLine(TabularInline):
     extra = 0
     fields = ["type", "status", "result", "context"]
     readonly_fields = ["type", "result", "context"]
+    show_change_link = True
 
     def has_add_permission(self, request, obj=None):
         return False
