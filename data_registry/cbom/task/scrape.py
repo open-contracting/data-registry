@@ -1,4 +1,5 @@
 import re
+from datetime import date
 
 from django.conf import settings
 
@@ -12,6 +13,7 @@ class Scrape(BaseTask):
     host = None
     job = None
     project = None
+    collection = None
 
     def __init__(self, collection, job):
         if not settings.SCRAPY_HOST:
@@ -23,6 +25,7 @@ class Scrape(BaseTask):
         self.host = settings.SCRAPY_HOST
         self.project = settings.SCRAPY_PROJECT
         self.spider = collection.source_id
+        self.collection = collection
 
     def run(self):
         resp = request(
@@ -45,6 +48,9 @@ class Scrape(BaseTask):
         self.job.context["spider"] = self.spider
         self.job.context["scrapy_log"] = f"{self.host}logs/{self.project}/{self.spider}/{jobid}.log"
         self.job.save()
+
+        self.collection.last_update = date.today()
+        self.collection.save()
 
     def get_status(self):
         jobid = self.job.context.get("job_id")
