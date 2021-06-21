@@ -87,13 +87,18 @@
 
                 <h6>{% translate "Data contains" %}</h6>
                 <div class="form-group form-check">
-                    <input v-model="dataFilter" value="tenders_count" type="checkbox" class="form-check-input" id="d-tedners">
-                    <label class="form-check-label" for="d-tedners">{% translate "Tenders data" %}</label>
-                </div>
-                <div class="form-group form-check">
                     <input v-model="dataFilter" value="parties_count" type="checkbox" class="form-check-input" id="d-parties">
                     <label class="form-check-label" for="d-parties">{% translate "Parties data" %}</label>
                 </div>
+                <div class="form-group form-check">
+                    <input v-model="dataFilter" value="plannings_count" type="checkbox" class="form-check-input" id="d-plannings">
+                    <label class="form-check-label" for="d-plannings">{% translate "Plannings data" %}</label>
+                </div>
+                <div class="form-group form-check">
+                    <input v-model="dataFilter" value="tenders_count" type="checkbox" class="form-check-input" id="d-tedners">
+                    <label class="form-check-label" for="d-tedners">{% translate "Tenders data" %}</label>
+                </div>
+
                 <div class="form-group form-check">
                     <input v-model="dataFilter" value="awards_count" type="checkbox" class="form-check-input" id="d-awards">
                     <label class="form-check-label" for="d-awards">{% translate "Awards data" %}</label>
@@ -105,10 +110,6 @@
                 <div class="form-group form-check">
                     <input v-model="dataFilter" value="documents_count" type="checkbox" class="form-check-input" id="d-documents">
                     <label class="form-check-label" for="d-documents">{% translate "Documents" %}</label>
-                </div>
-                <div class="form-group form-check">
-                    <input v-model="dataFilter" value="plannings_count" type="checkbox" class="form-check-input" id="d-plannings">
-                    <label class="form-check-label" for="d-plannings">{% translate "Plannings data" %}</label>
                 </div>
                 <div class="form-group form-check">
                     <input v-model="dataFilter" value="milestones_count" type="checkbox" class="form-check-input" id="d-milestones">
