@@ -114,8 +114,6 @@ class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
         for field in bottom_fields:
             self._f_move_revert(fields, field)
 
-        # country, update frequency, License + License custom, Summary, Additional data, Issues
-
         return fields
 
     def _f_move(self, fields, field, index):
@@ -127,13 +125,12 @@ class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
         if index > len(fields) - 1:
             index = len(fields) - 1
 
-        fields.remove(field)
-        fields.insert(index, field)
+        self._f_move(fields, field, index)
 
     def _f_move_revert(self, fields, field, index=0):
         index = len(fields) - 1 - index
-        fields.remove(field)
-        fields.insert(index, field)
+
+        self._f_move(fields, field, index)
 
     def active_job(self, obj):
         return Job.objects.filter(collection=obj, active=True).first()
