@@ -18,97 +18,99 @@
 </head>
 
 <body>
-    {% block header %}
-    {% include 'header.html' %}
-    {% endblock %}
+    <div class="content-wrapper">
+        {% block header %}
+        {% include 'header.html' %}
+        {% endblock %}
 
-    <div class="container-fluid main_content">
-        <div class="row justify-content-center">
-            <div class="col col-10">
-                {% block content %}{% endblock %}
+        <div class="container-fluid main_content">
+            <div class="row justify-content-center">
+                <div class="col col-10">
+                    {% block content %}{% endblock %}
+                </div>
             </div>
         </div>
-        <div class="push"></div>
+
+        <div id="footer" class="container-fluid">
+            <div class="row">
+                <div class="col logo_col">
+                    <img class="logo_vertical" src="{% static 'img/logo_vertical.svg' %}">
+                </div>
+                <div class="col">
+                    <div class="row">
+                        <a class="footer_link" href="https://www.open-contracting.org/what-is-open-contracting/">
+                            {% translate "What is open contracting" %}
+                        </a>
+                        <a class="footer_link" href="https://www.open-contracting.org/impact/">{% translate "Impact" %}</a>
+                        <a class="footer_link" href="https://www.open-contracting.org/implement-old/">
+                            {% translate "Implement" %}
+                        </a>
+                        <a class="footer_link" href="https://www.open-contracting.org/about/">{% translate "About" %}</a>
+                        <a class="footer_link" href="https://www.open-contracting.org/latest-news/">
+                            {% translate "Latest"%}
+                        </a>
+                    </div>
+                </div>
+                <div class="col contact_col">
+                    <div class="contact_card">
+                        <h3 class="site-footer__contact-heading / uppercase">CONTACT</h3>
+                        <p><a href="mailto:engage@open-contracting.org">engage@open-contracting.org</a></p>
+                        <p>Open Contracting Partnership,<br />641 S Street NW, 20001 Washington, D.C., USA</p>
+                    </div>
+                </div>
+                <div class="col connect_col">
+                    <div class="row">
+                        <div class="col col-12">
+                            <h4>Connect with us:</h4>
+                        </div>
+                        <div class="col col-6">
+                            <a class="connect_icon" href="https://twitter.com/opencontracting">
+                                <img src="{% static 'img/twitter.svg' %}">
+                            </a>
+                        </div>
+                        <div class="col col-6">
+                            <a class="connect_icon" href="https://github.com/open-contracting-partnership/">
+                                <img src="{% static 'img/github.svg' %}">
+                            </a>
+                        </div>
+                        <div class="col col-6">
+                            <a class="connect_icon" href="https://www.facebook.com/OpenContracting">
+                                <img src="{% static 'img/facebook.svg' %}">
+                            </a>
+                        </div>
+                        <div class="col col-6">
+                            <a class="connect_icon" href="https://soundcloud.com/opencontracting">
+                                <img src="{% static 'img/soundcloud.svg' %}">
+                            </a>
+                        </div>
+                        <div class="col col-6">
+                            <a class="connect_icon" href="https://www.linkedin.com/company/open-contracting-partnership">
+                                <img src="{% static 'img/linkedin.svg' %}">
+                            </a>
+                        </div>
+                        <div class="col col-6">
+                            <a class="connect_icon" href="https://www.youtube.com/channel/UCheWVbmRg_4ZukiAdSuk8Ew">
+                                <img src="{% static 'img/youtube.svg' %}">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row license">
+                <div class="col col-12">
+                    <p>
+                        This work by the Open Contracting Partnership, unless otherwise noted, is licensed under
+                        a Creative Commons Attribution 4.0 International License.
+                    </p>
+                </div>
+                <div class="col col-12">
+                    <span>Open Contracting Partnership 2021</span>
+                    <a href="https://www.open-contracting.org/terms-of-use/">Terms</a>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div id="footer" class="container-fluid">
-        <div class="row">
-            <div class="col logo_col">
-                <img class="logo_vertical" src="{% static 'img/logo_vertical.svg' %}">
-            </div>
-            <div class="col">
-                <div class="row">
-                    <a class="footer_link" href="https://www.open-contracting.org/what-is-open-contracting/">
-                        {% translate "What is open contracting" %}
-                    </a>
-                    <a class="footer_link" href="https://www.open-contracting.org/impact/">{% translate "Impact" %}</a>
-                    <a class="footer_link" href="https://www.open-contracting.org/implement-old/">
-                        {% translate "Implement" %}
-                    </a>
-                    <a class="footer_link" href="https://www.open-contracting.org/about/">{% translate "About" %}</a>
-                    <a class="footer_link" href="https://www.open-contracting.org/latest-news/">
-                        {% translate "Latest"%}
-                    </a>
-                </div>
-            </div>
-            <div class="col contact_col">
-                <div class="contact_card">
-                    <h3 class="site-footer__contact-heading / uppercase">CONTACT</h3>
-                    <p><a href="mailto:engage@open-contracting.org">engage@open-contracting.org</a></p>
-                    <p>Open Contracting Partnership,<br />641 S Street NW, 20001 Washington, D.C., USA</p>
-                </div>
-            </div>
-            <div class="col connect_col">
-                <div class="row">
-                    <div class="col col-12">
-                        <h4>Connect with us:</h4>
-                    </div>
-                    <div class="col col-6">
-                        <a class="connect_icon" href="https://twitter.com/opencontracting">
-                            <img src="{% static 'img/twitter.svg' %}">
-                        </a>
-                    </div>
-                    <div class="col col-6">
-                        <a class="connect_icon" href="https://github.com/open-contracting-partnership/">
-                            <img src="{% static 'img/github.svg' %}">
-                        </a>
-                    </div>
-                    <div class="col col-6">
-                        <a class="connect_icon" href="https://www.facebook.com/OpenContracting">
-                            <img src="{% static 'img/facebook.svg' %}">
-                        </a>
-                    </div>
-                    <div class="col col-6">
-                        <a class="connect_icon" href="https://soundcloud.com/opencontracting">
-                            <img src="{% static 'img/soundcloud.svg' %}">
-                        </a>
-                    </div>
-                    <div class="col col-6">
-                        <a class="connect_icon" href="https://www.linkedin.com/company/open-contracting-partnership">
-                            <img src="{% static 'img/linkedin.svg' %}">
-                        </a>
-                    </div>
-                    <div class="col col-6">
-                        <a class="connect_icon" href="https://www.youtube.com/channel/UCheWVbmRg_4ZukiAdSuk8Ew">
-                            <img src="{% static 'img/youtube.svg' %}">
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row license">
-            <div class="col col-12">
-                <p>
-                    This work by the Open Contracting Partnership, unless otherwise noted, is licensed under
-                    a Creative Commons Attribution 4.0 International License.
-                </p>
-            </div>
-            <div class="col col-12">
-                <span>Open Contracting Partnership 2021</span>
-                <a href="https://www.open-contracting.org/terms-of-use/">Terms</a>
-            </div>
-        </div>
-    </div>
     <script src="{% static 'js/main.js'%}"></script>
 </body>
 

@@ -17,7 +17,6 @@ html, body {
 .main_content {
     padding: 20px;
     min-height: 100%;
-    margin: 0 auto -300px;
 }
 
 #header {
@@ -31,10 +30,6 @@ html, body {
     h1 {
         font-size: 36px;
     }
-}
-
-#footer, .push {
-    height: 300px;
 }
 
 .logo {
@@ -148,6 +143,16 @@ html, body {
 #footer .connect_icon > img{
     width: 30px;
     margin-bottom: 18px;
+}
+
+.content-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+
+    #footer {
+        margin-top: auto;
+    }
 }
 
 .collection-box {
