@@ -16,6 +16,7 @@ html, body {
 
 .main_content {
     padding: 20px;
+    padding-bottom: 40px;
     min-height: 100%;
 }
 
@@ -84,12 +85,10 @@ html, body {
 }
 
 #footer {
-    padding-top: 30px;
     background-color: $background-dark;
     font-size: 14px;
     color: #ffffff;
-    padding-left: 30px;
-    padding-right: 30px;
+    padding: 30px;
 }
 
 #footer h4 {
