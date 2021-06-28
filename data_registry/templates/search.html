@@ -60,14 +60,20 @@
                         size="sm"
                         right
                         :date-format-options="{ year: 'numeric', month: 'short', day: 'numeric' }"
-                        placeholder="{% translate 'Date from' %}"
+                        placeholder="{% translate 'Start date' %}"
+                        :max="dateTo"
+                        reset-button
+                        label-reset-button="{% translate 'Reset' %}"
                     ></b-form-datepicker>
                     <b-form-datepicker
                         v-model="dateTo"
                         size="sm"
                         right
                         :date-format-options="{ year: 'numeric', month: 'short', day: 'numeric' }"
-                        placeholder="{% translate 'Date to' %}"
+                        placeholder="{% translate 'End date' %}"
+                        :min="dateFrom"
+                        reset-button
+                        label-reset-button="{% translate 'Reset' %}"
                     ></b-form-datepicker>
                 </template>
 
