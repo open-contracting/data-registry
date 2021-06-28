@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-28 12:03+0200\n"
+"POT-Creation-Date: 2021-06-28 13:47+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -214,10 +214,8 @@ msgstr ""
 msgid "Access data"
 msgstr ""
 
-#: templates/detail.html:183
-msgid ""
-"Access data from <strong>OCDS Kingfisher Collect</strong> database for data "
-"range"
+#: templates/detail.html:184
+msgid "The OCDS dataset is available to download as a JSON or Excel file."
 msgstr ""
 
 #: templates/detail.html:189
@@ -227,7 +225,8 @@ msgstr ""
 #: templates/detail.html:191
 msgid ""
 "\n"
-"                                This is JSON bulk.\n"
+"                                Easily access dumps of data from the Open "
+"Contracting Partnership's Kingfisher database.\n"
 "                                "
 msgstr ""
 
@@ -279,23 +278,28 @@ msgstr ""
 #: templates/detail.html:256
 msgid ""
 "\n"
-"                                This is Excel bulk.\n"
+"                                Easily access data in Excel using the Open "
+"Contracting Partnership's Flatten Tool. This tool is designed to help users "
+"that prefer data\n"
+"                                 in spreadsheets to either select a small "
+"subset of fields / column headings or to customise their spreadsheet "
+"output.\n"
 "                                "
 msgstr ""
 
-#: templates/detail.html:261
+#: templates/detail.html:262
 msgid "Access Excel data"
 msgstr ""
 
-#: templates/detail.html:272
+#: templates/detail.html:273
 msgid "Have questions, feedback on this dataset or content on this page?"
 msgstr ""
 
-#: templates/detail.html:275
+#: templates/detail.html:276
 msgid "Contact OCP helpdesk"
 msgstr ""
 
-#: templates/detail.html:280
+#: templates/detail.html:281
 msgid ""
 "\n"
 "                            <span class=\"light\">You can also email us at</"
@@ -305,7 +309,7 @@ msgid ""
 "                            "
 msgstr ""
 
-#: templates/detail.html:287
+#: templates/detail.html:288
 msgid ""
 "\n"
 "                                Our mission is to continually improve the "
@@ -314,7 +318,7 @@ msgid ""
 "                                "
 msgstr ""
 
-#: templates/detail.html:293
+#: templates/detail.html:294
 msgid ""
 "\n"
 "                                To provide specific feedback on the data "
@@ -322,19 +326,19 @@ msgid ""
 "                                "
 msgstr ""
 
-#: templates/detail.html:298
+#: templates/detail.html:299
 msgid "Type of feedback"
 msgstr ""
 
-#: templates/detail.html:306
+#: templates/detail.html:307
 msgid "Please provide your feedback in more detail below"
 msgstr ""
 
-#: templates/detail.html:313
+#: templates/detail.html:314
 msgid "Close"
 msgstr ""
 
-#: templates/detail.html:318
+#: templates/detail.html:319
 msgid ""
 "\n"
 "                                <span class=\"light\">You can also email us "
@@ -345,35 +349,35 @@ msgid ""
 "                                "
 msgstr ""
 
-#: templates/detail.html:325
+#: templates/detail.html:326
 msgid "Submit feedback"
 msgstr ""
 
-#: templates/detail.html:331
+#: templates/detail.html:332
 msgid "Thanks for your feedback!"
 msgstr ""
 
-#: templates/detail.html:334
+#: templates/detail.html:335
 msgid "Send feedback for"
 msgstr ""
 
-#: templates/detail.html:356
+#: templates/detail.html:357
 msgid "Broken link"
 msgstr ""
 
-#: templates/detail.html:357
+#: templates/detail.html:358
 msgid "Incorrect metadata"
 msgstr ""
 
-#: templates/detail.html:358
+#: templates/detail.html:359
 msgid "New data quality issue found"
 msgstr ""
 
-#: templates/detail.html:359
+#: templates/detail.html:360
 msgid "Advice for users of this data source"
 msgstr ""
 
-#: templates/detail.html:360
+#: templates/detail.html:361
 msgid "Other"
 msgstr ""
 

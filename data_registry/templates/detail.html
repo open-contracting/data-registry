@@ -180,8 +180,8 @@
             <div class="col-12">
                 <div id="access" class="info_card round access">
                     <h2>{% translate "Access data" %}</h2>
-                    <p>{% translate "Access data from <strong>OCDS Kingfisher Collect</strong> database for data range" %}
-                        <strong>[[ dateRange ]]</strong>.
+                    <p>
+                        {% translate "The OCDS dataset is available to download as a JSON or Excel file." %}
                     </p>
 
                     <div class="row">
@@ -189,7 +189,7 @@
                             <h3><check-icon :checked="data.json_format" class="mr-2"></check-icon>{% translate "JSON data" %}</h3>
                             <p class="format-description">
                                 {% blocktrans %}
-                                This is JSON bulk.
+                                Easily access dumps of data from the Open Contracting Partnership's Kingfisher database.
                                 {% endblocktrans %}
                             </p>
 
@@ -254,7 +254,8 @@
                             <h3><check-icon :checked="data.excel_format" class="mr-2"></check-icon>{% translate "Excel data via OCP Flatten tool" %}</h3>
                             <p class="format-description">
                                 {% blocktrans %}
-                                This is Excel bulk.
+                                Easily access data in Excel using the Open Contracting Partnership's Flatten Tool. This tool is designed to help users that prefer data
+                                 in spreadsheets to either select a small subset of fields / column headings or to customise their spreadsheet output.
                                 {% endblocktrans %}
                             </p>
                             <button class="btn btn-md">
