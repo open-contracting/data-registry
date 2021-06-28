@@ -408,6 +408,12 @@ html, body {
             box-shadow: none;
         }
     }
+
+    .dropdown-item.active,
+    .dropdown-item:active,
+    .dropdown-item:hover {
+        color: $body-color;
+    }
 }
 
 .bi-check-circle {
