@@ -77,11 +77,22 @@ if (document.getElementById("dropdown-template")) {
             placeholder: {type: String, default: null},
             labelProperty: {type: String, default: "label"},
             valueProperty: {type: String, default: null},
+            autoWidth: {type: Boolean, default: false}
         },
         created: function() {
             // preselect first option if needed
             if (this.selected === null && this.preselectFirst) {
                 this.selectOption(this.options[0])
+            }
+
+            console.log(
+
+            )
+        },
+        mounted: function() {
+            // set width
+            if (this.autoWidth) {
+                this.setAutoWidth()
             }
         },
         computed: {
@@ -115,6 +126,17 @@ if (document.getElementById("dropdown-template")) {
                 }
 
                 return option[this.valueProperty] == this.selected
+            },
+            setAutoWidth: function() {
+                if (!this.options || !this.options.length) {
+                    return
+                }
+
+                var max_len = this.options
+                    .map(n => this.getOptionLabel(n).length)
+                    .reduce((max, n) => n > max ? n : max, 0)
+
+                this.$el.style.width = `calc(${max_len}ex + 48px)`
             }
         }
     })
