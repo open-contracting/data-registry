@@ -91,9 +91,14 @@ def send_feedback(request):
     body = json.loads(request.body.decode("utf8"))
     feedback_type = body.get("type")
     feedback_text = body.get("text")
+    feedback_collection = body.get("collection")
+
+    subject = f"Data registry feedback - {feedback_type}"
+    if feedback_collection:
+        subject = f'Data registry feedback for {feedback_collection} - {feedback_type}'
 
     send_mail(
-        f'Data registry feedback - {feedback_type}',
+        subject,
         feedback_text,
         'feedback@data-registry',
         [settings.FEEDBACK_EMAIL],

@@ -331,9 +331,7 @@
                             <check-icon></check-icon>{% translate "Thanks for your feedback!" %}
                         </template>
                         <template v-else #modal-title>
-                            {% blocktrans %}
-                            Send feedback for "UK Contracts Finder"
-                            {% endblocktrans %}
+                            {% trans "Send feedback for" %} "[[ data.title ]]"
                         </template>
                     </modal>
                 </div>

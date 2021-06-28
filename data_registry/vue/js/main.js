@@ -299,7 +299,8 @@ if (document.getElementById("detail_app")) {
             submitFeedback: function() {
                 api.post("send_feedback/", {
                     type: this.feedbackType,
-                    text: this.feedback
+                    text: this.feedback,
+                    collection: this.data.title_en || this.data.title
                 })
                 .then(() => {
                     this.feedbackSent = true
