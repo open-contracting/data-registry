@@ -186,16 +186,20 @@
 
                     <div class="row">
                         <div class="col">
-                            <h3><check-icon :checked="data.json_format" class="mr-2"></check-icon>{% translate "JSON data" %}</h3>
-                            <p class="format-description">
-                                {% blocktrans %}
-                                Easily access dumps of data from the Open Contracting Partnership's Kingfisher database.
-                                {% endblocktrans %}
-                            </p>
+                            <div class="format-wrapper">
+                                <h3><check-icon :checked="data.json_format" class="mr-2"></check-icon>{% translate "JSON data" %}</h3>
+                                <p class="format-description">
+                                    {% blocktrans %}
+                                    Easily access dumps of data from the Open Contracting Partnership's Kingfisher database.
+                                    {% endblocktrans %}
+                                </p>
 
-                            <button class="btn btn-md" v-b-modal.json-export-form>
-                                <chevron-btn right></chevron-btn> {% translate "Access JSON data" %}
-                            </button>
+                                <div>
+                                    <button class="btn btn-md" v-b-modal.json-export-form>
+                                        <chevron-btn right></chevron-btn> {% translate "Access JSON data" %}
+                                    </button>
+                                </div>
+                            </div>
 
                             <modal id="json-export-form" title="{% translate 'Access JSON data' %}">
                                 <p class="light">
@@ -251,16 +255,21 @@
                             </modal>
                         </div>
                         <div class="col">
-                            <h3><check-icon :checked="data.excel_format" class="mr-2"></check-icon>{% translate "Excel data via OCP Flatten tool" %}</h3>
-                            <p class="format-description">
-                                {% blocktrans %}
-                                Easily access data in Excel using the Open Contracting Partnership's Flatten Tool. This tool is designed to help users that prefer data
-                                 in spreadsheets to either select a small subset of fields / column headings or to customise their spreadsheet output.
-                                {% endblocktrans %}
-                            </p>
-                            <button class="btn btn-md">
-                                <chevron-btn right></chevron-btn> {% translate "Access Excel data" %}
-                            </button>
+                            <div class="format-wrapper">
+                                <h3><check-icon :checked="data.excel_format" class="mr-2"></check-icon>{% translate "Excel data via OCP Flatten tool" %}</h3>
+                                <p class="format-description">
+                                    {% blocktrans %}
+                                    Easily access data in Excel using the Open Contracting Partnership's Flatten Tool. This tool is designed to help users that prefer data
+                                    in spreadsheets to either select a small subset of fields / column headings or to customise their spreadsheet output.
+                                    {% endblocktrans %}
+                                </p>
+
+                                <div>
+                                    <button class="btn btn-md">
+                                        <chevron-btn right></chevron-btn> {% translate "Access Excel data" %}
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

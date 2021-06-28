@@ -363,6 +363,7 @@ html, body {
 }
 
 .dropdown {
+    min-width: 150px;
     width: 100%;
 
     .placeholder {
@@ -591,6 +592,16 @@ html, body {
 
         .format-description {
             color: rgba(77, 77, 84, 0.6);
+        }
+
+        .format-wrapper {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+
+            & > div:last-child {
+                margin-top: auto;
+            }
         }
 
         svg {
