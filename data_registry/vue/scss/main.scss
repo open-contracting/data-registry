@@ -164,7 +164,8 @@ html, body {
     font-size: 16px;
 
     .label {
-        color: $light;
+        color: $body-color;
+        font-family: $thin-font-family;
     }
 
     div:has(& > .label) {
@@ -498,9 +499,10 @@ html, body {
 
         .label {
             display: inline-block;
-            color: $light;
             margin-bottom: 10px;
             padding-right: 1ch;
+            color: $body-color;
+            font-family: $thin-font-family;
         }
 
         .license a {
@@ -528,7 +530,11 @@ html, body {
 
             & > div {
                 margin-left: 28px;
-                color: $light;
+                font-family: $thin-font-family;
+
+                .value {
+                    font-family: $font-family-sans-serif;
+                }
 
                 &:last-of-type {
                     margin-bottom: 20px;

@@ -8,6 +8,11 @@
     src: url("/static/v1/fonts/GTEestiProText-Regular.otf") format("opentype");
 }
 
+@font-face {
+    font-family: "GTEestiProDisplay-Thin";
+    src: url("/static/v1/fonts/GTEestiProDisplay-Thin.otf") format("opentype");
+}
+
 $body-color: #2f3a26 !default;
 $primary: #d6e100;
 $success:#d6e100;
@@ -25,6 +30,8 @@ $font-family-sans-serif: "GTEestiProText-Regular", "Helvetica Neue", Arial, sans
 $headings-font-family: "GTEestiProDisplay-Bold", "Helvetica Neue", Arial, sans-serif !default;
 
 $monospace-font-family: "Roboto Mono", monospace;
+
+$thin-font-family: "GTEestiProDisplay-Thin", "Helvetica Neue", Arial, sans-serif !default;
 
 $btn-padding-y: 1rem !default;
 $btn-padding-x: 1.3rem !default;
