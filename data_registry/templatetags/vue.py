@@ -32,3 +32,8 @@ def dropdown_vue_template():
 @register.inclusion_tag('vue/modal.html')
 def modal_vue_template():
     return {}
+
+
+@register.inclusion_tag('vue/markdown_box.html')
+def markdown_box_vue_template():
+    return {}

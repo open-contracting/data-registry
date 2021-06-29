@@ -62,6 +62,17 @@ if (document.getElementById("modal-template")) {
     })
 }
 
+if (document.getElementById("markdown-box-template")) {
+    Vue.component("markdown-box", {
+        delimiters: ['[[', ']]'],
+        template: '#markdown-box-template',
+        props: {
+            tag: {type: String, default: "div"},
+            content: {type: String}
+        }
+    })
+}
+
 if (document.getElementById("dropdown-template")) {
     Vue.component("dropdown", {
         delimiters: ['[[', ']]'],

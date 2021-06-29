@@ -143,7 +143,7 @@
                             </div>
                             <div class="col">
                                 <h2>[[ c.country ]] [[ c.title ]] <span class="badge badge-pill collection-badge">{% translate "OCDS" %}</span></h2>
-                                <p class="description" v-html="c.description"></p>
+                                <markdown-box tag="p" class="description" :content="c.description"></markdown-box>
                             </div>
                         </div>
                         <div v-if="c.overlap_alert" class="alert alert-danger">
@@ -193,6 +193,8 @@
     {% check_icon_vue_template %}
 
     {% dropdown_vue_template %}
+
+    {% markdown_box_vue_template %}
 
     {{ collections|json_script:"collections-data" }}
 

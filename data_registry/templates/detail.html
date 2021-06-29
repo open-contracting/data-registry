@@ -26,35 +26,45 @@
                 </div>
             </div>
             <div class="col">
-                <h1>[[ data.country ]] [[ data.title ]] <span class="badge badge-pill collection-badge">{% translate "OCDS" %}</span></h1>
-                <p class="description" v-html="data.description"></p>
-                <template v-if="data.description_long">
-                    <p class="description-long" v-if="descriptionExpanded" v-html="data.description_long"></p>
-                    <button
-                        class="btn btn-link text-info description-long-btn"
-                        @click="() => descriptionExpanded = !descriptionExpanded">
-                        <template v-if="descriptionExpanded">{% translate "Show less" %}</template>
-                        <template v-else>{% translate "Show more" %}</template>
-                    </button>
-                </template>
-            </div>
-            <div class="col">
-                <div class="label">{% translate "Available formats:" %}</div>
-                <div class="formats">
-                    <span class="format-json mr-4">
-                        <check-icon :checked="data.json_format" class="mr-2"></check-icon>
-                        <span>JSON</span>
-                    </span>
-                    <span class="format-excel">
-                        <check-icon :checked="data.excel_format" class="mr-2"></check-icon>
-                        <span>EXCEL</span>
-                    </span>
+                <div class="row">
+                    <div class="col">
+                        <h1>[[ data.country ]] [[ data.title ]] <span class="badge badge-pill collection-badge">{% translate "OCDS" %}</span></h1>
+                        <markdown-box tag="p" class="description" :content="data.description"></markdown-box>
+                        <button v-if="data.description_long && !descriptionExpanded"
+                            class="btn btn-link text-info description-long-btn"
+                            @click="() => descriptionExpanded = true">
+                            {% translate "Show more" %}
+                        </button>
+                    </div>
+                    <div class="col-auto">
+                        <div class="label">{% translate "Available formats:" %}</div>
+                        <div class="formats">
+                            <span class="format-json mr-4">
+                                <check-icon :checked="data.json_format" class="mr-2"></check-icon>
+                                <span>JSON</span>
+                            </span>
+                            <span class="format-excel">
+                                <check-icon :checked="data.excel_format" class="mr-2"></check-icon>
+                                <span>EXCEL</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <a class="btn btn-primary btn-md access-btn" href="#access">
+                            <chevron-btn class="mr-4 icon" right></chevron-btn>{% translate "ACCESS" %}
+                        </a>
+                    </div>
                 </div>
-            </div>
-            <div class="col-auto">
-                <a class="btn btn-primary btn-md access-btn" href="#access">
-                    <chevron-btn class="mr-4 icon" right></chevron-btn>{% translate "ACCESS" %}
-                </a>
+                <div class="row" v-if="descriptionExpanded">
+                    <div class="col-12 col-lg-10 col-xl-8">
+                        <markdown-box tag="p" class="description-long" :content="data.description_long"></markdown-box>
+                        <button
+                            class="btn btn-link text-info description-long-btn"
+                            @click="() => descriptionExpanded = false">
+                            {% translate "Show less" %}
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -88,7 +98,7 @@
                     <span class="value">
                         <template v-if="data.license_custom">
                             <a :href="data.license_custom.url" target="_blank">[[ data.license_custom.name ]]</a>
-                            <div class="small" v-html="data.license_custom.description"></div>
+                            <markdown-box class="small" :content="data.license_custom.description"></markdown-box>
                         </template>
                         <template v-else>[[ data.license ]]</template>
                     </span>
@@ -150,7 +160,7 @@
                     <div class="col">
                         <div class="additional_data">
                             <b-icon class="diamond-icon" icon="gem" scale="1.5"></b-icon>
-                            <div v-html="data.additional_data"></div>
+                            <markdown-box :content="data.additional_data"></markdown-box>
                         </div>
                     </div>
                 </div>
@@ -163,14 +173,14 @@
             </div>
             <div class="col-9">
                 <h6>{% translate "Summary" %}</h6>
-                <p class="summary" v-html="data.summary"></p>
+                <markdown-box class="summary" tag="p" :content="data.summary"></markdown-box>
 
                 <template v-if="data.issues">
                     <h6>{% translate "Issues found" %}</h6>
 
                     <div v-for="n in data.issues" class="issue">
                         <b-icon icon="exclamation-circle"></b-icon>
-                        <span v-html="n"></div>
+                        <markdown-box tag="span" :content="n"></markdown-box>
                     </div>
                 </template>
             </div>
@@ -358,6 +368,8 @@
     {% dropdown_vue_template %}
 
     {% modal_vue_template %}
+
+    {% markdown_box_vue_template %}
 
     {{ data|json_script:"detail-data" }}
 

@@ -1,0 +1,7 @@
+{% load vue %}
+
+{% template_script "markdown-box-template" %}
+<component :is="tag" v-html="content" class="markdown-box">
+    <slot></slot>
+</component>
+{% template_script_end %}
