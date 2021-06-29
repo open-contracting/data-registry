@@ -163,6 +163,8 @@ html, body {
     padding: 20px 50px 20px 30px;
     font-size: 16px;
 
+    @include colorize-clickable($background-light);
+
     .label {
         color: $body-color;
         font-family: $thin-font-family;
@@ -181,6 +183,12 @@ html, body {
         .icon .circle {
             color: inherit;
         }
+    }
+
+    &:hover .link-detail,
+    .link-detail:hover {
+        color: darken($info, 12%) !important;
+        text-decoration: underline;
     }
 
     .description {

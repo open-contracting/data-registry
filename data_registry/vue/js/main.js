@@ -292,6 +292,9 @@ if (document.getElementById("search_app")) {
                 }
 
                 this.countryFilter = country
+            },
+            goToDetail: function(collection) {
+                window.location = collection.detail_url
             }
         }
     });

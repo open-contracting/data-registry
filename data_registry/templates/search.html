@@ -134,7 +134,7 @@
                 <template v-else>
                     <h4>[[ collections.length ]] {% translate "datasets found" %}</h4>
 
-                    <div v-for="c in collections" :key="`collection-${c.id}`" class="collection-box">
+                    <div v-for="c in collections" :key="`collection-${c.id}`" class="collection-box" @click="goToDetail(c)">
                         <div class="row">
                             <div class="col-auto">
                                 <div class="flag">
@@ -178,7 +178,6 @@
                             <div class="col align-self-end text-info text-right">
                                 <a :href="c.detail_url" class="link-detail text-info">
                                     <chevron-btn class="mr-2 icon" right></chevron-btn>
-
                                     <span>{% translate "See details" %}</span>
                                 </a>
                             </div>
