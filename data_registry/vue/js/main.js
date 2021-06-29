@@ -84,15 +84,17 @@ if (document.getElementById("dropdown-template")) {
             if (this.selected === null && this.preselectFirst) {
                 this.selectOption(this.options[0])
             }
-
-            console.log(
-
-            )
         },
         mounted: function() {
-            // set width
             if (this.autoWidth) {
                 this.setAutoWidth()
+            }
+        },
+        watch: {
+            options: function() {
+                if (this.autoWidth) {
+                    this.setAutoWidth()
+                }
             }
         },
         computed: {
@@ -132,11 +134,15 @@ if (document.getElementById("dropdown-template")) {
                     return
                 }
 
-                var max_len = this.options
-                    .map(n => this.getOptionLabel(n).length)
-                    .reduce((max, n) => n > max ? n : max, 0)
+                // clone list and get its width
+                let elm = this.$el.querySelector("ul").cloneNode(true)
+                elm.style.visibility = 'hidden'
+                elm.style.display = 'block'
+                document.body.appendChild(elm)
 
-                this.$el.style.width = `calc(${max_len}ex + 48px)`
+                this.$el.style.width = `${elm.offsetWidth + 32}px`
+
+                elm.remove()
             }
         }
     })
