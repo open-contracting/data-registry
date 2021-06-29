@@ -33,6 +33,16 @@ html, body {
     }
 }
 
+.grid-container {
+    @include make-container();
+    max-width: 1400px;
+}
+
+.grid-col {
+    @include make-col-ready();
+    @include make-col(12);
+}
+
 .logo {
     width: 150px;
 }
@@ -162,6 +172,7 @@ html, body {
     border-bottom-left-radius: 5px;
     padding: 20px 50px 20px 30px;
     font-size: 16px;
+    min-width: 250px;
 
     @include colorize-clickable($background-light);
 

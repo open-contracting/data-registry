@@ -21,7 +21,7 @@
         </div>
 
         <div class="row">
-            <div class="col col-3 filter">
+            <div class="col col-3 col-md-4 filter">
                 <h4>{% translate "Filters" %}</h4>
 
                 <div class="country-title">
@@ -127,7 +127,7 @@
                     <label class="form-check-label" for="d-amendments">{% translate "Amendments data" %}</label>
                 </div>
             </div>
-            <div class="col col-9">
+            <div class="col col-9 col-md-8">
                 <div v-if="busy" class="text-center">
                     <b-icon icon="circle-fill" animation="throb" font-scale="4"></b-icon>
                 </div>
@@ -151,13 +151,13 @@
                             {% translate "This collection does not completely overlap with the selected date range. Date range matched: " %}
                             <strong>[[ c.overlap_from | moment("MMM YYYY") ]] - [[ c.overlap_to | moment("MMM YYYY") ]]</strong>
                         </div>
-                        <div class="row">
-                            <div class="col">
+                        <div class="row justify-content-between">
+                            <div class="col-auto">
                                 <div class="label mb-2">{% translate "Available formats:" %}</div>
                                 <div class="format-json mb-2"><check-icon :checked="c.json_format" class="mr-2"></check-icon>JSON</div>
                                 <div class="format-excel mb-2"><check-icon :checked="c.excel_format" class="mr-2"></check-icon>EXCEL</div>
                             </div>
-                            <div class="col">
+                            <div class="col-auto">
                                 <div class="mb-2">
                                     <span class="label">{% translate "Data date range:" %}</span>
                                     <span class="value">[[ c.date_from | moment("MMM YYYY") ]] - [[ c.date_to | moment("MMM YYYY") ]]</span>
@@ -175,7 +175,7 @@
                                     <span class="value">[[ c.last_update | moment("MMM YYYY") ]]</span>
                                 </div>
                             </div>
-                            <div class="col align-self-end text-info text-right">
+                            <div class="col-auto align-self-end text-info text-right">
                                 <a :href="c.detail_url" class="link-detail text-info">
                                     <chevron-btn class="mr-2 icon" right></chevron-btn>
                                     <span>{% translate "See details" %}</span>

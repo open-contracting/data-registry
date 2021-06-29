@@ -8,9 +8,9 @@
 
 {{ languages|json_script:"languages-data" }}
 
-<div id="header" class="container-fluid{% if dark %} dark{% endif %}" v-cloak>
+<div id="header" class="grid-container{% if dark %} dark{% endif %}" v-cloak>
     <div class="row justify-content-center">
-        <div class="col col-10">
+        <div class="grid-col">
             <div class="row">
                 <div class="col-3">
                     {% if dark %}
