@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-28 13:47+0200\n"
+"POT-Creation-Date: 2021-06-29 10:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,7 +46,7 @@ msgstr ""
 msgid "BACK TO DATASETS SEARCH"
 msgstr ""
 
-#: templates/detail.html:29 templates/search.html:144
+#: templates/detail.html:29 templates/search.html:145
 msgid "OCDS"
 msgstr ""
 
@@ -58,7 +58,7 @@ msgstr ""
 msgid "Show more"
 msgstr ""
 
-#: templates/detail.html:42 templates/search.html:155
+#: templates/detail.html:42 templates/search.html:156
 msgid "Available formats:"
 msgstr ""
 
@@ -70,27 +70,27 @@ msgstr ""
 msgid "Overview"
 msgstr ""
 
-#: templates/detail.html:67 templates/search.html:161
+#: templates/detail.html:67 templates/search.html:162
 msgid "Data date range:"
 msgstr ""
 
-#: templates/detail.html:71 templates/search.html:173
+#: templates/detail.html:71 templates/search.html:174
 msgid "Last updated:"
 msgstr ""
 
-#: templates/detail.html:75 templates/search.html:165
+#: templates/detail.html:75 templates/search.html:166
 msgid "Update frequency:"
 msgstr ""
 
-#: templates/detail.html:77 templates/search.html:83 templates/search.html:167
+#: templates/detail.html:77 templates/search.html:84 templates/search.html:168
 msgid "Monthly"
 msgstr ""
 
-#: templates/detail.html:78 templates/search.html:87 templates/search.html:168
+#: templates/detail.html:78 templates/search.html:88 templates/search.html:169
 msgid "Every 6 months"
 msgstr ""
 
-#: templates/detail.html:79 templates/search.html:91 templates/search.html:169
+#: templates/detail.html:79 templates/search.html:92 templates/search.html:170
 msgid "Annually"
 msgstr ""
 
@@ -174,7 +174,7 @@ msgstr ""
 msgid "Count of contract transactions:"
 msgstr ""
 
-#: templates/detail.html:136 templates/search.html:118
+#: templates/detail.html:136 templates/search.html:119
 msgid "Documents"
 msgstr ""
 
@@ -218,23 +218,23 @@ msgstr ""
 msgid "The OCDS dataset is available to download as a JSON or Excel file."
 msgstr ""
 
-#: templates/detail.html:189
+#: templates/detail.html:190
 msgid "JSON data"
 msgstr ""
 
-#: templates/detail.html:191
+#: templates/detail.html:192
 msgid ""
 "\n"
-"                                Easily access dumps of data from the Open "
-"Contracting Partnership's Kingfisher database.\n"
-"                                "
+"                                    Easily access dumps of data from the "
+"Open Contracting Partnership's Kingfisher database.\n"
+"                                    "
 msgstr ""
 
-#: templates/detail.html:197 templates/detail.html:200
+#: templates/detail.html:199 templates/detail.html:204
 msgid "Access JSON data"
 msgstr ""
 
-#: templates/detail.html:202
+#: templates/detail.html:206
 msgid ""
 "\n"
 "                                    Please, choose how you would like to "
@@ -245,11 +245,11 @@ msgid ""
 "                                    "
 msgstr ""
 
-#: templates/detail.html:210
+#: templates/detail.html:214
 msgid "Full history dataset"
 msgstr ""
 
-#: templates/detail.html:214 templates/detail.html:226
+#: templates/detail.html:218 templates/detail.html:230
 msgid ""
 "\n"
 "                                    Dataset containing the full history of "
@@ -259,47 +259,47 @@ msgid ""
 "                                    "
 msgstr ""
 
-#: templates/detail.html:222
+#: templates/detail.html:226
 msgid "Particular year dataset"
 msgstr ""
 
-#: templates/detail.html:236
+#: templates/detail.html:240
 msgid "Choose year"
 msgstr ""
 
-#: templates/detail.html:247
+#: templates/detail.html:252
 msgid "Download data"
 msgstr ""
 
-#: templates/detail.html:254
+#: templates/detail.html:260
 msgid "Excel data via OCP Flatten tool"
 msgstr ""
 
-#: templates/detail.html:256
+#: templates/detail.html:262
 msgid ""
 "\n"
-"                                Easily access data in Excel using the Open "
-"Contracting Partnership's Flatten Tool. This tool is designed to help users "
-"that prefer data\n"
-"                                 in spreadsheets to either select a small "
+"                                    Easily access data in Excel using the "
+"Open Contracting Partnership's Flatten Tool. This tool is designed to help "
+"users that prefer data\n"
+"                                    in spreadsheets to either select a small "
 "subset of fields / column headings or to customise their spreadsheet "
 "output.\n"
-"                                "
+"                                    "
 msgstr ""
 
-#: templates/detail.html:262
+#: templates/detail.html:270
 msgid "Access Excel data"
 msgstr ""
 
-#: templates/detail.html:273
+#: templates/detail.html:283
 msgid "Have questions, feedback on this dataset or content on this page?"
 msgstr ""
 
-#: templates/detail.html:276
+#: templates/detail.html:286
 msgid "Contact OCP helpdesk"
 msgstr ""
 
-#: templates/detail.html:281
+#: templates/detail.html:291
 msgid ""
 "\n"
 "                            <span class=\"light\">You can also email us at</"
@@ -309,7 +309,7 @@ msgid ""
 "                            "
 msgstr ""
 
-#: templates/detail.html:288
+#: templates/detail.html:298
 msgid ""
 "\n"
 "                                Our mission is to continually improve the "
@@ -318,7 +318,7 @@ msgid ""
 "                                "
 msgstr ""
 
-#: templates/detail.html:294
+#: templates/detail.html:304
 msgid ""
 "\n"
 "                                To provide specific feedback on the data "
@@ -326,19 +326,19 @@ msgid ""
 "                                "
 msgstr ""
 
-#: templates/detail.html:299
+#: templates/detail.html:309
 msgid "Type of feedback"
 msgstr ""
 
-#: templates/detail.html:307
+#: templates/detail.html:318
 msgid "Please provide your feedback in more detail below"
 msgstr ""
 
-#: templates/detail.html:314
+#: templates/detail.html:325
 msgid "Close"
 msgstr ""
 
-#: templates/detail.html:319
+#: templates/detail.html:330
 msgid ""
 "\n"
 "                                <span class=\"light\">You can also email us "
@@ -349,35 +349,35 @@ msgid ""
 "                                "
 msgstr ""
 
-#: templates/detail.html:326
+#: templates/detail.html:337
 msgid "Submit feedback"
 msgstr ""
 
-#: templates/detail.html:332
+#: templates/detail.html:343
 msgid "Thanks for your feedback!"
 msgstr ""
 
-#: templates/detail.html:335
+#: templates/detail.html:346
 msgid "Send feedback for"
 msgstr ""
 
-#: templates/detail.html:357
+#: templates/detail.html:368
 msgid "Broken link"
 msgstr ""
 
-#: templates/detail.html:358
+#: templates/detail.html:369
 msgid "Incorrect metadata"
 msgstr ""
 
-#: templates/detail.html:359
+#: templates/detail.html:370
 msgid "New data quality issue found"
 msgstr ""
 
-#: templates/detail.html:360
+#: templates/detail.html:371
 msgid "Advice for users of this data source"
 msgstr ""
 
-#: templates/detail.html:361
+#: templates/detail.html:372
 msgid "Other"
 msgstr ""
 
@@ -479,80 +479,80 @@ msgstr ""
 msgid "Data date range"
 msgstr ""
 
-#: templates/search.html:63
+#: templates/search.html:64
 msgid "Start date"
 msgstr ""
 
-#: templates/search.html:66 templates/search.html:76
+#: templates/search.html:67 templates/search.html:77
 msgid "Reset"
 msgstr ""
 
-#: templates/search.html:73
+#: templates/search.html:74
 msgid "End date"
 msgstr ""
 
-#: templates/search.html:80
+#: templates/search.html:81
 msgid "Update frequency"
 msgstr ""
 
-#: templates/search.html:94
+#: templates/search.html:95
 msgid "Data contains"
 msgstr ""
 
-#: templates/search.html:97
+#: templates/search.html:98
 msgid "Parties data"
 msgstr ""
 
-#: templates/search.html:101
+#: templates/search.html:102
 msgid "Plannings data"
 msgstr ""
 
-#: templates/search.html:105
+#: templates/search.html:106
 msgid "Tenders data"
 msgstr ""
 
-#: templates/search.html:110
+#: templates/search.html:111
 msgid "Awards data"
 msgstr ""
 
-#: templates/search.html:114
+#: templates/search.html:115
 msgid "Contracts data"
 msgstr ""
 
-#: templates/search.html:122
+#: templates/search.html:123
 msgid "Milestones data"
 msgstr ""
 
-#: templates/search.html:126
+#: templates/search.html:127
 msgid "Amendments data"
 msgstr ""
 
-#: templates/search.html:134
+#: templates/search.html:135
 msgid "datasets found"
 msgstr ""
 
-#: templates/search.html:150
+#: templates/search.html:151
 msgid ""
 "This collection does not completely overlap with the selected date range. "
 "Date range matched: "
 msgstr ""
 
-#: templates/search.html:181
+#: templates/search.html:182
 msgid "See details"
 msgstr ""
 
-#: templates/search.html:203
+#: templates/search.html:204
 msgid "All"
 msgstr ""
 
-#: templates/search.html:204
-msgid "Last year"
-msgstr ""
-
 #: templates/search.html:205
-msgid "Past 6 months"
+msgid "Past year"
 msgstr ""
 
 #: templates/search.html:206
+msgid "Past 6 months"
+msgstr ""
+
+#: templates/search.html:207
 msgid "Custom"
 msgstr ""
