@@ -1,5 +1,8 @@
 import os
 
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
 from .base import *  # noqa: F403,F401
 
 ALLOWED_HOSTS = ['*']
@@ -9,6 +12,13 @@ STATIC_URL = "/static/{}/".format(STATIC_VERSION)
 
 FATHOM_KEY = os.getenv("FATHOM_KEY")
 FATHOM_ANALYTICS_DOMAIN = os.getenv("FATHOM_ANALYTICS_DOMAIN")
+
+if os.getenv("SENTRY_DNS", False):
+    sentry_sdk.init(
+        dsn=os.getenv("SENTRY_DNS"),
+        integrations=[DjangoIntegration()],
+        traces_sample_rate=os.getenv("SENTRY_SAMPLE_RATE", 1.0),
+    )
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY", "nasbdvn278ogurihlbkansbrb2uf")

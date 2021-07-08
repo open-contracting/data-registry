@@ -7,3 +7,4 @@ django-markdownx
 pymdown-extensions
 gunicorn
 pika
+sentry-sdk
