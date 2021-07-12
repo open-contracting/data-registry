@@ -17,7 +17,7 @@ if os.getenv("SENTRY_DNS", False):
     sentry_sdk.init(
         dsn=os.getenv("SENTRY_DNS"),
         integrations=[DjangoIntegration()],
-        traces_sample_rate=os.getenv("SENTRY_SAMPLE_RATE", 1.0),
+        traces_sample_rate=0,  # The Sentry plan does not include Performance.
     )
 
 # SECURITY WARNING: keep the secret key used in production secret!
