@@ -1,18 +1,18 @@
 #!/usr/bin/env python
+import gzip
 import json
 import logging
 import os
+import shutil
 import sys
 from pathlib import Path
 
 from django.conf import settings
 from django.db import connections
 
-from exporter.tools.rabbit import consume
+from exporter.tools.rabbit import ack, consume
 
 logger = logging.getLogger('exporter')
-
-touched_files = None
 
 
 def start():
@@ -23,21 +23,17 @@ def start():
     return
 
 
-def callback(channel, method, properties, body):
+def callback(connection, channel, delivery_tag, body):
     try:
-        # reset list of touched files
-        global touched_files
-        touched_files = set()
-
         # parse input message
         input_message = json.loads(body.decode("utf8"))
         collection_id = input_message.get("collection_id")
         spider = input_message.get("spider")
         job_id = input_message.get("job_id")
 
-        dump_dir = f"{settings.EXPORTER_DIR}/{spider}/{job_id}"
-        dump_file = f"{dump_dir}/full"
-        lock_file = f"{dump_dir}/exporter.lock"
+        dump_dir = "{}/{}/{}".format(settings.EXPORTER_DIR, spider, job_id)
+        dump_file = "{}/{}".format(dump_dir, "full.jsonl")
+        lock_file = "{}/exporter.lock".format(dump_dir)
 
         try:
             Path(dump_dir).mkdir(parents=True)
@@ -48,22 +44,27 @@ def callback(channel, method, properties, body):
         with open(lock_file, 'x'):
             pass
 
-        logger.info(f"Processing message {body}")
+        logger.info("Processing message {}".format(input_message))
 
-        page = 0
+        id = 0
+        page = 1
+        files = {}
 
         # load data from kf-process and save
         while True:
             with connections["kf_process"].cursor() as cursor:
+                logger.debug("Processing page {} with id > {}".format(page, id))
                 cursor.execute(
-                    f"""
-                        SELECT d.data, EXTRACT(YEAR from (d.data->>'date')::DATE)
+                    """
+                        SELECT d.id, d.data, d.data->>'date'
                         FROM compiled_release c
                         JOIN data d ON (c.data_id = d.id)
                         WHERE collection_id = %s
-                        LIMIT {settings.EXPORTER_PAGE_SIZE} OFFSET {page * settings.EXPORTER_PAGE_SIZE}
+                        AND d.id > %s
+                        ORDER BY d.id
+                        LIMIT %s
                     """,
-                    [collection_id]
+                    [collection_id, id, settings.EXPORTER_PAGE_SIZE]
                 )
 
                 records = cursor.fetchall()
@@ -72,41 +73,50 @@ def callback(channel, method, properties, body):
                 break
 
             with open(dump_file, 'a') as full:
+                files[dump_file] = full
+
                 for r in records:
-                    # full dump
-                    append_file_line(full, r[0])
+                    id = r[0]
+
+                    full.write("{}\n".format(r[1]))
 
                     # annual dump
                     if r[1] is not None:
-                        with open(f"{dump_dir}/{int(r[1])}", 'a') as annual:
-                            append_file_line(annual, r[0])
+                        year_key = "{}/{}.jsonl".format(dump_dir, int(r[2][:4]))
+                        if year_key not in files:
+                            files[year_key] = open(year_key, 'a')
 
+                        files[year_key].write("{}\n".format(r[1]))
+
+                        month_key = "{}/{}_{}.jsonl".format(dump_dir, int(r[2][:4]), r[2][5:7])
+                        if month_key not in files:
+                            files[month_key] = open(month_key, 'a')
+
+                        files[month_key].write("{}\n".format(r[1]))
+            page = page + 1
+            break
             # last page
             if len(records) < settings.EXPORTER_PAGE_SIZE:
                 break
 
-            page += 1
+        for key, file in files.items():
+            file.close()
+
+            with open(key, "rb") as f_in:
+                with gzip.open("{}.gz".format(key), "wb") as f_out:
+                    shutil.copyfileobj(f_in, f_out)
+            os.remove(key)
 
         # remove lock file
         os.remove(lock_file)
 
         # acknowledge message processing
-        channel.basic_ack(delivery_tag=method.delivery_tag)
+        ack(connection, channel, delivery_tag)
     except Exception:
         logger.exception(f"Something went wrong when processing {body}")
         sys.exit()
 
     logger.info("Processing completed.")
-
-
-def append_file_line(file, line):
-    global touched_files
-
-    if file in touched_files:
-        file.write("\n")
-
-    touched_files.add(file.name)
-    file.write(line)
 
 
 if __name__ == "__main__":
