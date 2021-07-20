@@ -63,10 +63,8 @@ def download_export(request):
     return FileResponse(
         open(dump_file, 'rb'),
         as_attachment=True,
-        filename=f"{spider}_{year}" if year else f"{spider}_full",
-        headers={
-            'Content-Type': 'application/gzip'
-        })
+        filename=f"{spider}_{year}" if year else f"{spider}_full"
+    )
 
 
 @csrf_exempt
@@ -80,5 +78,9 @@ def export_years(request):
 
     # collect all years from annual dump files names
     years = [int(f.stem[:4]) for f in Path(dump_dir).glob("*") if f.is_file() and re.match("^[0-9]{4}", f.stem)]
+    # distinct values
+    years = list(set(years))
+    # descending sorting
     years.sort(reverse=True)
-    return JsonResponse({"status": "ok", "data": years}, safe=False)
+    return JsonResponse(
+        {"status": "ok", "data": years}, safe=False)
