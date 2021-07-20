@@ -367,7 +367,7 @@ if (document.getElementById("detail_app")) {
                     }
                 )
                 .then(r => {
-                    var fileURL = window.URL.createObjectURL(new Blob([r.data], { type: 'application/json' }));
+                    var fileURL = window.URL.createObjectURL(new Blob([r.data], { type: 'application/gzip' }));
                     var fileLink = document.createElement('a');
                     var fileNameMatch = /filename="(?<name>[^"]+)"/.exec(r.headers["content-disposition"])
                     var fileName = fileNameMatch.groups.name
