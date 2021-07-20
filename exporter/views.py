@@ -1,5 +1,6 @@
 import json
 import os
+import re
 from pathlib import Path
 
 from django.conf import settings
@@ -52,7 +53,7 @@ def download_export(request):
     year = input_message.get("year", None)
 
     dump_dir = f"{settings.EXPORTER_DIR}/{spider}/{job_id}"
-    dump_file = f"{dump_dir}/{year}" if year else f"{dump_dir}/full"
+    dump_file = f"{dump_dir}/{year}.jsonl.gz" if year else f"{dump_dir}/full.jsonl.gz"
     lock_file = f"{dump_dir}/exporter.lock"
 
     # reject download if the lock file exists (file is incomplete) or dump file doesn't exist
@@ -64,7 +65,7 @@ def download_export(request):
         as_attachment=True,
         filename=f"{spider}_{year}" if year else f"{spider}_full",
         headers={
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/gzip'
         })
 
 
@@ -78,6 +79,6 @@ def export_years(request):
     dump_dir = f"{settings.EXPORTER_DIR}/{spider}/{job_id}"
 
     # collect all years from annual dump files names
-    years = [int(f.name) for f in Path(dump_dir).glob("*") if f.is_file() and "full" not in f.name]
+    years = [int(f.stem[:4]) for f in Path(dump_dir).glob("*") if f.is_file() and re.match("^[0-9]{4}", f.stem)]
     years.sort(reverse=True)
     return JsonResponse({"status": "ok", "data": years}, safe=False)
