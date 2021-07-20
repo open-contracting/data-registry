@@ -31,7 +31,7 @@ def exporter_status(request):
     job_id = input_message.get("job_id")
 
     dump_dir = f"{settings.EXPORTER_DIR}/{spider}/{job_id}"
-    dump_file = f"{dump_dir}/full"
+    dump_file = f"{dump_dir}/full.jsonl.gz"
     lock_file = f"{dump_dir}/exporter.lock"
 
     status = "WAITING"
