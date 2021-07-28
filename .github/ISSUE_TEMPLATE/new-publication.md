@@ -14,7 +14,7 @@ assignees: ''
 * [ ] Request copy-editing from Sophie Abache
 * [ ] Add the English texts for the new publication in the [admin panel](https://data-registry.datlab.eu/admin/data_registry/collection/)
 * [ ] Assign Dulce (CDS) to translate the texts to Spanish
-* [ ] Assign Viktor (OCP to translate the texts to Russian
+* [ ] Assign Viktor (OCP) to translate the texts to Russian
 * [ ] Assign Yohanna/James to double-check (1) the data processing and (2) the completed metadata in the admin panel
 
 If all is good, Yohanna/James will mark the publication as published.
