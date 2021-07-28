@@ -94,7 +94,7 @@ def callback(connection, channel, delivery_tag, body):
 
                         files[month_key].write("{}\n".format(r[1]))
             page = page + 1
-            break
+
             # last page
             if len(records) < settings.EXPORTER_PAGE_SIZE:
                 break
