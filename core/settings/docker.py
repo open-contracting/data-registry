@@ -54,6 +54,14 @@ PELICAN_HOST = os.getenv("PELICAN_HOST")
 EXPORTER_HOST = os.getenv("EXPORTER_HOST")
 EXPORTER_DIR = os.getenv("EXPORTER_DIR")
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_PORT = os.getenv("EMAIL_PORT")
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "NO").lower() in ("on", "true", "y", "yes")
+FEEDBACK_EMAIL = os.getenv("FEEDBACK_EMAIL")
+
 RABBIT = {
     "host": os.getenv("RABBIT_HOST"),
     "port": os.getenv("RABBIT_PORT"),

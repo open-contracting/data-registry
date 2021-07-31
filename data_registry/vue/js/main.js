@@ -342,7 +342,7 @@ if (document.getElementById("detail_app")) {
                 api.post("send_feedback/", {
                     type: this.feedbackType,
                     text: this.feedback,
-                    collection: this.data.title_en || this.data.title
+                    collection: this.data.country + " " + this.data.title
                 })
                 .then(() => {
                     this.feedbackSent = true

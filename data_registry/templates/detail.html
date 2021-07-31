@@ -300,7 +300,7 @@
                         <template v-if="feedbackSent" #default>
                             {% blocktrans %}
                             <span class="light">You can also email us at</span>
-                            <span>caumnau@open-contracting.org</span><span class="light">. We try to read and respond to all your requests.</span>
+                            <span>{{ feedback_email }}</span><span class="light">. We try to read and respond to all your requests.</span>
                             {% endblocktrans %}
                         </template>
                         <template v-else #default>
@@ -339,7 +339,7 @@
                             <div>
                                 {% blocktrans %}
                                 <span class="light">You can also email us at</span>
-                                <span>caumnau@open-contracting.org</span><span class="light">. We try to read and respond to all your requests.</span>
+                                <span>{{ feedback_email }}</span><span class="light">. We try to read and respond to all your requests.</span>
                                 {% endblocktrans %}
                             </div>
                             <div>

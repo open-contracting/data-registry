@@ -66,7 +66,8 @@ def detail(request, id):
         {
             'data': data,
             'exporter_host': settings.EXPORTER_HOST,
-            'export_years': json.dumps(years)
+            'export_years': json.dumps(years),
+            'feedback_email': settings.FEEDBACK_EMAIL
         }
     )
 
@@ -95,12 +96,21 @@ def send_feedback(request):
 
     subject = f"Data registry feedback - {feedback_type}"
     if feedback_collection:
-        subject = f'Data registry feedback for {feedback_collection} - {feedback_type}'
+        subject = f'You have new feedback on the {feedback_collection} dataset'
+
+    mail_text = """
+        The following feedback was provided for the {} dataset.
+
+        Type of feedback: {}
+
+        Feedback detail:
+        {}
+    """.format(feedback_collection, feedback_type, feedback_text)
 
     send_mail(
         subject,
-        feedback_text,
-        'feedback@data-registry',
+        mail_text,
+        'noreply@noreply.open-contracting.org',
         [settings.FEEDBACK_EMAIL],
         fail_silently=False,
     )
