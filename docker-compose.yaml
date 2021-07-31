@@ -19,6 +19,16 @@ services:
     volumes:
       - /data:/data
     scale: 2
+  wiper:
+      image: "ghcr.io/open-contracting/data-registry-django:latest"
+      command: "python manage.py wiper --settings=core.settings.docker"
+      network_mode: "host"
+      env_file:
+        - data-registry.env
+      restart: unless-stopped
+      volumes:
+        - /data:/data
+      scale: 1
   cbom:
     image: "ghcr.io/open-contracting/data-registry-django:latest"
     command: "python manage.py cbom --settings=core.settings.docker"
