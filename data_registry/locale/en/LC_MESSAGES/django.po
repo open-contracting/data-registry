@@ -244,10 +244,14 @@ msgid ""
 "interested in.\n"
 "                                    "
 msgstr ""
+"\n"
+"Select the time period that you would like to access JSON data for. "
+"Data is provided as a GZ file. Windows users will need to install "
+"additional software such WinZip or WinRAR to extract the data."
 
 #: templates/detail.html:214
 msgid "Full history dataset"
-msgstr ""
+msgstr "All time data from this source"
 
 #: templates/detail.html:218 templates/detail.html:230
 msgid ""
@@ -258,10 +262,14 @@ msgid ""
 "process.\n"
 "                                    "
 msgstr ""
+"\n"
+"This file will contain OCDS data for all fields provided by the publisher and"
+"for the entire time period for which data has been made available by the"
+"publisher. Please note that the file may be extremely large and may take some time to process."
 
 #: templates/detail.html:226
 msgid "Particular year dataset"
-msgstr ""
+msgstr "Data by year"
 
 #: templates/detail.html:240
 msgid "Choose year"
