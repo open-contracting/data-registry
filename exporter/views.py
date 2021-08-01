@@ -25,7 +25,7 @@ def exporter_start(request):
 
 
 @csrf_exempt
-def wiper_startrequest):
+def wiper_start(request):
     routing_key = "_wiper_init"
 
     input_message = json.loads(request.body.decode("utf8"))
