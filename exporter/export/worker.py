@@ -50,6 +50,10 @@ def callback(connection, channel, delivery_tag, body):
         page = 1
         files = {}
 
+        # acknowledge message processing now to avoid connection loses
+        # the rest can run for hours and is irreversible anyways
+        ack(connection, channel, delivery_tag)
+
         # load data from kf-process and save
         while True:
             with connections["kf_process"].cursor() as cursor:
@@ -110,8 +114,6 @@ def callback(connection, channel, delivery_tag, body):
         # remove lock file
         os.remove(lock_file)
 
-        # acknowledge message processing
-        ack(connection, channel, delivery_tag)
     except Exception:
         logger.exception(f"Something went wrong when processing {body}")
         sys.exit()
