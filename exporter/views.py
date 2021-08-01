@@ -25,6 +25,19 @@ def exporter_start(request):
 
 
 @csrf_exempt
+def exporter_wipe(request):
+    routing_key = "_wiper_init"
+
+    input_message = json.loads(request.body.decode("utf8"))
+    collection_id = input_message.get("collection_id")
+    publish(request.body.decode("utf-8"), routing_key)
+
+    return JsonResponse(
+        {"status": "ok", "data": {"message": f"Wiping of collection {collection_id} started"}}, safe=False
+    )
+
+
+@csrf_exempt
 def exporter_status(request):
     input_message = json.loads(request.body.decode("utf8"))
 
