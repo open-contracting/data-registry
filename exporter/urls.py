@@ -1,7 +1,6 @@
 from django.urls import path
 
-from exporter.views import (download_export, export_years, exporter_start,
-                            exporter_status, wiper_start)
+from exporter.views import download_export, export_years, exporter_start, exporter_status, wiper_start
 
 urlpatterns = [
     path('api/exporter_start', exporter_start, name='exporter_start'),
