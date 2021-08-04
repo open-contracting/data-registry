@@ -173,7 +173,11 @@
             </div>
             <div class="col-9">
                 <h6>{% translate "Summary" %}</h6>
-                <markdown-box class="summary" tag="p" :content="data.summary"></markdown-box>
+                <markdown-box class="summary" tag="p" :content="data.summary">
+                    <template #empty>
+                        {% translate "We have not yet prepared a data quality summary for this dataset." %}
+                    </template>
+                </markdown-box>
 
                 <template v-if="data.issues">
                     <h6>{% translate "Issues found" %}</h6>
