@@ -35,12 +35,12 @@ jobs:
       - run: ./manage.py --help
       - run: curl -s -S --retry 3 $BASEDIR/tests/install.sh | bash -
       - run: pip install -r requirements_dev.txt
-      - run: curl -s -S --retry 3 $BASEDIR/tests/script.sh | bash -
-      - run: STANDARD_MAINTENANCE_SCRIPTS_IGNORE=gunicorn pytest /tmp/test_requirements.py
-      - run: coverage run --source core,data_registry manage.py test --settings core.settings.github
-        if: always()
-        env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres?application_name=data_registry
+      #- run: curl -s -S --retry 3 $BASEDIR/tests/script.sh | bash -
+      #- run: STANDARD_MAINTENANCE_SCRIPTS_IGNORE=gunicorn pytest /tmp/test_requirements.py
+      #- run: coverage run --source core,data_registry manage.py test --settings core.settings.github
+      #  if: always()
+      #  env:
+      #    DATABASE_URL: postgresql://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres?application_name=data_registry
       - uses: actions/setup-node@v1
         with:
           node-version: "12.x"
