@@ -195,22 +195,21 @@ def update_collection_availability(job):
 
     counts = resp.json().get("data")
 
-    c = job.collection
-    c.tenders_count = counts.get("tenders")
-    c.tenderers_count = counts.get("tenderers")
-    c.tenders_items_count = counts.get("tenders_items")
-    c.parties_count = counts.get("parties")
-    c.awards_count = counts.get("awards")
-    c.awards_items_count = counts.get("awards_items")
-    c.awards_suppliers_count = counts.get("awards_suppliers")
-    c.contracts_count = counts.get("contracts")
-    c.contracts_items_count = counts.get("contracts_items")
-    c.contracts_transactions_count = counts.get("contracts_transactions")
-    c.documents_count = counts.get("documents")
-    c.plannings_count = counts.get("plannings")
-    c.milestones_count = counts.get("milestones")
-    c.amendments_count = counts.get("amendments")
-    c.save()
+    job.tenders_count = counts.get("tenders")
+    job.tenderers_count = counts.get("tenderers")
+    job.tenders_items_count = counts.get("tenders_items")
+    job.parties_count = counts.get("parties")
+    job.awards_count = counts.get("awards")
+    job.awards_items_count = counts.get("awards_items")
+    job.awards_suppliers_count = counts.get("awards_suppliers")
+    job.contracts_count = counts.get("contracts")
+    job.contracts_items_count = counts.get("contracts_items")
+    job.contracts_transactions_count = counts.get("contracts_transactions")
+    job.documents_count = counts.get("documents")
+    job.plannings_count = counts.get("plannings")
+    job.milestones_count = counts.get("milestones")
+    job.amendments_count = counts.get("amendments")
+    job.save()
 
 
 def update_collection_metadata(job):
@@ -225,14 +224,12 @@ def update_collection_metadata(job):
 
     meta = resp.json().get("data")
 
-    c = job.collection
     if meta:
-        c.date_from = parse_date(meta.get("published_from"))
-        c.date_to = parse_date(meta.get("published_to"))
-        c.license = meta.get("data_license")
-        c.ocid_prefix = meta.get("ocid_prefix")
-
-        c.save()
+        job.date_from = parse_date(meta.get("published_from"))
+        job.date_to = parse_date(meta.get("published_to"))
+        job.license = meta.get("data_license")
+        job.ocid_prefix = meta.get("ocid_prefix")
+        job.save()
 
 
 def parse_date(datetime_str):

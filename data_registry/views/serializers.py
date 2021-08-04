@@ -37,6 +37,10 @@ class LicenseSerializer(BasicSerializer):
     pass
 
 
+class JobSerializer(BasicSerializer):
+    pass
+
+
 class CollectionSerializer(BasicSerializer):
     markdown_fields = ["additional_data", "description_long", "summary", "issues"]
 
@@ -46,9 +50,9 @@ class CollectionSerializer(BasicSerializer):
 
         if hasattr(data, "issues") and data.issues:
             result["issues"] = data.issues
-        if hasattr(data, "active_job") and data.active_job:
-            result["active_job"] = data.active_job
         if hasattr(data, "license_custom") and data.license_custom:
             result["license_custom"] = LicenseSerializer.serialize(data.license_custom)
+        if hasattr(data, "active_job") and data.active_job:
+            result["active_job"] = JobSerializer.serialize(data.active_job)
 
         return result

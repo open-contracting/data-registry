@@ -75,7 +75,7 @@
             <div class="col-9 data">
                 <div>
                     <span class="label">{% translate "Data date range:" %}</span>
-                    <span class="value">[[ data.date_from | moment("MMM YYYY") ]] - [[ data.date_to | moment("MMM YYYY") ]]</span>
+                    <span class="value">[[ data.active_job.date_from | moment("MMM YYYY") ]] - [[ data.active_job.date_to | moment("MMM YYYY") ]]</span>
                 </div>
                 <div>
                     <span class="label">{% translate "Last updated:" %}</span>
@@ -91,7 +91,7 @@
                 </div>
                 <div>
                     <span class="label">{% translate "OCID prefix:" %}</span>
-                    <span class="value">[[ data.ocid_prefix ]]</span>
+                    <span class="value">[[ data.active_job.ocid_prefix ]]</span>
                 </div>
                 <div class="license">
                     <span class="label">{% translate "License:" %}</span>
@@ -100,7 +100,7 @@
                             <a :href="data.license_custom.url" target="_blank">[[ data.license_custom.name ]]</a>
                             <markdown-box class="small" :content="data.license_custom.description"></markdown-box>
                         </template>
-                        <template v-else>[[ data.license ]]</template>
+                        <template v-else>[[ data.active_job.license ]]</template>
                     </span>
                 </div>
                 <div>
@@ -117,42 +117,42 @@
             <div class="col-9">
                 <div class="row">
                     <div class="col-4 item">
-                        <h6><check-icon :checked="data.parties_count" class="mr-2"></check-icon>{% translate "Parties" %}</h6>
-                        <div>{% translate "Count of parties:" %} <span class="value">[[ data.parties_count ]]</span></div>
+                        <h6><check-icon :checked="data.active_job.parties_count" class="mr-2"></check-icon>{% translate "Parties" %}</h6>
+                        <div>{% translate "Count of parties:" %} <span class="value">[[ data.active_job.parties_count ]]</span></div>
                     </div>
                     <div class="col-4 item">
-                        <h6><check-icon :checked="data.plannings_count" class="mr-2"></check-icon>{% translate "Plannings" %}</h6>
-                        <div>{% translate "Count of planning activities:" %} <span class="value">[[ data.plannings_count ]]</span></div>
+                        <h6><check-icon :checked="data.active_job.plannings_count" class="mr-2"></check-icon>{% translate "Plannings" %}</h6>
+                        <div>{% translate "Count of planning activities:" %} <span class="value">[[ data.active_job.plannings_count ]]</span></div>
                     </div>
                     <div class="col-4 item">
-                        <h6><check-icon :checked="data.tenders_count" class="mr-2"></check-icon>{% translate "Tenders" %}</h6>
-                        <div>{% translate "Count of tenders:" %} <span class="value">[[ data.tenders_count ]]</span></div>
-                        <div>{% translate "Count of tenderers:" %} <span class="value">[[ data.tenderers_count ]]</span></div>
-                        <div>{% translate "Count of tender items:" %} <span class="value">[[ data.tenders_items_count ]]</span></div>
+                        <h6><check-icon :checked="data.active_job.tenders_count" class="mr-2"></check-icon>{% translate "Tenders" %}</h6>
+                        <div>{% translate "Count of tenders:" %} <span class="value">[[ data.active_job.tenders_count ]]</span></div>
+                        <div>{% translate "Count of tenderers:" %} <span class="value">[[ data.active_job.tenderers_count ]]</span></div>
+                        <div>{% translate "Count of tender items:" %} <span class="value">[[ data.active_job.tenders_items_count ]]</span></div>
                     </div>
                     <div class="col-4 item">
-                        <h6><check-icon :checked="data.awards_count" class="mr-2"></check-icon>{% translate "Awards" %}</h6>
-                        <div>{% translate "Count of awards:" %} <span class="value">[[ data.awards_count ]]</span></div>
-                        <div>{% translate "Count of award items:" %} <span class="value">[[ data.awards_items_count ]]</span></div>
-                        <div>{% translate "Count of award suppliers:" %} <span class="value">[[ data.awards_suppliers_count ]]</span></div>
+                        <h6><check-icon :checked="data.active_job.awards_count" class="mr-2"></check-icon>{% translate "Awards" %}</h6>
+                        <div>{% translate "Count of awards:" %} <span class="value">[[ data.active_job.awards_count ]]</span></div>
+                        <div>{% translate "Count of award items:" %} <span class="value">[[ data.active_job.awards_items_count ]]</span></div>
+                        <div>{% translate "Count of award suppliers:" %} <span class="value">[[ data.active_job.awards_suppliers_count ]]</span></div>
                     </div>
                     <div class="col-4 item">
-                        <h6><check-icon :checked="data.contracts_count" class="mr-2"></check-icon>{% translate "Contracts" %}</h6>
-                        <div>{% translate "Count of contracts:" %} <span class="value">[[ data.contracts_count ]]</span></div>
-                        <div>{% translate "Count of contract items:" %} <span class="value">[[ data.contracts_items_count ]]</span></div>
-                        <div>{% translate "Count of contract transactions:" %} <span class="value">[[ data.contracts_transactions_count ]]</span></div>
+                        <h6><check-icon :checked="data.active_job.contracts_count" class="mr-2"></check-icon>{% translate "Contracts" %}</h6>
+                        <div>{% translate "Count of contracts:" %} <span class="value">[[ data.active_job.contracts_count ]]</span></div>
+                        <div>{% translate "Count of contract items:" %} <span class="value">[[ data.active_job.contracts_items_count ]]</span></div>
+                        <div>{% translate "Count of contract transactions:" %} <span class="value">[[ data.active_job.contracts_transactions_count ]]</span></div>
                     </div>
                     <div class="col-4 item">
-                        <h6><check-icon :checked="data.documents_count" class="mr-2"></check-icon>{% translate "Documents" %}</h6>
-                        <div>{% translate "Count of documents:" %} <span class="value">[[ data.documents_count ]]</span></div>
+                        <h6><check-icon :checked="data.active_job.documents_count" class="mr-2"></check-icon>{% translate "Documents" %}</h6>
+                        <div>{% translate "Count of documents:" %} <span class="value">[[ data.active_job.documents_count ]]</span></div>
                     </div>
                     <div class="col-4 item">
-                        <h6><check-icon :checked="data.milestones_count" class="mr-2"></check-icon>{% translate "Milestones" %}</h6>
-                        <div>{% translate "Count of milestones:" %} <span class="value">[[ data.milestones_count ]]</span></div>
+                        <h6><check-icon :checked="data.active_job.milestones_count" class="mr-2"></check-icon>{% translate "Milestones" %}</h6>
+                        <div>{% translate "Count of milestones:" %} <span class="value">[[ data.active_job.milestones_count ]]</span></div>
                     </div>
                     <div class="col-4 item">
-                        <h6><check-icon :checked="data.amendments_count" class="mr-2"></check-icon>{% translate "Amendments" %}</h6>
-                        <div>{% translate "Count of amendments:" %} <span class="value">[[ data.amendments_count ]]</span></div>
+                        <h6><check-icon :checked="data.active_job.amendments_count" class="mr-2"></check-icon>{% translate "Amendments" %}</h6>
+                        <div>{% translate "Count of amendments:" %} <span class="value">[[ data.active_job.amendments_count ]]</span></div>
                     </div>
                 </div>
 

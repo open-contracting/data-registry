@@ -5,7 +5,6 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.postgres.aggregates import ArrayAgg
 from django.core.mail import send_mail
-from django.db.models.aggregates import Max
 from django.db.models.expressions import Exists, OuterRef
 from django.db.models.query_utils import Q
 from django.http.response import JsonResponse
@@ -50,14 +49,13 @@ def detail(request, id):
         Collection.objects
         .select_related("license_custom")
         .annotate(issues=ArrayAgg("issue__description", filter=Q(issue__isnull=False)))
-        .annotate(active_job=Max("job__id", filter=Q(job__active=True)))
         .get(id=id)
     )
 
     resp = requests.post(
         f"{settings.EXPORTER_HOST}api/export_years",
         json={
-            "job_id": data.get("active_job"),
+            "job_id": data.get("active_job").get("id"),
             "spider": data.get("source_id")
         }
     )

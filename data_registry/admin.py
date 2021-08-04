@@ -108,16 +108,6 @@ class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
 
         self._f_move_relative(fields, 'country_en', 'country_es')
         self._f_move_relative(fields, 'country_en', 'country_flag')
-        self._f_move_relative(fields, 'license', 'license_custom')
-
-        bottom_fields = ["date_from", "date_to", "last_update", "ocid_prefix", "json_format", "excel_format",
-                         "tenders_count", "tenderers_count", "tenders_items_count", "parties_count", "awards_count",
-                         "awards_items_count", "awards_suppliers_count", "contracts_count", "contracts_items_count",
-                         "contracts_transactions_count", "documents_count", "plannings_count", "milestones_count",
-                         "amendments_count"]
-
-        for field in bottom_fields:
-            self._f_move_revert(fields, field)
 
         return fields
 
