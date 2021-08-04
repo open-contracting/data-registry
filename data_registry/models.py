@@ -101,6 +101,10 @@ class Job(Model):
 
     active = BooleanField(default=False)
 
+    archived = BooleanField(default=False)
+
+    keep_all_data = BooleanField(default=False)
+
     created = DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)
     modified = DateTimeField(auto_now=True, blank=True, null=True, db_index=True)
 

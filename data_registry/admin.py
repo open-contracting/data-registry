@@ -166,9 +166,9 @@ class TaskInLine(TabularInline):
 
 
 class JobAdmin(ModelAdmin):
-    list_display = ["__str__", "country", "collection", "status", "last_task", "active"]
+    list_display = ["__str__", "country", "collection", "status", "last_task", "active", "archived", "keep_all_data"]
 
-    list_editable = ["active", "status"]
+    list_editable = ["active", "status", "keep_all_data"]
 
     inlines = [
         TaskInLine

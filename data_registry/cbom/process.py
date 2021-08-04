@@ -10,6 +10,9 @@ from django.utils import timezone
 
 from data_registry.cbom.task.exceptions import RecoverableException
 from data_registry.cbom.task.factory import TaskFactory
+from data_registry.cbom.task.pelican import Pelican
+from data_registry.cbom.task.process import Process
+from data_registry.cbom.task.scrape import Scrape
 from data_registry.cbom.utils import request
 from data_registry.models import Job, Task
 
@@ -52,35 +55,39 @@ def process(collection):
                             break
                         elif status == Task.Status.COMPLETED:
                             # complete the task
-                            task.end = timezone.now()
-                            task.status = Task.Status.COMPLETED
-                            task.result = Task.Result.OK
-
-                            task.save()
+                            task.update(
+                                end=timezone.now(),
+                                status=Task.Status.COMPLETED,
+                                result=Task.Result.OK
+                            )
                     elif task.status == Task.Status.PLANNED:
                         if job.status == Job.Status.PLANNED:
-                            job.start = timezone.now()
-                            job.status = Job.Status.RUNNING
-                            job.save()
+                            job.update(
+                                start=timezone.now(),
+                                status=Job.Status.RUNNING
+                            )
 
                             logger.debug(f"Job {job} started")
 
                         # run the task
                         _task.run()
-                        task.start = timezone.now()
-                        task.status = Task.Status.RUNNING
+
+                        task.update(
+                            start=timezone.now(),
+                            status=Task.Status.RUNNING
+                        )
+
                         job_complete = False
 
                         logger.debug(f"Task {task} started")
 
-                        task.save()
-
                         break
                 except RecoverableException as e:
                     job_complete = False
-                    task.result = Task.Result.FAILED
-                    task.note = str(e)
-                    task.save()
+                    task.update(
+                        result=Task.Result.FAILED,
+                        note=str(e)
+                    )
 
                     logger.exception(e)
                     break
@@ -90,16 +97,18 @@ def process(collection):
                     logger.exception(e)
 
                     # close task as failed
-                    task.end = timezone.now()
-                    task.status = Task.Status.COMPLETED
-                    task.result = Task.Result.FAILED
-                    task.note = str(e)
-                    task.save()
+                    task.update(
+                        end=timezone.now(),
+                        status=Task.Status.COMPLETED,
+                        result=Task.Result.FAILED,
+                        note=str(e)
+                    )
 
                     # close job
-                    job.status = Job.Status.COMPLETED
-                    job.end = timezone.now()
-                    job.save()
+                    job.update(
+                        status=Job.Status.COMPLETED,
+                        end=timezone.now()
+                    )
 
                     logger.debug(f"Job {job} failed")
                     break
@@ -114,9 +123,15 @@ def process(collection):
                 except Exception as e:
                     logger.exception(e)
                 else:
-                    job.status = Job.Status.COMPLETED
-                    job.end = timezone.now()
-                    job.save()
+                    job.update(
+                        status=Job.Status.COMPLETED,
+                        end=timezone.now()
+                    )
+
+                    # wipe job data
+                    if not job.keep_all_data:
+                        wipe_job(job)
+                        job.update(archived=True)
 
                     # set active job
                     Job.objects\
@@ -232,3 +247,12 @@ def parse_date(datetime_str):
 
     datetime_obj = datetime.strptime(datetime_str, '%Y-%m-%d %H.%M.%S')
     return datetime_obj.date()
+
+
+def wipe_job(job):
+    if not job:
+        return
+
+    Scrape(None, job).wipe()
+    Process(job).wipe()
+    Pelican(job).wipe()
