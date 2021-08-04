@@ -55,27 +55,24 @@ def process(collection):
                             break
                         elif status == Task.Status.COMPLETED:
                             # complete the task
-                            task.update(
-                                end=timezone.now(),
-                                status=Task.Status.COMPLETED,
-                                result=Task.Result.OK
-                            )
+                            task.end = timezone.now()
+                            task.status = Task.Status.COMPLETED
+                            task.result = Task.Result.OK
+                            task.save()
                     elif task.status == Task.Status.PLANNED:
                         if job.status == Job.Status.PLANNED:
-                            job.update(
-                                start=timezone.now(),
-                                status=Job.Status.RUNNING
-                            )
+                            job.start = timezone.now()
+                            job.status = Job.Status.RUNNING
+                            job.save()
 
                             logger.debug(f"Job {job} started")
 
                         # run the task
                         _task.run()
 
-                        task.update(
-                            start=timezone.now(),
-                            status=Task.Status.RUNNING
-                        )
+                        task.start = timezone.now()
+                        task.status = Task.Status.RUNNING
+                        task.save()
 
                         job_complete = False
 
@@ -84,10 +81,9 @@ def process(collection):
                         break
                 except RecoverableException as e:
                     job_complete = False
-                    task.update(
-                        result=Task.Result.FAILED,
-                        note=str(e)
-                    )
+                    task.result = Task.Result.FAILED
+                    task.note = str(e)
+                    task.save()
 
                     logger.exception(e)
                     break
@@ -97,18 +93,16 @@ def process(collection):
                     logger.exception(e)
 
                     # close task as failed
-                    task.update(
-                        end=timezone.now(),
-                        status=Task.Status.COMPLETED,
-                        result=Task.Result.FAILED,
-                        note=str(e)
-                    )
+                    task.end = timezone.now()
+                    task.status = Task.Status.COMPLETED
+                    task.result = Task.Result.FAILED
+                    task.note = str(e)
+                    task.save()
 
                     # close job
-                    job.update(
-                        status=Job.Status.COMPLETED,
-                        end=timezone.now()
-                    )
+                    job.status = Job.Status.COMPLETED
+                    job.end = timezone.now()
+                    job.save()
 
                     logger.debug(f"Job {job} failed")
                     break
@@ -123,15 +117,15 @@ def process(collection):
                 except Exception as e:
                     logger.exception(e)
                 else:
-                    job.update(
-                        status=Job.Status.COMPLETED,
-                        end=timezone.now()
-                    )
+                    job.status = Job.Status.COMPLETED
+                    job.end = timezone.now()
+                    job.save()
 
                     # wipe job data
                     if not job.keep_all_data:
                         wipe_job(job)
-                        job.update(archived=True)
+                        job.archived = True
+                        job.save()
 
                     # set active job
                     Job.objects\
@@ -253,6 +247,6 @@ def wipe_job(job):
     if not job:
         return
 
-    Scrape(None, job).wipe()
+    Scrape(job.collection, job).wipe()
     Process(job).wipe()
     Pelican(job).wipe()

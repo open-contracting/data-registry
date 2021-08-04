@@ -126,7 +126,7 @@ def send_feedback(request):
 def wipe_job(job_id):
     job = get_object_or_404(Job, pk=job_id)
 
-    Scrape(None, job).wipe()
+    Scrape(job.collection, job).wipe()
     Process(job).wipe()
     Pelican(job).wipe()
     Exporter(job).wipe()

@@ -39,6 +39,11 @@ class ProcessTests(TransactionTestCase):
             process(collection)
 
             job = Job.objects.filter(collection=collection).first()
+
+            # skip wipe
+            job.keep_all_data = True
+            job.save()
+
             self.assertIsNotNone(job)
             self.assertIsNotNone(job.start)
 
