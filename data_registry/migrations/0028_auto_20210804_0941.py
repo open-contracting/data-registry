@@ -3,6 +3,28 @@
 from django.db import migrations, models
 
 
+def move_values(apps, schema_editor):
+    Job = apps.get_model("data_registry", "Job")
+    jobs = Job.objects.all()
+
+    for job in jobs:
+        job.tenders_count = job.collection.tenders_count
+        job.tenderers_count = job.collection.tenderers_count
+        job.tenders_items_count = job.collection.tenders_items_count
+        job.parties_count = job.collection.parties_count
+        job.awards_count = job.collection.awards_count
+        job.awards_items_count = job.collection.awards_items_count
+        job.awards_suppliers_count = job.collection.awards_suppliers_count
+        job.contracts_count = job.collection.contracts_count
+        job.contracts_items_count = job.collection.contracts_items_count
+        job.contracts_transactions_count = job.collection.contracts_transactions_count
+        job.documents_count = job.collection.documents_count
+        job.plannings_count = job.collection.plannings_count
+        job.milestones_count = job.collection.milestones_count
+        job.amendments_count = job.collection.amendments_count
+        job.save()
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -10,78 +32,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='collection',
-            name='amendments_count',
-        ),
-        migrations.RemoveField(
-            model_name='collection',
-            name='awards_count',
-        ),
-        migrations.RemoveField(
-            model_name='collection',
-            name='awards_items_count',
-        ),
-        migrations.RemoveField(
-            model_name='collection',
-            name='awards_suppliers_count',
-        ),
-        migrations.RemoveField(
-            model_name='collection',
-            name='contracts_count',
-        ),
-        migrations.RemoveField(
-            model_name='collection',
-            name='contracts_items_count',
-        ),
-        migrations.RemoveField(
-            model_name='collection',
-            name='contracts_transactions_count',
-        ),
-        migrations.RemoveField(
-            model_name='collection',
-            name='date_from',
-        ),
-        migrations.RemoveField(
-            model_name='collection',
-            name='date_to',
-        ),
-        migrations.RemoveField(
-            model_name='collection',
-            name='documents_count',
-        ),
-        migrations.RemoveField(
-            model_name='collection',
-            name='license',
-        ),
-        migrations.RemoveField(
-            model_name='collection',
-            name='milestones_count',
-        ),
-        migrations.RemoveField(
-            model_name='collection',
-            name='ocid_prefix',
-        ),
-        migrations.RemoveField(
-            model_name='collection',
-            name='parties_count',
-        ),
-        migrations.RemoveField(
-            model_name='collection',
-            name='plannings_count',
-        ),
-        migrations.RemoveField(
-            model_name='collection',
-            name='tenderers_count',
-        ),
-        migrations.RemoveField(
-            model_name='collection',
-            name='tenders_count',
-        ),
-        migrations.RemoveField(
-            model_name='collection',
-            name='tenders_items_count',
-        ),
         migrations.AddField(
             model_name='job',
             name='amendments_count',
@@ -171,5 +121,78 @@ class Migration(migrations.Migration):
             model_name='job',
             name='tenders_items_count',
             field=models.IntegerField(default=0),
+        ),
+        migrations.RunPython(move_values),
+        migrations.RemoveField(
+            model_name='collection',
+            name='amendments_count',
+        ),
+        migrations.RemoveField(
+            model_name='collection',
+            name='awards_count',
+        ),
+        migrations.RemoveField(
+            model_name='collection',
+            name='awards_items_count',
+        ),
+        migrations.RemoveField(
+            model_name='collection',
+            name='awards_suppliers_count',
+        ),
+        migrations.RemoveField(
+            model_name='collection',
+            name='contracts_count',
+        ),
+        migrations.RemoveField(
+            model_name='collection',
+            name='contracts_items_count',
+        ),
+        migrations.RemoveField(
+            model_name='collection',
+            name='contracts_transactions_count',
+        ),
+        migrations.RemoveField(
+            model_name='collection',
+            name='date_from',
+        ),
+        migrations.RemoveField(
+            model_name='collection',
+            name='date_to',
+        ),
+        migrations.RemoveField(
+            model_name='collection',
+            name='documents_count',
+        ),
+        migrations.RemoveField(
+            model_name='collection',
+            name='license',
+        ),
+        migrations.RemoveField(
+            model_name='collection',
+            name='milestones_count',
+        ),
+        migrations.RemoveField(
+            model_name='collection',
+            name='ocid_prefix',
+        ),
+        migrations.RemoveField(
+            model_name='collection',
+            name='parties_count',
+        ),
+        migrations.RemoveField(
+            model_name='collection',
+            name='plannings_count',
+        ),
+        migrations.RemoveField(
+            model_name='collection',
+            name='tenderers_count',
+        ),
+        migrations.RemoveField(
+            model_name='collection',
+            name='tenders_count',
+        ),
+        migrations.RemoveField(
+            model_name='collection',
+            name='tenders_items_count',
         ),
     ]

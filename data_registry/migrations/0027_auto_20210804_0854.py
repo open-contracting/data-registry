@@ -18,6 +18,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='job',
             name='keep_all_data',
-            field=models.BooleanField(default=False),
+            field=models.BooleanField(default=True),
+            preserve_default=True
         ),
     ]
