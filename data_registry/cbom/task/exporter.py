@@ -47,3 +47,15 @@ class Exporter(BaseTask):
             return Task.Status.RUNNING
         elif json == "COMPLETED":
             return Task.Status.COMPLETED
+
+    def wipe(self):
+        request(
+            "POST",
+            f"{settings.EXPORTER_HOST}api/wiper_start",
+            json={
+                "job_id": self.job.id,
+                "collection_id": self.collection_id,
+                "spider": self.job.context.get("spider")
+            },
+            error_msg="Unable to wipe EXPORTER"
+        )

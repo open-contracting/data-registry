@@ -83,3 +83,17 @@ class Pelican(BaseTask):
             self.job.save()
 
         return dataset_name
+
+    def wipe(self):
+        pelican_id = self.get_pelican_id()
+        if not pelican_id:
+            return
+
+        request(
+            "POST",
+            f"{settings.PELICAN_HOST}api/dataset_wipe",
+            json={
+                "dataset_id": pelican_id
+            },
+            error_msg="Unable to wipe PELICAN"
+        )

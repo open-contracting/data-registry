@@ -1,4 +1,5 @@
 import re
+import shutil
 from datetime import date
 
 from django.conf import settings
@@ -109,3 +110,13 @@ class Scrape(BaseTask):
 
         m = re.search('Created collection in Kingfisher process with id (.+)', resp.text)
         return m.group(1) if m else None
+
+    def wipe(self):
+        version = self.job.context.get("process_data_version", None)
+
+        if version:
+            version = version.replace("-", "").replace(":", "").replace("T", "_")
+
+            path = f"{settings.SCRAPY_FILES_STORE}/{self.spider}/{version}"
+
+            shutil.rmtree(path)

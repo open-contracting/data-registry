@@ -6,5 +6,6 @@ urlpatterns = [
     path('', general.index, name='index'),
     path('search/', general.search, name='search'),
     path('collection/<int:id>', general.detail, name='detail'),
-    path('send_feedback/', general.send_feedback, name='send-feedback')
+    path('send_feedback/', general.send_feedback, name='send-feedback'),
+    path('wipe_job/<int:job_id>', general.wipe_job, name='wipe-job')
 ]

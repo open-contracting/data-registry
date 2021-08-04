@@ -9,9 +9,13 @@ from django.db.models.aggregates import Max
 from django.db.models.expressions import Exists, OuterRef
 from django.db.models.query_utils import Q
 from django.http.response import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 
+from data_registry.cbom.task.exporter import Exporter
+from data_registry.cbom.task.pelican import Pelican
+from data_registry.cbom.task.process import Process
+from data_registry.cbom.task.scrape import Scrape
 from data_registry.models import Collection, Job
 from data_registry.views.serializers import CollectionSerializer
 
@@ -116,3 +120,15 @@ def send_feedback(request):
     )
 
     return JsonResponse(True, safe=False)
+
+
+@login_required
+def wipe_job(job_id):
+    job = get_object_or_404(Job, pk=job_id)
+
+    Scrape(None, job).wipe()
+    Process(job).wipe()
+    Pelican(job).wipe()
+    Exporter(job).wipe()
+
+    job.delete()

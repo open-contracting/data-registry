@@ -38,3 +38,13 @@ class Process(BaseTask):
             self.job.save()
 
         return Task.Status.COMPLETED if is_last_completed else Task.Status.RUNNING
+
+    def wipe(self):
+        request(
+            "POST",
+            f"{settings.PROCESS_HOST}api/v1/wipe_collection/",
+            json={
+                "collection_id": self.process_id
+            },
+            error_msg="Unable to wipe PROCESS"
+        )
