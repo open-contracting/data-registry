@@ -123,5 +123,4 @@ class Migration(migrations.Migration):
             field=models.IntegerField(default=0),
         ),
         migrations.RunPython(move_values),
-
     ]
