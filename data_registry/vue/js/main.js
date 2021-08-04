@@ -335,7 +335,10 @@ if (document.getElementById("detail_app")) {
             },
             feedbackTypeOptions: () => FEEDBACK_TYPE_OPTIONS,
             jsonYearOptions: () => JSON_YEAR_OPTIONS,
-            exporterApiUrl: () => CONFIG.exporterApiBaseUrl
+            exporterApiUrl: () => CONFIG.exporterApiBaseUrl,
+            activeJob: function() {
+                return DATA.active_job ? DATA.active_job : {}
+            }
         },
         methods: {
             submitFeedback: function() {

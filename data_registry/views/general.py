@@ -55,7 +55,7 @@ def detail(request, id):
     resp = requests.post(
         f"{settings.EXPORTER_HOST}api/export_years",
         json={
-            "job_id": data.get("active_job").get("id"),
+            "job_id": data.get("active_job", {}).get("id", None),
             "spider": data.get("source_id")
         }
     )
