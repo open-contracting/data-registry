@@ -29,17 +29,22 @@ class CollectionAdminForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CollectionAdminForm, self).__init__(*args, **kwargs)
 
-        resp = requests.get(
-            settings.SCRAPY_HOST + "listspiders.json",
-            params={
-                "project": settings.SCRAPY_PROJECT
-            }
-        )
+        try:
+            resp = requests.get(
+                settings.SCRAPY_HOST + "listspiders.json",
+                params={
+                    "project": settings.SCRAPY_PROJECT
+                }
+            )
 
-        json = resp.json()
+            json = resp.json()
 
-        if json.get("status") == "ok":
-            self.fields['source_id'].choices += tuple([(n, n) for n in json.get("spiders")])
+            if json.get("status") == "ok":
+                self.fields['source_id'].choices += tuple([(n, n) for n in json.get("spiders")])
+        except Exception:
+            # scrapy api doesnt respond
+            sid = self.instance.source_id
+            self.fields['source_id'].choices += tuple([(sid, sid)])
 
         self.fields["active_job"].queryset = Job.objects.filter(collection=kwargs.get("instance"),
                                                                 status=Job.Status.COMPLETED)
