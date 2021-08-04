@@ -9,5 +9,3 @@ gunicorn
 pika
 sentry-sdk
 
-# Translations
-transifex-client

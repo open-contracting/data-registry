@@ -5,3 +5,6 @@ isort
 pip-tools
 dj-database-url
 pytest
+
+# Translations
+transifex-client
