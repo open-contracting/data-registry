@@ -16,8 +16,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
 #: data_registry/templates/base.html:16
 msgid "Data Registry"
 msgstr ""
@@ -245,34 +246,27 @@ msgstr ""
 msgid "Access JSON data"
 msgstr ""
 
-#: data_registry/templates/detail.html:216                                  "
+#: data_registry/templates/detail.html:216
 msgid ""
 "Please, choose how you would like to access the JSON data. You can either "
 "download the full history as one dataset or choose particular year that you "
 "are interested in."
 msgstr ""
-"Select the time period that you would like to access JSON data for. Data is "
-"provided as a GZ file. Windows users will need to install additional "
-"software such WinZip or WinRAR to extract the data."
 
 #: data_registry/templates/detail.html:224
 msgid "Full history dataset"
-msgstr "All time data from this source"
+msgstr ""
 
-#: data_registry/templates/detail.html:228                                  "
+#: data_registry/templates/detail.html:228
 msgid ""
 "Dataset containing the full history of available data for given source. "
 "Depending on the source, the file may be extremely large and might take some "
 "time process."
 msgstr ""
-"This file will contain OCDS data for all fields provided by the publisher "
-"andfor the entire time period for which data has been made available by "
-"thepublisher. Please note that the file may be extremely large and may take "
-"some time to process."
 
 #: data_registry/templates/detail.html:236
 msgid "Particular year dataset"
-msgstr "Data by year"
+msgstr ""
 
 #: data_registry/templates/detail.html:240
 msgid ""

@@ -199,7 +199,7 @@
                             <div class="format-wrapper">
                                 <h3><check-icon :checked="data.json_format" class="mr-2"></check-icon>{% translate "JSON data" %}</h3>
                                 <p class="format-description">
-                                    {% blocktrans %}
+                                    {% blocktrans trimmed %}
                                     Easily access dumps of data from the Open Contracting Partnership's Kingfisher database.
                                     {% endblocktrans %}
                                 </p>
@@ -213,7 +213,7 @@
 
                             <modal id="json-export-form" title="{% translate 'Access JSON data' %}">
                                 <p class="light">
-                                    {% blocktrans %}
+                                    {% blocktrans trimmed %}
                                     Please, choose how you would like to access the JSON data. You can either download the full history as one dataset
                                     or choose particular year that you are interested in.
                                     {% endblocktrans %}
@@ -225,7 +225,7 @@
                                     </b-radio>
                                 </div>
                                 <p class="light indention">
-                                    {% blocktrans %}
+                                    {% blocktrans trimmed %}
                                     Dataset containing the full history of available data for given source. Depending on the source, the file may be
                                     extremely large and might take some time process.
                                     {% endblocktrans %}
@@ -237,7 +237,7 @@
                                     </b-radio>
                                 </div>
                                 <p class="light indention">
-                                    {% blocktrans %}
+                                    {% blocktrans trimmed %}
                                     This file will contain OCDS data for all fields provided by the publisher, but only for the year selected below.
                                     Depending on the source, the file may be extremely large and may take some time to process.
                                     {% endblocktrans %}
@@ -269,7 +269,7 @@
                             <div class="format-wrapper">
                                 <h3><check-icon :checked="data.excel_format" class="mr-2"></check-icon>{% translate "Excel data via OCP Flatten tool" %}</h3>
                                 <p class="format-description">
-                                    {% blocktrans %}
+                                    {% blocktrans trimmed %}
                                     Easily access data in Excel using the Open Contracting Partnership's Flatten Tool. This tool is designed to help users that prefer data
                                     in spreadsheets to either select a small subset of fields / column headings or to customise their spreadsheet output.
                                     {% endblocktrans %}
@@ -298,20 +298,20 @@
 
                     <modal id="feedback-form" @hidden="feedbackSent = false" :content-class="{centered: feedbackSent}">
                         <template v-if="feedbackSent" #default>
-                            {% blocktrans %}
+                            {% blocktrans trimmed %}
                             <span class="light">You can also email us at</span>
                             <span>{{ feedback_email }}</span><span class="light">. We try to read and respond to all your requests.</span>
                             {% endblocktrans %}
                         </template>
                         <template v-else #default>
                             <p class="light">
-                                {% blocktrans %}
+                                {% blocktrans trimmed %}
                                 Our mission is to continually improve the quality of procurement data. We welcome feedback from the users of data and the open data community.
                                 {% endblocktrans %}
                             </p>
 
                             <p class="light">
-                                {% blocktrans %}
+                                {% blocktrans trimmed %}
                                 To provide specific feedback on the data source, please complete the form below.
                                 {% endblocktrans %}
                             </p>
@@ -337,7 +337,7 @@
                         </template>
                         <template v-else #modal-footer>
                             <div>
-                                {% blocktrans %}
+                                {% blocktrans trimmed %}
                                 <span class="light">You can also email us at</span>
                                 <span>{{ feedback_email }}</span><span class="light">. We try to read and respond to all your requests.</span>
                                 {% endblocktrans %}

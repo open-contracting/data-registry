@@ -131,6 +131,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LANGUAGES = (
     ('en', _('English')),
     ('es', _('Spanish')),
+    ('ru', _('Russian')),
 )
 
 MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
