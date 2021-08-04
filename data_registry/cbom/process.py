@@ -121,12 +121,6 @@ def process(collection):
                     job.end = timezone.now()
                     job.save()
 
-                    # wipe job data
-                    if not job.keep_all_data:
-                        wipe_job(job)
-                        job.archived = True
-                        job.save()
-
                     # set active job
                     Job.objects\
                         .filter(collection=job.collection)\
@@ -137,6 +131,13 @@ def process(collection):
                         ))
 
                     logger.debug(f"Job {job} completed")
+
+    # wipe jobs data
+    wiped_jobs = Job.objects.filter(status=Job.Status.COMPLETED, keep_all_data=False, archived=False)
+    for job in wiped_jobs:
+        wipe_job(job)
+        job.archived = True
+        job.save()
 
 
 def should_be_planned(collection):
