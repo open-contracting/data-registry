@@ -8,3 +8,6 @@ pymdown-extensions
 gunicorn
 pika
 sentry-sdk
+
+# Translations
+transifex-client
