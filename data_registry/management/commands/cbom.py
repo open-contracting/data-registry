@@ -28,6 +28,8 @@ class Command(BaseCommand):
             job.archived = True
             job.save()
 
+            logger.info(f"Job #{job.id} wiped")
+
     def wipe_job(self, job):
         if not job:
             return
