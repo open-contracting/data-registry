@@ -1,8 +1,12 @@
+import logging
+
 from django.conf import settings
 
 from data_registry.cbom.task.task import BaseTask
 from data_registry.cbom.utils import request
 from data_registry.models import Task
+
+logger = logging.getLogger("pelican-task")
 
 
 class Pelican(BaseTask):
@@ -87,7 +91,7 @@ class Pelican(BaseTask):
     def wipe(self):
         pelican_id = self.get_pelican_id()
         if not pelican_id:
-            return
+            logger.error("Unable to wipe PELICAN - pelican_id is not set")
 
         request(
             "POST",
@@ -95,5 +99,6 @@ class Pelican(BaseTask):
             json={
                 "dataset_id": pelican_id
             },
-            error_msg="Unable to wipe PELICAN"
+            error_msg="Unable to wipe PELICAN",
+            consume_exception=True
         )

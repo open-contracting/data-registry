@@ -10,9 +10,6 @@ from django.utils import timezone
 
 from data_registry.cbom.task.exceptions import RecoverableException
 from data_registry.cbom.task.factory import TaskFactory
-from data_registry.cbom.task.pelican import Pelican
-from data_registry.cbom.task.process import Process
-from data_registry.cbom.task.scrape import Scrape
 from data_registry.cbom.utils import request
 from data_registry.models import Job, Task
 
@@ -132,13 +129,6 @@ def process(collection):
 
                     logger.debug(f"Job {job} completed")
 
-    # wipe jobs data
-    wiped_jobs = Job.objects.filter(status=Job.Status.COMPLETED, keep_all_data=False, archived=False)
-    for job in wiped_jobs:
-        wipe_job(job)
-        job.archived = True
-        job.save()
-
 
 def should_be_planned(collection):
     # frozen collections shouldn't be planned
@@ -239,12 +229,3 @@ def parse_date(datetime_str):
 
     datetime_obj = datetime.strptime(datetime_str, '%Y-%m-%d %H.%M.%S')
     return datetime_obj.date()
-
-
-def wipe_job(job):
-    if not job:
-        return
-
-    Scrape(job.collection, job).wipe()
-    Process(job).wipe()
-    Pelican(job).wipe()

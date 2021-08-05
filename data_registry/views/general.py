@@ -129,4 +129,4 @@ def wipe_job(job_id):
     Pelican(job).wipe()
     Exporter(job).wipe()
 
-    job.delete()
+    return JsonResponse(True, safe=False)

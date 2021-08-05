@@ -1,3 +1,4 @@
+import logging
 import re
 import shutil
 from datetime import date
@@ -9,6 +10,8 @@ from data_registry.cbom.task.exceptions import RecoverableException
 from data_registry.cbom.task.task import BaseTask
 from data_registry.cbom.utils import request
 from data_registry.models import Task
+
+logger = logging.getLogger("scrape-task")
 
 
 class Scrape(BaseTask):
@@ -113,10 +116,11 @@ class Scrape(BaseTask):
 
     def wipe(self):
         version = self.job.context.get("process_data_version", None)
+        if not version:
+            logger.error("Unable to wipe SCRAPE - process_data_version is not set")
 
-        if version:
-            version = version.replace("-", "").replace(":", "").replace("T", "_")
+        version = version.replace("-", "").replace(":", "").replace("T", "_")
 
-            path = f"{settings.SCRAPY_FILES_STORE}/{self.spider}/{version}"
+        path = f"{settings.SCRAPY_FILES_STORE}/{self.spider}/{version}"
 
-            shutil.rmtree(path)
+        shutil.rmtree(path)

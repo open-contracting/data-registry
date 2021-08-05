@@ -42,9 +42,10 @@ class Process(BaseTask):
     def wipe(self):
         request(
             "POST",
-            f"{settings.PROCESS_HOST}api/v1/wipe_collection/",
+            f"{settings.PROCESS_HOST}api/v1/wipe_collection",
             json={
                 "collection_id": self.process_id
             },
-            error_msg="Unable to wipe PROCESS"
+            error_msg="Unable to wipe PROCESS",
+            consume_exception=True
         )

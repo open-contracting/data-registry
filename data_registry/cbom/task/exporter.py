@@ -57,5 +57,6 @@ class Exporter(BaseTask):
                 "collection_id": self.collection_id,
                 "spider": self.job.context.get("spider")
             },
-            error_msg="Unable to wipe EXPORTER"
+            error_msg="Unable to wipe EXPORTER",
+            consume_exception=True
         )
