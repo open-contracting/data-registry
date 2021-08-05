@@ -118,6 +118,7 @@ class Scrape(BaseTask):
         version = self.job.context.get("process_data_version", None)
         if not version:
             logger.error("Unable to wipe SCRAPE - process_data_version is not set")
+            return
 
         version = version.replace("-", "").replace(":", "").replace("T", "_")
 

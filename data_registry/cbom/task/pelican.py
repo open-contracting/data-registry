@@ -92,6 +92,7 @@ class Pelican(BaseTask):
         pelican_id = self.get_pelican_id()
         if not pelican_id:
             logger.error("Unable to wipe PELICAN - pelican_id is not set")
+            return
 
         request(
             "POST",
