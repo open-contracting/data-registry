@@ -1,4 +1,5 @@
 import logging
+import os
 import re
 import shutil
 from datetime import date
@@ -124,4 +125,5 @@ class Scrape(BaseTask):
 
         path = f"{settings.SCRAPY_FILES_STORE}/{self.spider}/{version}"
 
-        shutil.rmtree(path)
+        if os.path.exists(path):
+            shutil.rmtree(path)
