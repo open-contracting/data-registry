@@ -92,7 +92,7 @@ class Pelican(BaseTask):
     def wipe(self):
         try:
             pelican_id = self.get_pelican_id()
-        except RecoverableException as e:
+        except RecoverableException:
             logger.warning("Unable to wipe PELICAN - pelican_id is not set")
             return
 
