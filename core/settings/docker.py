@@ -111,6 +111,10 @@ LOGGING = {
         'cbom': {
             'handlers': ['console'],
             'level': 'DEBUG',
+        },
+        'scrape-task': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
         }
     }
 }
