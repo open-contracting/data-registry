@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import json
 import logging
+import os
 import shutil
 import sys
 
@@ -30,7 +31,8 @@ def callback(connection, channel, delivery_tag, body):
 
         logger.info("Processing message {}".format(input_message))
 
-        shutil.rmtree(dump_dir)
+        if os.path.exists(dump_dir):
+            shutil.rmtree(dump_dir)
 
         logger.info("Removed generated exports from {}".format(dump_dir))
 
