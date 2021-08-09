@@ -1,8 +1,12 @@
+import logging
+
 from django.conf import settings
 
 from data_registry.cbom.task.task import BaseTask
 from data_registry.cbom.utils import request
 from data_registry.models import Task
+
+logger = logging.getLogger("scrape-task")
 
 
 class Exporter(BaseTask):
@@ -49,6 +53,7 @@ class Exporter(BaseTask):
             return Task.Status.COMPLETED
 
     def wipe(self):
+        logger.info("Wiping exporter data for {}.".format(self.collection_id))
         request(
             "POST",
             f"{settings.EXPORTER_HOST}api/wiper_start",

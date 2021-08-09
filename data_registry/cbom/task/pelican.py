@@ -90,6 +90,7 @@ class Pelican(BaseTask):
         return dataset_name
 
     def wipe(self):
+        logger.info("Wiping Pelican data for {}.".format(self.collection_id))
         try:
             pelican_id = self.get_pelican_id()
         except RecoverableException:

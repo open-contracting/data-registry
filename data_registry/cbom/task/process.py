@@ -1,8 +1,12 @@
+import logging
+
 from django.conf import settings
 
 from data_registry.cbom.task.task import BaseTask
 from data_registry.cbom.utils import request
 from data_registry.models import Task
+
+logger = logging.getLogger("scrape-task")
 
 
 class Process(BaseTask):
@@ -40,6 +44,7 @@ class Process(BaseTask):
         return Task.Status.COMPLETED if is_last_completed else Task.Status.RUNNING
 
     def wipe(self):
+        logger.info("Wiping process data for {}.".format(self.process_id))
         request(
             "POST",
             f"{settings.PROCESS_HOST}api/v1/wipe_collection",

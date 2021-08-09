@@ -121,6 +121,8 @@ class Scrape(BaseTask):
             logger.error("Unable to wipe SCRAPE - process_data_version is not set")
             return
 
+        logger.info("Wiping scrape data for version {}.".format(version))
+
         version = version.replace("-", "").replace(":", "").replace("T", "_")
 
         path = f"{settings.SCRAPY_FILES_STORE}/{self.spider}/{version}"
