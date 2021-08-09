@@ -2,6 +2,7 @@ import logging
 
 from django.conf import settings
 
+from data_registry.cbom.task.exceptions import RecoverableException
 from data_registry.cbom.task.task import BaseTask
 from data_registry.cbom.utils import request
 from data_registry.models import Task
@@ -89,9 +90,14 @@ class Pelican(BaseTask):
         return dataset_name
 
     def wipe(self):
-        pelican_id = self.get_pelican_id()
+        try:
+            pelican_id = self.get_pelican_id()
+        except RecoverableException as e:
+            logger.warning("Unable to wipe PELICAN - pelican_id is not set")
+            return
+
         if not pelican_id:
-            logger.error("Unable to wipe PELICAN - pelican_id is not set")
+            logger.warning("Unable to wipe PELICAN - pelican_id is not set")
             return
 
         request(
