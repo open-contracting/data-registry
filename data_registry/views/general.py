@@ -121,7 +121,7 @@ def send_feedback(request):
 
 
 @login_required
-def wipe_job(job_id):
+def wipe_job(request, job_id):
     job = get_object_or_404(Job, pk=job_id)
 
     Scrape(job.collection, job).wipe()
