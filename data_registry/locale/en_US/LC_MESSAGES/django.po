@@ -2,245 +2,238 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
-# Translators:
-# Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2021
-# Georg <gneumann@open-contracting.org>, 2021
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-08-04 14:19-0400\n"
-"PO-Revision-Date: 2021-08-04 17:44+0000\n"
-"Last-Translator: Georg <gneumann@open-contracting.org>, 2021\n"
-"Language-Team: English (https://www.transifex.com/open-contracting-partnership-1/teams/123427/en/)\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: en\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: templates/base.html:16
 msgid "Data Registry"
-msgstr "Data Registry"
+msgstr ""
 
 #: templates/base.html:42
 msgid "What is open contracting"
-msgstr "What is open contracting"
+msgstr ""
 
 #: templates/base.html:44
 msgid "Impact"
-msgstr "Impact"
+msgstr ""
 
 #: templates/base.html:46
 msgid "Implement"
-msgstr "Implement"
+msgstr ""
 
 #: templates/base.html:48
 msgid "About"
-msgstr "About"
+msgstr ""
 
 #: templates/base.html:50
 msgid "Latest"
-msgstr "Latest"
+msgstr ""
 
 #: templates/detail.html:17
 msgid "BACK TO DATASETS SEARCH"
-msgstr "BACK TO DATASETS SEARCH"
+msgstr ""
 
 #: templates/detail.html:31 templates/search.html:145
 msgid "OCDS"
-msgstr "OCDS"
+msgstr ""
 
 #: templates/detail.html:36
 msgid "Show more"
-msgstr "Show more"
+msgstr ""
 
 #: templates/detail.html:40 templates/search.html:156
 msgid "Available formats:"
-msgstr "Available formats:"
+msgstr ""
 
 #: templates/detail.html:54
 msgid "ACCESS"
-msgstr "ACCESS"
+msgstr ""
 
 #: templates/detail.html:64
 msgid "Show less"
-msgstr "Show less"
+msgstr ""
 
 #: templates/detail.html:73
 msgid "Overview"
-msgstr "Overview"
+msgstr ""
 
 #: templates/detail.html:77 templates/search.html:162
 msgid "Data date range:"
-msgstr "Data date range:"
+msgstr ""
 
 #: templates/detail.html:81 templates/search.html:174
 msgid "Last updated:"
-msgstr "Last updated:"
+msgstr ""
 
 #: templates/detail.html:85 templates/search.html:166
 msgid "Update frequency:"
-msgstr "Update frequency:"
+msgstr ""
 
 #: templates/detail.html:87 templates/search.html:84 templates/search.html:168
 msgid "Monthly"
-msgstr "Monthly"
+msgstr ""
 
 #: templates/detail.html:88 templates/search.html:88 templates/search.html:169
 msgid "Every 6 months"
-msgstr "Every 6 months"
+msgstr ""
 
 #: templates/detail.html:89 templates/search.html:92 templates/search.html:170
 msgid "Annually"
-msgstr "Annually"
+msgstr ""
 
 #: templates/detail.html:93
 msgid "OCID prefix:"
-msgstr "OCID prefix:"
+msgstr ""
 
 #: templates/detail.html:97
 msgid "License:"
-msgstr "License:"
+msgstr ""
 
 #: templates/detail.html:107
 msgid "Language:"
-msgstr "Language:"
+msgstr ""
 
 #: templates/detail.html:115
 msgid "Data avaliable"
-msgstr "Data avaliable"
+msgstr ""
 
 #: templates/detail.html:120
 msgid "Parties"
-msgstr "Parties"
+msgstr ""
 
 #: templates/detail.html:121
 msgid "Count of parties:"
-msgstr "Count of parties:"
+msgstr ""
 
 #: templates/detail.html:124
 msgid "Plannings"
-msgstr "Planning"
+msgstr ""
 
 #: templates/detail.html:125
 msgid "Count of planning activities:"
-msgstr "Count of planning activities:"
+msgstr ""
 
 #: templates/detail.html:128
 msgid "Tenders"
-msgstr "Tenders"
+msgstr ""
 
 #: templates/detail.html:129
 msgid "Count of tenders:"
-msgstr "Count of tenders:"
+msgstr ""
 
 #: templates/detail.html:130
 msgid "Count of tenderers:"
-msgstr "Count of tenderers:"
+msgstr ""
 
 #: templates/detail.html:131
 msgid "Count of tender items:"
-msgstr "Count of tender items:"
+msgstr ""
 
 #: templates/detail.html:134
 msgid "Awards"
-msgstr "Awards"
+msgstr ""
 
 #: templates/detail.html:135
 msgid "Count of awards:"
-msgstr "Count of awards:"
+msgstr ""
 
 #: templates/detail.html:136
 msgid "Count of award items:"
-msgstr "Count of award items:"
+msgstr ""
 
 #: templates/detail.html:137
 msgid "Count of award suppliers:"
-msgstr "Count of award suppliers:"
+msgstr ""
 
 #: templates/detail.html:140
 msgid "Contracts"
-msgstr "Contracts"
+msgstr ""
 
 #: templates/detail.html:141
 msgid "Count of contracts:"
-msgstr "Count of contracts:"
+msgstr ""
 
 #: templates/detail.html:142
 msgid "Count of contract items:"
-msgstr "Count of contract items:"
+msgstr ""
 
 #: templates/detail.html:143
 msgid "Count of contract transactions:"
-msgstr "Count of contract transactions:"
+msgstr ""
 
 #: templates/detail.html:146 templates/search.html:119
 msgid "Documents"
-msgstr "Documents"
+msgstr ""
 
 #: templates/detail.html:147
 msgid "Count of documents:"
-msgstr "Count of documents:"
+msgstr ""
 
 #: templates/detail.html:150
 msgid "Milestones"
-msgstr "Milestones"
+msgstr ""
 
 #: templates/detail.html:151
 msgid "Count of milestones:"
-msgstr "Count of milestones:"
+msgstr ""
 
 #: templates/detail.html:154
 msgid "Amendments"
-msgstr "Amendments"
+msgstr ""
 
 #: templates/detail.html:155
 msgid "Count of amendments:"
-msgstr "Count of amendments:"
+msgstr ""
 
 #: templates/detail.html:172
 msgid "Data quality"
-msgstr "Data quality"
+msgstr ""
 
 #: templates/detail.html:175
 msgid "Summary"
-msgstr "Summary"
+msgstr ""
 
 #: templates/detail.html:178
 msgid "We have not yet prepared a data quality summary for this dataset."
-msgstr "We have not yet prepared a data quality summary for this dataset."
+msgstr ""
 
 #: templates/detail.html:183
 msgid "Issues found"
-msgstr "Issues found"
+msgstr ""
 
 #: templates/detail.html:196
 msgid "Access data"
-msgstr "Access data"
+msgstr ""
 
 #: templates/detail.html:198
 msgid "The OCDS dataset is available to download as a JSON or Excel file."
-msgstr "The OCDS dataset is available to download as a JSON or Excel file."
+msgstr ""
 
 #: templates/detail.html:204
 msgid "JSON data"
-msgstr "JSON data"
+msgstr ""
 
 #: templates/detail.html:206
 msgid ""
 "Easily access dumps of data from the Open Contracting Partnership's "
 "Kingfisher database."
 msgstr ""
-"Easily access dumps of data from Open Contracting Partnership's Kingfisher "
-"database."
 
 #: templates/detail.html:213 templates/detail.html:218
 msgid "Access JSON data"
-msgstr "Access JSON data"
+msgstr ""
 
 #: templates/detail.html:220
 msgid ""
@@ -248,28 +241,21 @@ msgid ""
 "download the full history as one dataset or choose particular year that you "
 "are interested in."
 msgstr ""
-"Select the time period that you would like to access JSON data for. Data is "
-"provided as a GZ file. Windows users will need to install additional "
-"software such as WinZip or WinRAR to extract the data."
 
 #: templates/detail.html:228
 msgid "Full history dataset"
-msgstr "All-time data from this source"
+msgstr ""
 
 #: templates/detail.html:232
 msgid ""
 "Dataset containing the full history of available data for given source. "
-"Depending on the source, the file may be extremely large and might take some"
-" time process."
+"Depending on the source, the file may be extremely large and might take some "
+"time process."
 msgstr ""
-"This file will contain OCDS data for all fields provided by the publisher "
-"and for the entire time period for which data has been made available. "
-"Please note that the file may be extremely large and may take some time to "
-"process."
 
 #: templates/detail.html:240
 msgid "Particular year dataset"
-msgstr "Data by year"
+msgstr ""
 
 #: templates/detail.html:244
 msgid ""
@@ -277,287 +263,260 @@ msgid ""
 "but only for the year selected below. Depending on the source, the file may "
 "be extremely large and may take some time to process."
 msgstr ""
-"This file will contain OCDS data for all fields provided by the publisher, "
-"but only for the year selected below. Depending on the source, the file may "
-"be extremely large and may take some time to process."
 
 #: templates/detail.html:254
 msgid "Choose year"
-msgstr "Choose year"
+msgstr ""
 
 #: templates/detail.html:266
 msgid "Download data"
-msgstr "Download data"
+msgstr ""
 
 #: templates/detail.html:274
 msgid "Excel data via OCP Flatten tool"
-msgstr "Excel data via OCP Flatten tool"
+msgstr ""
 
 #: templates/detail.html:276
 msgid ""
-"Easily access data in Excel using the Open Contracting Partnership's Flatten"
-" Tool. This tool is designed to help users that prefer data in spreadsheets "
+"Easily access data in Excel using the Open Contracting Partnership's Flatten "
+"Tool. This tool is designed to help users that prefer data in spreadsheets "
 "to either select a small subset of fields / column headings or to customise "
 "their spreadsheet output."
 msgstr ""
-"Easily access data in Excel using Open Contracting Partnership's Flatten "
-"Tool. This tool is designed to help users that prefer data in spreadsheets "
-"to either select a small subset of fields/column headings or to customize "
-"their spreadsheet output."
 
 #: templates/detail.html:284
 msgid "Access Excel data"
-msgstr "Access Excel data"
+msgstr ""
 
 #: templates/detail.html:297
 msgid "Have questions, feedback on this dataset or content on this page?"
 msgstr ""
-"Do you have any questions or feedback on this dataset or any other content "
-"on this page?"
 
 #: templates/detail.html:300
 msgid "Contact OCP helpdesk"
-msgstr "Contact OCP's helpdesk"
+msgstr ""
 
 #: templates/detail.html:305 templates/detail.html:344
 #, python-format
 msgid ""
-"<span class=\"light\">You can also email us at</span> "
-"<span>%(feedback_email)s</span><span class=\"light\">. We try to read and "
-"respond to all your requests.</span>"
+"<span class=\"light\">You can also email us at</span> <span>"
+"%(feedback_email)s</span><span class=\"light\">. We try to read and respond "
+"to all your requests.</span>"
 msgstr ""
-"<span class=\"light\">You can also email us at</span> "
-"<span>%(feedback_email)s</span><span class=\"light\">. We try to read and "
-"respond to all your requests.</span>"
 
 #: templates/detail.html:312
 msgid ""
 "Our mission is to continually improve the quality of procurement data. We "
 "welcome feedback from the users of data and the open data community."
 msgstr ""
-"Our mission is to continually improve the quality of procurement data. We "
-"welcome all feedback from users of the data and the open data community."
 
 #: templates/detail.html:318
 msgid ""
 "To provide specific feedback on the data source, please complete the form "
 "below."
 msgstr ""
-"To provide specific feedback on the data source, please complete the form "
-"below."
 
 #: templates/detail.html:323
 msgid "Type of feedback"
-msgstr "Type of feedback"
+msgstr ""
 
 #: templates/detail.html:332
 msgid "Please provide your feedback in more detail below"
-msgstr "Please provide your feedback in more detail below"
+msgstr ""
 
 #: templates/detail.html:339
 msgid "Close"
-msgstr "Close"
+msgstr ""
 
 #: templates/detail.html:351
 msgid "Submit feedback"
-msgstr "Submit feedback"
+msgstr ""
 
 #: templates/detail.html:357
 msgid "Thanks for your feedback!"
-msgstr "Thanks for your feedback!"
+msgstr ""
 
 #: templates/detail.html:360
 msgid "Send feedback for"
-msgstr "Send feedback for"
+msgstr ""
 
 #: templates/detail.html:384
 msgid "Broken link"
-msgstr "Broken link"
+msgstr ""
 
 #: templates/detail.html:385
 msgid "Incorrect metadata"
-msgstr "Incorrect metadata"
+msgstr ""
 
 #: templates/detail.html:386
 msgid "New data quality issue found"
-msgstr "New data quality issue found"
+msgstr ""
 
 #: templates/detail.html:387
 msgid "Advice for users of this data source"
-msgstr "Advice for users of this data source"
+msgstr ""
 
 #: templates/detail.html:388
 msgid "Other"
-msgstr "Other"
+msgstr ""
 
 #: templates/index.html:9
 msgid "OCP Data Registry"
-msgstr "OCP Data Registry"
+msgstr ""
 
 #: templates/index.html:10
 msgid "Search for and access datasets by country"
-msgstr "Search for and access datasets by country"
+msgstr ""
 
 #: templates/index.html:13
 msgid "START YOUR SEARCH"
-msgstr "START YOUR SEARCH"
+msgstr ""
 
 #: templates/index.html:22
 msgid "Data by Country"
-msgstr "Data by country"
+msgstr ""
 
 #: templates/index.html:24
 msgid ""
 "The Data Registry has been designed to hlep you find open data sources for "
 "public sector procurement in different countries."
 msgstr ""
-"The Data Registry has been designed to help you find open data sources for "
-"public sector procurement in different countries."
 
 #: templates/index.html:29
 msgid ""
 "This includes if data is available to access directly form the OCP's "
 "Kingfisher database."
 msgstr ""
-"This includes data available directly through OCP's Kingfisher database."
 
 #: templates/index.html:40
 msgid "Learn about the source"
-msgstr "Learn about the source"
+msgstr ""
 
 #: templates/index.html:42
 msgid ""
 "Information about each data source is provided to help you to understand "
 "what fields are avaliable or if there are any documents."
 msgstr ""
-"Information about each data source is provided to help you understand what "
-"fields are available or if there are any documents."
 
 #: templates/index.html:47
 msgid ""
 "Any known data quality issues and advice on how to access data is provided "
 "here too."
 msgstr ""
-"Any known data quality issues and advice on how to access data is provided "
-"here too."
 
 #: templates/index.html:58
 msgid "Get Directed"
-msgstr "Get direct access to the source data"
+msgstr ""
 
 #: templates/index.html:60
 msgid ""
 "The registry links you directly to the data source for you to access data."
-msgstr "The registry links you directly to the source to access the data."
+msgstr ""
 
 #: templates/index.html:65
 msgid ""
 "If data is available from the OCP Kingfisher database you can download it "
 "directly in JSON or Excel using the Flatten Tool Interface."
 msgstr ""
-"If the data is available from OCP's Kingfisher database, you can download it"
-" directly in JSON or Excel using our Flatten Tool."
 
 #: templates/search.html:8
 msgid "Dataset by Country"
-msgstr "Dataset by country"
+msgstr ""
 
 #: templates/search.html:18
 msgid "BACK TO REGISTRY HOME"
-msgstr "BACK TO REGISTRY HOME"
+msgstr ""
 
 #: templates/search.html:25
 msgid "Filters"
-msgstr "Filters"
+msgstr ""
 
 #: templates/search.html:28
 msgid "Country starting with"
-msgstr "Country starting with"
+msgstr ""
 
 #: templates/search.html:34
 msgid "Clear selection"
-msgstr "Clear selection"
+msgstr ""
 
 #: templates/search.html:47
 msgid "Data date range"
-msgstr "Data date range"
+msgstr ""
 
 #: templates/search.html:64
 msgid "Start date"
-msgstr "Start date"
+msgstr ""
 
 #: templates/search.html:67 templates/search.html:77
 msgid "Reset"
-msgstr "Reset"
+msgstr ""
 
 #: templates/search.html:74
 msgid "End date"
-msgstr "End date"
+msgstr ""
 
 #: templates/search.html:81
 msgid "Update frequency"
-msgstr "Update frequency"
+msgstr ""
 
 #: templates/search.html:95
 msgid "Data contains"
-msgstr "Data contains"
+msgstr ""
 
 #: templates/search.html:98
 msgid "Parties data"
-msgstr "Parties data"
+msgstr ""
 
 #: templates/search.html:102
 msgid "Plannings data"
-msgstr "Planning data"
+msgstr ""
 
 #: templates/search.html:106
 msgid "Tenders data"
-msgstr "Tenders data"
+msgstr ""
 
 #: templates/search.html:111
 msgid "Awards data"
-msgstr "Awards data"
+msgstr ""
 
 #: templates/search.html:115
 msgid "Contracts data"
-msgstr "Contracts data"
+msgstr ""
 
 #: templates/search.html:123
 msgid "Milestones data"
-msgstr "Milestones data"
+msgstr ""
 
 #: templates/search.html:127
 msgid "Amendments data"
-msgstr "Amendments data"
+msgstr ""
 
 #: templates/search.html:135
 msgid "datasets found"
-msgstr "Datasets found"
+msgstr ""
 
 #: templates/search.html:151
 msgid ""
 "This collection does not completely overlap with the selected date range. "
 "Date range matched: "
 msgstr ""
-"This collection does not completely overlap with the selected dates. Date "
-"range matched: "
 
 #: templates/search.html:181
 msgid "See details"
-msgstr "See details"
+msgstr ""
 
 #: templates/search.html:205
 msgid "All"
-msgstr "All"
+msgstr ""
 
 #: templates/search.html:206
 msgid "Past year"
-msgstr "Past year"
+msgstr ""
 
 #: templates/search.html:207
 msgid "Past 6 months"
-msgstr "Past 6 months"
+msgstr ""
 
 #: templates/search.html:208
 msgid "Custom"
-msgstr "Custom"
+msgstr ""
