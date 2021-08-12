@@ -62,7 +62,7 @@ def download_export(request):
     input_message = json.loads(request.body.decode("utf8"))
 
     spider = input_message.get("spider")
-    job_id = input_message.get("job_id")
+    job_id = input_message.get("job_id").get("id")
     year = input_message.get("year", None)
 
     dump_dir = f"{settings.EXPORTER_DIR}/{spider}/{job_id}"
