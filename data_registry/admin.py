@@ -246,7 +246,75 @@ class JobAdmin(ModelAdmin):
 
     # Multiple jobs can be set as active for the same collection, so "active" is set as read-only.
     list_editable = ["status", "keep_all_data"]
-    readonly_fields = ["active"]
+    fieldsets = (
+        (_("Management"), {
+            "fields": (
+                "collection",
+                "active",
+                "status",
+                "context",
+                "keep_all_data",
+                "archived",
+                "start",
+                "end",
+            ),
+        }),
+        (_("Overview"), {
+            "fields": (
+                "date_from",
+                "date_to",
+                "ocid_prefix",
+                "license",
+            ),
+        }),
+        (_("Data availability"), {
+            "fields": (
+                "parties_count",
+                "plannings_count",
+                "tenders_count",
+                "tenderers_count",
+                "tenders_items_count",
+                "awards_count",
+                "awards_items_count",
+                "awards_suppliers_count",
+                "contracts_count",
+                "contracts_items_count",
+                "contracts_transactions_count",
+                "documents_count",
+                "milestones_count",
+                "amendments_count",
+            ),
+        }),
+    )
+    readonly_fields = [
+        # Only status and keep_all_data are editable.
+        "collection",
+        "active",
+        "archived",
+        "context",
+        "start",
+        "end",
+        # Overview
+        "date_from",
+        "date_to",
+        "ocid_prefix",
+        "license",
+        # Data availability
+        "parties_count",
+        "plannings_count",
+        "tenders_count",
+        "tenderers_count",
+        "tenders_items_count",
+        "awards_count",
+        "awards_items_count",
+        "awards_suppliers_count",
+        "contracts_count",
+        "contracts_items_count",
+        "contracts_transactions_count",
+        "documents_count",
+        "milestones_count",
+        "amendments_count",
+    ]
 
     inlines = [
         TaskInLine

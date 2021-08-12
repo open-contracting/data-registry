@@ -6,9 +6,9 @@ from markdownx.models import MarkdownxField
 
 
 class Job(Model):
-    collection = ForeignKey("Collection", related_name="job", on_delete=CASCADE)
-    start = DateTimeField(blank=True, null=True, db_index=True)
-    end = DateTimeField(blank=True, null=True, db_index=True)
+    collection = ForeignKey("Collection", related_name="job", on_delete=CASCADE, verbose_name="Publication")
+    start = DateTimeField(blank=True, null=True, db_index=True, verbose_name="Job started at")
+    end = DateTimeField(blank=True, null=True, db_index=True, verbose_name="Job ended at")
 
     class Status(TextChoices):
         WAITING = "WAITING", "WAITING"
@@ -18,13 +18,18 @@ class Job(Model):
 
     status = CharField(max_length=2048, choices=Status.choices, blank=True, null=True)
 
-    context = JSONField(blank=True, null=True)
+    context = JSONField(blank=True, null=True,
+                        help_text="Refer to the User Guide to interpret and use this information for debugging.")
 
-    active = BooleanField(default=False)
+    active = BooleanField(default=False,
+                          help_text="Set this as the active job for the collection from the collection's page.")
 
-    archived = BooleanField(default=False)
+    keep_all_data = BooleanField(default=False, verbose_name="Preserve temporary data",
+                                 help_text="By default, temporary data created by job tasks is deleted after the job "
+                                           "is completed. To preserve this data for debugging, check this box.")
 
-    keep_all_data = BooleanField(default=False)
+    archived = BooleanField(default=False, verbose_name="Temporary data deleted",
+                            help_text="Whether the temporary data created by job tasks has been deleted.")
 
     tenders_count = IntegerField(default=0)
     tenderers_count = IntegerField(default=0)
@@ -41,9 +46,9 @@ class Job(Model):
     milestones_count = IntegerField(default=0)
     amendments_count = IntegerField(default=0)
 
-    date_from = DateField(blank=True, null=True)
-    date_to = DateField(blank=True, null=True)
-    ocid_prefix = CharField(max_length=2048, blank=True, null=True)
+    date_from = DateField(blank=True, null=True, verbose_name="Minimum release date")
+    date_to = DateField(blank=True, null=True, verbose_name="Maximum release date")
+    ocid_prefix = CharField(max_length=2048, blank=True, null=True, verbose_name="OCID prefix")
     license = CharField(max_length=2048, blank=True, null=True)
 
     created = DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)
@@ -80,7 +85,7 @@ class Collection(Model):
                                       help_text="The remaining paragraphs of the description of the publication, as "
                                                 "Markdown text, which will appear under \"Show more\".")
     last_update = DateField(blank=True, null=True,
-                            help_text="The date on which the most recent 'scrape' task completed.")
+                            help_text="The date on which the most recent 'scrape' job task completed.")
 
     license_custom = ForeignKey("License", related_name="collection", on_delete=CASCADE, blank=True, null=True,
                                 verbose_name="Data license", help_text="If blank, the Overview will display the "
