@@ -57,36 +57,63 @@ class Job(Model):
 
 
 class Collection(Model):
-    title = TextField()
+    class Meta:
+        verbose_name = "publication"
 
-    country = CharField(max_length=2048, blank=True, null=True)
-    country_flag = CharField(max_length=2048, blank=True, null=True)
+    title = TextField(
+        help_text="The name of the publication, following the <a href=\"https://docs.google.com/document/d/"
+                  "14ZXlAB6GWeK4xwDUt9HGi0fTew4BahjZQ2owdLLVp6I/edit#heading=h.t81hzvffylry\">naming conventions</a>."
+    )
 
-    language = CharField(max_length=2048, blank=True, null=True)
-    description = MarkdownxField(blank=True, null=True)
-    description_long = MarkdownxField(blank=True, null=True)
-    last_update = DateField(blank=True, null=True)
+    country = CharField(max_length=2048, blank=True,
+                        help_text="The official name of the country from which the data originates.")
+    country_flag = CharField(max_length=2048, blank=True)
 
-    license_custom = ForeignKey("License", related_name="collection", on_delete=CASCADE, blank=True, null=True)
+    language = CharField(max_length=2048, blank=True,
+                         help_text="The languages used within data fields: for example, \"Spanish\".")
+    description = MarkdownxField(
+        blank=True,
+        help_text="The first paragraph of the description of the publication, as Markdown text, following the <a "
+                  "href=\"https://docs.google.com/document/d/1Pr87zDrs9YY7BEvr_e6QjOy0gexs06dU9ES2_-V7Lzw/edit#"
+                  "heading=h.fksp8fxgoi7v\">template and guidance</a>.")
+    description_long = MarkdownxField(blank=True,
+                                      help_text="The remaining paragraphs of the description of the publication, as "
+                                                "Markdown text, which will appear under \"Show more\".")
+    last_update = DateField(blank=True, null=True,
+                            help_text="The date on which the most recent 'scrape' task completed.")
 
-    source_id = CharField(max_length=2048)
+    license_custom = ForeignKey("License", related_name="collection", on_delete=CASCADE, blank=True, null=True,
+                                verbose_name="Data license", help_text="If blank, the Overview will display the "
+                                                                       "license URL within the OCDS package.")
+
+    source_id = CharField(max_length=2048, verbose_name="Source ID",
+                          help_text="The name of the spider in Kingfisher Collect. If a new spider is not listed, "
+                                    "Kingfisher Collect needs to be re-deployed to the registry's server.")
 
     class Frequency(TextChoices):
         MONTHLY = "MONTHLY", "MONTHLY"
         HALF_YEARLY = "HALF_YEARLY", "HALF_YEARLY"
         ANNUALLY = "ANNUALLY", "ANNUALLY"
 
-    update_frequency = CharField(max_length=2048, choices=Frequency.choices, blank=True, null=True)
+    update_frequency = CharField(max_length=2048, choices=Frequency.choices, blank=True,
+                                 help_text="The frequency at which the registry updates the publication, based on the "
+                                           "frequency of the publication itself.")
 
-    summary = MarkdownxField(blank=True, null=True)
+    summary = MarkdownxField(blank=True, verbose_name="Quality summary",
+                             help_text="A short summary of quality issues, as Markdown text. Individual issues can be "
+                                       "described below, which will be rendered as a bullet list.")
 
-    additional_data = MarkdownxField(blank=True, null=True)
+    additional_data = MarkdownxField(blank=True, verbose_name="Data availability",
+                                     help_text="A description of any notable features, such as extensions used or "
+                                               "additional fields, as Markdown text.")
 
     json_format = BooleanField(default=True)
     excel_format = BooleanField(default=True)
 
-    public = BooleanField(default=True)
-    frozen = BooleanField(default=False)
+    public = BooleanField(default=False,
+                          help_text="If the active job has completed and all fields below are filled, check this box.")
+    frozen = BooleanField(default=False,
+                          help_text="If the spider is broken, check this box to prevent new jobs from running.")
 
     created = DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)
     modified = DateTimeField(auto_now=True, blank=True, null=True, db_index=True)
@@ -178,9 +205,16 @@ class Collection(Model):
 
 
 class License(Model):
-    name = CharField(max_length=2048, blank=True, null=True)
-    description = MarkdownxField(blank=True, null=True)
-    url = CharField(max_length=2048, blank=True, null=True)
+    class Meta:
+        verbose_name = "data license"
+
+    name = CharField(max_length=2048, blank=True,
+                     help_text="The official name of the license.")
+    description = MarkdownxField(blank=True,
+                                 help_text="A brief description of the permissions, conditions and limitations, as "
+                                           "Markdown text.")
+    url = CharField(max_length=2048, blank=True,
+                    help_text="The canonical URL of the license.")
 
     created = DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)
     modified = DateTimeField(auto_now=True, blank=True, null=True, db_index=True)
@@ -190,6 +224,9 @@ class License(Model):
 
 
 class Issue(Model):
+    class Meta:
+        verbose_name = "quality issue"
+
     description = MarkdownxField()
     collection = ForeignKey("Collection", related_name="issue", on_delete=CASCADE)
 
@@ -198,6 +235,9 @@ class Issue(Model):
 
 
 class Task(Model):
+    class Meta:
+        verbose_name = "job task"
+
     job = ForeignKey("Job", related_name="task", on_delete=CASCADE)
     start = DateTimeField(blank=True, null=True, db_index=True)
     end = DateTimeField(blank=True, null=True, db_index=True)

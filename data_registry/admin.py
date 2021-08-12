@@ -5,15 +5,20 @@ from django import forms
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.admin.options import ModelAdmin, TabularInline
+from django.db.models import Q
 from django.db.models.expressions import Case, When
 from django.db.models.fields import BooleanField
 from django.forms.widgets import TextInput
+from django.utils.translation import gettext_lazy as _
 from markdownx.widgets import AdminMarkdownxWidget
 from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, TranslationTabularInline
 
 from data_registry.cbom.process import update_collection_availability, update_collection_metadata
 
 from .models import Collection, Issue, Job, License, Task
+
+translation_reminder = _("Remember to provide information in all languages. You can use the dropdown at the top of "
+                         "the page to toggle the language for all fields.")
 
 
 class IssueInLine(TranslationTabularInline):
@@ -23,7 +28,9 @@ class IssueInLine(TranslationTabularInline):
 
 class CollectionAdminForm(forms.ModelForm):
     source_id = forms.ChoiceField(choices=[])
-    active_job = forms.ModelChoiceField(queryset=None, required=False)
+    active_job = forms.ModelChoiceField(queryset=None, required=False,
+                                        help_text="A job is a set of tasks to collect and process a publication. "
+                                                  "A job can be selected once it is completed.")
     country_flag = forms.ChoiceField(choices=[(None, '---------')], required=False)
 
     def __init__(self, *args, **kwargs):
@@ -86,53 +93,127 @@ class CollectionAdminForm(forms.ModelForm):
         }
 
 
+class MissingContentFilter(admin.SimpleListFilter):
+    title = _("Incomplete content")
+
+    parameter_name = "incomplete"
+
+    def lookups(self, request, model_admin):
+        return (
+            ("1", _("Yes")),
+            ("0", _("No")),
+        )
+
+    def queryset(self, request, queryset):
+        qs = (
+            Q(country_flag='')
+            | Q(country_en='')
+            | Q(country_es='')
+            | Q(country_ru='')
+            # title_en is required.
+            | Q(title_es='')
+            | Q(title_ru='')
+            | Q(description_en='')
+            | Q(description_es='')
+            | Q(description_ru='')
+            | Q(description_long_en='')
+            | Q(description_long_es='')
+            | Q(description_long_ru='')
+            | Q(additional_data_en='')
+            | Q(additional_data_es='')
+            | Q(additional_data_ru='')
+            | Q(summary_en='')
+            | Q(summary_es='')
+            | Q(summary_ru='')
+            | Q(update_frequency='')
+            | Q(license_custom=None)
+            | Q(language_en='')
+            | Q(language_es='')
+            | Q(language_ru='')
+        )
+        if self.value() == "1":
+            return queryset.filter(qs)
+        if self.value() == "0":
+            return queryset.exclude(qs)
+
+
 class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
     form = CollectionAdminForm
     list_display = ["__str__", "country", "public", "frozen", "active_job"]
-
     list_editable = ["public", "frozen"]
+    list_filter = ["public", "frozen", MissingContentFilter]
+
+    # json_format and excel_format will never be disabled in the current version.
+    fieldsets = (
+        (_("Management"), {
+            "fields": ("source_id", "active_job", "public", "frozen", "last_update"),
+        }),
+        (_("Basics"), {
+            "description": translation_reminder,
+            "fields": (
+                "country_flag",
+                "country_en",
+                "country_es",
+                "country_ru",
+                "title_en",
+                "title_es",
+                "title_ru",
+            ),
+        }),
+        (_("Overview"), {
+            "description": translation_reminder,
+            "fields": (
+                "update_frequency",
+                "license_custom",
+                "language_en",
+                "language_es",
+                "language_ru",
+            ),
+        }),
+        (_("Details"), {
+            "description": translation_reminder,
+            "fields": (
+                "description_en",
+                "description_es",
+                "description_ru",
+                "description_long_en",
+                "description_long_es",
+                "description_long_ru",
+                "additional_data_en",
+                "additional_data_es",
+                "additional_data_ru",
+                "summary_en",
+                "summary_es",
+                "summary_ru",
+            ),
+        }),
+    )
+
+    readonly_fields = ["last_update"]
 
     inlines = [
         IssueInLine
     ]
-
-    def _get_declared_fieldsets(self, request, obj=None):
-        return [(None, {'fields': self.replace_orig_field(self.get_fields(request, obj))})]
-
-    def get_fields(self, request, obj=None):
-        fields = super().get_fields(request, obj)
-
-        self._f_move(fields, 'source_id', 0)
-        self._f_move(fields, 'active_job', 1)
-        self._f_move(fields, 'country_en', 2)
-
-        self._f_move_relative(fields, 'country_en', 'country_es')
-        self._f_move_relative(fields, 'country_en', 'country_flag')
-
-        return fields
-
-    def _f_move(self, fields, field, index):
-        fields.remove(field)
-        fields.insert(index, field)
-
-    def _f_move_relative(self, fields, origin, field):
-        index = fields.index(origin) + 1
-        if index > len(fields) - 1:
-            index = len(fields) - 1
-
-        self._f_move(fields, field, index)
-
-    def _f_move_revert(self, fields, field, index=0):
-        index = len(fields) - 1 - index
-
-        self._f_move(fields, field, index)
 
     def active_job(self, obj):
         return Job.objects.filter(collection=obj, active=True).first()
 
 
 class LicenseAdmin(TabbedDjangoJqueryTranslationAdmin):
-    pass
+    fieldsets = (
+        (None, {
+            "description": translation_reminder,
+            "fields": (
+                "name_en",
+                "name_es",
+                "name_ru",
+                "description_en",
+                "description_es",
+                "description_ru",
+                "url",
+            ),
+        })
+    )
 
 
 class IssueAdminForm(forms.ModelForm):
@@ -163,7 +244,9 @@ class TaskInLine(TabularInline):
 class JobAdmin(ModelAdmin):
     list_display = ["__str__", "country", "collection", "status", "last_task", "active", "archived", "keep_all_data"]
 
-    list_editable = ["active", "status", "keep_all_data"]
+    # Multiple jobs can be set as active for the same collection, so "active" is set as read-only.
+    list_editable = ["status", "keep_all_data"]
+    readonly_fields = ["active"]
 
     inlines = [
         TaskInLine
