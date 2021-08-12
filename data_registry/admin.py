@@ -230,8 +230,8 @@ class IssueAdmin(TabbedDjangoJqueryTranslationAdmin):
 class TaskInLine(TabularInline):
     model = Task
     extra = 0
-    fields = ["type", "status", "result", "context"]
-    readonly_fields = ["type", "result", "context"]
+    fields = ["type", "status", "start", "end", "result", "note"]
+    readonly_fields = ["type", "start", "end", "result", "note"]
     show_change_link = True
 
     def has_add_permission(self, request, obj=None):

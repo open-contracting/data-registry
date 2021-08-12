@@ -255,7 +255,7 @@ class Task(Model):
         FAILED = "FAILED", "FAILED"
 
     result = CharField(max_length=2048, choices=Result.choices, blank=True, null=True)
-    note = TextField(blank=True, null=True)
+    note = TextField(blank=True, null=True, help_text="Metadata about any failure.")
     context = JSONField(blank=True, null=True)
 
     type = CharField(max_length=2048, blank=True, null=True)
