@@ -20,5 +20,9 @@ urlpatterns += i18n_patterns(
 
 if settings.DEBUG:
     urlpatterns = [
-        url(r'^{}(?P<path>.*)$'.format(settings.STATIC_URL[1:]), static.serve, {'document_root': settings.STATIC_ROOT}),
+        url(
+            r'^{}(?P<path>.*)$'.format(settings.STATIC_URL[1:]),
+            static.serve,
+            {'document_root': settings.STATIC_ROOT}
+        ),
     ] + urlpatterns
