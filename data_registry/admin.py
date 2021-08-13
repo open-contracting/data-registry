@@ -14,8 +14,7 @@ from markdownx.widgets import AdminMarkdownxWidget
 from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, TranslationTabularInline
 
 from data_registry.cbom.process import update_collection_availability, update_collection_metadata
-
-from .models import Collection, Issue, Job, License, Task
+from data_registry.models import Collection, Issue, Job, License, Task
 
 translation_reminder = _("Remember to provide information in all languages. You can use the dropdown at the top of "
                          "the page to toggle the language for all fields.")
@@ -137,6 +136,7 @@ class MissingContentFilter(admin.SimpleListFilter):
             return queryset.exclude(qs)
 
 
+@admin.register(Collection)
 class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
     form = CollectionAdminForm
     list_display = ["__str__", "country", "public", "frozen", "active_job"]
@@ -199,6 +199,7 @@ class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
         return Job.objects.filter(collection=obj, active=True).first()
 
 
+@admin.register(License)
 class LicenseAdmin(TabbedDjangoJqueryTranslationAdmin):
     fieldsets = (
         (None, {
@@ -212,7 +213,7 @@ class LicenseAdmin(TabbedDjangoJqueryTranslationAdmin):
                 "description_ru",
                 "url",
             ),
-        })
+        }),
     )
 
 
@@ -223,6 +224,7 @@ class IssueAdminForm(forms.ModelForm):
         }
 
 
+@admin.register(Issue)
 class IssueAdmin(TabbedDjangoJqueryTranslationAdmin):
     form = IssueAdminForm
 
@@ -241,6 +243,7 @@ class TaskInLine(TabularInline):
         return False
 
 
+@admin.register(Job)
 class JobAdmin(ModelAdmin):
     list_display = ["__str__", "country", "collection", "status", "last_task", "active", "archived", "keep_all_data"]
 
@@ -335,14 +338,8 @@ class JobAdmin(ModelAdmin):
         return None
 
 
+@admin.register(Task)
 class TaskAdmin(ModelAdmin):
     list_display = ["__str__", "type", "job", "status", "result"]
 
     list_editable = ["status"]
-
-
-admin.site.register(Collection, CollectionAdmin)
-admin.site.register(Issue, IssueAdmin)
-admin.site.register(License, LicenseAdmin)
-admin.site.register(Job, JobAdmin)
-admin.site.register(Task, TaskAdmin)
