@@ -16,8 +16,8 @@ from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, Translati
 from data_registry.cbom.process import update_collection_availability, update_collection_metadata
 from data_registry.models import Collection, Issue, Job, License, Task
 
-translation_reminder = _("Remember to provide information in all languages. You can use the dropdown at the top of "
-                         "the page to toggle the language for all fields.")
+translation_reminder = _("<em>Remember to provide information in all languages. You can use the dropdown at the top "
+                         "of the page to toggle the language for all fields.</em>")
 
 
 class IssueInLine(TranslationTabularInline):
@@ -26,10 +26,14 @@ class IssueInLine(TranslationTabularInline):
 
 
 class CollectionAdminForm(forms.ModelForm):
-    source_id = forms.ChoiceField(choices=[])
+    source_id = forms.ChoiceField(
+        choices=[],
+        label="Source ID",
+        help_text="The name of the spider in Kingfisher Collect. If a new spider is not listed, Kingfisher Collect "
+                  "needs to be re-deployed to the registry's server.")
     active_job = forms.ModelChoiceField(queryset=None, required=False,
-                                        help_text="A job is a set of tasks to collect and process a publication. "
-                                                  "A job can be selected once it is completed.")
+                                        help_text="A job is a set of tasks to collect and process data from a "
+                                                  "publication. A job can be selected once it is completed.")
     country_flag = forms.ChoiceField(choices=[(None, '---------')], required=False)
 
     def __init__(self, *args, **kwargs):
@@ -199,6 +203,13 @@ class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
         return Job.objects.filter(collection=obj, active=True).first()
 
 
+class LicenseAdminForm(forms.ModelForm):
+    class Meta:
+        widgets = {
+            'description': AdminMarkdownxWidget(attrs={'cols': 100, 'rows': 3})
+        }
+
+
 @admin.register(License)
 class LicenseAdmin(TabbedDjangoJqueryTranslationAdmin):
     fieldsets = (
@@ -222,11 +233,6 @@ class IssueAdminForm(forms.ModelForm):
         widgets = {
             'description': AdminMarkdownxWidget(attrs={'cols': 100, 'rows': 3})
         }
-
-
-@admin.register(Issue)
-class IssueAdmin(TabbedDjangoJqueryTranslationAdmin):
-    form = IssueAdminForm
 
 
 class TaskInLine(TabularInline):
@@ -336,10 +342,3 @@ class JobAdmin(ModelAdmin):
             return f"{last_completed_task.get('type')} ({last_completed_task.get('order')}/4)"
 
         return None
-
-
-@admin.register(Task)
-class TaskAdmin(ModelAdmin):
-    list_display = ["__str__", "type", "job", "status", "result"]
-
-    list_editable = ["status"]

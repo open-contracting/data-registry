@@ -6,9 +6,9 @@ from markdownx.models import MarkdownxField
 
 
 class Job(Model):
-    collection = ForeignKey("Collection", related_name="job", on_delete=CASCADE, verbose_name="Publication")
-    start = DateTimeField(blank=True, null=True, db_index=True, verbose_name="Job started at")
-    end = DateTimeField(blank=True, null=True, db_index=True, verbose_name="Job ended at")
+    collection = ForeignKey("Collection", related_name="job", on_delete=CASCADE, verbose_name="publication")
+    start = DateTimeField(blank=True, null=True, db_index=True, verbose_name="job started at")
+    end = DateTimeField(blank=True, null=True, db_index=True, verbose_name="job ended at")
 
     class Status(TextChoices):
         WAITING = "WAITING", "WAITING"
@@ -24,12 +24,12 @@ class Job(Model):
     active = BooleanField(default=False,
                           help_text="Set this as the active job for the collection from the collection's page.")
 
-    keep_all_data = BooleanField(default=False, verbose_name="Preserve temporary data",
+    keep_all_data = BooleanField(default=False, verbose_name="preserve temporary data",
                                  help_text="By default, temporary data created by job tasks is deleted after the job "
                                            "is completed. To preserve this data for debugging, check this box. Then, "
                                            "when ready, uncheck this box and run the \"cbom\" management command.")
 
-    archived = BooleanField(default=False, verbose_name="Temporary data deleted",
+    archived = BooleanField(default=False, verbose_name="temporary data deleted",
                             help_text="Whether the temporary data created by job tasks has been deleted.")
 
     tenders_count = IntegerField(default=0)
@@ -47,8 +47,8 @@ class Job(Model):
     milestones_count = IntegerField(default=0)
     amendments_count = IntegerField(default=0)
 
-    date_from = DateField(blank=True, null=True, verbose_name="Minimum release date")
-    date_to = DateField(blank=True, null=True, verbose_name="Maximum release date")
+    date_from = DateField(blank=True, null=True, verbose_name="minimum release date")
+    date_to = DateField(blank=True, null=True, verbose_name="maximum release date")
     ocid_prefix = CharField(max_length=2048, blank=True, null=True, verbose_name="OCID prefix")
     license = CharField(max_length=2048, blank=True, null=True)
 
@@ -68,7 +68,8 @@ class Collection(Model):
 
     title = TextField(
         help_text="The name of the publication, following the <a href=\"https://docs.google.com/document/d/"
-                  "14ZXlAB6GWeK4xwDUt9HGi0fTew4BahjZQ2owdLLVp6I/edit#heading=h.t81hzvffylry\">naming conventions</a>."
+                  "14ZXlAB6GWeK4xwDUt9HGi0fTew4BahjZQ2owdLLVp6I/edit#heading=h.t81hzvffylry\">naming conventions</a>, "
+                  "and omitting the country name."
     )
 
     country = CharField(max_length=2048, blank=True,
@@ -85,14 +86,14 @@ class Collection(Model):
     description_long = MarkdownxField(blank=True,
                                       help_text="The remaining paragraphs of the description of the publication, as "
                                                 "Markdown text, which will appear under \"Show more\".")
-    last_update = DateField(blank=True, null=True,
+    last_update = DateField(blank=True, null=True, verbose_name="last updated",
                             help_text="The date on which the most recent 'scrape' job task completed.")
 
     license_custom = ForeignKey("License", related_name="collection", on_delete=CASCADE, blank=True, null=True,
-                                verbose_name="Data license", help_text="If blank, the Overview will display the "
-                                                                       "license URL within the OCDS package.")
+                                verbose_name="data license", help_text="If not set, the Overview section will display "
+                                                                       "the license URL within the OCDS package.")
 
-    source_id = CharField(max_length=2048, verbose_name="Source ID",
+    source_id = CharField(max_length=2048, verbose_name="source ID",
                           help_text="The name of the spider in Kingfisher Collect. If a new spider is not listed, "
                                     "Kingfisher Collect needs to be re-deployed to the registry's server.")
 
@@ -103,21 +104,22 @@ class Collection(Model):
 
     update_frequency = CharField(max_length=2048, choices=Frequency.choices, blank=True,
                                  help_text="The frequency at which the registry updates the publication, based on the "
-                                           "frequency of the publication itself.")
+                                           "frequency at which the publication is updated.")
 
-    summary = MarkdownxField(blank=True, verbose_name="Quality summary",
+    summary = MarkdownxField(blank=True, verbose_name="quality summary",
                              help_text="A short summary of quality issues, as Markdown text. Individual issues can be "
                                        "described below, which will be rendered as a bullet list.")
 
-    additional_data = MarkdownxField(blank=True, verbose_name="Data availability",
-                                     help_text="A description of any notable features, such as extensions used or "
-                                               "additional fields, as Markdown text.")
+    additional_data = MarkdownxField(blank=True, verbose_name="data availability",
+                                     help_text="Any notable highlights about the available data, such as extensions "
+                                               "used or additional fields, as Markdown text.")
 
     json_format = BooleanField(default=True)
     excel_format = BooleanField(default=True)
 
     public = BooleanField(default=False,
-                          help_text="If the active job has completed and all fields below are filled, check this box.")
+                          help_text="If the active job's tasks completed without errors and all fields below in all "
+                                    "languages are filled in, check this box.")
     frozen = BooleanField(default=False,
                           help_text="If the spider is broken, check this box to prevent new jobs from running.")
 
@@ -219,7 +221,7 @@ class License(Model):
     description = MarkdownxField(blank=True,
                                  help_text="A brief description of the permissions, conditions and limitations, as "
                                            "Markdown text.")
-    url = CharField(max_length=2048, blank=True,
+    url = CharField(max_length=2048, blank=True, verbose_name="URL",
                     help_text="The canonical URL of the license.")
 
     created = DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)
@@ -233,7 +235,7 @@ class Issue(Model):
     class Meta:
         verbose_name = "quality issue"
 
-    description = MarkdownxField()
+    description = MarkdownxField(help_text="A one-line description of the quality issue, as Markdown text.")
     collection = ForeignKey("Collection", related_name="issue", on_delete=CASCADE)
 
     created = DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)
