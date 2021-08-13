@@ -26,7 +26,8 @@ class Job(Model):
 
     keep_all_data = BooleanField(default=False, verbose_name="Preserve temporary data",
                                  help_text="By default, temporary data created by job tasks is deleted after the job "
-                                           "is completed. To preserve this data for debugging, check this box.")
+                                           "is completed. To preserve this data for debugging, check this box. Then, "
+                                           "when ready, uncheck this box and run the \"cbom\" management command.")
 
     archived = BooleanField(default=False, verbose_name="Temporary data deleted",
                             help_text="Whether the temporary data created by job tasks has been deleted.")
