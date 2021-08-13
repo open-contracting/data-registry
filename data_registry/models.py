@@ -24,13 +24,13 @@ class Job(Model):
     active = BooleanField(default=False,
                           help_text="Set this as the active job for the collection from the collection's page.")
 
+    archived = BooleanField(default=False, verbose_name="temporary data deleted",
+                            help_text="Whether the temporary data created by job tasks has been deleted.")
+
     keep_all_data = BooleanField(default=False, verbose_name="preserve temporary data",
                                  help_text="By default, temporary data created by job tasks is deleted after the job "
                                            "is completed. To preserve this data for debugging, check this box. Then, "
                                            "when ready, uncheck this box and run the \"cbom\" management command.")
-
-    archived = BooleanField(default=False, verbose_name="temporary data deleted",
-                            help_text="Whether the temporary data created by job tasks has been deleted.")
 
     tenders_count = IntegerField(default=0)
     tenderers_count = IntegerField(default=0)
