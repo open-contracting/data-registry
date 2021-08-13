@@ -85,7 +85,7 @@ def callback(connection, channel, delivery_tag, body):
                     full.write("{}\n".format(r[1]))
 
                     # annual and monthly dump
-                    if r[2] is not None:
+                    if r[2] is not None and len(r[2]) > 9:
                         year_key = "{}/{}.jsonl".format(dump_dir, int(r[2][:4]))
                         if year_key not in files:
                             files[year_key] = open(year_key, 'a')
