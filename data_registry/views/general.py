@@ -10,7 +10,7 @@ from django.contrib.postgres.aggregates import ArrayAgg
 from django.core.mail import send_mail
 from django.db.models.expressions import Exists, OuterRef
 from django.db.models.query_utils import Q
-from django.http.response import JsonResponse
+from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils.translation import gettext as _
@@ -174,5 +174,8 @@ def excel_data(request, job_id, job_range):
         "source": "OCP Kingfisher Database"
         },
         headers={'Accept-Language': 'en_US|es'})
+
+    if response.status_code != 200 or "id" not in response.json():
+        return HttpResponse(status=500)
 
     return redirect("https://flatten.open-contracting.org/#/upload-file?&url={}".format(response.json()["id"]))
