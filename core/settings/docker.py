@@ -62,6 +62,7 @@ EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "NO").lower() in ("on", "true", "y", "yes")
 FEEDBACK_EMAIL = os.getenv("FEEDBACK_EMAIL")
+FLATTEN_URL = os.getenv("FLATTEN_URL")
 
 RABBIT = {
     "host": os.getenv("RABBIT_HOST"),
