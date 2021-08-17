@@ -179,7 +179,7 @@ def excel_data(request, job_id, job_range):
         headers={'Accept-Language': 'en_US|es'})
 
     if response.status_code != 200 or "id" not in response.json():
-        logger.error("Invalid response from spoonbill {}.".format(response.raw))
+        logger.error("Invalid response from spoonbill {}.".format(response.text))
         return HttpResponse(status=500)
 
     return redirect("{}/#/upload-file?&url={}".format(settings.FLATTEN_URL, response.json()["id"]))
