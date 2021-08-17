@@ -170,7 +170,7 @@ def excel_data(request, job_id, job_range):
 
             start_date = start_date + relativedelta(months=+1)
 
-    response = requests.post("{}/api/urls".format(settings.FLATTEN_URL), {
+    response = requests.post("{}/api/urls/".format(settings.FLATTEN_URL), {
         "urls": urls,
         "country": "{} {}".format(job.collection.country, job.collection.title),
         "period": _(job_range),
