@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 from datetime import date, datetime
 
@@ -21,6 +22,8 @@ from data_registry.cbom.task.process import Process
 from data_registry.cbom.task.scrape import Scrape
 from data_registry.models import Collection, Job
 from data_registry.views.serializers import CollectionSerializer
+
+logger = logging.getLogger(__name__)
 
 
 def index(request):
@@ -167,7 +170,7 @@ def excel_data(request, job_id, job_range):
 
             start_date = start_date + relativedelta(months=+1)
 
-    response = requests.post(settings.FLATTEN_URL, {
+    response = requests.post("{}/api/urls".format(settings.FLATTEN_URL), {
         "urls": urls,
         "country": "{} {}".format(job.collection.country, job.collection.title),
         "period": _(job_range),
@@ -176,6 +179,7 @@ def excel_data(request, job_id, job_range):
         headers={'Accept-Language': 'en_US|es'})
 
     if response.status_code != 200 or "id" not in response.json():
+        logger.error("Invalid response from spoonbill {}.".format(response.raw))
         return HttpResponse(status=500)
 
-    return redirect("https://flatten.open-contracting.org/#/upload-file?&url={}".format(response.json()["id"]))
+    return redirect("{}/#/upload-file?&url={}".format(settings.FLATTEN_URL, response.json()["id"]))
