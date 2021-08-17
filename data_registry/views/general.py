@@ -1,6 +1,9 @@
 import json
+import os
+from datetime import date, datetime
 
 import requests
+from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.postgres.aggregates import ArrayAgg
@@ -8,8 +11,9 @@ from django.core.mail import send_mail
 from django.db.models.expressions import Exists, OuterRef
 from django.db.models.query_utils import Q
 from django.http.response import JsonResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+from django.utils.translation import gettext as _
 
 from data_registry.cbom.task.exporter import Exporter
 from data_registry.cbom.task.pelican import Pelican
@@ -130,3 +134,45 @@ def wipe_job(request, job_id):
     Exporter(job).wipe()
 
     return JsonResponse(True, safe=False)
+
+
+def excel_data(request, job_id, job_range):
+    job = Job.objects.get(id=job_id)
+
+    spider = job.collection.source_id
+
+    dump_dir = "{}/{}/{}".format(settings.EXPORTER_DIR, spider, job_id)
+
+    urls = []
+    if job_range == "null":
+        urls = "file://{}/full.jsonl.gz".format(dump_dir)
+        job_range = _("All data")
+    else:
+        if job_range == "past-6-months":
+            end_date = date.today()
+            start_date = (date.today() + relativedelta(months=-6))
+        if job_range == "past-year":
+            end_date = date.today()
+            start_date = (date.today() + relativedelta(months=-12))
+        if "|" in job_range:
+            dates = job_range.split("|")
+            start_date = datetime.strptime(dates[0], "%Y-%m-%d")
+            end_date = datetime.strptime(dates[1], "%Y-%m-%d")
+
+        while start_date < end_date:
+            file_path = "{}/{}.jsonl.gz".format(settings.EXPORTER_DIR, start_date.strftime("%Y_%m"))
+
+            if os.path.isfile(file_path):
+                urls.append("file://{}".format(file_path))
+
+            start_date = start_date + relativedelta(months=+1)
+
+    response = requests.post(settings.FLATTEN_URL, {
+        "urls": urls,
+        "country": "{} {}".format(job.collection.country, job.collection.title),
+        "period": _(job_range),
+        "source": "OCP Kingfisher Database"
+        },
+        headers={'Accept-Language': 'en_US|es'})
+
+    return redirect("https://flatten.open-contracting.org/#/upload-file?&url={}".format(response.json()["id"]))

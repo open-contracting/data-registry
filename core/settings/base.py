@@ -86,6 +86,7 @@ DATABASES = {
     }
 }
 
+FLATTEN_URL = "https://flatten.open-contracting.org/api/urls/"
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators

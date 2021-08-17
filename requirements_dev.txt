@@ -52,13 +52,6 @@ idna==2.10
     # via
     #   -r requirements.txt
     #   requests
-importlib-metadata==4.6.3
-    # via
-    #   -r requirements.txt
-    #   flake8
-    #   markdown
-    #   pluggy
-    #   pytest
 iniconfig==1.1.1
     # via pytest
 isort==5.7.0
@@ -96,6 +89,8 @@ pyparsing==2.4.7
     # via packaging
 pytest==6.2.2
     # via -r requirements_dev.in
+python-dateutil==2.8.2
+    # via -r requirements.txt
 python-slugify==4.0.1
     # via transifex-client
 pytz==2021.1
@@ -113,6 +108,7 @@ six==1.16.0
     # via
     #   -r requirements.txt
     #   django-modeltranslation
+    #   python-dateutil
     #   transifex-client
 smmap==4.0.0
     # via gitdb
@@ -126,22 +122,12 @@ toml==0.10.2
     # via pytest
 transifex-client==0.14.3
     # via -r requirements_dev.in
-typing-extensions==3.10.0.0
-    # via
-    #   -r requirements.txt
-    #   asgiref
-    #   gitpython
-    #   importlib-metadata
 urllib3==1.26.5
     # via
     #   -r requirements.txt
     #   requests
     #   sentry-sdk
     #   transifex-client
-zipp==3.5.0
-    # via
-    #   -r requirements.txt
-    #   importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip

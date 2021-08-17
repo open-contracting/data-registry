@@ -259,13 +259,10 @@ if (document.getElementById("search_app")) {
             detailDateRange: function() {
                 if (this.filter.date == "custom") {
                     if (this.dateFrom && this.dateTo) {
-                        return `${this.$moment(this.dateFrom).format("MMM YYYY")} - ${this.$moment(this.dateTo).format("MMM YYYY")}`
+                        return this.dateFrom + "|" + this.dateTo
                     }
                 } else {
-                    var found = this.dateFilterOptions.findIndex(n => n.value == this.filter.date)
-                    if (found >= 0) {
-                        return this.dateFilterOptions[found].label.toLowerCase()
-                    }
+                    return this.filter.date
                 }
 
                 return null
@@ -341,6 +338,11 @@ if (document.getElementById("detail_app")) {
             }
         },
         methods: {
+            goToExcelData: function() {
+                var job_id = this.data.active_job.id
+                var data_range = localStorage.getItem("detail-date-range")
+                window.location = "/excel_data/" + job_id + "/" + data_range
+            },
             submitFeedback: function() {
                 api.post("send_feedback/", {
                     type: this.feedbackType,

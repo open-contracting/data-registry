@@ -8,4 +8,5 @@ pymdown-extensions
 gunicorn
 pika
 sentry-sdk
+python-dateutil
 
