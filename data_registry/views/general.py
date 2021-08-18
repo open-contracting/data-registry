@@ -178,6 +178,7 @@ def excel_data(request, job_id, job_range):
         },
         headers={'Accept-Language': 'en_US|es'})
 
+    logger.error("Sent urls {} to flatten tool. Response status code {}.".format(urls, response.status_code))
     if response.status_code != 200 or "id" not in response.json():
         logger.error("Invalid response from spoonbill {}.".format(response.text))
         return HttpResponse(status=500)
