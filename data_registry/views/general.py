@@ -162,7 +162,7 @@ def excel_data(request, job_id, job_range):
             start_date = datetime.strptime(dates[0], "%Y-%m-%d")
             end_date = datetime.strptime(dates[1], "%Y-%m-%d")
 
-        while start_date.month <= end_date.month:
+        while start_date.year <= end_date.year and start_date.month <= end_date.month:
             file_path = "{}/{}.jsonl.gz".format(dump_dir, start_date.strftime("%Y_%m"))
 
             if os.path.isfile(file_path):
