@@ -166,7 +166,10 @@ def excel_data(request, job_id, job_range):
             file_path = "{}/{}.jsonl.gz".format(dump_dir, start_date.strftime("%Y_%m"))
 
             if os.path.isfile(file_path):
+                logger.debug("File {} exists, including in export.".format(file_path))
                 urls.append("file://{}".format(file_path))
+            else:
+                logger.debug("File {} does not found. Excluding from in export.".format(file_path))
 
             start_date = start_date + relativedelta(months=+1)
 
