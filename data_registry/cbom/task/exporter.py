@@ -15,9 +15,7 @@ class Exporter(BaseTask):
 
     def __init__(self, job):
         self.job = job
-        self.collection_id = self.job.context.get("process_id_pelican")
-        if not self.collection_id:
-            raise Exception("Process id is not set")
+        self.collection_id = self.job.context.get("process_id_pelican", None)
 
     def run(self):
         request(

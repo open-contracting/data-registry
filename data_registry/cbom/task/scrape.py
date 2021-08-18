@@ -118,7 +118,7 @@ class Scrape(BaseTask):
     def wipe(self):
         version = self.job.context.get("process_data_version", None)
         if not version:
-            logger.error("Unable to wipe SCRAPE - process_data_version is not set")
+            logger.info("Unable to wipe SCRAPE - process_data_version is not set")
             return
 
         logger.info("Wiping scrape data for version {}.".format(version))

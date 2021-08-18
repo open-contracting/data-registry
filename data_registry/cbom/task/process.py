@@ -15,10 +15,7 @@ class Process(BaseTask):
 
     def __init__(self, job):
         self.job = job
-
         self.process_id = job.context.get("process_id", None)
-        if not self.process_id:
-            raise Exception("Process id is not set")
 
     def run(self):
         # process is started throught scrape-process integration
