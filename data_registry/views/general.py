@@ -154,7 +154,7 @@ def excel_data(request, job_id, job_range):
         if job_range == "past-6-months":
             end_date = date.today()
             start_date = (date.today() + relativedelta(months=-6))
-        if job_range == "past-year":
+        if job_range == "last-year":
             end_date = date.today()
             start_date = (date.today() + relativedelta(months=-12))
         if "|" in job_range:
@@ -163,7 +163,7 @@ def excel_data(request, job_id, job_range):
             end_date = datetime.strptime(dates[1], "%Y-%m-%d")
 
         while start_date < end_date:
-            file_path = "{}/{}.jsonl.gz".format(settings.EXPORTER_DIR, start_date.strftime("%Y_%m"))
+            file_path = "{}/{}.jsonl.gz".format(dump_dir, start_date.strftime("%Y_%m"))
 
             if os.path.isfile(file_path):
                 urls.append("file://{}".format(file_path))
