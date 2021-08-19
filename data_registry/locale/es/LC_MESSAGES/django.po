@@ -2,11 +2,11 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 # Translators:
 # Maria Esther Cervantes <mcervantes@cds.com.py>, 2021
 # Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2021
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -571,3 +571,12 @@ msgstr "Últimos 6 meses"
 #: templates/search.html:208
 msgid "Custom"
 msgstr "Personalizado"
+
+msgid "all"
+msgstr "Todos"
+
+msgid "last-year"
+msgstr "Año pasado"
+
+msgid "past-6-months"
+msgstr "Últimos 6 meses"

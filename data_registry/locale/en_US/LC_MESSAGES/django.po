@@ -520,3 +520,12 @@ msgstr ""
 #: templates/search.html:208
 msgid "Custom"
 msgstr ""
+
+msgid "all"
+msgstr "All"
+
+msgid "last-year"
+msgstr "Past year"
+
+msgid "past-6-months"
+msgstr "Past 6 months"

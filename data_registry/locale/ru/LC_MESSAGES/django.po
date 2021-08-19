@@ -2,10 +2,10 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 # Translators:
 # Volodymyr <vtarnay@open-contracting.org>, 2021
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -560,3 +560,12 @@ msgstr "Прошедшие 6 месяцев"
 #: templates/search.html:208
 msgid "Custom"
 msgstr "Обычный"
+
+msgid "all"
+msgstr "Все"
+
+msgid "last-year"
+msgstr "Прошлый год"
+
+msgid "past-6-months"
+msgstr "Прошедшие 6 месяцев"
