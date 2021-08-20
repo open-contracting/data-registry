@@ -1,4 +1,4 @@
-from os.path import join
+import os
 from pathlib import Path
 
 import pymdownx  # noqa: F403,F401
@@ -15,7 +15,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '+z4+npbj&h=hfaipwp!7$9r(s=ui9=e=b9dp7vt@g08mu8%a8x'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.getenv("DEBUG", "NO").lower() in ("on", "true", "y", "yes")
 
 ALLOWED_HOSTS = []
 
@@ -31,7 +31,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 INSTALLED_APPS = [
     'modeltranslation',
-    'django.contrib.admin',
+    'core.apps.CoreAdminConfig',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -126,6 +126,7 @@ USE_THOUSAND_SEPARATOR = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_ROOT = 'data_registry/static/'
+STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -151,5 +152,5 @@ MARKDOWNX_MARKDOWN_EXTENSION_CONFIGS = {
 }
 
 LOCALE_PATHS = [
-    join(BASE_DIR, 'data_registry', 'locale'),
+    os.path.join(BASE_DIR, 'data_registry', 'locale'),
 ]
