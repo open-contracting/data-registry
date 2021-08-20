@@ -149,7 +149,7 @@ def excel_data(request, job_id, job_range):
 
     urls = []
     if job_range == "null":
-        urls = "file://{}/full.jsonl.gz".format(dump_dir)
+        urls.append("file://{}/full.jsonl.gz".format(dump_dir))
         job_range = _("All")
     else:
         if job_range == "past-6-months":

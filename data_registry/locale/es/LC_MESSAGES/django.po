@@ -572,9 +572,6 @@ msgstr "Últimos 6 meses"
 msgid "Custom"
 msgstr "Personalizado"
 
-msgid "all"
-msgstr "Todos"
-
 msgid "last-year"
 msgstr "Año pasado"
 
