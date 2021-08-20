@@ -51,7 +51,7 @@ class ProcessTests(TransactionTestCase):
 
             self.assertEqual(Task.Status.RUNNING, task.status)
             self.assertIsNotNone(task.start)
-            self.assertIsNone(task.result)
+            self.assertEqual("", task.result)
 
             # next call updates running task state
             process(collection)
