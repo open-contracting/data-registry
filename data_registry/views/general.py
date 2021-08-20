@@ -175,15 +175,19 @@ def excel_data(request, job_id, job_range):
 
             start_date = start_date + relativedelta(months=+1)
 
-    response = requests.post("{}/api/urls/".format(settings.FLATTEN_URL), {
-            "urls": urls,
-            "country": "{} {}".format(job.collection.country, job.collection.title),
-            "period": _(job_range),
-            "source": _("OCP Kingfisher Database")
-        },
-        headers={"Accept-Language": "{}".format(get_language())})
+    body = {
+        "urls": urls,
+        "country": "{} {}".format(job.collection.country, job.collection.title),
+        "period": _(job_range),
+        "source": _("OCP Kingfisher Database")
+    }
 
-    logger.error("Sent urls {} to flatten tool. Response status code {}.".format(urls, response.status_code))
+    headers = {"Accept-Language": "{}".format(get_language())}
+    response = requests.post("{}/api/urls/".format(settings.FLATTEN_URL), body, headers=headers)
+
+    logger.error("Sent body request to flatten tool body \n{} headers\n{}\nLanguageResponse status code {}.".format(
+        body, headers, response.status_code))
+
     if response.status_code > 201 or "id" not in response.json():
         logger.error("Invalid response from spoonbill {}.".format(response.text))
         return HttpResponse(status=500)
