@@ -14,6 +14,7 @@ from django.db.models.query_utils import Q
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+from django.utils.translation import get_language
 from django.utils.translation import gettext as _
 
 from data_registry.cbom.task.exporter import Exporter
@@ -175,12 +176,12 @@ def excel_data(request, job_id, job_range):
             start_date = start_date + relativedelta(months=+1)
 
     response = requests.post("{}/api/urls/".format(settings.FLATTEN_URL), {
-        "urls": urls,
-        "country": "{} {}".format(job.collection.country, job.collection.title),
-        "period": _(job_range),
-        "source": "OCP Kingfisher Database"
+            "urls": urls,
+            "country": "{} {}".format(job.collection.country, job.collection.title),
+            "period": _(job_range),
+            "source": _("OCP Kingfisher Database")
         },
-        headers={'Accept-Language': 'en_US|es'})
+        headers={"Accept-Language": "{}".format(get_language())})
 
     logger.error("Sent urls {} to flatten tool. Response status code {}.".format(urls, response.status_code))
     if response.status_code > 201 or "id" not in response.json():
