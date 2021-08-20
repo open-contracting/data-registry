@@ -16,7 +16,7 @@ class Job(Model):
         RUNNING = "RUNNING", "RUNNING"
         COMPLETED = "COMPLETED", "COMPLETED"
 
-    status = CharField(max_length=2048, choices=Status.choices, blank=True, null=True)
+    status = CharField(max_length=2048, choices=Status.choices, blank=True)
 
     context = JSONField(blank=True, null=True,
                         help_text="Refer to the User Guide to interpret and use this information for debugging.")
@@ -49,8 +49,8 @@ class Job(Model):
 
     date_from = DateField(blank=True, null=True, verbose_name="minimum release date")
     date_to = DateField(blank=True, null=True, verbose_name="maximum release date")
-    ocid_prefix = CharField(max_length=2048, blank=True, null=True, verbose_name="OCID prefix")
-    license = CharField(max_length=2048, blank=True, null=True)
+    ocid_prefix = CharField(max_length=2048, blank=True, verbose_name="OCID prefix")
+    license = CharField(max_length=2048, blank=True)
 
     created = DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)
     modified = DateTimeField(auto_now=True, blank=True, null=True, db_index=True)
@@ -256,17 +256,17 @@ class Task(Model):
         RUNNING = "RUNNING", "RUNNING"
         COMPLETED = "COMPLETED", "COMPLETED"
 
-    status = CharField(max_length=2048, choices=Status.choices, blank=True, null=True)
+    status = CharField(max_length=2048, choices=Status.choices, blank=True)
 
     class Result(TextChoices):
         OK = "OK", "OK"
         FAILED = "FAILED", "FAILED"
 
-    result = CharField(max_length=2048, choices=Result.choices, blank=True, null=True)
-    note = TextField(blank=True, null=True, help_text="Metadata about any failure.")
+    result = CharField(max_length=2048, choices=Result.choices, blank=True)
+    note = TextField(blank=True, help_text="Metadata about any failure.")
     context = JSONField(blank=True, null=True)
 
-    type = CharField(max_length=2048, blank=True, null=True)
+    type = CharField(max_length=2048, blank=True)
     order = IntegerField(blank=True, null=True)
 
     created = DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)
