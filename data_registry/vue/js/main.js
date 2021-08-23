@@ -211,12 +211,12 @@ if (document.getElementById("search_app")) {
                     }
 
                     if (this.filter.data) {
-                        result &= this.filter.data.reduce((r, m) => r & n[m] > 0, true)
+                        result &= this.filter.data.reduce((r, m) => r & n["active_job"][m] > 0, true)
                     }
 
                     if (this.filter.date) {
-                        var from = this.$moment(n.date_from)
-                        var to = this.$moment(n.date_to)
+                        var from = this.$moment(n.active_job.date_from)
+                        var to = this.$moment(n.active_job.date_to)
                         switch (this.filter.date) {
                             case "last-year":
                                 result &= from.isSameOrAfter(this.$moment().subtract(1, 'years'))
@@ -233,8 +233,8 @@ if (document.getElementById("search_app")) {
                                         var isToIn = to.isBefore(this.$moment(this.dateTo))
                                         if (isFromIn || isToIn) {
                                             n.overlap_alert = true
-                                            n.overlap_from = isFromIn ? n.date_from : this.dateFrom
-                                            n.overlap_to = isToIn ? n.date_to : this.dateTo
+                                            n.overlap_from = isFromIn ? n.active_job.date_from : this.dateFrom
+                                            n.overlap_to = isToIn ? n.active_job.date_to : this.dateTo
                                         }
                                     } else {
                                         result &= false
