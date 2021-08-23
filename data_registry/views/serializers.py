@@ -12,7 +12,9 @@ class BasicSerializer():
         result = model_to_dict(data)
 
         for key, value in result.items():
-            if isinstance(value, datetime.date):
+            if isinstance(value, datetime.datetime):
+                result[key] = value.strftime("%Y-%m-%d %H:%M:%S")
+            elif isinstance(value, datetime.date):
                 result[key] = value.strftime("%Y-%m-%d")
 
             if key in cls.markdown_fields and value:
