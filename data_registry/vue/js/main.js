@@ -5,6 +5,8 @@ require('es6-promise').polyfill();
 import Vue from "vue/dist/vue.js";
 import VueMoment from 'vue-moment';
 import axios from 'axios';
+import Vuex from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
 
 import {BootstrapVue, IconsPlugin} from 'bootstrap-vue'
 
@@ -13,11 +15,33 @@ import { CONFIG } from "./config.js"
 Vue.use(VueMoment)
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
+Vue.use(Vuex)
 
 const api = axios.create({
     baseURL: "/",
     xsrfCookieName: "csrftoken",
     xsrfHeaderName: "X-CSRFToken"
+})
+
+const store = new Vuex.Store({
+    state: {
+       searchFilter: null
+    },
+    getters: {
+        searchFilter: state => state.searchFilter
+    },
+    mutations: {
+        setSearchFilter: function(state, filter) {
+            state.searchFilter = filter
+        }
+    },
+    actions: {
+    },
+    modules: {
+    },
+    plugins: [
+        createPersistedState(),
+    ]
 })
 
 if (document.getElementById("chevron-btn-template")) {
@@ -161,6 +185,7 @@ if (document.getElementById("dropdown-template")) {
 
 if (document.getElementById("search_app")) {
     new Vue({
+        store,
         delimiters: ["[[", "]]"],
         el: "#search_app",
         data: function() {
@@ -282,15 +307,29 @@ if (document.getElementById("search_app")) {
                     return list
                 }, [])
             },
-            currentLanguageCode: () => CURRENT_LANGUAGE
-        },
-        watch: {
-            detailDateRange: function() {
-                localStorage.setItem("detail-date-range", this.detailDateRange)
+            currentLanguageCode: () => CURRENT_LANGUAGE,
+            searchForStorage: function() {
+                return {
+                    ...this.filter, 
+                    ...{dateFrom: this.dateFrom, dateTo: this.dateTo}
+                }
             }
         },
-        created: function() {
-            localStorage.setItem("detail-date-range", this.detailDateRange)
+        watch: {
+            searchForStorage: function(value) {                
+                this.$store.commit("setSearchFilter", value)
+            }
+        },
+        mounted: function() {
+            var filter = this.$store.getters.searchFilter
+            if (filter) {
+                this.countryFilter = filter.country
+                this.frequencyFilter = filter.frequency
+                this.dataFilter = filter.data
+                this.dateFilter = this.dateFilterOptions.find(n => n.value == filter.date) 
+                this.dateFrom = filter.dateFrom
+                this.dateTo = filter.dateTo
+            }
         },
         methods: {
             setCountryFilter: function(country) {
