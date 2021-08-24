@@ -320,8 +320,7 @@ html, body {
                 margin-bottom: 15px;
             }
 
-            .letter {
-                cursor: pointer;
+            .letter {                
                 border-radius: 40px;
                 background-color: transparent;
                 width: 40px;
@@ -329,10 +328,6 @@ html, body {
                 display: inline-block;
                 text-align: center;
                 line-height: 40px;
-
-                &:hover {
-                    text-decoration: underline;
-                }
 
                 &.selected {
                     background-color: rgba($info, 0.2);
@@ -342,8 +337,13 @@ html, body {
                 }
 
                 &.has-data {
+                    cursor: pointer;
                     text-decoration: underline;
                     color: $info;
+
+                    &:hover {
+                        text-decoration: underline;
+                    }
                 }
             }
         }
