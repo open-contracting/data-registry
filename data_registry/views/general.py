@@ -140,7 +140,7 @@ def wipe_job(request, job_id):
     return JsonResponse(True, safe=False)
 
 
-def excel_data(request, job_id, job_range):
+def excel_data(request, job_id, job_range=None):
     job = Job.objects.get(id=job_id)
 
     spider = job.collection.source_id
@@ -148,7 +148,7 @@ def excel_data(request, job_id, job_range):
     dump_dir = "{}/{}/{}".format(settings.EXPORTER_DIR, spider, job_id)
 
     urls = []
-    if job_range == "null":
+    if job_range is None:
         urls.append("file://{}/full.jsonl.gz".format(dump_dir))
         job_range = _("All")
     else:
@@ -159,10 +159,19 @@ def excel_data(request, job_id, job_range):
             end_date = date.today()
             start_date = (date.today() + relativedelta(months=-12))
         if "|" in job_range:
-            dates = job_range.split("|")
-            start_date = datetime.strptime(dates[0], "%Y-%m-%d")
-            end_date = datetime.strptime(dates[1], "%Y-%m-%d")
-            job_range = "{} - {}".format(dates[0], dates[1])
+            d_from, d_to = job_range.split("|")
+            if d_from and d_to:
+                start_date = datetime.strptime(d_from, "%Y-%m-%d")
+                end_date = datetime.strptime(d_to, "%Y-%m-%d")
+                job_range = f"{d_from} - {d_to}"
+            elif not d_from:
+                start_date = datetime.strptime("1980-01-01", "%Y-%m-%d")
+                end_date = datetime.strptime(d_to, "%Y-%m-%d")
+                job_range = f"< {d_to}"
+            elif not d_to:
+                start_date = datetime.strptime(d_from, "%Y-%m-%d")
+                end_date = datetime.now()
+                job_range = f"> {d_from}"
 
         while "{}{}".format(start_date.year, start_date.month) <= "{}{}".format(end_date.year, end_date.month):
             file_path = "{}/{}.jsonl.gz".format(dump_dir, start_date.strftime("%Y_%m"))
