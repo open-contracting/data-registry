@@ -332,8 +332,8 @@ if (document.getElementById("search_app")) {
             var filter = this.$store.getters.searchFilter
             if (filter) {
                 this.countryFilter = filter.country
-                this.frequencyFilter = filter.frequency
-                this.dataFilter = filter.data
+                this.frequencyFilter = filter.frequency ? filter.frequency : []
+                this.dataFilter = filter.data ? filter.data : []
                 this.dateFilter = this.dateFilterOptions.find(n => n.value == filter.date) 
                 this.dateFrom = filter.dateFrom
                 this.dateTo = filter.dateTo
