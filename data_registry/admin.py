@@ -13,7 +13,6 @@ from django.utils.translation import gettext_lazy as _
 from markdownx.widgets import AdminMarkdownxWidget
 from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, TranslationTabularInline
 
-from data_registry.cbom.process import update_collection_availability, update_collection_metadata
 from data_registry.models import Collection, Issue, Job, License, Task
 
 translation_reminder = _("<em>Remember to provide information in all languages. You can use the dropdown at the top "
@@ -77,10 +76,6 @@ class CollectionAdminForm(forms.ModelForm):
                     default=False,
                     output_field=BooleanField()
                 ))
-
-                update_collection_availability(active_job)
-
-                update_collection_metadata(active_job)
         else:
             jobs.update(active=False)
 
