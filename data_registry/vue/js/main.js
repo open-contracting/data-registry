@@ -239,7 +239,7 @@ if (document.getElementById("search_app")) {
                         result &= this.filter.data.reduce((r, m) => r & n["active_job"][m] > 0, true)
                     }
 
-                    if (this.filter.date) {
+                    if (this.filter.date && n.active_job != null) {
                         var from = this.$moment(n.active_job.date_from)
                         var to = this.$moment(n.active_job.date_to)
                         var filterFrom = this.$moment(this.dateFrom)
@@ -268,7 +268,7 @@ if (document.getElementById("search_app")) {
                                         result &= false
                                     }
                                 } else if (this.dateFrom) {
-                                    if (from.isBefore(filterFrom)) {
+                                    if (to.isBefore(filterFrom)) {
                                         return false
                                     }
 
@@ -278,7 +278,7 @@ if (document.getElementById("search_app")) {
                                         n.overlap_to = n.active_job.date_to
                                     }
                                 } else if (this.dateTo) {
-                                    if (to.isAfter(filterTo)) {
+                                    if (from.isAfter(filterTo)) {
                                         return false
                                     }
 
