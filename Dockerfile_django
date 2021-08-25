@@ -9,6 +9,4 @@ COPY . .
 
 RUN mkdir /data
 
-RUN VERSION=$(date +%Y%m%d%h%s); sed -i "s/STATIC_VERSION.*/STATIC_VERSION = '$VERSION'/g" ./core/settings/docker.py
-
 ENTRYPOINT [ "" ]
