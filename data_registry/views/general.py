@@ -201,4 +201,7 @@ def excel_data(request, job_id, job_range=None):
         logger.error("Invalid response from spoonbill {}.".format(response.text))
         return HttpResponse(status=500)
 
-    return redirect("{}/#/upload-file?&url={}".format(settings.FLATTEN_URL, response.json()["id"]))
+    return redirect("{}/#/upload-file?&lang={}&url={}".format(
+        settings.FLATTEN_URL,
+        get_language(),
+        response.json()["id"]))
