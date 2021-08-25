@@ -17,12 +17,6 @@ Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(Vuex)
 
-Vue.directive('inline-html', {
-    inserted: function (el) {
-        el.innerHTML = el.innerHTML.replace(/(<\/[^>]+>)[\n ]+(?=<[^>]+>)/g,'$1')
-    }
-})
-
 const api = axios.create({
     baseURL: "/",
     xsrfCookieName: "csrftoken",

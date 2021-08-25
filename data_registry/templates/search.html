@@ -36,12 +36,14 @@
                 </div>
 
                 <div class="country">
-                    <div v-for="n in alphabet" :key="n" v-inline-html>
+                    <div v-for="n in alphabet" :key="n">
                         <span v-if="countriesWithData.includes(n)"
                             class="letter has-data"
                             :class="{selected: countryFilter == n}"
                             @click="setCountryFilter(n)"
-                        >[[ n ]]</span>
+                        >
+                            [[ n ]]
+                        </span>
                         <span v-else class="letter">[[ n ]]</span>
                         <span v-if="n != 'Z'">|</span>
                     </div>

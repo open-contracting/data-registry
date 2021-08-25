@@ -318,9 +318,11 @@ html, body {
 
             & > div {
                 margin-bottom: 15px;
+                display: flex;
+                align-items: center;
             }
 
-            .letter {                
+            .letter {
                 border-radius: 40px;
                 background-color: transparent;
                 width: 40px;
