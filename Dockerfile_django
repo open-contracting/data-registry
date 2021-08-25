@@ -9,6 +9,6 @@ COPY . .
 
 RUN mkdir /data
 
-ENV STATIC_VERSION=`date +%Y%m%d%h%s`
+RUN STATIC_VERSION=$(date +%Y%m%d%h%s)
 
 ENTRYPOINT [ "" ]
