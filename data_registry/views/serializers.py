@@ -44,7 +44,7 @@ class JobSerializer(BasicSerializer):
 
 
 class CollectionSerializer(BasicSerializer):
-    markdown_fields = ["additional_data", "description_long", "summary", "issues"]
+    markdown_fields = ["additional_data", "description", "description_long", "summary", "issues"]
 
     @classmethod
     def serialize(cls, data):
