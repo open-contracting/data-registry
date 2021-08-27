@@ -45,14 +45,11 @@ DATABASES = {
     }
 }
 
-SCRAPY_HOST = os.getenv("SCRAPY_HOST")
-SCRAPY_PROJECT = os.getenv("SCRAPY_PROJECT")
 SCRAPY_FILES_STORE = os.getenv("SCRAPY_FILES_STORE")
 
 PROCESS_HOST = os.getenv("PROCESS_HOST")
 PELICAN_HOST = os.getenv("PELICAN_HOST")
 
-EXPORTER_HOST = os.getenv("EXPORTER_HOST")
 EXPORTER_DIR = os.getenv("EXPORTER_DIR")
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
