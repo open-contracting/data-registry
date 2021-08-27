@@ -1,7 +1,6 @@
 import os
 from pathlib import Path
 
-import pymdownx  # noqa: F403,F401
 from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -138,19 +137,13 @@ LANGUAGES = (
 
 MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
 
-MARKDOWNX_MARKDOWN_EXTENSIONS = [
-    'markdown.extensions.extra',
-    'markdown.extensions.admonition',
-    'markdown.extensions.codehilite',
-    'markdown.extensions.sane_lists',
-    'markdown.extensions.smarty',
-    'pymdownx.mark',
-    'pymdownx.tasklist'
-]
-
-MARKDOWNX_MARKDOWN_EXTENSION_CONFIGS = {
-}
-
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'data_registry', 'locale'),
 ]
+
+MARKDOWNX_MARKDOWNIFY_FUNCTION = 'data_registry.utils.markdownify'
+
+SCRAPY_HOST = os.getenv("SCRAPY_HOST")
+SCRAPY_PROJECT = os.getenv("SCRAPY_PROJECT")
+
+EXPORTER_HOST = os.getenv("EXPORTER_HOST")

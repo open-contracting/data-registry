@@ -13,7 +13,6 @@ from django.utils.translation import gettext_lazy as _
 from markdownx.widgets import AdminMarkdownxWidget
 from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, TranslationTabularInline
 
-from data_registry.cbom.process import update_collection_availability, update_collection_metadata
 from data_registry.models import Collection, Issue, Job, License, Task
 
 translation_reminder = _("<em>Remember to provide information in all languages. You can use the dropdown at the top "
@@ -31,9 +30,11 @@ class CollectionAdminForm(forms.ModelForm):
         label="Source ID",
         help_text="The name of the spider in Kingfisher Collect. If a new spider is not listed, Kingfisher Collect "
                   "needs to be re-deployed to the registry's server.")
-    active_job = forms.ModelChoiceField(queryset=None, required=False,
-                                        help_text="A job is a set of tasks to collect and process data from a "
-                                                  "publication. A job can be selected once it is completed.")
+    active_job = forms.ModelChoiceField(
+        queryset=None,
+        required=False,
+        help_text="A job is a set of tasks to collect and process data from a publication. A job can be selected once "
+                  "it is completed. If a new job completes, it becomes the active job.")
     country_flag = forms.ChoiceField(choices=[(None, '---------')], required=False)
 
     def __init__(self, *args, **kwargs):
@@ -46,6 +47,7 @@ class CollectionAdminForm(forms.ModelForm):
                     "project": settings.SCRAPY_PROJECT
                 }
             )
+            resp.raise_for_status()
 
             json = resp.json()
 
@@ -77,10 +79,6 @@ class CollectionAdminForm(forms.ModelForm):
                     default=False,
                     output_field=BooleanField()
                 ))
-
-                update_collection_availability(active_job)
-
-                update_collection_metadata(active_job)
         else:
             jobs.update(active=False)
 

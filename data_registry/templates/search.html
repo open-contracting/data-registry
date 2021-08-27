@@ -37,10 +37,15 @@
 
                 <div class="country">
                     <div v-for="n in alphabet" :key="n">
-                        <span class="letter" @click="setCountryFilter(n)"
-                            :class="{selected: countryFilter == n, 'has-data': countriesWithData.includes(n)}">
+                        <span v-if="countriesWithData.includes(n)"
+                            class="letter has-data"
+                            :class="{selected: countryFilter == n}"
+                            @click="setCountryFilter(n)"
+                        >
                             [[ n ]]
-                        </span><template v-if="n != 'Z'">|</template>
+                        </span>
+                        <span v-else class="letter">[[ n ]]</span>
+                        <span v-if="n != 'Z'">|</span>
                     </div>
                 </div>
 
@@ -160,7 +165,9 @@
                             <div class="col-auto">
                                 <div class="mb-2">
                                     <span class="label">{% translate "Data date range:" %}</span>
-                                    <span class="value">[[ c.date_from | moment("MMM YYYY") ]] - [[ c.date_to | moment("MMM YYYY") ]]</span>
+                                    <span class="value" v-if="c.active_job && c.active_job.date_from && c.active_job.date_to">
+                                        [[ c.active_job.date_from | moment("MMM YYYY") ]] - [[ c.active_job.date_to | moment("MMM YYYY") ]]
+                                    </span>
                                 </div>
                                 <div class="mb-2">
                                     <span class="label">{% translate "Update frequency:" %}</span>
@@ -172,7 +179,7 @@
                                 </div>
                                 <div class="mb-2">
                                     <span class="label">{% translate "Last updated:" %}</span>
-                                    <span class="value">[[ c.last_update | moment("MMM YYYY") ]]</span>
+                                    <span class="value" v-if="c.last_update">[[ c.last_update | moment("MMM YYYY") ]]</span>
                                 </div>
                             </div>
                             <div class="col-auto align-self-end text-info text-right">

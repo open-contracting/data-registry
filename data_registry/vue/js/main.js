@@ -5,6 +5,8 @@ require('es6-promise').polyfill();
 import Vue from "vue/dist/vue.js";
 import VueMoment from 'vue-moment';
 import axios from 'axios';
+import Vuex from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
 
 import {BootstrapVue, IconsPlugin} from 'bootstrap-vue'
 
@@ -13,11 +15,33 @@ import { CONFIG } from "./config.js"
 Vue.use(VueMoment)
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
+Vue.use(Vuex)
 
 const api = axios.create({
     baseURL: "/",
     xsrfCookieName: "csrftoken",
     xsrfHeaderName: "X-CSRFToken"
+})
+
+const store = new Vuex.Store({
+    state: {
+       searchFilter: null
+    },
+    getters: {
+        searchFilter: state => state.searchFilter
+    },
+    mutations: {
+        setSearchFilter: function(state, filter) {
+            state.searchFilter = filter
+        }
+    },
+    actions: {
+    },
+    modules: {
+    },
+    plugins: [
+        createPersistedState(),
+    ]
 })
 
 if (document.getElementById("chevron-btn-template")) {
@@ -161,6 +185,7 @@ if (document.getElementById("dropdown-template")) {
 
 if (document.getElementById("search_app")) {
     new Vue({
+        store,
         delimiters: ["[[", "]]"],
         el: "#search_app",
         data: function() {
@@ -211,12 +236,15 @@ if (document.getElementById("search_app")) {
                     }
 
                     if (this.filter.data) {
-                        result &= this.filter.data.reduce((r, m) => r & n[m] > 0, true)
+                        result &= this.filter.data.reduce((r, m) => r & n["active_job"][m] > 0, true)
                     }
 
-                    if (this.filter.date) {
-                        var from = this.$moment(n.date_from)
-                        var to = this.$moment(n.date_to)
+                    if (this.filter.date && n.active_job != null) {
+                        var from = this.$moment(n.active_job.date_from)
+                        var to = this.$moment(n.active_job.date_to)
+                        var filterFrom = this.$moment(this.dateFrom)
+                        var filterTo = this.$moment(this.dateTo)
+
                         switch (this.filter.date) {
                             case "last-year":
                                 result &= from.isSameOrAfter(this.$moment().subtract(1, 'years'))
@@ -228,16 +256,36 @@ if (document.getElementById("search_app")) {
                                 break
                             case "custom":
                                 if (this.dateFrom && this.dateTo) {
-                                    if (from.isSameOrBefore(this.$moment(this.dateTo)) && to.isSameOrAfter(this.$moment(this.dateFrom))) {
-                                        var isFromIn = from.isAfter(this.$moment(this.dateFrom))
-                                        var isToIn = to.isBefore(this.$moment(this.dateTo))
+                                    if (from.isSameOrBefore(filterTo) && to.isSameOrAfter(filterFrom)) {
+                                        var isFromIn = from.isAfter(filterFrom)
+                                        var isToIn = to.isBefore(filterTo)
                                         if (isFromIn || isToIn) {
                                             n.overlap_alert = true
-                                            n.overlap_from = isFromIn ? n.date_from : this.dateFrom
-                                            n.overlap_to = isToIn ? n.date_to : this.dateTo
+                                            n.overlap_from = isFromIn ? n.active_job.date_from : this.dateFrom
+                                            n.overlap_to = isToIn ? n.active_job.date_to : this.dateTo
                                         }
                                     } else {
                                         result &= false
+                                    }
+                                } else if (this.dateFrom) {
+                                    if (to.isBefore(filterFrom)) {
+                                        return false
+                                    }
+
+                                    if (from.isAfter(filterFrom)) {
+                                        n.overlap_alert = true
+                                        n.overlap_from = from.toDate()
+                                        n.overlap_to = n.active_job.date_to
+                                    }
+                                } else if (this.dateTo) {
+                                    if (from.isAfter(filterTo)) {
+                                        return false
+                                    }
+
+                                    if (to.isBefore(filterTo)) {
+                                        n.overlap_alert = true
+                                        n.overlap_from = n.active_job.date_from
+                                        n.overlap_to = to.toDate()
                                     }
                                 }
 
@@ -256,17 +304,6 @@ if (document.getElementById("search_app")) {
             collectionsData: function() {
                 return COLLECTIONS
             },
-            detailDateRange: function() {
-                if (this.filter.date == "custom") {
-                    if (this.dateFrom && this.dateTo) {
-                        return this.dateFrom + "|" + this.dateTo
-                    }
-                } else {
-                    return this.filter.date
-                }
-
-                return null
-            },
             countriesWithData: function() {
                 return this.collectionsData.reduce((list, n) => {
                     var key = `country_${this.currentLanguageCode}`
@@ -282,15 +319,29 @@ if (document.getElementById("search_app")) {
                     return list
                 }, [])
             },
-            currentLanguageCode: () => CURRENT_LANGUAGE
-        },
-        watch: {
-            detailDateRange: function() {
-                localStorage.setItem("detail-date-range", this.detailDateRange)
+            currentLanguageCode: () => CURRENT_LANGUAGE,
+            searchForStorage: function() {
+                return {
+                    ...this.filter,
+                    ...{dateFrom: this.dateFrom, dateTo: this.dateTo}
+                }
             }
         },
-        created: function() {
-            localStorage.setItem("detail-date-range", this.detailDateRange)
+        watch: {
+            searchForStorage: function(value) {
+                this.$store.commit("setSearchFilter", value)
+            }
+        },
+        mounted: function() {
+            var filter = this.$store.getters.searchFilter
+            if (filter) {
+                this.countryFilter = filter.country
+                this.frequencyFilter = filter.frequency ? filter.frequency : []
+                this.dataFilter = filter.data ? filter.data : []
+                this.dateFilter = this.dateFilterOptions.find(n => n.value == filter.date)
+                this.dateFrom = filter.dateFrom
+                this.dateTo = filter.dateTo
+            }
         },
         methods: {
             setCountryFilter: function(country) {
@@ -310,6 +361,7 @@ if (document.getElementById("search_app")) {
 
 if (document.getElementById("detail_app")) {
     new Vue({
+        store,
         delimiters: ["[[", "]]"],
         el: "#detail_app",
         data: function() {
@@ -327,8 +379,15 @@ if (document.getElementById("detail_app")) {
             data: function() {
                 return DATA
             },
-            dateRange: function() {
-                return localStorage.getItem("detail-date-range")
+            filter: function() {
+                return this.$store.getters.searchFilter
+            },
+            dataRange: function() {
+                if (this.filter.date == "custom") {
+                    return [this.filter.dateFrom, this.filter.dateTo].filter(n => !!n).join("|")
+                } else {
+                    return this.filter.date
+                }
             },
             feedbackTypeOptions: () => FEEDBACK_TYPE_OPTIONS,
             jsonYearOptions: () => JSON_YEAR_OPTIONS,
@@ -340,8 +399,13 @@ if (document.getElementById("detail_app")) {
         methods: {
             goToExcelData: function() {
                 var job_id = this.data.active_job.id
-                var data_range = localStorage.getItem("detail-date-range")
-                window.location = "/excel_data/" + job_id + "/" + data_range
+
+                var location = `/excel_data/${job_id}`
+                if (this.dataRange) {
+                    location += `/${this.dataRange}`
+                }
+
+                window.location = location
             },
             submitFeedback: function() {
                 api.post("send_feedback/", {
