@@ -140,3 +140,8 @@ MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'data_registry', 'locale'),
 ]
+
+SCRAPY_HOST = os.getenv("SCRAPY_HOST")
+SCRAPY_PROJECT = os.getenv("SCRAPY_PROJECT")
+
+EXPORTER_HOST = os.getenv("EXPORTER_HOST")

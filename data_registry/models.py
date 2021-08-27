@@ -136,10 +136,11 @@ class Collection(Model):
     excel_format = BooleanField(default=True)
 
     public = BooleanField(default=False,
-                          help_text="If the active job's tasks completed without errors and all fields below in all "
-                                    "languages are filled in, check this box.")
+                          help_text="If the active job's tasks completed without errors and all the fields below in "
+                                    "all languages are filled in, check this box to make the publication visible to "
+                                    "anonymous users. Otherwise, it is visible to administrators only.")
     frozen = BooleanField(default=False,
-                          help_text="If the spider is broken, check this box to prevent new jobs from running.")
+                          help_text="If the spider is broken, check this box to prevent the scheduling of new jobs.")
 
     created = DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)
     modified = DateTimeField(auto_now=True, blank=True, null=True, db_index=True)

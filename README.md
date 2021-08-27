@@ -2,14 +2,31 @@
 
 ## Development
 
+Install requirements:
+
 ```bash
 pip install -r requirements.txt
-./manage.py migrate --settings core.settings.base
-./manage.py createsuperuser --settings core.settings.base
 ```
 
-Run the web server:
+Create a database (your user should have access without requiring a password):
 
 ```bash
-env DEBUG=True ./manage.py runserver --settings core.settings.base
+createdb data_registry
 ```
+
+Prepare the database:
+
+```bash
+./manage.py migrate --settings core.settings.github
+./manage.py createsuperuser --settings core.settings.github
+```
+
+Run the web server, replacing `PASSWORD`:
+
+```bash
+env SCRAPY_HOST=https://scrape:PASSWORD@collect.kingfisher.open-contracting.org/ SCRAPY_PROJECT=kingfisher EXPORTER_HOST=http://127.0.0.1:8000/ ./manage.py runserver --settings core.settings.github
+```
+
+### Idiosyncracies
+
+- `related_name` is singular, instead of plural
