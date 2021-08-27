@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='collection',
             name='source_url',
-            field=models.CharField(blank=True, help_text='The URL of the source OCDS data.', max_length=2048, null=True, verbose_name='Source URL'),
+            field=models.CharField(blank=True, help_text='The URL of the OCDS data source.', max_length=2048, null=True, verbose_name='Source URL'),
         ),
     ]
