@@ -1,12 +1,11 @@
 dj-database-url
 django
-psycopg2-binary
-requests
-django-modeltranslation
 django-markdownx
-pymdown-extensions
+django-modeltranslation
 gunicorn
+markdown-it-py
 pika
-sentry-sdk
+psycopg2-binary
 python-dateutil
-
+requests
+sentry-sdk
