@@ -7,7 +7,7 @@ import markdownx.models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('data_registry', '0030_alter_fields'),
+        ('data_registry', '0032_auto_20210827_2124'),
     ]
 
     operations = [
