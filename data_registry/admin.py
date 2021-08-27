@@ -30,9 +30,11 @@ class CollectionAdminForm(forms.ModelForm):
         label="Source ID",
         help_text="The name of the spider in Kingfisher Collect. If a new spider is not listed, Kingfisher Collect "
                   "needs to be re-deployed to the registry's server.")
-    active_job = forms.ModelChoiceField(queryset=None, required=False,
-                                        help_text="A job is a set of tasks to collect and process data from a "
-                                                  "publication. A job can be selected once it is completed.")
+    active_job = forms.ModelChoiceField(
+        queryset=None,
+        required=False,
+        help_text="A job is a set of tasks to collect and process data from a publication. A job can be selected once "
+                  "it is completed. If a new job completes, it becomes the active job.")
     country_flag = forms.ChoiceField(choices=[(None, '---------')], required=False)
 
     def __init__(self, *args, **kwargs):
