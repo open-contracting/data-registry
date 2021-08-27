@@ -1,10 +1,7 @@
 -r requirements.txt
 coveralls
-dj-database-url
 flake8
 isort
 pip-tools
 pytest
-
-# Translations
 transifex-client

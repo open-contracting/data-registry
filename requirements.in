@@ -5,7 +5,6 @@ django-modeltranslation
 gunicorn
 pika
 psycopg2-binary
-pymdown-extensions
 python-dateutil
 requests
 sentry-sdk
