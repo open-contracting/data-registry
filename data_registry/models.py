@@ -97,7 +97,7 @@ class Collection(Model):
                           help_text="The name of the spider in Kingfisher Collect. If a new spider is not listed, "
                                     "Kingfisher Collect needs to be re-deployed to the registry's server.")
 
-    source_url = CharField(blank=True, null=True, max_length=2048, verbose_name="Source URL", 
+    source_url = CharField(blank=True, null=True, max_length=2048, verbose_name="Source URL",
                            help_text="The URL of the OCDS data source.")
 
     class Frequency(TextChoices):
