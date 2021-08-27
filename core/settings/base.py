@@ -138,19 +138,6 @@ LANGUAGES = (
 
 MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
 
-MARKDOWNX_MARKDOWN_EXTENSIONS = [
-    'markdown.extensions.extra',
-    'markdown.extensions.admonition',
-    'markdown.extensions.codehilite',
-    'markdown.extensions.sane_lists',
-    'markdown.extensions.smarty',
-    'pymdownx.mark',
-    'pymdownx.tasklist'
-]
-
-MARKDOWNX_MARKDOWN_EXTENSION_CONFIGS = {
-}
-
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'data_registry', 'locale'),
 ]
