@@ -47,6 +47,7 @@ class CollectionAdminForm(forms.ModelForm):
                     "project": settings.SCRAPY_PROJECT
                 }
             )
+            resp.raise_for_status()
 
             json = resp.json()
 
