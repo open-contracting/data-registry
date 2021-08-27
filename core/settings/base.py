@@ -141,6 +141,8 @@ LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'data_registry', 'locale'),
 ]
 
+MARKDOWNX_MARKDOWNIFY_FUNCTION = 'data_registry.utils.markdownify'
+
 SCRAPY_HOST = os.getenv("SCRAPY_HOST")
 SCRAPY_PROJECT = os.getenv("SCRAPY_PROJECT")
 

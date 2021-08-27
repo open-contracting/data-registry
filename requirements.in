@@ -3,6 +3,7 @@ django
 django-markdownx
 django-modeltranslation
 gunicorn
+markdown-it-py
 pika
 psycopg2-binary
 python-dateutil

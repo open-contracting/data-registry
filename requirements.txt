@@ -6,6 +6,8 @@
 #
 asgiref==3.3.4
     # via django
+attrs==21.2.0
+    # via markdown-it-py
 certifi==2020.12.5
     # via
     #   requests
@@ -29,6 +31,8 @@ idna==2.10
     # via requests
 importlib-metadata==4.7.1
     # via markdown
+markdown-it-py==1.1.0
+    # via -r requirements.in
 markdown==3.3.4
     # via django-markdownx
 pika==1.2.0
@@ -55,6 +59,7 @@ typing-extensions==3.10.0.0
     # via
     #   asgiref
     #   importlib-metadata
+    #   markdown-it-py
 urllib3==1.26.5
     # via
     #   requests

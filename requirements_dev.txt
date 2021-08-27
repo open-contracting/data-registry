@@ -8,8 +8,11 @@ asgiref==3.3.4
     # via
     #   -r requirements.txt
     #   django
-attrs==20.3.0
-    # via pytest
+attrs==21.2.0
+    # via
+    #   -r requirements.txt
+    #   markdown-it-py
+    #   pytest
 certifi==2020.12.5
     # via
     #   -r requirements.txt
@@ -61,6 +64,8 @@ iniconfig==1.1.1
     # via pytest
 isort==5.7.0
     # via -r requirements_dev.in
+markdown-it-py==1.1.0
+    # via -r requirements.txt
 markdown==3.3.4
     # via
     #   -r requirements.txt
@@ -130,6 +135,7 @@ typing-extensions==3.10.0.0
     #   asgiref
     #   gitpython
     #   importlib-metadata
+    #   markdown-it-py
 urllib3==1.26.5
     # via
     #   -r requirements.txt
