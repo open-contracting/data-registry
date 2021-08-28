@@ -13,9 +13,9 @@ STATIC_URL = "/static/{}/".format(STATIC_VERSION)
 FATHOM_KEY = os.getenv("FATHOM_KEY")
 FATHOM_ANALYTICS_DOMAIN = os.getenv("FATHOM_ANALYTICS_DOMAIN")
 
-if os.getenv("SENTRY_DNS", False):
+if os.getenv("SENTRY_DSN", False):
     sentry_sdk.init(
-        dsn=os.getenv("SENTRY_DNS"),
+        dsn=os.getenv("SENTRY_DSN"),
         integrations=[DjangoIntegration()],
         traces_sample_rate=0,  # The Sentry plan does not include Performance.
     )
