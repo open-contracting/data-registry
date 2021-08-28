@@ -10,8 +10,8 @@ ALLOWED_HOSTS = ['*']
 STATIC_VERSION = os.getenv("STATIC_VERSION")
 STATIC_URL = "/static/{}/".format(STATIC_VERSION)
 
-FATHOM_KEY = os.getenv("FATHOM_KEY")
-FATHOM_ANALYTICS_DOMAIN = os.getenv("FATHOM_ANALYTICS_DOMAIN")
+FATHOM_ANALYTICS_ID = os.getenv("FATHOM_ANALYTICS_ID")
+FATHOM_ANALYTICS_DOMAIN = os.getenv("FATHOM_ANALYTICS_DOMAIN") or "cdn.usefathom.com"
 
 if os.getenv("SENTRY_DSN", False):
     sentry_sdk.init(
