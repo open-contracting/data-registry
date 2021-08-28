@@ -26,25 +26,6 @@ SECRET_KEY = os.getenv("SECRET_KEY", "nasbdvn278ogurihlbkansbrb2uf")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "NO").lower() in ("on", "true", "y", "yes")
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv("DB_NAME"),
-        'USER': os.getenv("DB_USER"),
-        'PASSWORD': os.getenv("DB_PASSWORD"),
-        'HOST': os.getenv("DB_HOST"),
-        'PORT': os.getenv("DB_PORT"),
-    },
-    'kf_process': {
-        "ENGINE": "django.db.backends.postgresql",
-        'NAME': os.getenv("PROCESS_DB_NAME"),
-        'USER': os.getenv("PROCESS_DB_USER"),
-        'PASSWORD': os.getenv("PROCESS_DB_PASSWORD"),
-        'HOST': os.getenv("PROCESS_DB_HOST"),
-        'PORT': os.getenv("PROCESS_DB_PORT"),
-    }
-}
-
 SCRAPY_FILES_STORE = os.getenv("SCRAPY_FILES_STORE")
 
 PROCESS_HOST = os.getenv("PROCESS_HOST")

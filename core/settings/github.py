@@ -21,12 +21,6 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 JOB_TASKS_PLAN = ["test"]
 
-DATABASES = {
-    # https://docs.djangoproject.com/en/3.0/ref/databases/#postgresql-connection-settings
-    'default': dj_database_url.config(
-        default='postgresql:///data_registry?application_name=data_registry'),
-}
-
 
 # The schema in the older version had index names longer than 30 characters.
 SILENCED_SYSTEM_CHECKS = [

@@ -79,10 +79,11 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default='postgresql:///data_registry?application_name=data_registry'),
+    'kingfisher_process': dj_database_url.config(
+        env='KINGFISHER_PROCESS_DATABASE_URL',
+        default='postgresql:///kingfisher_process?application_name=kingfisher_process'),
 }
 
 FLATTEN_URL = "https://flatten.open-contracting.org/api/urls/"

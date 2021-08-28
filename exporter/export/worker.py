@@ -56,7 +56,7 @@ def callback(connection, channel, delivery_tag, body):
 
         # load data from kf-process and save
         while True:
-            with connections["kf_process"].cursor() as cursor:
+            with connections["kingfisher_process"].cursor() as cursor:
                 logger.debug("Processing page {} with id > {}".format(page, id))
                 cursor.execute(
                     """
