@@ -42,13 +42,8 @@ EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "NO").lower() in ("on", "true", "y", 
 FEEDBACK_EMAIL = os.getenv("FEEDBACK_EMAIL")
 FLATTEN_URL = os.getenv("FLATTEN_URL")
 
-RABBIT = {
-    "host": os.getenv("RABBIT_HOST"),
-    "port": os.getenv("RABBIT_PORT"),
-    "username": os.getenv("RABBIT_USERNAME"),
-    "password": os.getenv("RABBIT_PASSWORD"),
-    "exchange_name": os.getenv("RABBIT_EXCHANGE_NAME")
-}
+RABBIT_URL = os.getenv("RABBIT_URL")
+RABBIT_EXCHANGE_NAME = os.getenv("RABBIT_EXCHANGE_NAME")
 
 LOGGING = {
     'version': 1,
