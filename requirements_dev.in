@@ -3,5 +3,6 @@ coveralls
 flake8
 isort
 pip-tools
+psycopg2-binary
 pytest
 transifex-client

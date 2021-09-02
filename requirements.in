@@ -5,7 +5,7 @@ django-modeltranslation
 gunicorn
 markdown-it-py
 pika
-psycopg2-binary
+psycopg2
 python-dateutil
 requests
 sentry-sdk
