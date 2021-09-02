@@ -8,7 +8,12 @@ logger = logging.getLogger('wiper')
 
 
 class Command(BaseCommand):
-    help = 'Removes all the exported data'
+    """
+    Starts wiper worker (connects to rabbitmq and consumes messages) responsible for removal
+    of previously exported data. Removes data of particular job (defined in message) only.
+
+    It's safe to run multiple workers of this type at the same type.
+    """
 
     def handle(self, *args, **options):
         logging.captureWarnings(True)

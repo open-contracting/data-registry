@@ -8,7 +8,13 @@ logger = logging.getLogger('exporter')
 
 
 class Command(BaseCommand):
-    help = 'Process, orchestrate and evaluate all jobs and tasks in data registry'
+    """
+    Starts exporter worker (connects to rabbitmq and consumes messages) responsible for export of the
+    data from kingfisher-process db. Zipped data are stored in predefined directory structure and
+    either downloaded directly or sent to flatten tool to be further processed.
+
+    It's safe to run multiple workers of this type at the same type.
+    """
 
     def handle(self, *args, **options):
         logging.captureWarnings(True)
