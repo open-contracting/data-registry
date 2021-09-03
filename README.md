@@ -44,7 +44,7 @@ shell sphinx-intl create-transifexrc --transifex-username USERNAME --transifex-p
 
 #### Update translations
 
-Whenever a text in the interface is added or updated, you must extract strings to translate from these files into PO files. In the data_registry directory run:
+Whenever a text in the interface is added or updated, you must extract strings to translate from these files into PO files by running:
 
 ```bash
 django-admin makemessages -l en_US
@@ -56,7 +56,11 @@ Then, you need yo push the PO file to Transifex with
 tx push -s
 ```
 
-When the translations are ready, you need to pull them back from Transifex with `tx pull -a`.
+When the translations are ready, you need to pull them back from Transifex with
+
+```bash
+tx pull -a
+```
 
 Finally, you need to compile the new translated strings, with 
 
