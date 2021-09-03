@@ -28,11 +28,11 @@ env SCRAPY_HOST=https://scrape:PASSWORD@collect.kingfisher.open-contracting.org/
 ```
 ### Technical processes for translation
 
-This project uses [Django's traslation framework](https://docs.djangoproject.com/en/3.2/topics/i18n/translation/) and [Transifex](https://www.transifex.com/) for translations. The source language is configured as en_US, and the available languages for translation are English (en), Spanish (es) and Russian (ru).
+This project uses [Django's traslation framework](https://docs.djangoproject.com/en/3.2/topics/i18n/translation/) and [Transifex](https://www.transifex.com/) for translations. The source language is configured as `en_US`, and the available languages for translation are English (`en`), Spanish (`es`) and Russian (`ru`).
 
 #### Translations for Translators
 
-Translators can provide translations for this application by becomming a collaborator on Transifex https://www.transifex.com/open-contracting-partnership-1/data-registry/
+Translators can provide translations for this application by becoming a collaborator of the [data-registry project](https://www.transifex.com/open-contracting-partnership-1/data-registry/) on Transifex.
 
 #### Configure Transifex
 
@@ -50,23 +50,24 @@ Whenever a text in the interface is added or updated, you must extract strings t
 django-admin makemessages -l en_US
 ```
 
-Then, you need yo push the PO file to Transifex with 
+Then, you need yo push the PO file to Transifex with:
 
 ```bash
 tx push -s
 ```
 
-When the translations are ready, you need to pull them back from Transifex with
+When the translations are ready, you need to pull them back from Transifex with:
 
 ```bash
 tx pull -a
 ```
 
-Finally, you need to compile the new translated strings, with 
+Finally, you need to compile the new translated strings, with:
 
 ```bash
 python manage.py compilemessages
 ```
+
 ### Idiosyncracies
 
 - `related_name` is singular, instead of plural
