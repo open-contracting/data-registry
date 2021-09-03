@@ -131,6 +131,7 @@ class MissingContentFilter(admin.SimpleListFilter):
             | Q(language_en='')
             | Q(language_es='')
             | Q(language_ru='')
+            | Q(source_url='')
         )
         if self.value() == "1":
             return queryset.filter(qs)
@@ -167,6 +168,7 @@ class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
             "fields": (
                 "update_frequency",
                 "license_custom",
+                "source_url",
                 "language_en",
                 "language_es",
                 "language_ru",
