@@ -2,16 +2,16 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 # Translators:
 # Volodymyr <vtarnay@open-contracting.org>, 2021
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-04 14:19-0400\n"
+"POT-Creation-Date: 2021-09-03 14:00-0400\n"
 "PO-Revision-Date: 2021-08-04 17:44+0000\n"
 "Last-Translator: Volodymyr <vtarnay@open-contracting.org>, 2021\n"
 "Language-Team: Russian (https://www.transifex.com/open-contracting-partnership-1/teams/123427/ru/)\n"
@@ -20,6 +20,44 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ru\n"
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: admin.py:18
+msgid ""
+"<em>Remember to provide information in all languages. You can use the "
+"dropdown at the top of the page to toggle the language for all fields.</em>"
+msgstr ""
+
+#: admin.py:98
+msgid "Incomplete content"
+msgstr ""
+
+#: admin.py:104
+msgid "Yes"
+msgstr ""
+
+#: admin.py:105
+msgid "No"
+msgstr ""
+
+#: admin.py:150 admin.py:257
+msgid "Management"
+msgstr ""
+
+#: admin.py:153
+msgid "Basics"
+msgstr ""
+
+#: admin.py:165 admin.py:269 templates/detail.html:73
+msgid "Overview"
+msgstr "Обзор"
+
+#: admin.py:175
+msgid "Details"
+msgstr ""
+
+#: admin.py:277
+msgid "Data availability"
+msgstr ""
 
 #: templates/base.html:16
 msgid "Data Registry"
@@ -49,7 +87,7 @@ msgstr "Последние"
 msgid "BACK TO DATASETS SEARCH"
 msgstr "Назад к поиску датасетов"
 
-#: templates/detail.html:31 templates/search.html:145
+#: templates/detail.html:31 templates/search.html:150
 msgid "OCDS"
 msgstr "OCDS"
 
@@ -57,7 +95,7 @@ msgstr "OCDS"
 msgid "Show more"
 msgstr "Больше"
 
-#: templates/detail.html:40 templates/search.html:156
+#: templates/detail.html:40 templates/search.html:161
 msgid "Available formats:"
 msgstr "Доступные форматы"
 
@@ -69,31 +107,27 @@ msgstr "Доступ"
 msgid "Show less"
 msgstr "Меньше"
 
-#: templates/detail.html:73
-msgid "Overview"
-msgstr "Обзор"
-
-#: templates/detail.html:77 templates/search.html:162
+#: templates/detail.html:77 templates/search.html:167
 msgid "Data date range:"
 msgstr "Диапазон дат"
 
-#: templates/detail.html:81 templates/search.html:174
+#: templates/detail.html:81 templates/search.html:181
 msgid "Last updated:"
 msgstr "Последнее обновление"
 
-#: templates/detail.html:85 templates/search.html:166
+#: templates/detail.html:85 templates/search.html:173
 msgid "Update frequency:"
 msgstr "Периодичность обновлений"
 
-#: templates/detail.html:87 templates/search.html:84 templates/search.html:168
+#: templates/detail.html:87 templates/search.html:89 templates/search.html:175
 msgid "Monthly"
 msgstr "Ежемесячно"
 
-#: templates/detail.html:88 templates/search.html:88 templates/search.html:169
+#: templates/detail.html:88 templates/search.html:93 templates/search.html:176
 msgid "Every 6 months"
 msgstr "Каждые 6 месяцев"
 
-#: templates/detail.html:89 templates/search.html:92 templates/search.html:170
+#: templates/detail.html:89 templates/search.html:97 templates/search.html:177
 msgid "Annually"
 msgstr "Раз в год"
 
@@ -177,7 +211,7 @@ msgstr "Количество законтрактированных айтемо
 msgid "Count of contract transactions:"
 msgstr "Количество транзакций по контракту:"
 
-#: templates/detail.html:146 templates/search.html:119
+#: templates/detail.html:146 templates/search.html:124
 msgid "Documents"
 msgstr "Документы"
 
@@ -477,63 +511,63 @@ msgstr "Страна, начиная с"
 msgid "Clear selection"
 msgstr "Очистить выборку"
 
-#: templates/search.html:47
+#: templates/search.html:52
 msgid "Data date range"
 msgstr "Диапазон дат данных"
 
-#: templates/search.html:64
+#: templates/search.html:69
 msgid "Start date"
 msgstr "Дата начала"
 
-#: templates/search.html:67 templates/search.html:77
+#: templates/search.html:72 templates/search.html:82
 msgid "Reset"
 msgstr "Перезагрузить"
 
-#: templates/search.html:74
+#: templates/search.html:79
 msgid "End date"
 msgstr "Конечная дата"
 
-#: templates/search.html:81
+#: templates/search.html:86
 msgid "Update frequency"
 msgstr "Частота обновления"
 
-#: templates/search.html:95
+#: templates/search.html:100
 msgid "Data contains"
 msgstr "Данные содержат"
 
-#: templates/search.html:98
+#: templates/search.html:103
 msgid "Parties data"
 msgstr "Данные о сторонах"
 
-#: templates/search.html:102
+#: templates/search.html:107
 msgid "Plannings data"
 msgstr "Данные о планировании"
 
-#: templates/search.html:106
+#: templates/search.html:111
 msgid "Tenders data"
 msgstr "Данные о тендерах"
 
-#: templates/search.html:111
+#: templates/search.html:116
 msgid "Awards data"
 msgstr "Данные о присуждениях"
 
-#: templates/search.html:115
+#: templates/search.html:120
 msgid "Contracts data"
 msgstr "Данные о контрактах"
 
-#: templates/search.html:123
+#: templates/search.html:128
 msgid "Milestones data"
 msgstr "Данные о этапах"
 
-#: templates/search.html:127
+#: templates/search.html:132
 msgid "Amendments data"
 msgstr "Данные о изменениях"
 
-#: templates/search.html:135
+#: templates/search.html:140
 msgid "datasets found"
 msgstr "Набор данных найден"
 
-#: templates/search.html:151
+#: templates/search.html:156
 msgid ""
 "This collection does not completely overlap with the selected date range. "
 "Date range matched: "
@@ -541,31 +575,26 @@ msgstr ""
 "Эта выборка не полностью совпадает с выбранным диапазоном дат. "
 "Соответствующий диапазон дат:"
 
-#: templates/search.html:181
+#: templates/search.html:188
 msgid "See details"
 msgstr "Смотреть детали"
 
-#: templates/search.html:205
+#: templates/search.html:212 views/general.py:153
 msgid "All"
 msgstr "Все"
 
-#: templates/search.html:206
+#: templates/search.html:213
 msgid "Past year"
 msgstr "Прошлый год"
 
-#: templates/search.html:207
+#: templates/search.html:214
 msgid "Past 6 months"
 msgstr "Прошедшие 6 месяцев"
 
-#: templates/search.html:208
+#: templates/search.html:215
 msgid "Custom"
 msgstr "Обычный"
 
-msgid "all"
-msgstr "Все"
-
-msgid "last-year"
-msgstr "Прошлый год"
-
-msgid "past-6-months"
-msgstr "Прошедшие 6 месяцев"
+#: views/general.py:191
+msgid "OCP Kingfisher Database"
+msgstr ""
