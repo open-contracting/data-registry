@@ -217,7 +217,7 @@ msgstr "Cantidad de transacciones en contratos:"
 
 #: templates/detail.html:146 templates/search.html:124
 msgid "Documents"
-msgstr "Documentos:"
+msgstr "Documentos"
 
 #: templates/detail.html:147
 msgid "Count of documents:"
@@ -483,8 +483,8 @@ msgid ""
 "Any known data quality issues and advice on how to access data is provided "
 "here too."
 msgstr ""
-"Aquí se da información sobre cualquier issue conocido sobre la calidad de "
-"los datos y consejos sobre como acceder a los datos."
+"También incluimos cualquier problema conocido de calidad de los datos y "
+"consejos sobre cómo acceder a los datos."
 
 #: templates/index.html:58
 msgid "Get Directed"
