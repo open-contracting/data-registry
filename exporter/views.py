@@ -13,6 +13,10 @@ from exporter.tools.rabbit import publish
 
 @csrf_exempt
 def exporter_start(request):
+    """
+    Plans (send messages to a worker) the export of collection from kingfisher-process.
+    Expects {"collection_id": <id>} in request body.
+    """
     routing_key = "_exporter_init"
 
     input_message = json.loads(request.body.decode("utf8"))
@@ -26,6 +30,12 @@ def exporter_start(request):
 
 @csrf_exempt
 def wiper_start(request):
+    """
+    Plans (send messages to a worker) the deletion of exported collection
+    (all generated files in export folders).
+
+    Expects {"collection_id": <id>} in request body.
+    """
     routing_key = "_wiper_init"
 
     input_message = json.loads(request.body.decode("utf8"))
@@ -39,6 +49,14 @@ def wiper_start(request):
 
 @csrf_exempt
 def exporter_status(request):
+    """
+    Returns the status of (potentionaly) running export job.
+
+    Expects {"spider": <spider>, "job_id": job_id} in request body.
+
+    Returns {"status": "ok", "data": <status>}
+    where status is one of WAITING, RUNNING, COMPLETED.
+    """
     input_message = json.loads(request.body.decode("utf8"))
 
     spider = input_message.get("spider")
@@ -59,6 +77,14 @@ def exporter_status(request):
 
 @csrf_exempt
 def download_export(request):
+    """
+    Returns the pre-generated export file (year/full)
+
+    Expects {"spider": <spider>, "job_id": <job_id>, "year": 2021} in request body. If year
+    is omitted, the full export file will be returned.
+
+    File is returned as FileResponse.
+    """
     input_message = json.loads(request.body.decode("utf8"))
 
     spider = input_message.get("spider")
@@ -82,6 +108,13 @@ def download_export(request):
 
 @csrf_exempt
 def export_years(request):
+    """
+    Returns the list of years, for which there are exported files.
+
+    Expects {"spider": <spider>, "job_id": <job_id>} in request body.
+
+    Returns {"status": "ok", "data": <sorted_list_of_years>}
+    """
     input_message = json.loads(request.body.decode("utf8"))
 
     spider = input_message.get("spider")
