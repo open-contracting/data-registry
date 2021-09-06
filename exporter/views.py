@@ -109,11 +109,11 @@ def download_export(request):
 @csrf_exempt
 def export_years(request):
     """
-    Returns the list of years, for which there are exported files.
+    Returns the list of years for which there are exported files.
 
-    Expects {"spider": <spider>, "job_id": <job_id>} in request body.
+    Expects ``{"spider": <spider>, "job_id": <job_id>}`` in the request body.
 
-    Returns {"status": "ok", "data": <sorted_list_of_years>}
+    Returns ``{"status": "ok", "data": <sorted_list_of_years>}``.
     """
     input_message = json.loads(request.body.decode("utf8"))
 
