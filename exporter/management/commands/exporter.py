@@ -9,11 +9,14 @@ logger = logging.getLogger('exporter')
 
 class Command(BaseCommand):
     """
-    Starts exporter worker (connects to rabbitmq and consumes messages) responsible for export of the
-    data from kingfisher-process db. Zipped data are stored in predefined directory structure and
-    either downloaded directly or sent to flatten tool to be further processed.
+    Starts a worker to export files from collections in Kingfisher Process.
 
-    It's safe to run multiple workers of this type at the same type.
+    It consumes messages from RabbitMQ, which indicate the collection to export and the path components of the
+    directory to write to (consisting of the spider name and the job ID).
+
+    Data is exported as gzipped line-delimited JSON files, with one file per year and one ``full.jsonl.gz`` file.
+
+    Multiple workers can run at the same time.
     """
 
     def handle(self, *args, **options):
