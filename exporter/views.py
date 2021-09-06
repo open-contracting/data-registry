@@ -76,12 +76,11 @@ def exporter_status(request):
 @csrf_exempt
 def download_export(request):
     """
-    Returns the pre-generated export file (year/full)
+    Returns an exported file as a FileResponse object.
 
-    Expects {"spider": <spider>, "job_id": <job_id>, "year": 2021} in request body. If year
-    is omitted, the full export file will be returned.
+    Expects ``{"spider": <spider>, "job_id": <job_id>, "year": 2021}`` in the request body.
 
-    File is returned as FileResponse.
+    If ``year`` is omitted, the export file for the full collection is returned.
     """
     input_message = json.loads(request.body.decode("utf8"))
 
