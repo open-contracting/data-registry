@@ -50,12 +50,11 @@ def wiper_start(request):
 @csrf_exempt
 def exporter_status(request):
     """
-    Returns the status of (potentionaly) running export job.
+    Returns the status of an exporter job task.
 
-    Expects {"spider": <spider>, "job_id": job_id} in request body.
+    Expects ``{"spider": <spider>, "job_id": <job_id>}`` in the request body.
 
-    Returns {"status": "ok", "data": <status>}
-    where status is one of WAITING, RUNNING, COMPLETED.
+    Returns ``{"status": "ok", "data": <status>}`` where status is one of WAITING, RUNNING, COMPLETED.
     """
     input_message = json.loads(request.body.decode("utf8"))
 
