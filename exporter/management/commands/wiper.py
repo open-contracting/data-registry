@@ -9,10 +9,12 @@ logger = logging.getLogger('wiper')
 
 class Command(BaseCommand):
     """
-    Starts wiper worker (connects to rabbitmq and consumes messages) responsible for removal
-    of previously exported data. Removes data of particular job (defined in message) only.
+    Starts a worker to delete the files exported from collections in Kingfisher Process.
 
-    It's safe to run multiple workers of this type at the same type.
+    It consumes messages from RabbitMQ, which indicate the path components of the directory tree to delete (consisting
+    of the spider name and the job ID).
+
+    Multiple workers can run at the same time.
     """
 
     def handle(self, *args, **options):
