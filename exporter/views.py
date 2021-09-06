@@ -14,8 +14,9 @@ from exporter.tools.rabbit import publish
 @csrf_exempt
 def exporter_start(request):
     """
-    Plans (send messages to a worker) the export of collection from kingfisher-process.
-    Expects {"collection_id": <id>} in request body.
+    Adds a message to a queue to export files from a collection in Kingfisher Process.
+
+    Expects ``{"collection_id": <id>}`` in the request body.
     """
     routing_key = "_exporter_init"
 
