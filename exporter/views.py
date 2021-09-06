@@ -16,7 +16,7 @@ def exporter_start(request):
     """
     Adds a message to a queue to export files from a collection in Kingfisher Process.
 
-    Expects ``{"collection_id": <id>}`` in the request body.
+    Expects ``{"collection_id": <id>, "spider": <spider>, "job_id": <job_id>}`` in the request body.
     """
     routing_key = "_exporter_init"
 
@@ -34,7 +34,7 @@ def wiper_start(request):
     """
     Adds a message to a queue to delete the files exported from a collection.
 
-    Expects ``{"collection_id": <id>}`` in the request body.
+    Expects ``{"collection_id": <id>, "spider": <spider>, "job_id": <job_id>}`` in the request body.
     """
     routing_key = "_wiper_init"
 
