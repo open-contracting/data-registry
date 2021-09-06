@@ -31,10 +31,9 @@ def exporter_start(request):
 @csrf_exempt
 def wiper_start(request):
     """
-    Plans (send messages to a worker) the deletion of exported collection
-    (all generated files in export folders).
+    Adds a message to a queue to delete the files exported from a collection.
 
-    Expects {"collection_id": <id>} in request body.
+    Expects ``{"collection_id": <id>}`` in the request body.
     """
     routing_key = "_wiper_init"
 
