@@ -170,6 +170,7 @@ class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
         (_("Details"), {
             "description": translation_reminder,
             "fields": (
+                "last_reviewed",
                 "description_en",
                 "description_es",
                 "description_ru",

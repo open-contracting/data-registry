@@ -118,6 +118,10 @@ class Collection(Model):
     source_url = TextField(blank=True, verbose_name="source URL",
                            help_text="The URL of the publication.")
 
+    last_reviewed = DateField(blank=True, null=True, verbose_name="last reviewed",
+                              help_text="The date on which the most recent data feedback report was made. Only the year"
+                                        " and month are important.")
+
     class Frequency(TextChoices):
         MONTHLY = "MONTHLY", "MONTHLY"
         HALF_YEARLY = "HALF_YEARLY", "HALF_YEARLY"
