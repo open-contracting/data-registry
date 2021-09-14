@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-03 14:17-0400\n"
+"POT-Creation-Date: 2021-09-13 23:27-0400\n"
 "PO-Revision-Date: 2021-08-04 17:44+0000\n"
 "Last-Translator: Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2021\n"
 "Language-Team: English (https://www.transifex.com/open-contracting-partnership-1/teams/123427/en/)\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Language: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: data_registry/admin.py:18
+#: data_registry/admin.py:20
 msgid ""
 "<em>Remember to provide information in all languages. You can use the "
 "dropdown at the top of the page to toggle the language for all fields.</em>"
@@ -30,36 +30,44 @@ msgstr ""
 "<em>Remember to provide information in all languages. You can use the "
 "dropdown at the top of the page to toggle the language for all fields.</em>"
 
-#: data_registry/admin.py:98
+#: data_registry/admin.py:100
 msgid "Incomplete content"
 msgstr "Incomplete content"
 
-#: data_registry/admin.py:104
+#: data_registry/admin.py:106
 msgid "Yes"
 msgstr "Yes"
 
-#: data_registry/admin.py:105
+#: data_registry/admin.py:107
 msgid "No"
 msgstr "No"
 
-#: data_registry/admin.py:151 data_registry/admin.py:259
+#: data_registry/admin.py:150
+msgid "More than a year ago"
+msgstr "More than a year ago"
+
+#: data_registry/admin.py:153 data_registry/templates/search.html:213
+msgid "Past year"
+msgstr "Past year"
+
+#: data_registry/admin.py:169 data_registry/admin.py:278
 msgid "Management"
 msgstr "Management"
 
-#: data_registry/admin.py:154
+#: data_registry/admin.py:172
 msgid "Basics"
 msgstr "Basics"
 
-#: data_registry/admin.py:166 data_registry/admin.py:271
+#: data_registry/admin.py:184 data_registry/admin.py:290
 #: data_registry/templates/detail.html:73
 msgid "Overview"
 msgstr "Overview"
 
-#: data_registry/admin.py:177
+#: data_registry/admin.py:195
 msgid "Details"
 msgstr "Details"
 
-#: data_registry/admin.py:279
+#: data_registry/admin.py:298
 msgid "Data availability"
 msgstr "Data availability"
 
@@ -267,23 +275,28 @@ msgstr "Summary"
 msgid "We have not yet prepared a data quality summary for this dataset."
 msgstr "We have not yet prepared a data quality summary for this dataset."
 
-#: data_registry/templates/detail.html:187
+#: data_registry/templates/detail.html:186
+msgid "Last reviewed:"
+msgstr "Last reviewed:"
+
+#: data_registry/templates/detail.html:189
 msgid "Issues found"
 msgstr "Issues found"
 
-#: data_registry/templates/detail.html:200
+#: data_registry/templates/detail.html:202
 msgid "Access data"
 msgstr "Access data"
 
-#: data_registry/templates/detail.html:202
+#: data_registry/templates/detail.html:204
 msgid "The OCDS dataset is available to download as a JSON or Excel file."
-msgstr "The OCDS dataset is available to download as a JSON or Excel file."
+msgstr ""
+"The OCDS dataset is available to download as a JSON or Excel/CSV file."
 
-#: data_registry/templates/detail.html:208
+#: data_registry/templates/detail.html:210
 msgid "JSON data"
 msgstr "JSON data"
 
-#: data_registry/templates/detail.html:210
+#: data_registry/templates/detail.html:212
 msgid ""
 "Easily access dumps of data from the Open Contracting Partnership's "
 "Kingfisher database."
@@ -291,12 +304,12 @@ msgstr ""
 "Easily access dumps of data from Open Contracting Partnership's Kingfisher "
 "database."
 
-#: data_registry/templates/detail.html:217
-#: data_registry/templates/detail.html:222
+#: data_registry/templates/detail.html:219
+#: data_registry/templates/detail.html:224
 msgid "Access JSON data"
 msgstr "Access JSON data"
 
-#: data_registry/templates/detail.html:224
+#: data_registry/templates/detail.html:226
 msgid ""
 "Please, choose how you would like to access the JSON data. You can either "
 "download the full history as one dataset or choose particular year that you "
@@ -306,11 +319,11 @@ msgstr ""
 "provided as a GZ file. Windows users will need to install additional "
 "software such as WinZip or WinRAR to extract the data."
 
-#: data_registry/templates/detail.html:232
+#: data_registry/templates/detail.html:234
 msgid "Full history dataset"
 msgstr "All-time data from this source"
 
-#: data_registry/templates/detail.html:236
+#: data_registry/templates/detail.html:238
 msgid ""
 "Dataset containing the full history of available data for given source. "
 "Depending on the source, the file may be extremely large and might take some"
@@ -321,11 +334,11 @@ msgstr ""
 "Please note that the file may be extremely large and may take some time to "
 "process."
 
-#: data_registry/templates/detail.html:244
+#: data_registry/templates/detail.html:246
 msgid "Particular year dataset"
 msgstr "Data by year"
 
-#: data_registry/templates/detail.html:248
+#: data_registry/templates/detail.html:250
 msgid ""
 "This file will contain OCDS data for all fields provided by the publisher, "
 "but only for the year selected below. Depending on the source, the file may "
@@ -335,46 +348,46 @@ msgstr ""
 "but only for the year selected below. Depending on the source, the file may "
 "be extremely large and may take some time to process."
 
-#: data_registry/templates/detail.html:258
+#: data_registry/templates/detail.html:260
 msgid "Choose year"
 msgstr "Choose year"
 
-#: data_registry/templates/detail.html:270
+#: data_registry/templates/detail.html:272
 msgid "Download data"
 msgstr "Download data"
 
-#: data_registry/templates/detail.html:278
-msgid "Excel data via OCP Flatten tool"
-msgstr "Excel data via OCP Flatten tool"
-
 #: data_registry/templates/detail.html:280
+msgid "Excel data via OCP Flatten tool"
+msgstr "Excel/CSV data via OCP Flatten tool"
+
+#: data_registry/templates/detail.html:282
 msgid ""
 "Easily access data in Excel using the Open Contracting Partnership's Flatten"
 " Tool. This tool is designed to help users that prefer data in spreadsheets "
 "to either select a small subset of fields / column headings or to customise "
 "their spreadsheet output."
 msgstr ""
-"Easily access data in Excel using Open Contracting Partnership's Flatten "
-"Tool. This tool is designed to help users that prefer data in spreadsheets "
+"Easily access data in Excel/CSV using Open Contracting Partnership's Flatten"
+" Tool. This tool is designed to help users that prefer data in spreadsheets "
 "to either select a small subset of fields/column headings or to customize "
 "their spreadsheet output."
 
-#: data_registry/templates/detail.html:288
+#: data_registry/templates/detail.html:290
 msgid "Access Excel data"
-msgstr "Access Excel data"
+msgstr "Access Excel/CSV data"
 
-#: data_registry/templates/detail.html:301
+#: data_registry/templates/detail.html:303
 msgid "Have questions, feedback on this dataset or content on this page?"
 msgstr ""
 "Do you have any questions or feedback on this dataset or any other content "
 "on this page?"
 
-#: data_registry/templates/detail.html:304
+#: data_registry/templates/detail.html:306
 msgid "Contact OCP helpdesk"
 msgstr "Contact OCP's helpdesk"
 
-#: data_registry/templates/detail.html:309
-#: data_registry/templates/detail.html:348
+#: data_registry/templates/detail.html:311
+#: data_registry/templates/detail.html:350
 #, python-format
 msgid ""
 "<span class=\"light\">You can also email us at</span> "
@@ -385,7 +398,7 @@ msgstr ""
 "<span>%(feedback_email)s</span><span class=\"light\">. We try to read and "
 "respond to all your requests.</span>"
 
-#: data_registry/templates/detail.html:316
+#: data_registry/templates/detail.html:318
 msgid ""
 "Our mission is to continually improve the quality of procurement data. We "
 "welcome feedback from the users of data and the open data community."
@@ -393,7 +406,7 @@ msgstr ""
 "Our mission is to continually improve the quality of procurement data. We "
 "welcome all feedback from users of the data and the open data community."
 
-#: data_registry/templates/detail.html:322
+#: data_registry/templates/detail.html:324
 msgid ""
 "To provide specific feedback on the data source, please complete the form "
 "below."
@@ -401,47 +414,47 @@ msgstr ""
 "To provide specific feedback on the data source, please complete the form "
 "below."
 
-#: data_registry/templates/detail.html:327
+#: data_registry/templates/detail.html:329
 msgid "Type of feedback"
 msgstr "Type of feedback"
 
-#: data_registry/templates/detail.html:336
+#: data_registry/templates/detail.html:338
 msgid "Please provide your feedback in more detail below"
 msgstr "Please provide your feedback in more detail below"
 
-#: data_registry/templates/detail.html:343
+#: data_registry/templates/detail.html:345
 msgid "Close"
 msgstr "Close"
 
-#: data_registry/templates/detail.html:355
+#: data_registry/templates/detail.html:357
 msgid "Submit feedback"
 msgstr "Submit feedback"
 
-#: data_registry/templates/detail.html:361
+#: data_registry/templates/detail.html:363
 msgid "Thanks for your feedback!"
 msgstr "Thanks for your feedback!"
 
-#: data_registry/templates/detail.html:364
+#: data_registry/templates/detail.html:366
 msgid "Send feedback for"
 msgstr "Send feedback for"
 
-#: data_registry/templates/detail.html:388
+#: data_registry/templates/detail.html:390
 msgid "Broken link"
 msgstr "Broken link"
 
-#: data_registry/templates/detail.html:389
+#: data_registry/templates/detail.html:391
 msgid "Incorrect metadata"
 msgstr "Incorrect metadata"
 
-#: data_registry/templates/detail.html:390
+#: data_registry/templates/detail.html:392
 msgid "New data quality issue found"
 msgstr "New data quality issue found"
 
-#: data_registry/templates/detail.html:391
+#: data_registry/templates/detail.html:393
 msgid "Advice for users of this data source"
 msgstr "Advice for users of this data source"
 
-#: data_registry/templates/detail.html:392
+#: data_registry/templates/detail.html:394
 msgid "Other"
 msgstr "Other"
 
@@ -606,10 +619,6 @@ msgstr "See details"
 #: data_registry/templates/search.html:212 data_registry/views/general.py:153
 msgid "All"
 msgstr "All"
-
-#: data_registry/templates/search.html:213
-msgid "Past year"
-msgstr "Past year"
 
 #: data_registry/templates/search.html:214
 msgid "Past 6 months"
