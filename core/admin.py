@@ -25,8 +25,8 @@ class CoreAdminSite(admin.AdminSite):
 
         app_list = super().get_app_list(request)
 
-        app = next(app for app in app_list if app['app_label'] == 'data_registry')
-
-        app['models'].sort(key=sort)
+        if app_list:
+            app = next(app for app in app_list if app['app_label'] == 'data_registry')
+            app['models'].sort(key=sort)
 
         return app_list

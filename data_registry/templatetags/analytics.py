@@ -8,7 +8,7 @@ register = template.Library()
 def fathom_analytics():
     key = None
     domain = None
-    if hasattr(settings, 'FATHOM_KEY'):
-        key = settings.FATHOM_KEY
+    if hasattr(settings, 'FATHOM_ANALYTICS_ID'):
+        key = settings.FATHOM_ANALYTICS_ID
         domain = settings.FATHOM_ANALYTICS_DOMAIN
-    return {'fathom_key': key, 'fathom_analytics_domain': domain}
+    return {'fathom_analytics_id': key, 'fathom_analytics_domain': domain}

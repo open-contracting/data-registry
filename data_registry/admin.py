@@ -30,9 +30,11 @@ class CollectionAdminForm(forms.ModelForm):
         label="Source ID",
         help_text="The name of the spider in Kingfisher Collect. If a new spider is not listed, Kingfisher Collect "
                   "needs to be re-deployed to the registry's server.")
-    active_job = forms.ModelChoiceField(queryset=None, required=False,
-                                        help_text="A job is a set of tasks to collect and process data from a "
-                                                  "publication. A job can be selected once it is completed.")
+    active_job = forms.ModelChoiceField(
+        queryset=None,
+        required=False,
+        help_text="A job is a set of tasks to collect and process data from a publication. A job can be selected once "
+                  "it is completed. If a new job completes, it becomes the active job.")
     country_flag = forms.ChoiceField(choices=[(None, '---------')], required=False)
 
     def __init__(self, *args, **kwargs):
@@ -45,6 +47,7 @@ class CollectionAdminForm(forms.ModelForm):
                     "project": settings.SCRAPY_PROJECT
                 }
             )
+            resp.raise_for_status()
 
             json = resp.json()
 
@@ -107,27 +110,21 @@ class MissingContentFilter(admin.SimpleListFilter):
             Q(country_flag='')
             | Q(country_en='')
             | Q(country_es='')
-            | Q(country_ru='')
             # title_en is required.
             | Q(title_es='')
-            | Q(title_ru='')
             | Q(description_en='')
             | Q(description_es='')
-            | Q(description_ru='')
             | Q(description_long_en='')
             | Q(description_long_es='')
-            | Q(description_long_ru='')
             | Q(additional_data_en='')
             | Q(additional_data_es='')
-            | Q(additional_data_ru='')
             | Q(summary_en='')
             | Q(summary_es='')
-            | Q(summary_ru='')
             | Q(update_frequency='')
             | Q(license_custom=None)
             | Q(language_en='')
             | Q(language_es='')
-            | Q(language_ru='')
+            | Q(source_url='')
         )
         if self.value() == "1":
             return queryset.filter(qs)
@@ -164,6 +161,7 @@ class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
             "fields": (
                 "update_frequency",
                 "license_custom",
+                "source_url",
                 "language_en",
                 "language_es",
                 "language_ru",

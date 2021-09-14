@@ -36,7 +36,7 @@ jobs:
       - run: curl -s -S --retry 3 $BASEDIR/tests/install.sh | bash -
       - run: pip install -r requirements_dev.txt
       - run: curl -s -S --retry 3 $BASEDIR/tests/script.sh | bash -
-      - run: STANDARD_MAINTENANCE_SCRIPTS_IGNORE=gunicorn pytest /tmp/test_requirements.py
+      - run: STANDARD_MAINTENANCE_SCRIPTS_IGNORE=gunicorn,psycopg2 pytest /tmp/test_requirements.py
       - run: coverage run --source core,data_registry manage.py test --settings core.settings.github
         if: always()
         env:

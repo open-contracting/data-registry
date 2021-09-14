@@ -39,7 +39,8 @@ class Scrape(BaseTask):
             f"{self.host}schedule.json",
             data={
                 "project": self.project,
-                "spider": self.spider
+                "spider": self.spider,
+                "steps": "compile",  # no "check"
             },
             error_msg=f"Unable to schedule scraping for project {self.project} and spider {self.spider}"
         )

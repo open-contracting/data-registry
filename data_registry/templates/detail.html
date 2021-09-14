@@ -75,11 +75,11 @@
             <div class="col-9 data">
                 <div>
                     <span class="label">{% translate "Data date range:" %}</span>
-                    <span class="value">[[ activeJob.date_from | moment("MMM YYYY") ]] - [[ activeJob.date_to | moment("MMM YYYY") ]]</span>
+                    <span class="value" v-if="activeJob">[[ activeJob.date_from | moment("MMM YYYY") ]] - [[ activeJob.date_to | moment("MMM YYYY") ]]</span>
                 </div>
                 <div>
                     <span class="label">{% translate "Last updated:" %}</span>
-                    <span class="value">[[ data.last_update | moment("MMM YYYY") ]]</span>
+                    <span class="value">[[ data.last_update | moment("D MMM YYYY") ]]</span>
                 </div>
                 <div>
                     <span class="label">{% translate "Update frequency:" %}</span>
@@ -91,7 +91,7 @@
                 </div>
                 <div>
                     <span class="label">{% translate "OCID prefix:" %}</span>
-                    <span class="value">[[ activeJob.ocid_prefix ]]</span>
+                    <span class="value" v-if="activeJob">[[ activeJob.ocid_prefix ]]</span>
                 </div>
                 <div class="license">
                     <span class="label">{% translate "License:" %}</span>
@@ -100,12 +100,16 @@
                             <a :href="data.license_custom.url" target="_blank">[[ data.license_custom.name ]]</a>
                             <markdown-box class="small" :content="data.license_custom.description"></markdown-box>
                         </template>
-                        <template v-else>[[ activeJob.license ]]</template>
+                        <template v-else-if="activeJob">[[ activeJob.license ]]</template>
                     </span>
                 </div>
                 <div>
                     <span class="label">{% translate "Language:" %}</span>
                     <span class="value">[[ data.language ]]</span>
+                </div>
+                <div>
+                    <span class="label">{% translate "Retrieved from:" %}</span>
+                    <a :href="data.source_url" target="_blank">[[ data.source_url ]]</a>
                 </div>
             </div>
         </div>

@@ -2,7 +2,7 @@ import "babel-polyfill";
 var Promise = require('es6-promise').Promise;
 require('es6-promise').polyfill();
 
-import Vue from "vue/dist/vue.js";
+import Vue from "vue/dist/vue.min.js";
 import VueMoment from 'vue-moment';
 import axios from 'axios';
 import Vuex from 'vuex'

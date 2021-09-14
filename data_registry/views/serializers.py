@@ -1,7 +1,8 @@
 import datetime
 
 from django.forms.models import model_to_dict
-from markdownx.utils import markdownify
+
+from data_registry.utils import markdownify
 
 
 class BasicSerializer():
@@ -44,14 +45,14 @@ class JobSerializer(BasicSerializer):
 
 
 class CollectionSerializer(BasicSerializer):
-    markdown_fields = ["additional_data", "description_long", "summary", "issues"]
+    markdown_fields = ["additional_data", "description", "description_long", "summary", "issues"]
 
     @classmethod
     def serialize(cls, data):
         result = super(CollectionSerializer, cls).serialize(data)
 
         if hasattr(data, "issues") and data.issues:
-            result["issues"] = data.issues
+            result["issues"] = [markdownify(description) for description in data.issues]
         if hasattr(data, "license_custom") and data.license_custom:
             result["license_custom"] = LicenseSerializer.serialize(data.license_custom)
         if hasattr(data, "active_job") and data.active_job:

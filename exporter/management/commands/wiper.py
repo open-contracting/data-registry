@@ -8,7 +8,14 @@ logger = logging.getLogger('wiper')
 
 
 class Command(BaseCommand):
-    help = 'Removes all the exported data'
+    """
+    Starts a worker to delete the files exported from collections in Kingfisher Process.
+
+    It consumes messages from RabbitMQ, which indicate the path components of the directory tree to delete (consisting
+    of the spider name and the job ID).
+
+    Multiple workers can run at the same time.
+    """
 
     def handle(self, *args, **options):
         logging.captureWarnings(True)

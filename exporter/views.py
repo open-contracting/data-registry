@@ -13,6 +13,11 @@ from exporter.tools.rabbit import publish
 
 @csrf_exempt
 def exporter_start(request):
+    """
+    Adds a message to a queue to export files from a collection in Kingfisher Process.
+
+    Expects ``{"collection_id": <id>, "spider": <spider>, "job_id": <job_id>}`` in the request body.
+    """
     routing_key = "_exporter_init"
 
     input_message = json.loads(request.body.decode("utf8"))
@@ -26,6 +31,11 @@ def exporter_start(request):
 
 @csrf_exempt
 def wiper_start(request):
+    """
+    Adds a message to a queue to delete the files exported from a collection.
+
+    Expects ``{"collection_id": <id>, "spider": <spider>, "job_id": <job_id>}`` in the request body.
+    """
     routing_key = "_wiper_init"
 
     input_message = json.loads(request.body.decode("utf8"))
@@ -39,6 +49,13 @@ def wiper_start(request):
 
 @csrf_exempt
 def exporter_status(request):
+    """
+    Returns the status of an exporter job task.
+
+    Expects ``{"spider": <spider>, "job_id": <job_id>}`` in the request body.
+
+    Returns ``{"status": "ok", "data": <status>}`` where status is one of WAITING, RUNNING, COMPLETED.
+    """
     input_message = json.loads(request.body.decode("utf8"))
 
     spider = input_message.get("spider")
@@ -59,6 +76,13 @@ def exporter_status(request):
 
 @csrf_exempt
 def download_export(request):
+    """
+    Returns an exported file as a FileResponse object.
+
+    Expects ``{"spider": <spider>, "job_id": <job_id>, "year": 2021}`` in the request body.
+
+    If ``year`` is omitted, the export file for the full collection is returned.
+    """
     input_message = json.loads(request.body.decode("utf8"))
 
     spider = input_message.get("spider")
@@ -82,6 +106,13 @@ def download_export(request):
 
 @csrf_exempt
 def export_years(request):
+    """
+    Returns the list of years for which there are exported files.
+
+    Expects ``{"spider": <spider>, "job_id": <job_id>}`` in the request body.
+
+    Returns ``{"status": "ok", "data": <sorted_list_of_years>}``.
+    """
     input_message = json.loads(request.body.decode("utf8"))
 
     spider = input_message.get("spider")

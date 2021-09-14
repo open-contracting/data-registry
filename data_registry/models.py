@@ -16,20 +16,38 @@ class Job(Model):
         RUNNING = "RUNNING", "RUNNING"
         COMPLETED = "COMPLETED", "COMPLETED"
 
-    status = CharField(max_length=2048, choices=Status.choices, blank=True, null=True)
+    status = CharField(max_length=2048, choices=Status.choices, blank=True)
 
     context = JSONField(blank=True, null=True,
-                        help_text="Refer to the User Guide to interpret and use this information for debugging.")
+                        help_text="<dl>"
+                                  "<dt><code>spider</code></dt>"
+                                  "<dd>The name of the spider in Kingfisher Collect</dd>"
+                                  "<dt><code>job_id</code></dt>"
+                                  "<dd>The ID of the job in Scrapyd</dd>"
+                                  "<dt><code>scrapy_log</code></dt>"
+                                  "<dd>A local URL to the log file of the crawl in Scrapyd</dd>"
+                                  "<dt><code>process_id</code></dt>"
+                                  "<dd>The ID of the base collection in Kingfisher Process</dd>"
+                                  "<dt><code>process_id_pelican</code></dt>"
+                                  "<dd>The ID of the compiled collection in Kingfisher Process</dd>"
+                                  "<dt><code>process_data_version</code></dt>"
+                                  "<dd>The data version of the collection in Kingfisher Process</dd>"
+                                  "<dt><code>pelican_id</code></dt>"
+                                  "<dd>The ID of the dataset in Pelican</dd>"
+                                  "<dt><code>pelican_dataset_name</code></dt>"
+                                  "<dd>The name of the dataset in Pelican</dd>"
+                                  "</dl>")
 
     active = BooleanField(default=False,
-                          help_text="Set this as the active job for the collection from the collection's page.")
+                          help_text="Set this as the active job for the publication from the publication's page.")
 
     archived = BooleanField(default=False, verbose_name="temporary data deleted",
                             help_text="Whether the temporary data created by job tasks has been deleted.")
 
     keep_all_data = BooleanField(default=False, verbose_name="preserve temporary data",
                                  help_text="By default, temporary data created by job tasks is deleted after the job "
-                                           "is completed. To preserve this data for debugging, check this box. Then, "
+                                           "is completed. Only the data registry's models' data and JSON exports are "
+                                           "retained. To preserve temporary data for debugging, check this box. Then, "
                                            "when ready, uncheck this box and run the \"cbom\" management command.")
 
     tenders_count = IntegerField(default=0)
@@ -49,8 +67,8 @@ class Job(Model):
 
     date_from = DateField(blank=True, null=True, verbose_name="minimum release date")
     date_to = DateField(blank=True, null=True, verbose_name="maximum release date")
-    ocid_prefix = CharField(max_length=2048, blank=True, null=True, verbose_name="OCID prefix")
-    license = CharField(max_length=2048, blank=True, null=True)
+    ocid_prefix = CharField(max_length=2048, blank=True, verbose_name="OCID prefix")
+    license = CharField(max_length=2048, blank=True)
 
     created = DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)
     modified = DateTimeField(auto_now=True, blank=True, null=True, db_index=True)
@@ -97,6 +115,9 @@ class Collection(Model):
                           help_text="The name of the spider in Kingfisher Collect. If a new spider is not listed, "
                                     "Kingfisher Collect needs to be re-deployed to the registry's server.")
 
+    source_url = TextField(blank=True, verbose_name="source URL",
+                           help_text="The URL of the publication.")
+
     class Frequency(TextChoices):
         MONTHLY = "MONTHLY", "MONTHLY"
         HALF_YEARLY = "HALF_YEARLY", "HALF_YEARLY"
@@ -118,10 +139,11 @@ class Collection(Model):
     excel_format = BooleanField(default=True)
 
     public = BooleanField(default=False,
-                          help_text="If the active job's tasks completed without errors and all fields below in all "
-                                    "languages are filled in, check this box.")
+                          help_text="If the active job's tasks completed without errors and all the fields below in "
+                                    "all languages are filled in, check this box to make the publication visible to "
+                                    "anonymous users. Otherwise, it is visible to administrators only.")
     frozen = BooleanField(default=False,
-                          help_text="If the spider is broken, check this box to prevent new jobs from running.")
+                          help_text="If the spider is broken, check this box to prevent the scheduling of new jobs.")
 
     created = DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)
     modified = DateTimeField(auto_now=True, blank=True, null=True, db_index=True)
@@ -256,17 +278,17 @@ class Task(Model):
         RUNNING = "RUNNING", "RUNNING"
         COMPLETED = "COMPLETED", "COMPLETED"
 
-    status = CharField(max_length=2048, choices=Status.choices, blank=True, null=True)
+    status = CharField(max_length=2048, choices=Status.choices, blank=True)
 
     class Result(TextChoices):
         OK = "OK", "OK"
         FAILED = "FAILED", "FAILED"
 
-    result = CharField(max_length=2048, choices=Result.choices, blank=True, null=True)
-    note = TextField(blank=True, null=True, help_text="Metadata about any failure.")
+    result = CharField(max_length=2048, choices=Result.choices, blank=True)
+    note = TextField(blank=True, help_text="Metadata about any failure.")
     context = JSONField(blank=True, null=True)
 
-    type = CharField(max_length=2048, blank=True, null=True)
+    type = CharField(max_length=2048, blank=True)
     order = IntegerField(blank=True, null=True)
 
     created = DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)

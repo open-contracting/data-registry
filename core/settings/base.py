@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-import pymdownx  # noqa: F403,F401
+import dj_database_url
 from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -80,10 +80,11 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default='postgresql:///data_registry?application_name=data_registry'),
+    'kingfisher_process': dj_database_url.config(
+        env='KINGFISHER_PROCESS_DATABASE_URL',
+        default='postgresql:///kingfisher_process?application_name=kingfisher_process'),
 }
 
 FLATTEN_URL = "https://flatten.open-contracting.org/api/urls/"
@@ -138,19 +139,13 @@ LANGUAGES = (
 
 MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
 
-MARKDOWNX_MARKDOWN_EXTENSIONS = [
-    'markdown.extensions.extra',
-    'markdown.extensions.admonition',
-    'markdown.extensions.codehilite',
-    'markdown.extensions.sane_lists',
-    'markdown.extensions.smarty',
-    'pymdownx.mark',
-    'pymdownx.tasklist'
-]
-
-MARKDOWNX_MARKDOWN_EXTENSION_CONFIGS = {
-}
-
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'data_registry', 'locale'),
 ]
+
+MARKDOWNX_MARKDOWNIFY_FUNCTION = 'data_registry.utils.markdownify'
+
+SCRAPY_HOST = os.getenv("SCRAPY_HOST")
+SCRAPY_PROJECT = os.getenv("SCRAPY_PROJECT")
+
+EXPORTER_HOST = os.getenv("EXPORTER_HOST")

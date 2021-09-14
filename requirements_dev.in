@@ -3,8 +3,6 @@ coveralls
 flake8
 isort
 pip-tools
-dj-database-url
+psycopg2-binary
 pytest
-
-# Translations
 transifex-client
