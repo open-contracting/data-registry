@@ -26,13 +26,10 @@ Run the web server, replacing `PASSWORD`:
 ```bash
 env SCRAPY_HOST=https://scrape:PASSWORD@collect.kingfisher.open-contracting.org/ SCRAPY_PROJECT=kingfisher EXPORTER_HOST=http://127.0.0.1:8000/ ./manage.py runserver --settings core.settings.github
 ```
-### Technical processes for translation
 
-This project uses [Django's traslation framework](https://docs.djangoproject.com/en/3.2/topics/i18n/translation/) and [Transifex](https://www.transifex.com/) for translations. The source language is configured as `en_US`, and the available languages for translation are English (`en`), Spanish (`es`) and Russian (`ru`).
+### Translation
 
-#### Translations for Translators
-
-Translators can provide translations for this application by becoming a collaborator of the [data-registry project](https://www.transifex.com/open-contracting-partnership-1/data-registry/) on Transifex.
+This project uses [Django's translation framework](https://docs.djangoproject.com/en/3.2/topics/i18n/translation/) and [Transifex](https://www.transifex.com/open-contracting-partnership-1/data-registry/). The source language is `en_US`, and the translations are English (`en`), Spanish (`es`) and Russian (`ru`).
 
 #### Configure Transifex
 
@@ -44,25 +41,25 @@ shell sphinx-intl create-transifexrc --transifex-username USERNAME --transifex-p
 
 #### Update translations
 
-Whenever a text in the interface is added or updated, you must extract strings to translate from these files into PO files by running:
+Whenever text in the interface is added or updated, you must extract the strings to translate from the code files into PO files by running:
 
 ```bash
 django-admin makemessages -l en_US
 ```
 
-Then, you need yo push the PO file to Transifex with:
+Then, push the PO files to Transifex with:
 
 ```bash
 tx push -s
 ```
 
-When the translations are ready, you need to pull them back from Transifex with:
+When ready, pull the translations from Transifex with:
 
 ```bash
 tx pull -a
 ```
 
-Finally, you need to compile the new translated strings, with:
+Then, compile the PO files to MO files with:
 
 ```bash
 python manage.py compilemessages
@@ -70,4 +67,12 @@ python manage.py compilemessages
 
 ### Idiosyncracies
 
+#### Django configuration
+
 - `related_name` is singular, instead of plural
+
+#### Word choice
+
+- "collection" has a different meaning in the code than in Kingfisher Collect or Kingfisher Process. It should be "publication", used in the UI and documentation.
+- The "cbom" (central brain of mankind) management command should be "orchestrate".
+- "scrape" should be "collect".
