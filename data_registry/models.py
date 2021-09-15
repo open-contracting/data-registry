@@ -118,10 +118,6 @@ class Collection(Model):
     source_url = TextField(blank=True, verbose_name="source URL",
                            help_text="The URL of the publication.")
 
-    last_reviewed = DateField(blank=True, null=True, verbose_name="last reviewed",
-                              help_text="The date on which the quality summary was last confirmed to be correct. "
-                                        "Only the year and month are published.")
-
     class Frequency(TextChoices):
         MONTHLY = "MONTHLY", "MONTHLY"
         HALF_YEARLY = "HALF_YEARLY", "HALF_YEARLY"
@@ -134,6 +130,10 @@ class Collection(Model):
     summary = MarkdownxField(blank=True, verbose_name="quality summary",
                              help_text="A short summary of quality issues, as Markdown text. Individual issues can be "
                                        "described below, which will be rendered as a bullet list.")
+
+    last_reviewed = DateField(blank=True, null=True, verbose_name="last reviewed",
+                              help_text="The date on which the quality summary was last confirmed to be correct. "
+                                        "Only the year and month are published.")
 
     additional_data = MarkdownxField(blank=True, verbose_name="data availability",
                                      help_text="Any notable highlights about the available data, such as extensions "
