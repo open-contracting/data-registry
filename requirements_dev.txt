@@ -76,7 +76,7 @@ packaging==20.9
     # via pytest
 pika==1.2.0
     # via -r requirements.txt
-pillow==8.2.0
+pillow==8.3.2
     # via
     #   -r requirements.txt
     #   django-markdownx
@@ -121,7 +121,7 @@ six==1.16.0
     #   transifex-client
 smmap==4.0.0
     # via gitdb
-sqlparse==0.4.1
+sqlparse==0.4.2
     # via
     #   -r requirements.txt
     #   django
