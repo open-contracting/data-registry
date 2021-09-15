@@ -119,8 +119,8 @@ class Collection(Model):
                            help_text="The URL of the publication.")
 
     last_reviewed = DateField(blank=True, null=True, verbose_name="last reviewed",
-                              help_text="The date on which the most recent data feedback report was made. "
-                                        "Only the year and month are important.")
+                              help_text="The date on which the quality summary was last confirmed to be correct. "
+                                        "Only the year and month are published.")
 
     class Frequency(TextChoices):
         MONTHLY = "MONTHLY", "MONTHLY"

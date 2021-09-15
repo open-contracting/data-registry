@@ -138,6 +138,7 @@ class CustomDateFieldListFilter(DateFieldListFilter):
     def __init__(self, *args, **kwargs):
         super(CustomDateFieldListFilter, self).__init__(*args, **kwargs)
 
+        # https://github.com/django/django/blob/3.2/django/contrib/admin/filters.py#L312-L316
         now = timezone.now()
         # When time zone support is enabled, convert "now" to the user's time
         # zone so Django's definition of "Today" matches what the user expects.
@@ -148,11 +149,11 @@ class CustomDateFieldListFilter(DateFieldListFilter):
 
         self.links += ((
             (_('More than a year ago'), {
-                self.lookup_kwarg_until: str(today.replace(year=today.year-1))
+                self.lookup_kwarg_until: str(today.replace(year=today.year - 1)),
             }),
-            (_('Past year'), {
-                self.lookup_kwarg_since: str(today.year - 1),
-                self.lookup_kwarg_until: str(today.year - 1)
+            (_('Previous year'), {
+                self.lookup_kwarg_since: str(today.replace(year=today.year - 1, month=1, day=1)),
+                self.lookup_kwarg_until: str(today.replace(month=1, day=1)),
             }),
         ))
 
