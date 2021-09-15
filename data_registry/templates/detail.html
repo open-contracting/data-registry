@@ -183,6 +183,8 @@
                     </template>
                 </markdown-box>
 
+                <div class="last_reviewed" v-if="data.last_reviewed">{% translate "Last reviewed:" %} <span>[[ data.last_reviewed | moment("MMM YYYY") ]]</span></div>
+
                 <template v-if="data.issues">
                     <h6>{% translate "Issues found" %}</h6>
 

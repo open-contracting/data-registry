@@ -4,11 +4,13 @@ import requests
 from django import forms
 from django.conf import settings
 from django.contrib import admin
+from django.contrib.admin import DateFieldListFilter
 from django.contrib.admin.options import ModelAdmin, TabularInline
 from django.db.models import Q
 from django.db.models.expressions import Case, When
 from django.db.models.fields import BooleanField
 from django.forms.widgets import TextInput
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from markdownx.widgets import AdminMarkdownxWidget
 from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, TranslationTabularInline
@@ -132,12 +134,36 @@ class MissingContentFilter(admin.SimpleListFilter):
             return queryset.exclude(qs)
 
 
+class CustomDateFieldListFilter(DateFieldListFilter):
+    def __init__(self, *args, **kwargs):
+        super(CustomDateFieldListFilter, self).__init__(*args, **kwargs)
+
+        # https://github.com/django/django/blob/3.2/django/contrib/admin/filters.py#L312-L316
+        now = timezone.now()
+        # When time zone support is enabled, convert "now" to the user's time
+        # zone so Django's definition of "Today" matches what the user expects.
+        if timezone.is_aware(now):
+            now = timezone.localtime(now)
+
+        today = now.date()
+
+        self.links += ((
+            (_('Previous year'), {
+                self.lookup_kwarg_since: str(today.replace(year=today.year - 1, month=1, day=1)),
+                self.lookup_kwarg_until: str(today.replace(month=1, day=1)),
+            }),
+            (_('More than a year ago'), {
+                self.lookup_kwarg_until: str(today.replace(year=today.year - 1)),
+            }),
+        ))
+
+
 @admin.register(Collection)
 class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
     form = CollectionAdminForm
-    list_display = ["__str__", "country", "public", "frozen", "active_job"]
+    list_display = ["__str__", "country", "public", "frozen", "active_job", "last_reviewed"]
     list_editable = ["public", "frozen"]
-    list_filter = ["public", "frozen", MissingContentFilter]
+    list_filter = ["public", "frozen", ("last_reviewed", CustomDateFieldListFilter), MissingContentFilter]
 
     # json_format and excel_format will never be disabled in the current version.
     fieldsets = (
@@ -182,6 +208,7 @@ class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
                 "summary_en",
                 "summary_es",
                 "summary_ru",
+                "last_reviewed",
             ),
         }),
     )
