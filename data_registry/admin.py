@@ -148,12 +148,12 @@ class CustomDateFieldListFilter(DateFieldListFilter):
         today = now.date()
 
         self.links += ((
-            (_('More than a year ago'), {
-                self.lookup_kwarg_until: str(today.replace(year=today.year - 1)),
-            }),
             (_('Previous year'), {
                 self.lookup_kwarg_since: str(today.replace(year=today.year - 1, month=1, day=1)),
                 self.lookup_kwarg_until: str(today.replace(month=1, day=1)),
+            }),
+            (_('More than a year ago'), {
+                self.lookup_kwarg_until: str(today.replace(year=today.year - 1)),
             }),
         ))
 
@@ -196,7 +196,6 @@ class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
         (_("Details"), {
             "description": translation_reminder,
             "fields": (
-                "last_reviewed",
                 "description_en",
                 "description_es",
                 "description_ru",
@@ -209,6 +208,7 @@ class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
                 "summary_en",
                 "summary_es",
                 "summary_ru",
+                "last_reviewed",
             ),
         }),
     )
