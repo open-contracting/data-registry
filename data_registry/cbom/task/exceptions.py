@@ -1,6 +1,5 @@
 class RecoverableException(Exception):
     """
-    The exception should be thrown in cases when the task failed, but the reason for the fall is not critical
-    (e.g. temporary service unavailability) and the task can be performed in the next iteration.
+    Raised when it is expected that the failure is temporary. For example, a request to a service's API might only be
+    expected to fail if the service is temporarily unavailable.
     """
-    pass
