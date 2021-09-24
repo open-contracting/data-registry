@@ -104,7 +104,7 @@ class Collection(Model):
     description_long = MarkdownxField(blank=True,
                                       help_text="The remaining paragraphs of the description of the publication, as "
                                                 "Markdown text, which will appear under \"Show more\".")
-    last_update = DateField(blank=True, null=True, verbose_name="last updated",
+    last_update = DateField(blank=True, null=True, verbose_name="last retrieved",
                             help_text="The date on which the most recent 'scrape' job task completed.")
 
     license_custom = ForeignKey("License", related_name="collection", on_delete=CASCADE, blank=True, null=True,
