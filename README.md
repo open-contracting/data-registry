@@ -27,6 +27,8 @@ Run the web server, replacing `PASSWORD`:
 env SCRAPY_HOST=https://scrape:PASSWORD@collect.kingfisher.open-contracting.org/ SCRAPY_PROJECT=kingfisher EXPORTER_HOST=http://127.0.0.1:8000/ ./manage.py runserver --settings core.settings.github
 ```
 
+Note: If you also want to test the integration with Spoonbill to generate Excel/CSVs files, you need to set env SPOONBILL_API_USERNAME=USERNAME and SPOONBILL_API_PASSWORD=PASSWORD
+
 ### Translation
 
 This project uses [Django's translation framework](https://docs.djangoproject.com/en/3.2/topics/i18n/translation/) and [Transifex](https://www.transifex.com/open-contracting-partnership-1/data-registry/). The source language is `en_US`, and the translations are English (`en`), Spanish (`es`) and Russian (`ru`).

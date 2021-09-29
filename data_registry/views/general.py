@@ -141,6 +141,7 @@ def wipe_job(request, job_id):
 
 
 def excel_data(request, job_id, job_range=None):
+
     job = Job.objects.get(id=job_id)
 
     spider = job.collection.source_id
@@ -192,7 +193,8 @@ def excel_data(request, job_id, job_range=None):
     }
 
     headers = {"Accept-Language": "{}".format(get_language())}
-    response = requests.post("{}/api/urls/".format(settings.FLATTEN_URL), body, headers=headers)
+    response = requests.post("{}/api/urls/".format(settings.FLATTEN_URL), body, headers=headers,
+                             auth=(settings.SPOONBILL_API_USERNAME, settings.SPOONBILL_API_PASSWORD))
 
     logger.error("Sent body request to flatten tool body \n{} headers\n{}\nLanguageResponse status code {}.".format(
         body, headers, response.status_code))
