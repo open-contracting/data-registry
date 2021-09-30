@@ -112,8 +112,8 @@ class Scrape(BaseTask):
                 raise Exception("Scrapy log file doesn't exist")
 
             raise e
-
-        m = re.search('Created collection in Kingfisher process with id (.+)', resp.text)
+        # Must match https://github.com/open-contracting/kingfisher-collect/blob/7b386e8e7a198a96b733e2d8437a814632db4def/kingfisher_scrapy/extensions.py#L541
+        m = re.search('Created collection (.+) in Kingfisher Process', resp.text)
         return m.group(1) if m else None
 
     def wipe(self):
