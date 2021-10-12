@@ -20,7 +20,7 @@ django-markdownx==3.0.1
     # via -r requirements.in
 django-modeltranslation==0.17.1
     # via -r requirements.in
-django==3.2.4
+django==3.2.8
     # via
     #   -r requirements.in
     #   django-markdownx
