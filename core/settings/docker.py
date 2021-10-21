@@ -84,6 +84,10 @@ LOGGING = {
             'handlers': ['console'],
             'level': 'DEBUG',
         },
+        'wiper': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
         'cbom': {
             'handlers': ['console'],
             'level': 'DEBUG',
@@ -91,6 +95,14 @@ LOGGING = {
         'scrape-task': {
             'handlers': ['console'],
             'level': 'DEBUG',
-        }
+        },
+        'pelican-task': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+        'utils': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
     }
 }
