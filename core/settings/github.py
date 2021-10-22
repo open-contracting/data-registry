@@ -26,41 +26,31 @@ SILENCED_SYSTEM_CHECKS = [
 ]
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'standard': {
-            'format': "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
-            'datefmt': "%d/%b/%Y %H:%M:%S"
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "console": {
+            "format": "%(asctime)s %(levelname)s [%(name)s:%(lineno)s] %(message)s",
         },
     },
-    'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-            'formatter': 'standard',
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "console",
         },
     },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': 'INFO',
+    "loggers": {
+        "": {
+            "handlers": ["console"],
+            "level": "INFO",
         },
-        'django.server': {
-            'handlers': ['console'],
-            'level': 'INFO',
+        "data_registry": {
+            "handlers": ["console"],
+            "level": "DEBUG",
         },
-        'django.db.backends': {
-            'handlers': ['console'],
-            'level': 'INFO',
+        "exporter": {
+            "handlers": ["console"],
+            "level": "DEBUG",
         },
-        'data_registry': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-        },
-        'exporter': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-        },
-    }
+    },
 }
