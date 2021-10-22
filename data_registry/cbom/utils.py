@@ -18,7 +18,6 @@ def request(method, url, **kwargs):
         return resp
     except RequestException as e:
         if consume_exception:
-            logger.error(error_msg)
-            logger.exception(e)
+            logger.exception(error_msg)
         else:
             raise RecoverableException(error_msg) from e
