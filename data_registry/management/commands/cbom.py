@@ -8,7 +8,7 @@ from data_registry.cbom.task.process import Process
 from data_registry.cbom.task.scrape import Scrape
 from data_registry.models import Collection, Job
 
-logger = logging.getLogger('cbom')
+logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):

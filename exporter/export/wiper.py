@@ -9,7 +9,7 @@ from django.conf import settings
 
 from exporter.tools.rabbit import ack, consume
 
-logger = logging.getLogger('exporter')
+logger = logging.getLogger(__name__)
 
 
 def start():

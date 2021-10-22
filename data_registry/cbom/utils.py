@@ -5,7 +5,7 @@ from requests.exceptions import RequestException
 
 from data_registry.cbom.task.exceptions import RecoverableException
 
-logger = logging.getLogger("utils")
+logger = logging.getLogger(__name__)
 
 
 def request(method, url, **kwargs):

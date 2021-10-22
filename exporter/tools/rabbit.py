@@ -9,7 +9,7 @@ from django.conf import settings
 global connected
 connected = False
 
-logger = logging.getLogger('exporter')
+logger = logging.getLogger(__name__)
 
 
 def publish(message, routing_key):

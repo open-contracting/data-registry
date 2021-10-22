@@ -13,7 +13,7 @@ from data_registry.cbom.task.factory import TaskFactory
 from data_registry.cbom.utils import request
 from data_registry.models import Job, Task
 
-logger = logging.getLogger('cbom')
+logger = logging.getLogger(__name__)
 
 
 def process(collection):

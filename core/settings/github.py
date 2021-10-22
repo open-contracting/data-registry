@@ -54,7 +54,11 @@ LOGGING = {
             'handlers': ['console'],
             'level': 'INFO',
         },
-        'worker': {
+        'data_registry': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+        'exporter': {
             'handlers': ['console'],
             'level': 'DEBUG',
         },

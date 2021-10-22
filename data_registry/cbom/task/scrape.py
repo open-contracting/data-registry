@@ -12,7 +12,7 @@ from data_registry.cbom.task.task import BaseTask
 from data_registry.cbom.utils import request
 from data_registry.models import Task
 
-logger = logging.getLogger("scrape-task")
+logger = logging.getLogger(__name__)
 
 
 class Scrape(BaseTask):

@@ -12,7 +12,7 @@ from django.db import connections
 
 from exporter.tools.rabbit import ack, consume
 
-logger = logging.getLogger('exporter')
+logger = logging.getLogger(__name__)
 
 
 def start():
