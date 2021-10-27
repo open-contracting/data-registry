@@ -30,6 +30,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # Application definition
 
 INSTALLED_APPS = [
+    'data_registry',
     'modeltranslation',
     'core.apps.CoreAdminConfig',
     'django.contrib.auth',
@@ -38,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    'data_registry',
     'markdownx',
     'exporter'
 ]
