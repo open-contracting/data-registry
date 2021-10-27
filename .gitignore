@@ -4,3 +4,7 @@ __pycache__/
 *.pyc
 
 node_modules
+
+data_registry/static/*
+!data_registry/static/fonts
+!data_registry/static/img
