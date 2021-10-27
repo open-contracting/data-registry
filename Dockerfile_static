@@ -1,23 +1,42 @@
-FROM python:3 as build-stage
+# vue statics
+FROM node:16-alpine as build-stage-vue
 
-WORKDIR /usr/src/app
+WORKDIR /usr/src/app/data_registry
+
+COPY /data_registry/vue/package*.json ./
+
+RUN npm install
+
+COPY /data_registry/vue .
+
+RUN npm run build
+
+# django statics
+FROM python:3.8 as build-stage-django
+
+WORKDIR /app
+
+COPY requirements.txt .
+
+RUN pip install -r requirements.txt
 
 COPY . .
 
-RUN apt-get update
-RUN apt-get -y install curl gnupg
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
-RUN apt-get update
-RUN apt-get -y install nodejs
+RUN python manage.py collectstatic --noinput --settings=core.settings.docker
 
-RUN cd /usr/src/app/data_registry/vue && rm -Rf node_modules
-RUN cd /usr/src/app/data_registry/vue && npm install
-RUN cd /usr/src/app/data_registry/vue && npm run build
+# production stage as non-root user
+FROM nginxinc/nginx-unprivileged:latest as production-stage
 
-# production stage
-FROM nginx:stable-alpine as production-stage
-RUN mkdir /usr/share/nginx/html/static
-COPY --from=build-stage /usr/src/app/data_registry/static /usr/share/nginx/html/static
+USER root
+
+COPY --from=build-stage-vue /usr/src/app/static /usr/share/nginx/html/static
+COPY --from=build-stage-django /app/data_registry/static /usr/share/nginx/html/static
+
+RUN chown -R nginx /usr/share/nginx/html/static/
 RUN chmod -R 664 /usr/share/nginx/html/static && chmod -R a+X /usr/share/nginx/html/static
+
+USER nginx
+
 EXPOSE 80
+
 CMD ["nginx", "-g", "daemon off;"]
