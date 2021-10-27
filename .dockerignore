@@ -1,0 +1,9 @@
+*
+!core
+!data_registry
+!exporter
+!locale
+!gunicorn_docker.py
+!gunicorn_runner.sh
+!manage.py
+!requirements.txt
