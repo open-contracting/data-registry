@@ -1,24 +1,25 @@
 # vue statics
 FROM node:16-alpine as build-stage-vue
 
-WORKDIR /usr/src/app/data_registry
+# For the static files to be generated in workdir/static
+WORKDIR /workdir/data_registry/vue
 
-COPY /data_registry/vue/package*.json ./
+COPY data_registry/vue/package*.json ./
 
-RUN npm install
+RUN npm ci
 
-COPY /data_registry/vue .
+COPY data_registry/vue ./
 
 RUN npm run build
 
 # django statics
 FROM python:3.8 as build-stage-django
 
-WORKDIR /app
+WORKDIR /workdir
 
-COPY requirements.txt .
+COPY requirements.txt ./
 
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
@@ -29,14 +30,13 @@ FROM nginxinc/nginx-unprivileged:latest as production-stage
 
 USER root
 
-COPY --from=build-stage-vue /usr/src/app/static /usr/share/nginx/html/static
-COPY --from=build-stage-django /app/data_registry/static /usr/share/nginx/html/static
+COPY --from=build-stage-vue --chown=nginx:nginx /workdir/static /usr/share/nginx/html/static
+COPY --from=build-stage-django --chown=nginx:nginx /workdir/static /usr/share/nginx/html/static
 
-RUN chown -R nginx /usr/share/nginx/html/static/
-RUN chmod -R 664 /usr/share/nginx/html/static && chmod -R a+X /usr/share/nginx/html/static
+RUN chmod -R a-x+X,ug+rw,o-w+r /usr/share/nginx/html/static
 
 USER nginx
 
-EXPOSE 80
+EXPOSE 8080
 
 CMD ["nginx", "-g", "daemon off;"]
