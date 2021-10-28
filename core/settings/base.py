@@ -5,7 +5,7 @@ import dj_database_url
 from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -30,7 +30,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # Application definition
 
 INSTALLED_APPS = [
-    'data_registry',
     'modeltranslation',
     'core.apps.CoreAdminConfig',
     'django.contrib.auth',
@@ -39,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'data_registry',
     'markdownx',
     'exporter'
 ]
@@ -127,7 +127,7 @@ USE_THOUSAND_SEPARATOR = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_ROOT = 'data_registry/static/'
+STATIC_ROOT = BASE_DIR / 'static'
 STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -139,10 +139,6 @@ LANGUAGES = (
 )
 
 MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
-
-LOCALE_PATHS = [
-    os.path.join(BASE_DIR, 'data_registry', 'locale'),
-]
 
 MARKDOWNX_MARKDOWNIFY_FUNCTION = 'data_registry.utils.markdownify'
 
