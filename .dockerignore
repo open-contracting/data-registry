@@ -1,7 +1,27 @@
-.*
-docker*
-Docker*
-__pycache__/
-*.pyc
+# Dotfiles
+**/.*
 
-node_modules
+# Docker
+**/Dockerfile*
+
+# Requirements
+**/requirements.in
+**/requirements_dev.in
+**/requirements_dev.txt
+
+# Documentation
+docs
+LICENSE
+README.md
+README.rst
+
+# Configuration
+pyproject.toml
+setup.cfg
+
+# Testing
+**/tests
+pytest.ini
+
+# Generated files
+**/node_modules

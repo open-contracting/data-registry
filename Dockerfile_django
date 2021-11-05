@@ -1,21 +1,20 @@
 FROM python:3.8
 
-WORKDIR /workdir
-
 RUN apt-get update && apt-get install -y gettext
 
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
-RUN groupadd -r data_registry && useradd --no-log-init -r -g data_registry data_registry
+RUN groupadd -r runner && useradd --no-log-init -r -g runner runner
 
-# for exporter
-RUN mkdir -p /data/storage
-RUN chown -R data_registry /data/storage
+# Must match settings.EXPORTER_DIR default value
+RUN mkdir -p /data/exporter_dumps && chown -R runner:runner /data/exporter_dumps
+# Must match settings.SCRAPY_FILES_STORE default value
+RUN mkdir -p /data/scrapy && chown -R runner:runner /data/scrapy
 
-USER data_registry:data_registry
-
-COPY --chown=data_registry:data_registry . .
+WORKDIR /workdir
+USER runner:runner
+COPY --chown=runner:runner . .
 
 RUN python manage.py compilemessages
 
