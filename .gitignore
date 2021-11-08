@@ -6,6 +6,4 @@ __pycache__/
 
 node_modules
 
-static/*
-!static/fonts
-!static/img
+/static
