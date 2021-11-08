@@ -1,9 +1,7 @@
 db.sqlite3
-
 __pycache__/
 *.pyc
 *.mo
-
+/.coverage
 node_modules
-
 /static
