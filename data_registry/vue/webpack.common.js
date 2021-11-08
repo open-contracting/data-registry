@@ -1,7 +1,7 @@
 module.exports = {
   entry: ["./js/main.js", "./scss/main.scss"],
   output: {
-    filename: "../../static/js/main.js",
+    filename: "../../../static/js/main.js",
   },
   module: {
     rules: [
@@ -12,7 +12,7 @@ module.exports = {
             loader: "file-loader",
             options: {
               name: "[name].css",
-              outputPath: "../../static/css/",
+              outputPath: "../../../static/css/",
             },
           },
           {

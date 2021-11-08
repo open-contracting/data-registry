@@ -28,12 +28,13 @@ SECRET_KEY = os.getenv("SECRET_KEY", "nasbdvn278ogurihlbkansbrb2uf")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "NO").lower() in ("on", "true", "y", "yes")
 
-SCRAPY_FILES_STORE = os.getenv("SCRAPY_FILES_STORE")
+# If you change the default, you will need to update the Dockerfile_django to match
+SCRAPY_FILES_STORE = os.getenv("SCRAPY_FILES_STORE", "/data/scrapy")
 
 PROCESS_HOST = os.getenv("PROCESS_HOST")
 PELICAN_HOST = os.getenv("PELICAN_HOST")
-
-EXPORTER_DIR = os.getenv("EXPORTER_DIR")
+# If you change the default, you will need to update the Dockerfile_django to match
+EXPORTER_DIR = os.getenv("EXPORTER_DIR", "/data/exporter_dumps")
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.getenv("EMAIL_HOST")
