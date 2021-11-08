@@ -32,7 +32,7 @@ dj-database-url==0.5.0
     # via -r requirements.txt
 django-markdownx==3.0.1
     # via -r requirements.txt
-django-modeltranslation==0.17.1
+django-modeltranslation==0.17.3
     # via -r requirements.txt
 django==3.2.8
     # via
@@ -53,13 +53,6 @@ idna==2.10
     # via
     #   -r requirements.txt
     #   requests
-importlib-metadata==4.7.1
-    # via
-    #   -r requirements.txt
-    #   flake8
-    #   markdown
-    #   pluggy
-    #   pytest
 iniconfig==1.1.1
     # via pytest
 isort==5.7.0
@@ -131,23 +124,12 @@ toml==0.10.2
     # via pytest
 transifex-client==0.14.3
     # via -r requirements_dev.in
-typing-extensions==3.10.0.0
-    # via
-    #   -r requirements.txt
-    #   asgiref
-    #   gitpython
-    #   importlib-metadata
-    #   markdown-it-py
 urllib3==1.26.5
     # via
     #   -r requirements.txt
     #   requests
     #   sentry-sdk
     #   transifex-client
-zipp==3.5.0
-    # via
-    #   -r requirements.txt
-    #   importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip

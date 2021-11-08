@@ -18,7 +18,7 @@ dj-database-url==0.5.0
     # via -r requirements.in
 django-markdownx==3.0.1
     # via -r requirements.in
-django-modeltranslation==0.17.1
+django-modeltranslation==0.17.3
     # via -r requirements.in
 django==3.2.8
     # via
@@ -29,8 +29,6 @@ gunicorn==20.1.0
     # via -r requirements.in
 idna==2.10
     # via requests
-importlib-metadata==4.7.1
-    # via markdown
 markdown-it-py==1.1.0
     # via -r requirements.in
 markdown==3.3.4
@@ -55,17 +53,10 @@ six==1.16.0
     #   python-dateutil
 sqlparse==0.4.2
     # via django
-typing-extensions==3.10.0.0
-    # via
-    #   asgiref
-    #   importlib-metadata
-    #   markdown-it-py
 urllib3==1.26.5
     # via
     #   requests
     #   sentry-sdk
-zipp==3.5.0
-    # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
