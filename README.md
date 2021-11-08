@@ -31,41 +31,7 @@ Note: If you also want to test the integration with Spoonbill to generate Excel/
 
 ### Translation
 
-This project uses [Django's translation framework](https://docs.djangoproject.com/en/3.2/topics/i18n/translation/) and [Transifex](https://www.transifex.com/open-contracting-partnership-1/data-registry/). The source language is `en_US`, and the translations are English (`en`), Spanish (`es`) and Russian (`ru`).
-
-#### Configure Transifex
-
-The first time you use Transifex, create a [`~/.transifexrc file`](https://docs.transifex.com/client/client-configuration#~/-transifexrc) (replace `USERNAME` and `PASSWORD`):
-
-```bash
-shell sphinx-intl create-transifexrc --transifex-username USERNAME --transifex-password PASSWORD
-```
-
-#### Update translations
-
-Whenever text in the interface is added or updated, you must extract the strings to translate from the code files into PO files by running:
-
-```bash
-django-admin makemessages -l en_US
-```
-
-Then, push the PO files to Transifex with:
-
-```bash
-tx push -s
-```
-
-When ready, pull the translations from Transifex with:
-
-```bash
-tx pull -a
-```
-
-Then, compile the PO files to MO files with:
-
-```bash
-python manage.py compilemessages
-```
+See how to [update Django translations](https://ocp-software-handbook.readthedocs.io/en/latest/python/i18n.html) and use [Transifex](https://www.transifex.com/open-contracting-partnership-1/data-registry/).
 
 ### Idiosyncracies
 
