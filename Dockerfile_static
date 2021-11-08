@@ -4,7 +4,7 @@ FROM node:16 as build-stage-vue
 # For the static files to be generated in workdir/static
 WORKDIR /workdir/data_registry/vue
 COPY data_registry/vue/package*.json ./
-RUN npm ci
+RUN npm install
 COPY data_registry/vue ./
 RUN npm run build
 
