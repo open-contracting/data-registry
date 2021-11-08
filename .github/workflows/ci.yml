@@ -21,7 +21,8 @@ jobs:
       - run: pip install -r requirements_dev.txt
       - name: Run checks and tests
         env:
-          PYTHONWARNINGS: error
+          # https://github.com/deschler/django-modeltranslation/pull/618
+          PYTHONWARNINGS: error,ignore:'modeltranslation'
           DJANGO_SETTINGS_MODULE: core.settings.github
           DATABASE_URL: postgresql://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres?application_name=data_registry
         run: |
