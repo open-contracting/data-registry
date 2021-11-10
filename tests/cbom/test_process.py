@@ -17,7 +17,7 @@ class TestTask(BaseTask):
 
 
 class ProcessTests(TransactionTestCase):
-    fixtures = ["data_registry/tests/fixtures/fixtures.json"]
+    fixtures = ["tests/fixtures/fixtures.json"]
 
     def test(self):
         collection = Collection.objects.get(pk=1)

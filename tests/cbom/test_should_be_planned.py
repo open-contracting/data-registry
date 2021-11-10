@@ -5,7 +5,7 @@ from data_registry.models import Collection
 
 
 class ShouldBePlannedTests(TransactionTestCase):
-    fixtures = ["data_registry/tests/fixtures/fixtures.json"]
+    fixtures = ["tests/fixtures/fixtures.json"]
 
     def test_happy_day(self):
         collection = Collection.objects.get(pk=1)
