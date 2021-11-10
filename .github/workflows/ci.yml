@@ -30,7 +30,7 @@ jobs:
           ./manage.py migrate
           ./manage.py makemigrations --check --dry-run
           ./manage.py check --fail-level WARNING
-          coverage run --source core,data_registry manage.py test
+          coverage run --source core,data_registry,exporter manage.py test
       - uses: actions/setup-node@v1
         with:
           node-version: "12.x"
