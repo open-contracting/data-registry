@@ -9,7 +9,7 @@ urlpatterns = [
     path('', include('exporter.urls'), name='exporter'),
     path('admin/', admin.site.urls),
     path('markdownx/', include('markdownx.urls')),
-    path('i18n/', include('django.conf.urls.i18n'))
+    path('i18n/', include('django.conf.urls.i18n')),
 ]
 
 
@@ -18,10 +18,8 @@ urlpatterns += i18n_patterns(
 )
 
 if settings.DEBUG:
-    urlpatterns = [
-        re_path(
-            r'^{}(?P<path>.*)$'.format(settings.STATIC_URL[1:]),
-            static.serve,
-            {'document_root': settings.STATIC_ROOT}
-        ),
-    ] + urlpatterns
+    # https://docs.djangoproject.com/en/3.2/ref/contrib/staticfiles/#static-file-development-view
+    # https://docs.djangoproject.com/en/3.2/ref/views/#django.views.static.serve
+    urlpatterns += [
+        re_path(r'^static/(?P<path>.*)$', static.serve, {'document_root': settings.STATIC_ROOT})
+    ]
