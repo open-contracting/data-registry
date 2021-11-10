@@ -25,7 +25,8 @@ class Pelican(BaseTask):
             "POST",
             f"{settings.PELICAN_HOST}datasets/",
             json={"name": name, "collection_id": self.collection_id},
-            error_msg=f"Publication {self.job.collection}: Pelican: Unable to create dataset with name {name!r} and collection ID {self.collection_id}"
+            error_msg=f"Publication {self.job.collection}: Pelican: Unable to create dataset with name {name!r} and "
+                      f"collection ID {self.collection_id}"
         )
 
     def get_status(self):
