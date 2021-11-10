@@ -182,7 +182,9 @@ def update_collection_availability(job):
             f"{settings.PELICAN_HOST}datasets/{pelican_id}/coverage/"
         )
     except Exception as e:
-        raise Exception(f"Publication {job.collection}: Pelican: Unable to get coverage of dataset {pelican_id}") from e
+        raise Exception(
+            f"Publication {job.collection}: Pelican: Unable to get coverage of dataset {pelican_id}"
+        ) from e
 
     counts = resp.json()
 
@@ -211,7 +213,9 @@ def update_collection_metadata(job):
             f"{settings.PELICAN_HOST}datasets/{pelican_id}/metadata/"
         )
     except Exception as e:
-        raise Exception(f"Publication {job.collection}: Pelican: Unable to get metadata of dataset {pelican_id}") from e
+        raise Exception(
+            f"Publication {job.collection}: Pelican: Unable to get metadata of dataset {pelican_id}"
+        ) from e
 
     meta = resp.json()
 

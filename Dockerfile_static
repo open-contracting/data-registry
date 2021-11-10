@@ -15,7 +15,7 @@ RUN pip install --no-cache-dir -r /tmp/requirements.txt
 WORKDIR /workdir
 COPY . .
 
-RUN python manage.py collectstatic --noinput --settings=core.settings.docker
+RUN python manage.py collectstatic --noinput
 
 # production stage as non-root user
 FROM nginxinc/nginx-unprivileged:latest as production-stage
