@@ -19,14 +19,13 @@ class Pelican(BaseTask):
         self.collection_id = self.job.context.get("process_id_pelican")
 
     def run(self):
+        name = self.get_pelican_dataset_name()
+
         request(
             "POST",
-            f"{settings.PELICAN_HOST}api/dataset_start",
-            json={
-                "name": self.get_pelican_dataset_name(),
-                "collection_id": self.collection_id
-            },
-            error_msg=f"Unable to run Pelican for collection {self.job.collection}"
+            f"{settings.PELICAN_HOST}datasets/",
+            json={"name": name, "collection_id": self.collection_id},
+            error_msg=f"Publication {self.job.collection}: Pelican: Unable to create dataset with name {name!r} and collection ID {self.collection_id}"
         )
 
     def get_status(self):
@@ -36,38 +35,30 @@ class Pelican(BaseTask):
 
         resp = request(
             "GET",
-            f"{settings.PELICAN_HOST}api/dataset_status/{pelican_id}",
-            error_msg=f"Unable get status of collection {self.job.collection} from Pelican"
+            f"{settings.PELICAN_HOST}datasets/{pelican_id}/status/",
+            error_msg=f"Publication {self.job.collection}: Pelican: Unable get status of dataset {pelican_id}"
         )
 
-        json = resp.json().get("data")
+        json = resp.json()
         if not json:
             return Task.Status.WAITING
-
-        state = json.get("state")
-        phase = json.get("phase")
-
-        if state == "FAILED":
-            raise Exception("Pelican failed")
-
-        if phase == "CHECKED" and state == "OK":
+        if json["phase"] == "CHECKED" and json["state"] == "OK":
             return Task.Status.COMPLETED
-        else:
-            return Task.Status.RUNNING
+        return Task.Status.RUNNING
 
     def get_pelican_id(self):
         pelican_id = self.job.context.get("pelican_id", None)
         if not pelican_id:
+            name = self.get_pelican_dataset_name()
+
             resp = request(
-                "POST",
-                f"{settings.PELICAN_HOST}api/dataset_id",
-                json={
-                    "name": self.get_pelican_dataset_name()
-                },
-                error_msg="Unable to get pelican dataset id"
+                "GET",
+                f"{settings.PELICAN_HOST}datasets/find_by_name/",
+                params={"name": name},
+                error_msg=f"Publication {self.job.collection}: Pelican: Unable to get ID for name {name!r}"
             )
 
-            pelican_id = resp.json().get("data", None)
+            pelican_id = resp.json().get("id", None)
             if pelican_id:
                 self.job.context["pelican_id"] = pelican_id
                 self.job.save()
@@ -100,11 +91,8 @@ class Pelican(BaseTask):
             return
 
         request(
-            "POST",
-            f"{settings.PELICAN_HOST}api/dataset_wipe",
-            json={
-                "dataset_id": pelican_id
-            },
-            error_msg="Unable to wipe PELICAN",
+            "DELETE",
+            f"{settings.PELICAN_HOST}datasets/{pelican_id}/",
+            error_msg=f"Publication {self.job.collection}: Pelican: Unable to wipe dataset with ID {pelican_id}",
             consume_exception=True
         )
