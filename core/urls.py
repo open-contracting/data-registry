@@ -8,7 +8,7 @@ urlpatterns = [
     path('', include('data_registry.urls'), name='data_registry'),
     path('', include('exporter.urls'), name='exporter'),
     path('admin/', admin.site.urls),
-    re_path(r'^markdownx/', include('markdownx.urls')),
+    path('markdownx/', include('markdownx.urls')),
     path('i18n/', include('django.conf.urls.i18n'))
 ]
 
