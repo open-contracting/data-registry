@@ -19,7 +19,7 @@ USER runner:runner
 COPY --chown=runner:runner . .
 
 RUN python manage.py compilemessages
-RUN VERSION=$(date +%Y%m%d%h%s); sed -i "s/STATIC_VERSION \?=.*/STATIC_VERSION = '$VERSION'/g" ./core/settings/docker.py
+RUN VERSION=$(date +%Y%m%d%h%s); sed -i "s/STATIC_VERSION =.*/STATIC_VERSION = '$VERSION'/g" ./core/settings.py
 
 EXPOSE 8000
-CMD exec gunicorn --bind 0.0.0.0:8000 core.docker_wsgi --timeout 720 -c gunicorn_docker.py
+CMD exec gunicorn --bind 0.0.0.0:8000 core.wsgi --timeout 720 -c gunicorn_docker.py

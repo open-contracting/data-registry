@@ -17,14 +17,14 @@ createdb data_registry
 Prepare the database:
 
 ```bash
-./manage.py migrate --settings core.settings.github
-./manage.py createsuperuser --settings core.settings.github
+./manage.py migrate
+./manage.py createsuperuser
 ```
 
 Run the web server, replacing `PASSWORD`:
 
 ```bash
-env SCRAPY_HOST=https://scrape:PASSWORD@collect.kingfisher.open-contracting.org/ SCRAPY_PROJECT=kingfisher EXPORTER_HOST=http://127.0.0.1:8000/ ./manage.py runserver --settings core.settings.github
+env SCRAPY_HOST=https://scrape:PASSWORD@collect.kingfisher.open-contracting.org/ SCRAPY_PROJECT=kingfisher EXPORTER_HOST=http://127.0.0.1:8000/ ./manage.py runserver
 ```
 
 Note: If you also want to test the integration with Spoonbill to generate Excel/CSVs files, you need to set env SPOONBILL_API_USERNAME=USERNAME and SPOONBILL_API_PASSWORD=PASSWORD
