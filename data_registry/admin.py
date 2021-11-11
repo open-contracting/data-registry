@@ -17,8 +17,10 @@ from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, Translati
 
 from data_registry.models import Collection, Issue, Job, License, Task
 
-translation_reminder = _("<em>Remember to provide information in all languages. You can use the dropdown at the top "
-                         "of the page to toggle the language for all fields.</em>")
+translation_reminder = _(
+    "<em>Remember to provide information in all languages. You can use the dropdown at the top "
+    "of the page to toggle the language for all fields.</em>"
+)
 
 
 class IssueInLine(TranslationTabularInline):
@@ -31,44 +33,42 @@ class CollectionAdminForm(forms.ModelForm):
         choices=[],
         label="Source ID",
         help_text="The name of the spider in Kingfisher Collect. If a new spider is not listed, Kingfisher Collect "
-                  "needs to be re-deployed to the registry's server.")
+        "needs to be re-deployed to the registry's server.",
+    )
     active_job = forms.ModelChoiceField(
         queryset=None,
         required=False,
         help_text="A job is a set of tasks to collect and process data from a publication. A job can be selected once "
-                  "it is completed. If a new job completes, it becomes the active job.")
-    country_flag = forms.ChoiceField(choices=[(None, '---------')], required=False)
+        "it is completed. If a new job completes, it becomes the active job.",
+    )
+    country_flag = forms.ChoiceField(choices=[(None, "---------")], required=False)
 
     def __init__(self, *args, **kwargs):
         super(CollectionAdminForm, self).__init__(*args, **kwargs)
 
         try:
-            resp = requests.get(
-                settings.SCRAPY_HOST + "listspiders.json",
-                params={
-                    "project": settings.SCRAPY_PROJECT
-                }
-            )
+            resp = requests.get(settings.SCRAPY_HOST + "listspiders.json", params={"project": settings.SCRAPY_PROJECT})
             resp.raise_for_status()
 
             json = resp.json()
 
             if json.get("status") == "ok":
-                self.fields['source_id'].choices += tuple([(n, n) for n in json.get("spiders")])
+                self.fields["source_id"].choices += tuple([(n, n) for n in json.get("spiders")])
         except Exception:
             # scrapy api doesnt respond
             sid = self.instance.source_id
-            self.fields['source_id'].choices += tuple([(sid, sid)])
+            self.fields["source_id"].choices += tuple([(sid, sid)])
 
-        self.fields["active_job"].queryset = Job.objects.filter(collection=kwargs.get("instance"),
-                                                                status=Job.Status.COMPLETED)
+        self.fields["active_job"].queryset = Job.objects.filter(
+            collection=kwargs.get("instance"), status=Job.Status.COMPLETED
+        )
         self.fields["active_job"].initial = Job.objects.filter(collection=kwargs.get("instance"), active=True).first()
 
         # collect all years from annual dump files names
         flags_dir = "data_registry/static/img/flags"
         files = [f.name for f in Path(flags_dir).glob("*") if f.is_file()]
         files.sort()
-        self.fields['country_flag'].choices += tuple([(n, n) for n in files])
+        self.fields["country_flag"].choices += tuple([(n, n) for n in files])
 
     def save(self, *args, **kwargs):
         jobs = Job.objects.filter(collection=self.instance)
@@ -76,11 +76,7 @@ class CollectionAdminForm(forms.ModelForm):
         active_job = self.cleaned_data["active_job"]
         if active_job:
             if not active_job.active:
-                jobs.update(active=Case(
-                    When(id=active_job.id, then=True),
-                    default=False,
-                    output_field=BooleanField()
-                ))
+                jobs.update(active=Case(When(id=active_job.id, then=True), default=False, output_field=BooleanField()))
         else:
             jobs.update(active=False)
 
@@ -88,11 +84,11 @@ class CollectionAdminForm(forms.ModelForm):
 
     class Meta:
         widgets = {
-            'title': TextInput(attrs={"class": "vTextField"}),
-            'description': AdminMarkdownxWidget(attrs={'cols': 100, 'rows': 3}),
-            'description_long': AdminMarkdownxWidget(attrs={'cols': 100, 'rows': 6}),
-            'summary': AdminMarkdownxWidget(attrs={'cols': 100, 'rows': 6}),
-            'additional_data': AdminMarkdownxWidget(attrs={'cols': 100, 'rows': 6})
+            "title": TextInput(attrs={"class": "vTextField"}),
+            "description": AdminMarkdownxWidget(attrs={"cols": 100, "rows": 3}),
+            "description_long": AdminMarkdownxWidget(attrs={"cols": 100, "rows": 6}),
+            "summary": AdminMarkdownxWidget(attrs={"cols": 100, "rows": 6}),
+            "additional_data": AdminMarkdownxWidget(attrs={"cols": 100, "rows": 6}),
         }
 
 
@@ -109,24 +105,24 @@ class MissingContentFilter(admin.SimpleListFilter):
 
     def queryset(self, request, queryset):
         qs = (
-            Q(country_flag='')
-            | Q(country_en='')
-            | Q(country_es='')
+            Q(country_flag="")
+            | Q(country_en="")
+            | Q(country_es="")
             # title_en is required.
-            | Q(title_es='')
-            | Q(description_en='')
-            | Q(description_es='')
-            | Q(description_long_en='')
-            | Q(description_long_es='')
-            | Q(additional_data_en='')
-            | Q(additional_data_es='')
-            | Q(summary_en='')
-            | Q(summary_es='')
-            | Q(update_frequency='')
+            | Q(title_es="")
+            | Q(description_en="")
+            | Q(description_es="")
+            | Q(description_long_en="")
+            | Q(description_long_es="")
+            | Q(additional_data_en="")
+            | Q(additional_data_es="")
+            | Q(summary_en="")
+            | Q(summary_es="")
+            | Q(update_frequency="")
             | Q(license_custom=None)
-            | Q(language_en='')
-            | Q(language_es='')
-            | Q(source_url='')
+            | Q(language_en="")
+            | Q(language_es="")
+            | Q(source_url="")
         )
         if self.value() == "1":
             return queryset.filter(qs)
@@ -147,15 +143,21 @@ class CustomDateFieldListFilter(DateFieldListFilter):
 
         today = now.date()
 
-        self.links += ((
-            (_('Previous year'), {
-                self.lookup_kwarg_since: str(today.replace(year=today.year - 1, month=1, day=1)),
-                self.lookup_kwarg_until: str(today.replace(month=1, day=1)),
-            }),
-            (_('More than a year ago'), {
-                self.lookup_kwarg_until: str(today.replace(year=today.year - 1)),
-            }),
-        ))
+        self.links += (
+            (
+                _("Previous year"),
+                {
+                    self.lookup_kwarg_since: str(today.replace(year=today.year - 1, month=1, day=1)),
+                    self.lookup_kwarg_until: str(today.replace(month=1, day=1)),
+                },
+            ),
+            (
+                _("More than a year ago"),
+                {
+                    self.lookup_kwarg_until: str(today.replace(year=today.year - 1)),
+                },
+            ),
+        )
 
 
 @admin.register(Collection)
@@ -167,57 +169,67 @@ class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
 
     # json_format and excel_format will never be disabled in the current version.
     fieldsets = (
-        (_("Management"), {
-            "fields": ("source_id", "active_job", "public", "frozen", "last_update"),
-        }),
-        (_("Basics"), {
-            "description": translation_reminder,
-            "fields": (
-                "country_flag",
-                "country_en",
-                "country_es",
-                "country_ru",
-                "title_en",
-                "title_es",
-                "title_ru",
-            ),
-        }),
-        (_("Overview"), {
-            "description": translation_reminder,
-            "fields": (
-                "update_frequency",
-                "license_custom",
-                "source_url",
-                "language_en",
-                "language_es",
-                "language_ru",
-            ),
-        }),
-        (_("Details"), {
-            "description": translation_reminder,
-            "fields": (
-                "description_en",
-                "description_es",
-                "description_ru",
-                "description_long_en",
-                "description_long_es",
-                "description_long_ru",
-                "additional_data_en",
-                "additional_data_es",
-                "additional_data_ru",
-                "summary_en",
-                "summary_es",
-                "summary_ru",
-                "last_reviewed",
-            ),
-        }),
+        (
+            _("Management"),
+            {
+                "fields": ("source_id", "active_job", "public", "frozen", "last_update"),
+            },
+        ),
+        (
+            _("Basics"),
+            {
+                "description": translation_reminder,
+                "fields": (
+                    "country_flag",
+                    "country_en",
+                    "country_es",
+                    "country_ru",
+                    "title_en",
+                    "title_es",
+                    "title_ru",
+                ),
+            },
+        ),
+        (
+            _("Overview"),
+            {
+                "description": translation_reminder,
+                "fields": (
+                    "update_frequency",
+                    "license_custom",
+                    "source_url",
+                    "language_en",
+                    "language_es",
+                    "language_ru",
+                ),
+            },
+        ),
+        (
+            _("Details"),
+            {
+                "description": translation_reminder,
+                "fields": (
+                    "description_en",
+                    "description_es",
+                    "description_ru",
+                    "description_long_en",
+                    "description_long_es",
+                    "description_long_ru",
+                    "additional_data_en",
+                    "additional_data_es",
+                    "additional_data_ru",
+                    "summary_en",
+                    "summary_es",
+                    "summary_ru",
+                    "last_reviewed",
+                ),
+            },
+        ),
     )
 
     readonly_fields = ["last_update"]
 
-    inlines = [
-        IssueInLine
-    ]
+    inlines = [IssueInLine]
 
     def active_job(self, obj):
         return Job.objects.filter(collection=obj, active=True).first()
@@ -225,34 +237,33 @@ class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
 
 class LicenseAdminForm(forms.ModelForm):
     class Meta:
-        widgets = {
-            'description': AdminMarkdownxWidget(attrs={'cols': 100, 'rows': 3})
-        }
+        widgets = {"description": AdminMarkdownxWidget(attrs={"cols": 100, "rows": 3})}
 
 
 @admin.register(License)
 class LicenseAdmin(TabbedDjangoJqueryTranslationAdmin):
     fieldsets = (
-        (None, {
-            "description": translation_reminder,
-            "fields": (
-                "name_en",
-                "name_es",
-                "name_ru",
-                "description_en",
-                "description_es",
-                "description_ru",
-                "url",
-            ),
-        }),
+        (
+            None,
+            {
+                "description": translation_reminder,
+                "fields": (
+                    "name_en",
+                    "name_es",
+                    "name_ru",
+                    "description_en",
+                    "description_es",
+                    "description_ru",
+                    "url",
+                ),
+            },
+        ),
     )
 
 
 class IssueAdminForm(forms.ModelForm):
     class Meta:
-        widgets = {
-            'description': AdminMarkdownxWidget(attrs={'cols': 100, 'rows': 3})
-        }
+        widgets = {"description": AdminMarkdownxWidget(attrs={"cols": 100, "rows": 3})}
 
 
 class TaskInLine(TabularInline):
@@ -276,44 +287,53 @@ class JobAdmin(ModelAdmin):
     # Multiple jobs can be set as active for the same collection, so "active" is set as read-only.
     list_editable = ["status", "keep_all_data"]
     fieldsets = (
-        (_("Management"), {
-            "fields": (
-                "collection",
-                "active",
-                "status",
-                "context",
-                "keep_all_data",
-                "archived",
-                "start",
-                "end",
-            ),
-        }),
-        (_("Overview"), {
-            "fields": (
-                "date_from",
-                "date_to",
-                "ocid_prefix",
-                "license",
-            ),
-        }),
-        (_("Data availability"), {
-            "fields": (
-                "parties_count",
-                "plannings_count",
-                "tenders_count",
-                "tenderers_count",
-                "tenders_items_count",
-                "awards_count",
-                "awards_items_count",
-                "awards_suppliers_count",
-                "contracts_count",
-                "contracts_items_count",
-                "contracts_transactions_count",
-                "documents_count",
-                "milestones_count",
-                "amendments_count",
-            ),
-        }),
+        (
+            _("Management"),
+            {
+                "fields": (
+                    "collection",
+                    "active",
+                    "status",
+                    "context",
+                    "keep_all_data",
+                    "archived",
+                    "start",
+                    "end",
+                ),
+            },
+        ),
+        (
+            _("Overview"),
+            {
+                "fields": (
+                    "date_from",
+                    "date_to",
+                    "ocid_prefix",
+                    "license",
+                ),
+            },
+        ),
+        (
+            _("Data availability"),
+            {
+                "fields": (
+                    "parties_count",
+                    "plannings_count",
+                    "tenders_count",
+                    "tenderers_count",
+                    "tenders_items_count",
+                    "awards_count",
+                    "awards_items_count",
+                    "awards_suppliers_count",
+                    "contracts_count",
+                    "contracts_items_count",
+                    "contracts_transactions_count",
+                    "documents_count",
+                    "milestones_count",
+                    "amendments_count",
+                ),
+            },
+        ),
     )
     readonly_fields = [
         # Only status and keep_all_data are editable.
@@ -345,18 +365,17 @@ class JobAdmin(ModelAdmin):
         "amendments_count",
     ]
 
-    inlines = [
-        TaskInLine
-    ]
+    inlines = [TaskInLine]
 
-    @admin.display(description='Country')
+    @admin.display(description="Country")
     def country(self, obj):
         return obj.collection.country
 
-    @admin.display(description='Last completed task')
+    @admin.display(description="Last completed task")
     def last_task(self, obj):
-        last_completed_task = obj.task.values("type", "order")\
-            .filter(status=Task.Status.COMPLETED).order_by('-order').first()
+        last_completed_task = (
+            obj.task.values("type", "order").filter(status=Task.Status.COMPLETED).order_by("-order").first()
+        )
 
         if last_completed_task:
             return f"{last_completed_task.get('type')} ({last_completed_task.get('order')}/4)"

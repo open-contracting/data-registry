@@ -42,7 +42,7 @@ class Scrape(BaseTask):
                 "spider": self.spider,
                 "steps": "compile",  # no "check"
             },
-            error_msg=f"Unable to schedule scraping for project {self.project} and spider {self.spider}"
+            error_msg=f"Unable to schedule scraping for project {self.project} and spider {self.spider}",
         )
 
         json = resp.json()
@@ -71,10 +71,8 @@ class Scrape(BaseTask):
         resp = request(
             "GET",
             f"{self.host}listjobs.json",
-            params={
-                "project": self.project
-            },
-            error_msg=f"Unable to get status of scrape job #{jobid}"
+            params={"project": self.project},
+            error_msg=f"Unable to get status of scrape job #{jobid}",
         )
 
         json = resp.json()
@@ -114,7 +112,7 @@ class Scrape(BaseTask):
             raise e
         # Must match
         # https://github.com/open-contracting/kingfisher-collect/blob/7b386e8e7a198a96b733e2d8437a814632db4def/kingfisher_scrapy/extensions.py#L541
-        m = re.search('Created collection (.+) in Kingfisher Process', resp.text)
+        m = re.search("Created collection (.+) in Kingfisher Process", resp.text)
         return m.group(1) if m else None
 
     def wipe(self):

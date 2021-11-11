@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 
 
 def index(request):
-    response = render(request, 'index.html')
+    response = render(request, "index.html")
 
     return response
 
@@ -37,11 +37,11 @@ def search(request):
     results = Collection.objects.all()
     if not request.user.is_authenticated:
         # for unauthenticated user show only public collections with an active job.
-        results = results\
-            .filter(public=True)\
-            .filter(Exists(Job.objects.filter(collection=OuterRef('pk'), active=True)))
+        results = results.filter(public=True).filter(
+            Exists(Job.objects.filter(collection=OuterRef("pk"), active=True))
+        )
 
-    results = results.order_by('country', 'title')
+    results = results.order_by("country", "title")
 
     collections = []
     for r in results:
@@ -49,47 +49,38 @@ def search(request):
         n["detail_url"] = reverse("detail", kwargs={"id": r.id})
         collections.append(n)
 
-    return render(request, 'search.html', {"collections": collections})
+    return render(request, "search.html", {"collections": collections})
 
 
 def detail(request, id):
     data = CollectionSerializer.serialize(
-        Collection.objects
-        .select_related("license_custom")
+        Collection.objects.select_related("license_custom")
         .annotate(issues=ArrayAgg("issue__description", filter=Q(issue__isnull=False)))
         .get(id=id)
     )
 
     resp = requests.post(
         f"{settings.EXPORTER_HOST}api/export_years",
-        json={
-            "job_id": data.get("active_job", {}).get("id", None),
-            "spider": data.get("source_id")
-        }
+        json={"job_id": data.get("active_job", {}).get("id", None), "spider": data.get("source_id")},
     )
 
     years = resp.json().get("data")
 
     return render(
         request,
-        'detail.html',
+        "detail.html",
         {
-            'data': data,
-            'exporter_host': settings.EXPORTER_HOST,
-            'export_years': json.dumps(years),
-            'feedback_email': settings.FEEDBACK_EMAIL
-        }
+            "data": data,
+            "exporter_host": settings.EXPORTER_HOST,
+            "export_years": json.dumps(years),
+            "feedback_email": settings.FEEDBACK_EMAIL,
+        },
     )
 
 
 @login_required
 def spiders(request):
-    resp = requests.get(
-        settings.SCRAPY_HOST + "listspiders.json",
-        params={
-            "project": settings.SCRAPY_PROJECT
-        }
-    )
+    resp = requests.get(settings.SCRAPY_HOST + "listspiders.json", params={"project": settings.SCRAPY_PROJECT})
 
     json = resp.json()
     if json.get("status") == "error":
@@ -106,7 +97,7 @@ def send_feedback(request):
 
     subject = f"Data registry feedback - {feedback_type}"
     if feedback_collection:
-        subject = f'You have new feedback on the {feedback_collection} dataset'
+        subject = f"You have new feedback on the {feedback_collection} dataset"
 
     mail_text = """
         The following feedback was provided for the {} dataset.
@@ -115,12 +106,14 @@ def send_feedback(request):
 
         Feedback detail:
         {}
-    """.format(feedback_collection, feedback_type, feedback_text)
+    """.format(
+        feedback_collection, feedback_type, feedback_text
+    )
 
     send_mail(
         subject,
         mail_text,
-        'noreply@noreply.open-contracting.org',
+        "noreply@noreply.open-contracting.org",
         [settings.FEEDBACK_EMAIL],
         fail_silently=False,
     )
@@ -155,10 +148,10 @@ def excel_data(request, job_id, job_range=None):
     else:
         if job_range == "past-6-months":
             end_date = date.today()
-            start_date = (date.today() + relativedelta(months=-6))
+            start_date = date.today() + relativedelta(months=-6)
         if job_range == "last-year":
             end_date = date.today()
-            start_date = (date.today() + relativedelta(months=-12))
+            start_date = date.today() + relativedelta(months=-12)
         if "|" in job_range:
             d_from, d_to = job_range.split("|")
             if d_from and d_to:
@@ -189,21 +182,27 @@ def excel_data(request, job_id, job_range=None):
         "urls": urls,
         "country": "{} {}".format(job.collection.country, job.collection.title),
         "period": _(job_range),
-        "source": _("OCP Kingfisher Database")
+        "source": _("OCP Kingfisher Database"),
     }
 
     headers = {"Accept-Language": "{}".format(get_language())}
-    response = requests.post("{}/api/urls/".format(settings.FLATTEN_URL), body, headers=headers,
-                             auth=(settings.SPOONBILL_API_USERNAME, settings.SPOONBILL_API_PASSWORD))
+    response = requests.post(
+        "{}/api/urls/".format(settings.FLATTEN_URL),
+        body,
+        headers=headers,
+        auth=(settings.SPOONBILL_API_USERNAME, settings.SPOONBILL_API_PASSWORD),
+    )
 
-    logger.error("Sent body request to flatten tool body \n{} headers\n{}\nLanguageResponse status code {}.".format(
-        body, headers, response.status_code))
+    logger.error(
+        "Sent body request to flatten tool body \n{} headers\n{}\nLanguageResponse status code {}.".format(
+            body, headers, response.status_code
+        )
+    )
 
     if response.status_code > 201 or "id" not in response.json():
         logger.error("Invalid response from spoonbill {}.".format(response.text))
         return HttpResponse(status=500)
 
-    return redirect("{}/#/upload-file?&lang={}&url={}".format(
-        settings.FLATTEN_URL,
-        get_language(),
-        response.json()["id"]))
+    return redirect(
+        "{}/#/upload-file?&lang={}&url={}".format(settings.FLATTEN_URL, get_language(), response.json()["id"])
+    )

@@ -41,7 +41,7 @@ def callback(connection, channel, delivery_tag, body):
             [f.unlink() for f in Path(dump_dir).glob("*") if f.is_file()]
 
         # create file lock
-        with open(lock_file, 'x'):
+        with open(lock_file, "x"):
             pass
 
         logger.info("Processing message {}".format(input_message))
@@ -68,7 +68,7 @@ def callback(connection, channel, delivery_tag, body):
                         ORDER BY d.id
                         LIMIT %s
                     """,
-                    [collection_id, id, settings.EXPORTER_PAGE_SIZE]
+                    [collection_id, id, settings.EXPORTER_PAGE_SIZE],
                 )
 
                 records = cursor.fetchall()
@@ -76,7 +76,7 @@ def callback(connection, channel, delivery_tag, body):
             if not records:
                 break
 
-            with open(dump_file, 'a') as full:
+            with open(dump_file, "a") as full:
                 files[dump_file] = full
 
                 for r in records:
@@ -88,13 +88,13 @@ def callback(connection, channel, delivery_tag, body):
                     if r[2] is not None and len(r[2]) > 9:
                         year_key = "{}/{}.jsonl".format(dump_dir, int(r[2][:4]))
                         if year_key not in files:
-                            files[year_key] = open(year_key, 'a')
+                            files[year_key] = open(year_key, "a")
 
                         files[year_key].write("{}\n".format(r[1]))
 
                         month_key = "{}/{}_{}.jsonl".format(dump_dir, int(r[2][:4]), r[2][5:7])
                         if month_key not in files:
-                            files[month_key] = open(month_key, 'a')
+                            files[month_key] = open(month_key, "a")
 
                         files[month_key].write("{}\n".format(r[1]))
             page = page + 1

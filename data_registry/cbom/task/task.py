@@ -1,4 +1,3 @@
-
 class BaseTask:
     def run(self):
         raise Exception("Method is not implemented")

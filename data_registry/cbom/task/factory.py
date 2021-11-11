@@ -1,4 +1,3 @@
-
 from data_registry.cbom.task.exporter import Exporter
 from data_registry.cbom.task.pelican import Pelican
 from data_registry.cbom.task.process import Process

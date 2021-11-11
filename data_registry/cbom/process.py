@@ -119,13 +119,9 @@ def process(collection):
                     job.save()
 
                     # set active job
-                    Job.objects\
-                        .filter(collection=job.collection)\
-                        .update(active=Case(
-                            When(id=job.id, then=True),
-                            default=False,
-                            output_field=BooleanField()
-                        ))
+                    Job.objects.filter(collection=job.collection).update(
+                        active=Case(When(id=job.id, then=True), default=False, output_field=BooleanField())
+                    )
 
                     logger.debug(f"Job {job} completed")
 
@@ -161,10 +157,7 @@ def plan(collection):
     if not settings.JOB_TASKS_PLAN:
         raise Exception("JOB_TASKS_PLAN is not set")
 
-    job = collection.job.create(
-        start=timezone.now(),
-        status=Job.Status.PLANNED
-    )
+    job = collection.job.create(start=timezone.now(), status=Job.Status.PLANNED)
 
     tasks = settings.JOB_TASKS_PLAN
 
@@ -177,10 +170,7 @@ def plan(collection):
 def update_collection_availability(job):
     try:
         pelican_id = job.context.get("pelican_id")
-        resp = request(
-            "GET",
-            f"{settings.PELICAN_HOST}datasets/{pelican_id}/coverage/"
-        )
+        resp = request("GET", f"{settings.PELICAN_HOST}datasets/{pelican_id}/coverage/")
     except Exception as e:
         raise Exception(
             f"Publication {job.collection}: Pelican: Unable to get coverage of dataset {pelican_id}"
@@ -208,10 +198,7 @@ def update_collection_availability(job):
 def update_collection_metadata(job):
     try:
         pelican_id = job.context.get("pelican_id")
-        resp = request(
-            "GET",
-            f"{settings.PELICAN_HOST}datasets/{pelican_id}/metadata/"
-        )
+        resp = request("GET", f"{settings.PELICAN_HOST}datasets/{pelican_id}/metadata/")
     except Exception as e:
         raise Exception(
             f"Publication {job.collection}: Pelican: Unable to get metadata of dataset {pelican_id}"
@@ -231,5 +218,5 @@ def parse_date(datetime_str):
     if not datetime_str:
         return None
 
-    datetime_obj = datetime.strptime(datetime_str, '%Y-%m-%d %H.%M.%S')
+    datetime_obj = datetime.strptime(datetime_str, "%Y-%m-%d %H.%M.%S")
     return datetime_obj.date()

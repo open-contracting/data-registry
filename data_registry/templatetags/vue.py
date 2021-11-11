@@ -14,26 +14,26 @@ def template_script_end():
     return mark_safe("</script>")
 
 
-@register.inclusion_tag('vue/chevron_btn.html')
+@register.inclusion_tag("vue/chevron_btn.html")
 def chevron_btn_vue_template():
     return {}
 
 
-@register.inclusion_tag('vue/check_icon.html')
+@register.inclusion_tag("vue/check_icon.html")
 def check_icon_vue_template():
     return {}
 
 
-@register.inclusion_tag('vue/dropdown.html')
+@register.inclusion_tag("vue/dropdown.html")
 def dropdown_vue_template():
     return {}
 
 
-@register.inclusion_tag('vue/modal.html')
+@register.inclusion_tag("vue/modal.html")
 def modal_vue_template():
     return {}
 
 
-@register.inclusion_tag('vue/markdown_box.html')
+@register.inclusion_tag("vue/markdown_box.html")
 def markdown_box_vue_template():
     return {}

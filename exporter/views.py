@@ -98,9 +98,7 @@ def download_export(request):
         return HttpResponseNotFound("Unable to find export file")
 
     return FileResponse(
-        open(dump_file, 'rb'),
-        as_attachment=True,
-        filename=f"{spider}_{year}" if year else f"{spider}_full"
+        open(dump_file, "rb"), as_attachment=True, filename=f"{spider}_{year}" if year else f"{spider}_full"
     )
 
 
@@ -126,5 +124,4 @@ def export_years(request):
     years = list(set(years))
     # descending sorting
     years.sort(reverse=True)
-    return JsonResponse(
-        {"status": "ok", "data": years}, safe=False)
+    return JsonResponse({"status": "ok", "data": years}, safe=False)

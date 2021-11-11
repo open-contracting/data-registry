@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    help = 'Process, orchestrate and evaluate all jobs and tasks in data registry'
+    help = "Process, orchestrate and evaluate all jobs and tasks in data registry"
 
     def handle(self, *args, **options):
         logging.captureWarnings(True)

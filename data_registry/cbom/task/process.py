@@ -25,7 +25,7 @@ class Process(BaseTask):
         resp = request(
             "GET",
             f"{settings.PROCESS_HOST}api/v1/tree/{self.process_id}/",
-            error_msg=f"Unable to get status of process #{self.process_id}"
+            error_msg=f"Unable to get status of process #{self.process_id}",
         )
 
         json = resp.json()
@@ -45,9 +45,7 @@ class Process(BaseTask):
         request(
             "POST",
             f"{settings.PROCESS_HOST}api/v1/wipe_collection",
-            json={
-                "collection_id": self.process_id
-            },
+            json={"collection_id": self.process_id},
             error_msg="Unable to wipe PROCESS",
-            consume_exception=True
+            consume_exception=True,
         )

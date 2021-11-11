@@ -11,17 +11,17 @@ from data_registry.models import Collection, Issue, License
 
 @register(Collection)
 class CollectionTranslation(TranslationOptions):
-    fields = ['title', 'description', 'description_long', 'summary', 'additional_data', 'country', 'language']
+    fields = ["title", "description", "description_long", "summary", "additional_data", "country", "language"]
     fallback_undefined = ""
 
 
 @register(Issue)
 class IssueTranslation(TranslationOptions):
-    fields = ['description']
+    fields = ["description"]
     fallback_undefined = ""
 
 
 @register(License)
 class LicenseTranslation(TranslationOptions):
-    fields = ['name', 'description']
+    fields = ["name", "description"]
     fallback_undefined = ""

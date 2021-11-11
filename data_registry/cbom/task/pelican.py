@@ -26,7 +26,7 @@ class Pelican(BaseTask):
             f"{settings.PELICAN_HOST}datasets/",
             json={"name": name, "collection_id": self.collection_id},
             error_msg=f"Publication {self.job.collection}: Pelican: Unable to create dataset with name {name!r} and "
-                      f"collection ID {self.collection_id}"
+            f"collection ID {self.collection_id}",
         )
 
     def get_status(self):
@@ -37,7 +37,7 @@ class Pelican(BaseTask):
         resp = request(
             "GET",
             f"{settings.PELICAN_HOST}datasets/{pelican_id}/status/",
-            error_msg=f"Publication {self.job.collection}: Pelican: Unable get status of dataset {pelican_id}"
+            error_msg=f"Publication {self.job.collection}: Pelican: Unable get status of dataset {pelican_id}",
         )
 
         json = resp.json()
@@ -56,7 +56,7 @@ class Pelican(BaseTask):
                 "GET",
                 f"{settings.PELICAN_HOST}datasets/find_by_name/",
                 params={"name": name},
-                error_msg=f"Publication {self.job.collection}: Pelican: Unable to get ID for name {name!r}"
+                error_msg=f"Publication {self.job.collection}: Pelican: Unable to get ID for name {name!r}",
             )
 
             pelican_id = resp.json().get("id", None)
@@ -95,5 +95,5 @@ class Pelican(BaseTask):
             "DELETE",
             f"{settings.PELICAN_HOST}datasets/{pelican_id}/",
             error_msg=f"Publication {self.job.collection}: Pelican: Unable to wipe dataset with ID {pelican_id}",
-            consume_exception=True
+            consume_exception=True,
         )

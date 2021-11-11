@@ -24,9 +24,9 @@ class Exporter(BaseTask):
             json={
                 "job_id": self.job.id,
                 "collection_id": self.collection_id,
-                "spider": self.job.context.get("spider")
+                "spider": self.job.context.get("spider"),
             },
-            error_msg=f"Unable to run Exporter for collection {self.job.collection}"
+            error_msg=f"Unable to run Exporter for collection {self.job.collection}",
         )
 
     def get_status(self):
@@ -36,9 +36,9 @@ class Exporter(BaseTask):
             json={
                 "job_id": self.job.id,
                 "collection_id": self.collection_id,
-                "spider": self.job.context.get("spider")
+                "spider": self.job.context.get("spider"),
             },
-            error_msg=f"Unable get Exporter status for collection {self.job.collection}"
+            error_msg=f"Unable get Exporter status for collection {self.job.collection}",
         )
 
         json = resp.json().get("data")
@@ -58,8 +58,8 @@ class Exporter(BaseTask):
             json={
                 "job_id": self.job.id,
                 "collection_id": self.collection_id,
-                "spider": self.job.context.get("spider")
+                "spider": self.job.context.get("spider"),
             },
             error_msg="Unable to wipe EXPORTER",
-            consume_exception=True
+            consume_exception=True,
         )
