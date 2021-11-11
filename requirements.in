@@ -2,7 +2,7 @@ dj-database-url
 django
 django-markdownx
 django-modeltranslation
-gunicorn
+gunicorn[setproctitle]
 markdown-it-py
 pika
 psycopg2
