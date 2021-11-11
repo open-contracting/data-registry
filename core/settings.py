@@ -221,11 +221,6 @@ LANGUAGES = (
 
 USE_THOUSAND_SEPARATOR = True
 
-# The schema in the older version had index names longer than 30 characters.
-SILENCED_SYSTEM_CHECKS = [
-    "models.E034",
-]
-
 
 # Dependency configuration
 
