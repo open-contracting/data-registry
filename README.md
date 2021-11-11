@@ -2,10 +2,12 @@
 
 ## Development
 
+Create a Python 3.8 virtual environment.
+
 Install requirements:
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements_dev.txt
 ```
 
 Create a database (your user should have access without requiring a password):
