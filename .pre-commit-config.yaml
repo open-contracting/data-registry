@@ -1,0 +1,19 @@
+repos:
+  - repo: https://github.com/pycqa/flake8
+    rev: 3.9.2
+    hooks:
+      - id: flake8
+  - repo: https://github.com/pycqa/isort
+    rev: 5.8.0
+    hooks:
+      - id: isort
+  - repo: https://github.com/jazzband/pip-tools
+    rev: 6.4.0
+    hooks:
+      - id: pip-compile
+        name: pip-compile requirements.in
+        files: ^requirements\.(in|txt)$
+      - id: pip-compile
+        name: pip-compile requirements_dev.in
+        files: ^requirements(_dev)?\.(in|txt)$
+        args: [requirements_dev.in]
