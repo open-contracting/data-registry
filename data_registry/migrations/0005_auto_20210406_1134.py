@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('data_registry', '0004_auto_20210401_0902'),
+        ("data_registry", "0004_auto_20210401_0902"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='collection',
-            name='excel_format',
+            model_name="collection",
+            name="excel_format",
             field=models.BooleanField(default=False),
         ),
         migrations.AddField(
-            model_name='collection',
-            name='json_format',
+            model_name="collection",
+            name="json_format",
             field=models.BooleanField(default=False),
         ),
     ]

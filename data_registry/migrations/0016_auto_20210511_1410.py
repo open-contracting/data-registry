@@ -6,38 +6,38 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('data_registry', '0015_collection_additional_data'),
+        ("data_registry", "0015_collection_additional_data"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='collection',
-            name='description_en',
+            model_name="collection",
+            name="description_en",
             field=models.TextField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='collection',
-            name='description_es',
+            model_name="collection",
+            name="description_es",
             field=models.TextField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='collection',
-            name='description_long_en',
+            model_name="collection",
+            name="description_long_en",
             field=models.TextField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='collection',
-            name='description_long_es',
+            model_name="collection",
+            name="description_long_es",
             field=models.TextField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='collection',
-            name='title_en',
+            model_name="collection",
+            name="title_en",
             field=models.TextField(null=True),
         ),
         migrations.AddField(
-            model_name='collection',
-            name='title_es',
+            model_name="collection",
+            name="title_es",
             field=models.TextField(null=True),
         ),
     ]

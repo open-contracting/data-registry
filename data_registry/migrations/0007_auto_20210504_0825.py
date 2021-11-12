@@ -6,38 +6,38 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('data_registry', '0006_auto_20210430_1310'),
+        ("data_registry", "0006_auto_20210430_1310"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='task',
-            name='order',
+            model_name="task",
+            name="order",
             field=models.IntegerField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='task',
-            name='type',
+            model_name="task",
+            name="type",
             field=models.CharField(blank=True, max_length=2048, null=True),
         ),
         migrations.AlterField(
-            model_name='collection',
-            name='id',
-            field=models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
+            model_name="collection",
+            name="id",
+            field=models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID"),
         ),
         migrations.AlterField(
-            model_name='issue',
-            name='id',
-            field=models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
+            model_name="issue",
+            name="id",
+            field=models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID"),
         ),
         migrations.AlterField(
-            model_name='job',
-            name='id',
-            field=models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
+            model_name="job",
+            name="id",
+            field=models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID"),
         ),
         migrations.AlterField(
-            model_name='task',
-            name='id',
-            field=models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
+            model_name="task",
+            name="id",
+            field=models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID"),
         ),
     ]

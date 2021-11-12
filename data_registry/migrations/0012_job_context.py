@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('data_registry', '0011_rename_spider_collection_source_id'),
+        ("data_registry", "0011_rename_spider_collection_source_id"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='job',
-            name='context',
+            model_name="job",
+            name="context",
             field=models.JSONField(blank=True, null=True),
         ),
     ]

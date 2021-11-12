@@ -6,19 +6,16 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('data_registry', '0026_remove_collection_ocds_label'),
+        ("data_registry", "0026_remove_collection_ocds_label"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='job',
-            name='archived',
+            model_name="job",
+            name="archived",
             field=models.BooleanField(default=False),
         ),
         migrations.AddField(
-            model_name='job',
-            name='keep_all_data',
-            field=models.BooleanField(default=True),
-            preserve_default=True
+            model_name="job", name="keep_all_data", field=models.BooleanField(default=True), preserve_default=True
         ),
     ]

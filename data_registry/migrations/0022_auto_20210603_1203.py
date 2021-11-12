@@ -6,33 +6,33 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('data_registry', '0021_collection_country_not_null'),
+        ("data_registry", "0021_collection_country_not_null"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='collection',
-            name='country_en',
+            model_name="collection",
+            name="country_en",
             field=models.CharField(blank=True, max_length=2048, null=True),
         ),
         migrations.AddField(
-            model_name='collection',
-            name='country_es',
+            model_name="collection",
+            name="country_es",
             field=models.CharField(blank=True, max_length=2048, null=True),
         ),
         migrations.AlterField(
-            model_name='collection',
-            name='country',
+            model_name="collection",
+            name="country",
             field=models.CharField(blank=True, max_length=2048, null=True),
         ),
         migrations.AlterField(
-            model_name='collection',
-            name='excel_format',
+            model_name="collection",
+            name="excel_format",
             field=models.BooleanField(default=True),
         ),
         migrations.AlterField(
-            model_name='collection',
-            name='json_format',
+            model_name="collection",
+            name="json_format",
             field=models.BooleanField(default=True),
         ),
     ]

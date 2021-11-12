@@ -7,23 +7,23 @@ import markdownx.models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('data_registry', '0023_collection_country_flag'),
+        ("data_registry", "0023_collection_country_flag"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='license',
-            name='description',
+            model_name="license",
+            name="description",
             field=markdownx.models.MarkdownxField(blank=True, null=True),
         ),
         migrations.AlterField(
-            model_name='license',
-            name='description_en',
+            model_name="license",
+            name="description_en",
             field=markdownx.models.MarkdownxField(blank=True, null=True),
         ),
         migrations.AlterField(
-            model_name='license',
-            name='description_es',
+            model_name="license",
+            name="description_es",
             field=markdownx.models.MarkdownxField(blank=True, null=True),
         ),
     ]

@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('data_registry', '0025_auto_20210618_1208'),
+        ("data_registry", "0025_auto_20210618_1208"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='collection',
-            name='ocds_label',
+            model_name="collection",
+            name="ocds_label",
         ),
     ]

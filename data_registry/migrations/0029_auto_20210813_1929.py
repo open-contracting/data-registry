@@ -8,39 +8,54 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('data_registry', '0028_auto_20210804_1542'),
+        ("data_registry", "0028_auto_20210804_1542"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='collection',
-            options={'verbose_name': 'publication'},
+            name="collection",
+            options={"verbose_name": "publication"},
         ),
         migrations.AlterModelOptions(
-            name='issue',
-            options={'verbose_name': 'quality issue'},
+            name="issue",
+            options={"verbose_name": "quality issue"},
         ),
         migrations.AlterModelOptions(
-            name='license',
-            options={'verbose_name': 'data license'},
+            name="license",
+            options={"verbose_name": "data license"},
         ),
         migrations.AlterModelOptions(
-            name='task',
-            options={'verbose_name': 'job task'},
+            name="task",
+            options={"verbose_name": "job task"},
         ),
         migrations.AddField(
-            model_name='collection',
-            name='language_en',
-            field=models.CharField(blank=True, help_text='The languages used within data fields: for example, "Spanish".', max_length=2048, null=True),
+            model_name="collection",
+            name="language_en",
+            field=models.CharField(
+                blank=True,
+                help_text='The languages used within data fields: for example, "Spanish".',
+                max_length=2048,
+                null=True,
+            ),
         ),
         migrations.AddField(
-            model_name='collection',
-            name='language_es',
-            field=models.CharField(blank=True, help_text='The languages used within data fields: for example, "Spanish".', max_length=2048, null=True),
+            model_name="collection",
+            name="language_es",
+            field=models.CharField(
+                blank=True,
+                help_text='The languages used within data fields: for example, "Spanish".',
+                max_length=2048,
+                null=True,
+            ),
         ),
         migrations.AddField(
-            model_name='collection',
-            name='language_ru',
-            field=models.CharField(blank=True, help_text='The languages used within data fields: for example, "Spanish".', max_length=2048, null=True),
+            model_name="collection",
+            name="language_ru",
+            field=models.CharField(
+                blank=True,
+                help_text='The languages used within data fields: for example, "Spanish".',
+                max_length=2048,
+                null=True,
+            ),
         ),
     ]

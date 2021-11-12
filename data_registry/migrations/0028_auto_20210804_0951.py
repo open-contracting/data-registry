@@ -7,53 +7,53 @@ import markdownx.models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('data_registry', '0027_auto_20210804_0854'),
+        ("data_registry", "0027_auto_20210804_0854"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='collection',
-            name='additional_data_ru',
+            model_name="collection",
+            name="additional_data_ru",
             field=markdownx.models.MarkdownxField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='collection',
-            name='country_ru',
+            model_name="collection",
+            name="country_ru",
             field=models.CharField(blank=True, max_length=2048, null=True),
         ),
         migrations.AddField(
-            model_name='collection',
-            name='description_long_ru',
+            model_name="collection",
+            name="description_long_ru",
             field=markdownx.models.MarkdownxField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='collection',
-            name='description_ru',
+            model_name="collection",
+            name="description_ru",
             field=markdownx.models.MarkdownxField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='collection',
-            name='summary_ru',
+            model_name="collection",
+            name="summary_ru",
             field=markdownx.models.MarkdownxField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='collection',
-            name='title_ru',
+            model_name="collection",
+            name="title_ru",
             field=models.TextField(null=True),
         ),
         migrations.AddField(
-            model_name='issue',
-            name='description_ru',
+            model_name="issue",
+            name="description_ru",
             field=markdownx.models.MarkdownxField(null=True),
         ),
         migrations.AddField(
-            model_name='license',
-            name='description_ru',
+            model_name="license",
+            name="description_ru",
             field=markdownx.models.MarkdownxField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='license',
-            name='name_ru',
+            model_name="license",
+            name="name_ru",
             field=models.CharField(blank=True, max_length=2048, null=True),
         ),
     ]

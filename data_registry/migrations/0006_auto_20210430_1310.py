@@ -7,58 +7,96 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('data_registry', '0005_auto_20210406_1134'),
+        ("data_registry", "0005_auto_20210406_1134"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Job',
+            name="Job",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('start', models.DateTimeField(blank=True, db_index=True, null=True)),
-                ('end', models.DateTimeField(blank=True, db_index=True, null=True)),
-                ('status', models.CharField(blank=True, choices=[('WAITING', 'WAITING'), ('PLANNED', 'PLANNED'), ('RUNNING', 'RUNNING'), ('COMPLETED', 'COMPLETED')], max_length=2048, null=True)),
-                ('created', models.DateTimeField(auto_now_add=True, db_index=True, null=True)),
-                ('modified', models.DateTimeField(auto_now=True, db_index=True, null=True)),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("start", models.DateTimeField(blank=True, db_index=True, null=True)),
+                ("end", models.DateTimeField(blank=True, db_index=True, null=True)),
+                (
+                    "status",
+                    models.CharField(
+                        blank=True,
+                        choices=[
+                            ("WAITING", "WAITING"),
+                            ("PLANNED", "PLANNED"),
+                            ("RUNNING", "RUNNING"),
+                            ("COMPLETED", "COMPLETED"),
+                        ],
+                        max_length=2048,
+                        null=True,
+                    ),
+                ),
+                ("created", models.DateTimeField(auto_now_add=True, db_index=True, null=True)),
+                ("modified", models.DateTimeField(auto_now=True, db_index=True, null=True)),
             ],
         ),
         migrations.AddField(
-            model_name='issue',
-            name='created',
+            model_name="issue",
+            name="created",
             field=models.DateTimeField(auto_now_add=True, db_index=True, null=True),
         ),
         migrations.AddField(
-            model_name='issue',
-            name='modified',
+            model_name="issue",
+            name="modified",
             field=models.DateTimeField(auto_now=True, db_index=True, null=True),
         ),
         migrations.AlterField(
-            model_name='collection',
-            name='id',
-            field=models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
+            model_name="collection",
+            name="id",
+            field=models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID"),
         ),
         migrations.AlterField(
-            model_name='issue',
-            name='id',
-            field=models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
+            model_name="issue",
+            name="id",
+            field=models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID"),
         ),
         migrations.CreateModel(
-            name='Task',
+            name="Task",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('start', models.DateTimeField(blank=True, db_index=True, null=True)),
-                ('end', models.DateTimeField(blank=True, db_index=True, null=True)),
-                ('status', models.CharField(blank=True, choices=[('WAITING', 'WAITING'), ('PLANNED', 'PLANNED'), ('RUNNING', 'RUNNING'), ('COMPLETED', 'COMPLETED')], max_length=2048, null=True)),
-                ('result', models.CharField(blank=True, choices=[('OK', 'OK'), ('FAILED', 'FAILED')], max_length=2048, null=True)),
-                ('note', models.TextField()),
-                ('created', models.DateTimeField(auto_now_add=True, db_index=True, null=True)),
-                ('modified', models.DateTimeField(auto_now=True, db_index=True, null=True)),
-                ('job', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='task', to='data_registry.job')),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("start", models.DateTimeField(blank=True, db_index=True, null=True)),
+                ("end", models.DateTimeField(blank=True, db_index=True, null=True)),
+                (
+                    "status",
+                    models.CharField(
+                        blank=True,
+                        choices=[
+                            ("WAITING", "WAITING"),
+                            ("PLANNED", "PLANNED"),
+                            ("RUNNING", "RUNNING"),
+                            ("COMPLETED", "COMPLETED"),
+                        ],
+                        max_length=2048,
+                        null=True,
+                    ),
+                ),
+                (
+                    "result",
+                    models.CharField(
+                        blank=True, choices=[("OK", "OK"), ("FAILED", "FAILED")], max_length=2048, null=True
+                    ),
+                ),
+                ("note", models.TextField()),
+                ("created", models.DateTimeField(auto_now_add=True, db_index=True, null=True)),
+                ("modified", models.DateTimeField(auto_now=True, db_index=True, null=True)),
+                (
+                    "job",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, related_name="task", to="data_registry.job"
+                    ),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='job',
-            name='collection',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='job', to='data_registry.collection'),
+            model_name="job",
+            name="collection",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, related_name="job", to="data_registry.collection"
+            ),
         ),
     ]
