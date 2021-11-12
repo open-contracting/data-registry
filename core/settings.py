@@ -260,12 +260,18 @@ RABBIT_EXCHANGE_NAME = os.getenv("RABBIT_EXCHANGE_NAME", "data_registry_developm
 # The job tasks to run.
 JOB_TASKS_PLAN = ["scrape", "process", "pelican", "exporter"]
 
-# The base URL of Scrapyd, with a trailing "/".
-SCRAPY_HOST = os.getenv("SCRAPY_HOST")
-# The project within Scrapyd.
-SCRAPY_PROJECT = os.getenv("SCRAPY_PROJECT", "kingfisher")
-# If you change the production default, update `Dockerfile_django` to match.
-SCRAPY_FILES_STORE = os.getenv("SCRAPY_FILES_STORE", "/data/scrapy")
+SCRAPYD = {
+    # The base URL of Scrapyd.
+    "url": os.getenv("SCRAPYD_URL"),
+    # The project within Scrapyd.
+    "project": os.getenv("SCRAPYD_PROJECT", "kingfisher"),
+}
+# The directory from which to delete the files written by Kingfisher Collect. If Kingfisher Collect and the Data
+# Registry share a filesystem, this will be the same value for both services.
+# WARNING: If you change the production default, update `Dockerfile_django` and `docker-compose.yaml` to match.
+COLLECT_FILES_STORE = os.getenv(
+    "COLLECT_FILES_STORE", "/data/collect" if production else BASE_DIR / "data" / "collect"
+)
 
 # The base URL of Kingfisher Process, with a trailing "/".
 PROCESS_HOST = os.getenv("PROCESS_HOST")
@@ -275,8 +281,8 @@ PELICAN_HOST = os.getenv("PELICAN_HOST")
 
 # The base URL of the data registry's exporter app, with a trailing "/".
 EXPORTER_HOST = os.getenv("EXPORTER_HOST", "http://127.0.0.1:8000/")
-# If you change the production default, update `Dockerfile_django` to match.
-EXPORTER_DIR = os.getenv("EXPORTER_DIR", "/data/exporter_dumps" if production else "exporter_dumps")
+# WARNING: If you change the production default, update `Dockerfile_django` and `docker-compose.yaml` to match.
+EXPORTER_DIR = os.getenv("EXPORTER_DIR", "/data/exporter" if production else BASE_DIR / "data" / "exporter")
 # The batch size of compiled releases to extract from Kingfisher Process.
 EXPORTER_PAGE_SIZE = 10000
 

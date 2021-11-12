@@ -2,6 +2,7 @@ import json
 import logging
 import os
 from datetime import date, datetime
+from urllib.parse import urljoin
 
 import requests
 from dateutil.relativedelta import relativedelta
@@ -80,9 +81,10 @@ def detail(request, id):
 
 @login_required
 def spiders(request):
-    resp = requests.get(settings.SCRAPY_HOST + "listspiders.json", params={"project": settings.SCRAPY_PROJECT})
+    url = urljoin(settings.SCRAPYD["url"], "/listspiders.json")
+    response = requests.get(url, params={"project": settings.SCRAPYD["project"]})
 
-    json = resp.json()
+    json = response.json()
     if json.get("status") == "error":
         raise JsonResponse(json, status=503, safe=False)
 

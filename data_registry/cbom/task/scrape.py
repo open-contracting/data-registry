@@ -22,14 +22,14 @@ class Scrape(BaseTask):
     collection = None
 
     def __init__(self, collection, job):
-        if not settings.SCRAPY_HOST:
-            raise Exception("SCRAPY_HOST is not set")
-        if not settings.SCRAPY_PROJECT:
-            raise Exception("SCRAPY_PROJECT is not set")
+        if not settings.SCRAPYD["url"]:
+            raise Exception("SCRAPYD_URL is not set")
+        if not settings.SCRAPYD["project"]:
+            raise Exception("SCRAPYD_PROJECT is not set")
 
         self.job = job
-        self.host = settings.SCRAPY_HOST
-        self.project = settings.SCRAPY_PROJECT
+        self.host = settings.SCRAPYD["url"]
+        self.project = settings.SCRAPYD["project"]
         self.spider = collection.source_id
         self.collection = collection
 
@@ -125,7 +125,7 @@ class Scrape(BaseTask):
 
         version = version.replace("-", "").replace(":", "").replace("T", "_")
 
-        path = f"{settings.SCRAPY_FILES_STORE}/{self.spider}/{version}"
+        path = f"{settings.COLLECT_FILES_STORE}/{self.spider}/{version}"
 
         if os.path.exists(path):
             shutil.rmtree(path)

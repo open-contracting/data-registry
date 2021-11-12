@@ -1,4 +1,5 @@
 from pathlib import Path
+from urllib.parse import urljoin
 
 import requests
 from django import forms
@@ -47,10 +48,11 @@ class CollectionAdminForm(forms.ModelForm):
         super(CollectionAdminForm, self).__init__(*args, **kwargs)
 
         try:
-            resp = requests.get(settings.SCRAPY_HOST + "listspiders.json", params={"project": settings.SCRAPY_PROJECT})
-            resp.raise_for_status()
+            url = urljoin(settings.SCRAPYD["url"], "/listspiders.json")
+            response = requests.get(url, params={"project": settings.SCRAPYD["project"]})
+            response.raise_for_status()
 
-            json = resp.json()
+            json = response.json()
 
             if json.get("status") == "ok":
                 self.fields["source_id"].choices += tuple([(n, n) for n in json.get("spiders")])
