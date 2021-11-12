@@ -219,6 +219,8 @@ LANGUAGES = (
     ("ru", _("Russian")),
 )
 
+DEFAULT_FROM_EMAIL = "noreply@noreply.open-contracting.org"
+
 USE_THOUSAND_SEPARATOR = True
 
 

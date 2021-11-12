@@ -113,7 +113,7 @@ def send_feedback(request):
     send_mail(
         subject,
         mail_text,
-        "noreply@noreply.open-contracting.org",
+        None,
         [settings.FEEDBACK_EMAIL],
         fail_silently=False,
     )
