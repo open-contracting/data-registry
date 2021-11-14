@@ -269,12 +269,12 @@ SCRAPYD = {
 # The directory from which to delete the files written by Kingfisher Collect. If Kingfisher Collect and the Data
 # Registry share a filesystem, this will be the same value for both services.
 # WARNING: If you change the production default, update `Dockerfile_django` and `docker-compose.yaml` to match.
-COLLECT_FILES_STORE = os.getenv(
-    "COLLECT_FILES_STORE", "/data/collect" if production else BASE_DIR / "data" / "collect"
+KINGFISHER_COLLECT_FILES_STORE = os.getenv(
+    "KINGFISHER_COLLECT_FILES_STORE", "/data/collect" if production else BASE_DIR / "data" / "collect"
 )
 
 # The base URL of Kingfisher Process, with a trailing "/".
-PROCESS_HOST = os.getenv("PROCESS_HOST")
+KINGFISHER_PROCESS_HOST = os.getenv("KINGFISHER_PROCESS_HOST")
 
 # The base URL of Pelican frontend, with a trailing "/".
 PELICAN_HOST = os.getenv("PELICAN_HOST")
@@ -287,6 +287,6 @@ EXPORTER_DIR = os.getenv("EXPORTER_DIR", "/data/exporter" if production else BAS
 EXPORTER_PAGE_SIZE = 10000
 
 # The base URL of Spoonbill, WITHOUT a trailing "/".
-FLATTEN_URL = os.getenv("FLATTEN_URL", "https://flatten.open-contracting.org")
+SPOONBILL_URL = os.getenv("SPOONBILL_URL", "https://flatten.open-contracting.org")
 SPOONBILL_API_USERNAME = os.getenv("SPOONBILL_API_USERNAME")
 SPOONBILL_API_PASSWORD = os.getenv("SPOONBILL_API_PASSWORD")

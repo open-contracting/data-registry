@@ -189,7 +189,7 @@ def excel_data(request, job_id, job_range=None):
 
     headers = {"Accept-Language": "{}".format(get_language())}
     response = requests.post(
-        "{}/api/urls/".format(settings.FLATTEN_URL),
+        "{}/api/urls/".format(settings.SPOONBILL_URL),
         body,
         headers=headers,
         auth=(settings.SPOONBILL_API_USERNAME, settings.SPOONBILL_API_PASSWORD),
@@ -206,5 +206,5 @@ def excel_data(request, job_id, job_range=None):
         return HttpResponse(status=500)
 
     return redirect(
-        "{}/#/upload-file?&lang={}&url={}".format(settings.FLATTEN_URL, get_language(), response.json()["id"])
+        "{}/#/upload-file?&lang={}&url={}".format(settings.SPOONBILL_URL, get_language(), response.json()["id"])
     )

@@ -125,7 +125,7 @@ class Scrape(BaseTask):
 
         version = version.replace("-", "").replace(":", "").replace("T", "_")
 
-        path = f"{settings.COLLECT_FILES_STORE}/{self.spider}/{version}"
+        path = f"{settings.KINGFISHER_COLLECT_FILES_STORE}/{self.spider}/{version}"
 
         if os.path.exists(path):
             shutil.rmtree(path)
