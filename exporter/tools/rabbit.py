@@ -33,7 +33,9 @@ def connect():
     # https://github.com/open-contracting/data-registry/issues/140
     query.update({"blocked_connection_timeout": 1800, "heartbeat": 0})
 
-    connection = pika.BlockingConnection(pika.URLParameters(parsed._replace(query=urlencode(query)).geturl()))
+    connection = pika.BlockingConnection(
+        pika.URLParameters(parsed._replace(query=urlencode(query, doseq=True)).geturl())
+    )
 
     global channel
     channel = connection.channel()
