@@ -273,20 +273,20 @@ KINGFISHER_COLLECT_FILES_STORE = os.getenv(
     "KINGFISHER_COLLECT_FILES_STORE", "/data/collect" if production else BASE_DIR / "data" / "collect"
 )
 
-# The base URL of Kingfisher Process, with a trailing "/".
-KINGFISHER_PROCESS_HOST = os.getenv("KINGFISHER_PROCESS_HOST")
+# The base URL of Kingfisher Process.
+KINGFISHER_PROCESS_URL = os.getenv("KINGFISHER_PROCESS_URL")
 
-# The base URL of Pelican frontend, with a trailing "/".
-PELICAN_HOST = os.getenv("PELICAN_HOST")
+# The base URL of Pelican frontend.
+PELICAN_FRONTEND_URL = os.getenv("PELICAN_FRONTEND_URL")
 
-# The base URL of the data registry's exporter app, with a trailing "/".
-EXPORTER_HOST = os.getenv("EXPORTER_HOST", "http://127.0.0.1:8000/")
+# The base URL of the data registry's exporter app.
+EXPORTER_URL = os.getenv("EXPORTER_URL", "http://127.0.0.1:8000")
 # WARNING: If you change the production default, update `Dockerfile_django` and `docker-compose.yaml` to match.
 EXPORTER_DIR = os.getenv("EXPORTER_DIR", "/data/exporter" if production else BASE_DIR / "data" / "exporter")
 # The batch size of compiled releases to extract from Kingfisher Process.
 EXPORTER_PAGE_SIZE = 10000
 
-# The base URL of Spoonbill, WITHOUT a trailing "/".
+# The base URL of Spoonbill.
 SPOONBILL_URL = os.getenv("SPOONBILL_URL", "https://flatten.open-contracting.org")
 SPOONBILL_API_USERNAME = os.getenv("SPOONBILL_API_USERNAME")
 SPOONBILL_API_PASSWORD = os.getenv("SPOONBILL_API_PASSWORD")

@@ -1,4 +1,5 @@
 import logging
+from urllib.parse import urljoin
 
 from django.conf import settings
 
@@ -20,7 +21,7 @@ class Exporter(BaseTask):
     def run(self):
         request(
             "POST",
-            f"{settings.EXPORTER_HOST}api/exporter_start",
+            urljoin(settings.EXPORTER_URL, "/api/exporter_start"),
             json={
                 "job_id": self.job.id,
                 "collection_id": self.collection_id,
@@ -32,7 +33,7 @@ class Exporter(BaseTask):
     def get_status(self):
         resp = request(
             "POST",
-            f"{settings.EXPORTER_HOST}api/exporter_status",
+            urljoin(settings.EXPORTER_URL, "/api/exporter_status"),
             json={
                 "job_id": self.job.id,
                 "collection_id": self.collection_id,
@@ -54,7 +55,7 @@ class Exporter(BaseTask):
         logger.info("Wiping exporter data for {}.".format(self.collection_id))
         request(
             "POST",
-            f"{settings.EXPORTER_HOST}api/wiper_start",
+            urljoin(settings.EXPORTER_URL, "/api/wiper_start"),
             json={
                 "job_id": self.job.id,
                 "collection_id": self.collection_id,

@@ -1,4 +1,5 @@
 import logging
+from urllib.parse import urljoin
 
 from django.conf import settings
 
@@ -24,7 +25,7 @@ class Process(BaseTask):
     def get_status(self):
         resp = request(
             "GET",
-            f"{settings.KINGFISHER_PROCESS_HOST}api/v1/tree/{self.process_id}/",
+            urljoin(settings.KINGFISHER_PROCESS_URL, f"/api/v1/tree/{self.process_id}/"),
             error_msg=f"Unable to get status of process #{self.process_id}",
         )
 
@@ -44,7 +45,7 @@ class Process(BaseTask):
         logger.info("Wiping process data for {}.".format(self.process_id))
         request(
             "POST",
-            f"{settings.KINGFISHER_PROCESS_HOST}api/v1/wipe_collection",
+            urljoin(settings.KINGFISHER_PROCESS_URL, "/api/v1/wipe_collection"),
             json={"collection_id": self.process_id},
             error_msg="Unable to wipe PROCESS",
             consume_exception=True,

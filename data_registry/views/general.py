@@ -2,7 +2,7 @@ import json
 import logging
 import os
 from datetime import date, datetime
-from urllib.parse import urljoin
+from urllib.parse import urlencode, urljoin
 
 import requests
 from dateutil.relativedelta import relativedelta
@@ -61,7 +61,7 @@ def detail(request, id):
     )
 
     resp = requests.post(
-        f"{settings.EXPORTER_HOST}api/export_years",
+        urljoin(settings.EXPORTER_URL, "/api/export_years"),
         json={"job_id": data.get("active_job", {}).get("id", None), "spider": data.get("source_id")},
     )
 
@@ -72,7 +72,7 @@ def detail(request, id):
         "detail.html",
         {
             "data": data,
-            "exporter_host": settings.EXPORTER_HOST,
+            "exporter_host": settings.EXPORTER_URL,
             "export_years": json.dumps(years),
             "feedback_email": settings.FEEDBACK_EMAIL,
         },
@@ -189,7 +189,7 @@ def excel_data(request, job_id, job_range=None):
 
     headers = {"Accept-Language": "{}".format(get_language())}
     response = requests.post(
-        "{}/api/urls/".format(settings.SPOONBILL_URL),
+        urljoin(settings.SPOONBILL_URL, "/api/urls/"),
         body,
         headers=headers,
         auth=(settings.SPOONBILL_API_USERNAME, settings.SPOONBILL_API_PASSWORD),
@@ -205,6 +205,5 @@ def excel_data(request, job_id, job_range=None):
         logger.error("Invalid response from spoonbill {}.".format(response.text))
         return HttpResponse(status=500)
 
-    return redirect(
-        "{}/#/upload-file?&lang={}&url={}".format(settings.SPOONBILL_URL, get_language(), response.json()["id"])
-    )
+    params = urlencode({"lang": get_language(), "url": response.json()["id"]})
+    return redirect(urljoin(settings.SPOONBILL_URL, f"/#/upload-file?{params}"))
