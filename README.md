@@ -37,10 +37,5 @@ See how to [update Django translations](https://ocp-software-handbook.readthedoc
 
 ### Idiosyncracies
 
-#### Django configuration
-
-- `related_name` is singular, instead of plural
-
-#### Word choice
-
+- `related_name` is singular, instead of plural.
 - "collection" has a different meaning in the code than in Kingfisher Collect or Kingfisher Process. It should be "publication", used in the UI and documentation.
