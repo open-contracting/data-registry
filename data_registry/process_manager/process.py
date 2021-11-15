@@ -25,11 +25,6 @@ def process(collection):
 
     for job in jobs:
         with transaction.atomic():
-            # initiate job context
-            if job.context is None:
-                job.context = {}
-                job.save()
-
             # list of job tasks sorted by priority
             tasks = Task.objects.filter(job=job).order_by("order")
             job_complete = True
