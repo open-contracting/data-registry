@@ -42,7 +42,7 @@ class Process(BaseTask):
         return Task.Status.COMPLETED if is_last_completed else Task.Status.RUNNING
 
     def wipe(self):
-        logger.info("Wiping process data for {}.".format(self.process_id))
+        logger.info("Wiping process data for %s.", self.process_id)
         request(
             "POST",
             urljoin(settings.KINGFISHER_PROCESS_URL, "/api/v1/wipe_collection"),

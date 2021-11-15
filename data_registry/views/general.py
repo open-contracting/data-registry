@@ -173,10 +173,10 @@ def excel_data(request, job_id, job_range=None):
             file_path = "{}/{}.jsonl.gz".format(dump_dir, start_date.strftime("%Y_%m"))
 
             if os.path.isfile(file_path):
-                logger.debug("File {} exists, including in export.".format(file_path))
+                logger.debug("File %s exists, including in export.", file_path)
                 urls.append("file://{}".format(file_path))
             else:
-                logger.debug("File {} does not found. Excluding from in export.".format(file_path))
+                logger.debug("File %s does not found. Excluding from in export.", file_path)
 
             start_date = start_date + relativedelta(months=+1)
 
@@ -196,13 +196,14 @@ def excel_data(request, job_id, job_range=None):
     )
 
     logger.error(
-        "Sent body request to flatten tool body \n{} headers\n{}\nLanguageResponse status code {}.".format(
-            body, headers, response.status_code
-        )
+        "Sent body request to flatten tool body \n%s headers\n%s\nLanguageResponse status code %s.",
+        body,
+        headers,
+        response.status_code,
     )
 
     if response.status_code > 201 or "id" not in response.json():
-        logger.error("Invalid response from spoonbill {}.".format(response.text))
+        logger.error("Invalid response from spoonbill %s.", response.text)
         return HttpResponse(status=500)
 
     params = urlencode({"lang": get_language(), "url": response.json()["id"]})

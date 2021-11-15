@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 def process(collection):
-    logger.debug(f"Processing collection {collection.country} - {collection}")
+    logger.debug("Processing collection %s - %s", collection.country, collection)
 
     if should_be_planned(collection):
         plan(collection)
@@ -46,7 +46,7 @@ def process(collection):
                 try:
                     if task.status in [Task.Status.WAITING, Task.Status.RUNNING]:
                         status = _task.get_status()
-                        logger.debug(f"Task {task} {status}")
+                        logger.debug("Task %s %s", task, status)
                         if status in [Task.Status.WAITING, Task.Status.RUNNING]:
                             # do nothing, the task is still running
                             job_complete = False
@@ -63,7 +63,7 @@ def process(collection):
                             job.status = Job.Status.RUNNING
                             job.save()
 
-                            logger.debug(f"Job {job} started")
+                            logger.debug("Job %s started", job)
 
                         # run the task
                         _task.run()
@@ -74,7 +74,7 @@ def process(collection):
 
                         job_complete = False
 
-                        logger.debug(f"Task {task} started")
+                        logger.debug("Task %s started", task)
 
                         break
                 except RecoverableException as e:
@@ -102,7 +102,7 @@ def process(collection):
                     job.end = timezone.now()
                     job.save()
 
-                    logger.debug(f"Job {job} failed")
+                    logger.debug("Job %s failed", job)
                     break
 
             # complete the job if all of its tasks are completed
@@ -124,7 +124,7 @@ def process(collection):
                         active=Case(When(id=job.id, then=True), default=False, output_field=BooleanField())
                     )
 
-                    logger.debug(f"Job {job} completed")
+                    logger.debug("Job %s completed", job)
 
 
 def should_be_planned(collection):
@@ -165,7 +165,7 @@ def plan(collection):
     for i, t in enumerate(tasks, start=1):
         job.task.create(status=Task.Status.PLANNED, type=t, order=i)
 
-    logger.debug(f"New job {job} planned")
+    logger.debug("New job %s planned", job)
 
 
 def update_collection_availability(job):

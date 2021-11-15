@@ -29,17 +29,17 @@ def callback(connection, channel, delivery_tag, body):
 
         dump_dir = "{}/{}/{}".format(settings.EXPORTER_DIR, spider, job_id)
 
-        logger.info("Processing message {}".format(input_message))
+        logger.info("Processing message %s", input_message)
 
         if os.path.exists(dump_dir):
             shutil.rmtree(dump_dir)
 
-        logger.info("Removed generated exports from {}".format(dump_dir))
+        logger.info("Removed generated exports from %s", dump_dir)
 
         # acknowledge message processing
         ack(connection, channel, delivery_tag)
     except Exception:
-        logger.exception(f"Something went wrong when processing {body}")
+        logger.exception("Something went wrong when processing %s", body)
         sys.exit()
 
     logger.info("Processing completed.")

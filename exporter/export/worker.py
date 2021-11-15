@@ -44,7 +44,7 @@ def callback(connection, channel, delivery_tag, body):
         with open(lock_file, "x"):
             pass
 
-        logger.info("Processing message {}".format(input_message))
+        logger.info("Processing message %s", input_message)
 
         id = 0
         page = 1
@@ -57,7 +57,7 @@ def callback(connection, channel, delivery_tag, body):
         # load data from kf-process and save
         while True:
             with connections["kingfisher_process"].cursor() as cursor:
-                logger.debug("Processing page {} with id > {}".format(page, id))
+                logger.debug("Processing page %s with id > %s", page, id)
                 cursor.execute(
                     """
                         SELECT d.id, d.data, d.data->>'date'
@@ -115,7 +115,7 @@ def callback(connection, channel, delivery_tag, body):
         os.remove(lock_file)
 
     except Exception:
-        logger.exception(f"Something went wrong when processing {body}")
+        logger.exception("Something went wrong when processing %s", body)
         sys.exit()
 
     logger.info("Processing completed.")

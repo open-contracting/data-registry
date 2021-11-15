@@ -52,7 +52,7 @@ class Exporter(BaseTask):
             return Task.Status.COMPLETED
 
     def wipe(self):
-        logger.info("Wiping exporter data for {}.".format(self.collection_id))
+        logger.info("Wiping exporter data for %s.", self.collection_id)
         request(
             "POST",
             urljoin(settings.EXPORTER_URL, "/api/wiper_start"),

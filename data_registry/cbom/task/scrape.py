@@ -121,7 +121,7 @@ class Scrape(BaseTask):
             logger.info("Unable to wipe SCRAPE - process_data_version is not set")
             return
 
-        logger.info("Wiping scrape data for version {}.".format(version))
+        logger.info("Wiping scrape data for version %s.", version)
 
         version = version.replace("-", "").replace(":", "").replace("T", "_")
 
