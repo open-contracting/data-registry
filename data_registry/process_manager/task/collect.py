@@ -7,10 +7,10 @@ from datetime import date
 from django.conf import settings
 from requests.exceptions import HTTPError
 
-from data_registry.cbom.task.exceptions import RecoverableException
-from data_registry.cbom.task.task import BaseTask
-from data_registry.cbom.utils import request
 from data_registry.models import Task
+from data_registry.process_manager.task.exceptions import RecoverableException
+from data_registry.process_manager.task.task import BaseTask
+from data_registry.process_manager.utils import request
 
 logger = logging.getLogger(__name__)
 

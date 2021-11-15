@@ -2,11 +2,11 @@ import logging
 
 from django.core.management.base import BaseCommand
 
-from data_registry.cbom.process import process
-from data_registry.cbom.task.collect import Collect
-from data_registry.cbom.task.pelican import Pelican
-from data_registry.cbom.task.process import Process
 from data_registry.models import Collection, Job
+from data_registry.process_manager.process import process
+from data_registry.process_manager.task.collect import Collect
+from data_registry.process_manager.task.pelican import Pelican
+from data_registry.process_manager.task.process import Process
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +16,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         logging.captureWarnings(True)
-        logger.info("CBOM started")
 
         for collection in Collection.objects.all():
             process(collection)

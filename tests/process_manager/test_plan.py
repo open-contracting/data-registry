@@ -1,7 +1,7 @@
 from django.test import TransactionTestCase
 
-from data_registry.cbom.process import plan
 from data_registry.models import Collection
+from data_registry.process_manager.process import plan
 
 
 class PlanTests(TransactionTestCase):

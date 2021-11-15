@@ -3,7 +3,7 @@ import logging
 import requests
 from requests.exceptions import RequestException
 
-from data_registry.cbom.task.exceptions import RecoverableException
+from data_registry.process_manager.task.exceptions import RecoverableException
 
 logger = logging.getLogger(__name__)
 

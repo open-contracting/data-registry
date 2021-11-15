@@ -3,9 +3,9 @@ from unittest.mock import patch
 from django.conf import settings
 from django.test import TransactionTestCase
 
-from data_registry.cbom.process import process
-from data_registry.cbom.task.task import BaseTask
 from data_registry.models import Collection, Job, Task
+from data_registry.process_manager.process import process
+from data_registry.process_manager.task.task import BaseTask
 
 
 class TestTask(BaseTask):
@@ -22,10 +22,10 @@ class ProcessTests(TransactionTestCase):
     def test(self):
         collection = Collection.objects.get(pk=1)
 
-        with patch("data_registry.cbom.process.TaskFactory") as mock_factory, patch(
-            "data_registry.cbom.process.update_collection_availability"
+        with patch("data_registry.process_manager.process.TaskFactory") as mock_factory, patch(
+            "data_registry.process_manager.process.update_collection_availability"
         ) as mock_update_collection_availability, patch(
-            "data_registry.cbom.process.update_collection_metadata"
+            "data_registry.process_manager.process.update_collection_metadata"
         ) as mock_update_collection_metadata:
             # factory returns only TestTask
             mock_factory.get_task.return_value = TestTask()

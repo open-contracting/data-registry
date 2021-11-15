@@ -44,5 +44,3 @@ See how to [update Django translations](https://ocp-software-handbook.readthedoc
 #### Word choice
 
 - "collection" has a different meaning in the code than in Kingfisher Collect or Kingfisher Process. It should be "publication", used in the UI and documentation.
-- The "cbom" (central brain of mankind) management command should be "orchestrate".
-- "scrape" should be "collect".

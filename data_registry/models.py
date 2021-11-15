@@ -57,7 +57,7 @@ class Job(Model):
         help_text="By default, temporary data created by job tasks is deleted after the job "
         "is completed. Only the data registry's models' data and JSON exports are "
         "retained. To preserve temporary data for debugging, check this box. Then, "
-        'when ready, uncheck this box and run the "cbom" management command.',
+        'when ready, uncheck this box and run the "manageprocess" management command.',
     )
 
     tenders_count = IntegerField(default=0)

@@ -1,7 +1,7 @@
-from data_registry.cbom.task.collect import Collect
-from data_registry.cbom.task.exporter import Exporter
-from data_registry.cbom.task.pelican import Pelican
-from data_registry.cbom.task.process import Process
+from data_registry.process_manager.task.collect import Collect
+from data_registry.process_manager.task.exporter import Exporter
+from data_registry.process_manager.task.pelican import Pelican
+from data_registry.process_manager.task.process import Process
 
 
 class TaskFactory:
