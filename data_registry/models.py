@@ -1,7 +1,15 @@
-from django.db.models import JSONField, Model, TextChoices, TextField
-from django.db.models.deletion import CASCADE
-from django.db.models.fields import BooleanField, CharField, DateField, DateTimeField, IntegerField
-from django.db.models.fields.related import ForeignKey
+from django.db.models import (
+    CASCADE,
+    BooleanField,
+    DateField,
+    DateTimeField,
+    ForeignKey,
+    IntegerField,
+    JSONField,
+    Model,
+    TextChoices,
+    TextField,
+)
 from markdownx.models import MarkdownxField
 
 
@@ -16,11 +24,11 @@ class Job(Model):
         RUNNING = "RUNNING", "RUNNING"
         COMPLETED = "COMPLETED", "COMPLETED"
 
-    status = CharField(max_length=2048, choices=Status.choices, blank=True)
+    status = TextField(choices=Status.choices, blank=True)
 
     context = JSONField(
         blank=True,
-        null=True,
+        default=dict,
         help_text="<dl>"
         "<dt><code>spider</code></dt>"
         "<dd>The name of the spider in Kingfisher Collect</dd>"
@@ -77,8 +85,8 @@ class Job(Model):
 
     date_from = DateField(blank=True, null=True, verbose_name="minimum release date")
     date_to = DateField(blank=True, null=True, verbose_name="maximum release date")
-    ocid_prefix = CharField(max_length=2048, blank=True, verbose_name="OCID prefix")
-    license = CharField(max_length=2048, blank=True)
+    ocid_prefix = TextField(blank=True, verbose_name="OCID prefix")
+    license = TextField(blank=True)
 
     created = DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)
     modified = DateTimeField(auto_now=True, blank=True, null=True, db_index=True)
@@ -100,14 +108,10 @@ class Collection(Model):
         "and omitting the country name."
     )
 
-    country = CharField(
-        max_length=2048, blank=True, help_text="The official name of the country from which the data originates."
-    )
-    country_flag = CharField(max_length=2048, blank=True)
+    country = TextField(blank=True, help_text="The official name of the country from which the data originates.")
+    country_flag = TextField(blank=True)
 
-    language = CharField(
-        max_length=2048, blank=True, help_text='The languages used within data fields: for example, "Spanish".'
-    )
+    language = TextField(blank=True, help_text='The languages used within data fields: for example, "Spanish".')
     description = MarkdownxField(
         blank=True,
         help_text="The first paragraph of the description of the publication, as Markdown text, following the <a "
@@ -136,8 +140,7 @@ class Collection(Model):
         help_text="If not set, the Overview section will display " "the license URL within the OCDS package.",
     )
 
-    source_id = CharField(
-        max_length=2048,
+    source_id = TextField(
         verbose_name="source ID",
         help_text="The name of the spider in Kingfisher Collect. If a new spider is not listed, "
         "Kingfisher Collect needs to be re-deployed to the registry's server.",
@@ -150,8 +153,7 @@ class Collection(Model):
         HALF_YEARLY = "HALF_YEARLY", "HALF_YEARLY"
         ANNUALLY = "ANNUALLY", "ANNUALLY"
 
-    update_frequency = CharField(
-        max_length=2048,
+    update_frequency = TextField(
         choices=Frequency.choices,
         blank=True,
         help_text="The frequency at which the registry updates the publication, based on the "
@@ -286,12 +288,12 @@ class License(Model):
     class Meta:
         verbose_name = "data license"
 
-    name = CharField(max_length=2048, blank=True, help_text="The official name of the license.")
+    name = TextField(blank=True, help_text="The official name of the license.")
     description = MarkdownxField(
         blank=True,
         help_text="A brief description of the permissions, conditions and limitations, as " "Markdown text.",
     )
-    url = CharField(max_length=2048, blank=True, verbose_name="URL", help_text="The canonical URL of the license.")
+    url = TextField(blank=True, verbose_name="URL", help_text="The canonical URL of the license.")
 
     created = DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)
     modified = DateTimeField(auto_now=True, blank=True, null=True, db_index=True)
@@ -325,17 +327,17 @@ class Task(Model):
         RUNNING = "RUNNING", "RUNNING"
         COMPLETED = "COMPLETED", "COMPLETED"
 
-    status = CharField(max_length=2048, choices=Status.choices, blank=True)
+    status = TextField(choices=Status.choices, blank=True)
 
     class Result(TextChoices):
         OK = "OK", "OK"
         FAILED = "FAILED", "FAILED"
 
-    result = CharField(max_length=2048, choices=Result.choices, blank=True)
+    result = TextField(choices=Result.choices, blank=True)
     note = TextField(blank=True, help_text="Metadata about any failure.")
-    context = JSONField(blank=True, null=True)
+    context = JSONField(blank=True, default=dict)
 
-    type = CharField(max_length=2048, blank=True)
+    type = TextField(blank=True)
     order = IntegerField(blank=True, null=True)
 
     created = DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)

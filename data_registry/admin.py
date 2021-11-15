@@ -7,9 +7,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.contrib.admin import DateFieldListFilter
 from django.contrib.admin.options import ModelAdmin, TabularInline
-from django.db.models import Q
-from django.db.models.expressions import Case, When
-from django.db.models.fields import BooleanField
+from django.db.models import BooleanField, Case, Q, When
 from django.forms.widgets import TextInput
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
