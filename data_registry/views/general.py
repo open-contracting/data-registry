@@ -161,7 +161,7 @@ def excel_data(request, job_id, job_range=None):
                 end_date = datetime.strptime(d_to, "%Y-%m-%d")
                 job_range = f"{d_from} - {d_to}"
             elif not d_from:
-                start_date = datetime.strptime("1980-01-01", "%Y-%m-%d")
+                start_date = datetime.datetime(1980, 1, 1, 0, 0)
                 end_date = datetime.strptime(d_to, "%Y-%m-%d")
                 job_range = f"< {d_to}"
             elif not d_to:
