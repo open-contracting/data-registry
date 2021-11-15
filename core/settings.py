@@ -258,7 +258,7 @@ RABBIT_URL = os.getenv("RABBIT_URL", "amqp://localhost")
 RABBIT_EXCHANGE_NAME = os.getenv("RABBIT_EXCHANGE_NAME", "data_registry_development")
 
 # The job tasks to run.
-JOB_TASKS_PLAN = ["scrape", "process", "pelican", "exporter"]
+JOB_TASKS_PLAN = ["collect", "process", "pelican", "exporter"]
 
 SCRAPYD = {
     # The base URL of Scrapyd.

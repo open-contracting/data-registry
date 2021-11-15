@@ -18,10 +18,10 @@ from django.urls import reverse
 from django.utils.translation import get_language
 from django.utils.translation import gettext as _
 
+from data_registry.cbom.task.collect import Collect
 from data_registry.cbom.task.exporter import Exporter
 from data_registry.cbom.task.pelican import Pelican
 from data_registry.cbom.task.process import Process
-from data_registry.cbom.task.scrape import Scrape
 from data_registry.models import Collection, Job
 from data_registry.views.serializers import CollectionSerializer
 
@@ -127,7 +127,7 @@ def send_feedback(request):
 def wipe_job(request, job_id):
     job = get_object_or_404(Job, pk=job_id)
 
-    Scrape(job.collection, job).wipe()
+    Collect(job.collection, job).wipe()
     Process(job).wipe()
     Pelican(job).wipe()
     Exporter(job).wipe()

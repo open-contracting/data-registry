@@ -123,7 +123,7 @@ class Collection(Model):
         blank=True,
         null=True,
         verbose_name="last updated",
-        help_text="The date on which the most recent 'scrape' job task completed.",
+        help_text="The date on which the most recent 'collect' job task completed.",
     )
 
     license_custom = ForeignKey(

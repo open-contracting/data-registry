@@ -15,7 +15,7 @@ from data_registry.models import Task
 logger = logging.getLogger(__name__)
 
 
-class Scrape(BaseTask):
+class Collect(BaseTask):
     host = None
     job = None
     project = None
@@ -72,7 +72,7 @@ class Scrape(BaseTask):
             "GET",
             f"{self.host}listjobs.json",
             params={"project": self.project},
-            error_msg=f"Unable to get status of scrape job #{jobid}",
+            error_msg=f"Unable to get status of collect job #{jobid}",
         )
 
         json = resp.json()
@@ -85,13 +85,13 @@ class Scrape(BaseTask):
         if any(n["id"] == jobid for n in json.get("running", [])):
             return Task.Status.RUNNING
         if any(n["id"] == jobid for n in json.get("finished", [])):
-            # process id must be set on the end of scrape task
+            # process id must be set on the end of collect task
             if not process_id:
                 raise Exception("Process id is not set")
 
             return Task.Status.COMPLETED
 
-        raise RecoverableException("Scrape job is in undefined state")
+        raise RecoverableException("Collect job is in undefined state")
 
     def get_process_id(self):
         # process id is published in scrapy log
@@ -118,10 +118,10 @@ class Scrape(BaseTask):
     def wipe(self):
         version = self.job.context.get("process_data_version", None)
         if not version:
-            logger.info("Unable to wipe SCRAPE - process_data_version is not set")
+            logger.info("Unable to wipe COLLECT - process_data_version is not set")
             return
 
-        logger.info("Wiping scrape data for version %s.", version)
+        logger.info("Wiping collect data for version %s.", version)
 
         version = version.replace("-", "").replace(":", "").replace("T", "_")
 

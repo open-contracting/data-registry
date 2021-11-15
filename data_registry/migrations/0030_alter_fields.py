@@ -116,7 +116,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='collection',
             name='last_update',
-            field=models.DateField(blank=True, help_text="The date on which the most recent 'scrape' job task completed.", null=True, verbose_name='last updated'),
+            field=models.DateField(blank=True, help_text="The date on which the most recent 'collect' job task completed.", null=True, verbose_name='last updated'),
         ),
         migrations.AlterField(
             model_name='collection',

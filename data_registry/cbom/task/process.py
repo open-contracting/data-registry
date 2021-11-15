@@ -19,7 +19,7 @@ class Process(BaseTask):
         self.process_id = job.context.get("process_id", None)
 
     def run(self):
-        # process is started throught scrape-process integration
+        # process is started through collect-process integration
         pass
 
     def get_status(self):

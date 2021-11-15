@@ -3,9 +3,9 @@ import logging
 from django.core.management.base import BaseCommand
 
 from data_registry.cbom.process import process
+from data_registry.cbom.task.collect import Collect
 from data_registry.cbom.task.pelican import Pelican
 from data_registry.cbom.task.process import Process
-from data_registry.cbom.task.scrape import Scrape
 from data_registry.models import Collection, Job
 
 logger = logging.getLogger(__name__)
@@ -34,6 +34,6 @@ class Command(BaseCommand):
         if not job:
             return
 
-        Scrape(job.collection, job).wipe()
+        Collect(job.collection, job).wipe()
         Process(job).wipe()
         Pelican(job).wipe()
