@@ -10,8 +10,7 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.postgres.aggregates import ArrayAgg
 from django.core.mail import send_mail
-from django.db.models.expressions import Exists, OuterRef
-from django.db.models.query_utils import Q
+from django.db.models import Exists, OuterRef, Q
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse

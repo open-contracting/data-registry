@@ -4,9 +4,7 @@ from urllib.parse import urljoin
 
 from django.conf import settings
 from django.db import transaction
-from django.db.models.expressions import Case, When
-from django.db.models.fields import BooleanField
-from django.db.models.query_utils import Q
+from django.db.models import BooleanField, Case, Q, When
 from django.utils import timezone
 
 from data_registry.models import Job, Task
