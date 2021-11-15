@@ -6,7 +6,7 @@ register = template.Library()
 
 @register.simple_tag
 def template_script(name):
-    return mark_safe("""<script type="text/x-template" id="{}">""".format(name))
+    return mark_safe(f'<script type="text/x-template" id="{name}">')
 
 
 @register.simple_tag
