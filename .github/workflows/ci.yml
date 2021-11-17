@@ -24,7 +24,7 @@ jobs:
           # django-modeltranslation>0.17.3 https://github.com/deschler/django-modeltranslation/pull/618
           # django-markdownx>3.0.1 https://github.com/neutronX/django-markdownx/pull/206
           PYTHONWARNINGS: error,ignore:'modeltranslation',ignore:::markdownx.urls
-          DATABASE_URL: postgresql://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres?application_name=data_registry
+          DATABASE_URL: postgresql://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres
         run: |
           ./manage.py migrate
           ./manage.py makemigrations --check --dry-run
