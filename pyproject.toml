@@ -1,6 +1,6 @@
 [tool.black]
 line-length = 119
-exclude = 'migrations|node_modules'
+exclude = '/(migrations|node_modules)/'
 
 [tool.isort]
 profile = 'black'
