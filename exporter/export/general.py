@@ -18,15 +18,12 @@ def exporter_start(collection_id, spider, job_id):
     """
     routing_key = "_exporter_init"
 
-    message = {
-        "collection_id": collection_id,
-        "spider": spider,
-        "job_id": job_id
-    }
+    message = {"collection_id": collection_id, "spider": spider, "job_id": job_id}
 
     publish(message, routing_key)
-    logger.info("Published message to start export of collection_id %s spider %s job_id %s",
-                collection_id, spider, job_id)
+    logger.info(
+        "Published message to start export of collection_id %s spider %s job_id %s", collection_id, spider, job_id
+    )
 
 
 def wiper_start(spider, job_id):
@@ -38,10 +35,7 @@ def wiper_start(spider, job_id):
     """
     routing_key = "_wiper_init"
 
-    message = {
-        "spider": spider,
-        "job_id": job_id
-    }
+    message = {"spider": spider, "job_id": job_id}
 
     publish(message, routing_key)
     logger.info("Published message to wipe exported of spider %s job_id %s", spider, job_id)
