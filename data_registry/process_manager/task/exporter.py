@@ -1,11 +1,8 @@
 import logging
-from urllib.parse import urljoin
-
-from django.conf import settings
 
 from data_registry.models import Task
 from data_registry.process_manager.task.task import BaseTask
-from data_registry.process_manager.utils import request
+from exporter.export.general import exporter_start, exporter_status, wiper_start
 
 logger = logging.getLogger(__name__)
 
@@ -19,48 +16,17 @@ class Exporter(BaseTask):
         self.collection_id = self.job.context.get("process_id_pelican", None)
 
     def run(self):
-        request(
-            "POST",
-            urljoin(settings.EXPORTER_URL, "/api/exporter_start"),
-            json={
-                "job_id": self.job.id,
-                "collection_id": self.collection_id,
-                "spider": self.job.context.get("spider"),
-            },
-            error_msg=f"Unable to run Exporter for collection {self.job.collection}",
-        )
+        exporter_start(self.collection_id, self.job.context.get("spider"), self.job.id)
 
     def get_status(self):
-        resp = request(
-            "POST",
-            urljoin(settings.EXPORTER_URL, "/api/exporter_status"),
-            json={
-                "job_id": self.job.id,
-                "collection_id": self.collection_id,
-                "spider": self.job.context.get("spider"),
-            },
-            error_msg=f"Unable get Exporter status for collection {self.job.collection}",
-        )
+        status = exporter_status(self.job.context.get("spider"), self.job.id)
 
-        json = resp.json().get("data")
-
-        if not json or json == "WAITING":
+        if status == "WAITING":
             return Task.Status.WAITING
-        elif json == "RUNNING":
+        elif status == "RUNNING":
             return Task.Status.RUNNING
-        elif json == "COMPLETED":
+        elif status == "COMPLETED":
             return Task.Status.COMPLETED
 
     def wipe(self):
-        logger.info("Wiping exporter data for %s.", self.collection_id)
-        request(
-            "POST",
-            urljoin(settings.EXPORTER_URL, "/api/wiper_start"),
-            json={
-                "job_id": self.job.id,
-                "collection_id": self.collection_id,
-                "spider": self.job.context.get("spider"),
-            },
-            error_msg="Unable to wipe EXPORTER",
-            consume_exception=True,
-        )
+        wiper_start(self.job.context.get("spider"), self.job.id)

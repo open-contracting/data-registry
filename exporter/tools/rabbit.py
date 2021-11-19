@@ -25,6 +25,8 @@ def publish(message, routing_key):
         properties=pika.BasicProperties(delivery_mode=2),
     )
 
+    logger.debug("Published message %s with routing key %s", message, routing_key)
+
 
 def connect():
     parsed = urlsplit(settings.RABBIT_URL)
