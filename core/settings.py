@@ -279,8 +279,6 @@ KINGFISHER_PROCESS_URL = os.getenv("KINGFISHER_PROCESS_URL")
 # The base URL of Pelican frontend.
 PELICAN_FRONTEND_URL = os.getenv("PELICAN_FRONTEND_URL")
 
-# The base URL of the data registry's exporter app.
-EXPORTER_URL = os.getenv("EXPORTER_URL", "http://127.0.0.1:8000")
 # WARNING: If you change the production default, update `Dockerfile_django` and `docker-compose.yaml` to match.
 EXPORTER_DIR = os.getenv("EXPORTER_DIR", "/data/exporter" if production else BASE_DIR / "data" / "exporter")
 # The batch size of compiled releases to extract from Kingfisher Process.

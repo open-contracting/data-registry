@@ -26,7 +26,7 @@ Prepare the database:
 Run the web server, replacing `PASSWORD`:
 
 ```bash
-env SCRAPYD_URL=https://scrape:PASSWORD@collect.kingfisher.open-contracting.org EXPORTER_URL=http://127.0.0.1:8000 ./manage.py runserver
+env SCRAPYD_URL=https://scrape:PASSWORD@collect.kingfisher.open-contracting.org ./manage.py runserver
 ```
 
 Note: If you also want to test the integration with Spoonbill to generate Excel/CSVs files, you need to set env SPOONBILL_API_USERNAME=USERNAME and SPOONBILL_API_PASSWORD=PASSWORD

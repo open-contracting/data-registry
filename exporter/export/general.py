@@ -1,5 +1,7 @@
 import logging
 import os
+import re
+from pathlib import Path
 
 from django.conf import settings
 
@@ -14,7 +16,7 @@ def exporter_start(collection_id, spider, job_id):
 
     :param int collection_id: id of the collection in Kingfisher Process
     :param str spider: spider name
-    :param str job_id: id of the job to deleted
+    :param int job_id: id of the job to deleted
     """
     routing_key = "_exporter_init"
 
@@ -31,7 +33,7 @@ def wiper_start(spider, job_id):
     Adds a message to a queue to delete the files exported from a collection.
 
     :param str spider: spider name
-    :param str job_id: id of the job to deleted
+    :param int job_id: id of the job to deleted
     """
     routing_key = "_wiper_init"
 
@@ -45,8 +47,8 @@ def exporter_status(spider, job_id):
     """
     Returns the status of an exporter job task.
 
-    :param int spider: name of the spider
-    :param str job_id:  id of the export job
+    :param str spider: name of the spider
+    :param int job_id: id of the export job
 
     :returns: one of ("WAITING", "RUNNING", "COMPLETED")
     :rtype: str
@@ -63,3 +65,21 @@ def exporter_status(spider, job_id):
         status = "COMPLETED"
 
     return status
+
+
+def export_years(spider, job_id):
+    """
+    Returns the list of years for which there are exported files.
+
+    :param str spider: name of the spider
+    :param int job_id: id of the export job
+
+    :returns: sorted list of years
+    :rtype: list
+    """
+    dump_dir = f"{settings.EXPORTER_DIR}/{spider}/{job_id}"
+
+    # collect all years from annual dump files names
+    years = list({int(f.stem[:4]) for f in Path(dump_dir).glob("*") if f.is_file() and re.match("^[0-9]{4}", f.stem)})
+    years.sort(reverse=True)
+    return years

@@ -23,6 +23,7 @@ from data_registry.process_manager.task.exporter import Exporter
 from data_registry.process_manager.task.pelican import Pelican
 from data_registry.process_manager.task.process import Process
 from data_registry.views.serializers import CollectionSerializer
+from exporter.export.general import export_years
 
 logger = logging.getLogger(__name__)
 
@@ -59,19 +60,13 @@ def detail(request, id):
         .get(id=id)
     )
 
-    resp = requests.post(
-        urljoin(settings.EXPORTER_URL, "/api/export_years"),
-        json={"job_id": data.get("active_job", {}).get("id", None), "spider": data.get("source_id")},
-    )
-
-    years = resp.json().get("data")
+    years = export_years(data.get("source_id"), data.get("active_job", {}).get("id", None))
 
     return render(
         request,
         "detail.html",
         {
             "data": data,
-            "exporter_host": settings.EXPORTER_URL,
             "export_years": json.dumps(years),
             "feedback_email": settings.FEEDBACK_EMAIL,
         },
