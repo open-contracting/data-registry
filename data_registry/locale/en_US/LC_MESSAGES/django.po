@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-13 23:27-0400\n"
+"POT-Creation-Date: 2021-11-25 18:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,74 +17,74 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: data_registry/admin.py:20
+#: data_registry/admin.py:23
 msgid ""
 "<em>Remember to provide information in all languages. You can use the "
 "dropdown at the top of the page to toggle the language for all fields.</em>"
 msgstr ""
 
-#: data_registry/admin.py:100
+#: data_registry/admin.py:99
 msgid "Incomplete content"
 msgstr ""
 
-#: data_registry/admin.py:106
+#: data_registry/admin.py:105
 msgid "Yes"
 msgstr ""
 
-#: data_registry/admin.py:107
+#: data_registry/admin.py:106
 msgid "No"
 msgstr ""
 
-#: data_registry/admin.py:150
+#: data_registry/admin.py:151
+msgid "Previous year"
+msgstr ""
+
+#: data_registry/admin.py:158
 msgid "More than a year ago"
 msgstr ""
 
-#: data_registry/admin.py:153 data_registry/templates/search.html:213
-msgid "Past year"
-msgstr ""
-
-#: data_registry/admin.py:169 data_registry/admin.py:278
+#: data_registry/admin.py:176 data_registry/admin.py:294
 msgid "Management"
 msgstr ""
 
-#: data_registry/admin.py:172
+#: data_registry/admin.py:182
 msgid "Basics"
 msgstr ""
 
-#: data_registry/admin.py:184 data_registry/admin.py:290
+#: data_registry/admin.py:197 data_registry/admin.py:309
 #: data_registry/templates/detail.html:73
 msgid "Overview"
 msgstr ""
 
-#: data_registry/admin.py:195
+#: data_registry/admin.py:211
 msgid "Details"
 msgstr ""
 
-#: data_registry/admin.py:298
+#: data_registry/admin.py:320
 msgid "Data availability"
 msgstr ""
 
-#: data_registry/templates/base.html:16
+#: data_registry/templates/base.html:15
 msgid "Data Registry"
 msgstr ""
 
-#: data_registry/templates/base.html:42
+#: data_registry/templates/base.html:41
 msgid "What is open contracting"
 msgstr ""
 
-#: data_registry/templates/base.html:44
+#: data_registry/templates/base.html:43
 msgid "Impact"
 msgstr ""
 
-#: data_registry/templates/base.html:46
+#: data_registry/templates/base.html:45
 msgid "Implement"
 msgstr ""
 
-#: data_registry/templates/base.html:48
+#: data_registry/templates/base.html:47
 msgid "About"
 msgstr ""
 
-#: data_registry/templates/base.html:50
+#: data_registry/templates/base.html:49
 msgid "Latest"
 msgstr ""
 
@@ -571,8 +571,12 @@ msgstr ""
 msgid "See details"
 msgstr ""
 
-#: data_registry/templates/search.html:212 data_registry/views/general.py:153
+#: data_registry/templates/search.html:212 data_registry/views/general.py:139
 msgid "All"
+msgstr ""
+
+#: data_registry/templates/search.html:213
+msgid "Past year"
 msgstr ""
 
 #: data_registry/templates/search.html:214
@@ -583,6 +587,6 @@ msgstr ""
 msgid "Custom"
 msgstr ""
 
-#: data_registry/views/general.py:191
+#: data_registry/views/general.py:177
 msgid "OCP Kingfisher Database"
 msgstr ""

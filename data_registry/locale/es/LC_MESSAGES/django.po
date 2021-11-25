@@ -2,27 +2,28 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 # Translators:
 # Maria Esther Cervantes <mcervantes@cds.com.py>, 2021
 # Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2021
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-13 23:27-0400\n"
+"POT-Creation-Date: 2021-11-25 18:02+0000\n"
 "PO-Revision-Date: 2021-08-04 17:44+0000\n"
 "Last-Translator: Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2021\n"
-"Language-Team: Spanish (https://www.transifex.com/open-contracting-partnership-1/teams/123427/es/)\n"
+"Language-Team: Spanish (https://www.transifex.com/open-contracting-"
+"partnership-1/teams/123427/es/)\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: data_registry/admin.py:20
+#: data_registry/admin.py:23
 msgid ""
 "<em>Remember to provide information in all languages. You can use the "
 "dropdown at the top of the page to toggle the language for all fields.</em>"
@@ -31,68 +32,68 @@ msgstr ""
 "lista desplegable de arriba de la página para cambiar el idioma para todos "
 "los campos</em>"
 
-#: data_registry/admin.py:100
+#: data_registry/admin.py:99
 msgid "Incomplete content"
 msgstr "Contenido incompleto"
 
-#: data_registry/admin.py:106
+#: data_registry/admin.py:105
 msgid "Yes"
 msgstr "Sí"
 
-#: data_registry/admin.py:107
+#: data_registry/admin.py:106
 msgid "No"
 msgstr "No"
 
-#: data_registry/admin.py:150
+#: data_registry/admin.py:151
+msgid "Previous year"
+msgstr "Año pasado"
+
+#: data_registry/admin.py:158
 msgid "More than a year ago"
 msgstr "Hace más de un año"
 
-#: data_registry/admin.py:153 data_registry/templates/search.html:213
-msgid "Past year"
-msgstr "Año pasado"
-
-#: data_registry/admin.py:169 data_registry/admin.py:278
+#: data_registry/admin.py:176 data_registry/admin.py:294
 msgid "Management"
 msgstr "Administración"
 
-#: data_registry/admin.py:172
+#: data_registry/admin.py:182
 msgid "Basics"
 msgstr "Básicos"
 
-#: data_registry/admin.py:184 data_registry/admin.py:290
+#: data_registry/admin.py:197 data_registry/admin.py:309
 #: data_registry/templates/detail.html:73
 msgid "Overview"
 msgstr "Resumen"
 
-#: data_registry/admin.py:195
+#: data_registry/admin.py:211
 msgid "Details"
 msgstr "Detalles"
 
-#: data_registry/admin.py:298
+#: data_registry/admin.py:320
 msgid "Data availability"
 msgstr "Disponibilidad de datos"
 
-#: data_registry/templates/base.html:16
+#: data_registry/templates/base.html:15
 msgid "Data Registry"
 msgstr "Registro de Datos"
 
-#: data_registry/templates/base.html:42
+#: data_registry/templates/base.html:41
 msgid "What is open contracting"
 msgstr "Qué son las contrataciones abiertas"
 
-#: data_registry/templates/base.html:44
+#: data_registry/templates/base.html:43
 msgid "Impact"
 msgstr "Impacto"
 
-#: data_registry/templates/base.html:46
+#: data_registry/templates/base.html:45
 msgid "Implement"
 msgstr "Implementación"
 
-#: data_registry/templates/base.html:48
+#: data_registry/templates/base.html:47
 msgid "About"
 msgstr "Acerca de"
 
-#: data_registry/templates/base.html:50
+#: data_registry/templates/base.html:49
 msgid "Latest"
 msgstr "Más recientes"
 
@@ -330,8 +331,8 @@ msgstr "Historial completo de este conjunto de datos"
 #: data_registry/templates/detail.html:238
 msgid ""
 "Dataset containing the full history of available data for given source. "
-"Depending on the source, the file may be extremely large and might take some"
-" time process."
+"Depending on the source, the file may be extremely large and might take some "
+"time process."
 msgstr ""
 "Los archivos van a contener datos OCDS para todos los campos proporcionados "
 "por el publicador, para el período entero en el cuál los datos esten "
@@ -350,8 +351,8 @@ msgid ""
 msgstr ""
 "Este archivo va a contener datos OCDS para todos los campos proporcionados "
 "por el publicador, aunque solo para el año que se selecciono abajo. "
-"Dependiendo de la fuente, el archivo puede ser muy grande y puede tomar algo"
-" de tiempo procesarlo."
+"Dependiendo de la fuente, el archivo puede ser muy grande y puede tomar algo "
+"de tiempo procesarlo."
 
 #: data_registry/templates/detail.html:260
 msgid "Choose year"
@@ -368,16 +369,16 @@ msgstr ""
 
 #: data_registry/templates/detail.html:282
 msgid ""
-"Easily access data in Excel using the Open Contracting Partnership's Flatten"
-" Tool. This tool is designed to help users that prefer data in spreadsheets "
+"Easily access data in Excel using the Open Contracting Partnership's Flatten "
+"Tool. This tool is designed to help users that prefer data in spreadsheets "
 "to either select a small subset of fields / column headings or to customise "
 "their spreadsheet output."
 msgstr ""
-"Acceda fácilmente a datos en Excel/CSV utilizando la herramienta de aplanado"
-" de Open Contracting Partnership. Esta herramienta esta diseñada para ayudar"
-" a los usuarios que prefieran datos en hojas de cálculo a seleccionar un "
-"número pequeño de campos/encabezados de columnas o a customizar el output de"
-" su hoja de cálculo"
+"Acceda fácilmente a datos en Excel/CSV utilizando la herramienta de aplanado "
+"de Open Contracting Partnership. Esta herramienta esta diseñada para ayudar "
+"a los usuarios que prefieran datos en hojas de cálculo a seleccionar un "
+"número pequeño de campos/encabezados de columnas o a customizar el output de "
+"su hoja de cálculo"
 
 #: data_registry/templates/detail.html:290
 msgid "Access Excel data"
@@ -397,13 +398,13 @@ msgstr "Contacte al Helpdesk de OCP"
 #: data_registry/templates/detail.html:350
 #, python-format
 msgid ""
-"<span class=\"light\">You can also email us at</span> "
-"<span>%(feedback_email)s</span><span class=\"light\">. We try to read and "
-"respond to all your requests.</span>"
+"<span class=\"light\">You can also email us at</span> <span>"
+"%(feedback_email)s</span><span class=\"light\">. We try to read and respond "
+"to all your requests.</span>"
 msgstr ""
-"<span class=\"light\">También puede enviarnos un correo "
-"a</span><span>%(feedback_email)s</span><span class=\"light\">. Intentamos "
-"leer y responder todas sus consultas. </span>"
+"<span class=\"light\">También puede enviarnos un correo a</span><span>"
+"%(feedback_email)s</span><span class=\"light\">. Intentamos leer y responder "
+"todas sus consultas. </span>"
 
 #: data_registry/templates/detail.html:318
 msgid ""
@@ -411,8 +412,8 @@ msgid ""
 "welcome feedback from the users of data and the open data community."
 msgstr ""
 "Nuestra misión es mejorar continuamente la calidad de los datos de compras "
-"públicas. Agradecemos toda la retroalimentación de los usuarios de los datos"
-" y la comunidad de datos abiertos."
+"públicas. Agradecemos toda la retroalimentación de los usuarios de los datos "
+"y la comunidad de datos abiertos."
 
 #: data_registry/templates/detail.html:324
 msgid ""
@@ -625,9 +626,13 @@ msgstr ""
 msgid "See details"
 msgstr "Ver detalles"
 
-#: data_registry/templates/search.html:212 data_registry/views/general.py:153
+#: data_registry/templates/search.html:212 data_registry/views/general.py:139
 msgid "All"
 msgstr "Todos"
+
+#: data_registry/templates/search.html:213
+msgid "Past year"
+msgstr "Año pasado"
 
 #: data_registry/templates/search.html:214
 msgid "Past 6 months"
@@ -637,6 +642,6 @@ msgstr "Últimos 6 meses"
 msgid "Custom"
 msgstr "Personalizado"
 
-#: data_registry/views/general.py:191
+#: data_registry/views/general.py:177
 msgid "OCP Kingfisher Database"
 msgstr "Base de datos Kingfisher de OCP"
