@@ -95,7 +95,7 @@ def process(collection):
                     job.end = timezone.now()
                     job.save()
 
-                    logger.debug("Job %s failed", job)
+                    logger.warning("Job %s failed", job)
                     break
 
             # complete the job if all of its tasks are completed

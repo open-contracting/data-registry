@@ -166,7 +166,7 @@ def excel_data(request, job_id, job_range=None):
                 logger.debug("File %s exists, including in export.", file_path)
                 urls.append(file_path.as_uri())
             else:
-                logger.debug("File %s does not found. Excluding from in export.", file_path)
+                logger.debug("File %s does not found. Excluding from export.", file_path)
 
             start_date = start_date + relativedelta(months=+1)
 
@@ -185,8 +185,8 @@ def excel_data(request, job_id, job_range=None):
         auth=(settings.SPOONBILL_API_USERNAME, settings.SPOONBILL_API_PASSWORD),
     )
 
-    logger.error(
-        "Sent body request to flatten tool body \n%s headers\n%s\nLanguageResponse status code %s.",
+    logger.info(
+        "Sent body request to flatten tool body \n%s headers\n%s\nresponse status code %s.",
         body,
         headers,
         response.status_code,

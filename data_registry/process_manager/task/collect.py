@@ -119,7 +119,7 @@ class Collect(BaseTask):
     def wipe(self):
         version = self.job.context.get("process_data_version", None)
         if not version:
-            logger.info("Unable to wipe COLLECT - process_data_version is not set")
+            logger.warning("Unable to wipe COLLECT - process_data_version is not set")
             return
 
         logger.info("Wiping collect data for version %s.", version)

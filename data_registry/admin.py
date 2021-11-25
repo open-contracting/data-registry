@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 from urllib.parse import urljoin
 
@@ -15,6 +16,8 @@ from markdownx.widgets import AdminMarkdownxWidget
 from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, TranslationTabularInline
 
 from data_registry.models import Collection, Issue, Job, License, Task
+
+logger = logging.getLogger(__name__)
 
 translation_reminder = _(
     "<em>Remember to provide information in all languages. You can use the dropdown at the top "
@@ -54,8 +57,8 @@ class CollectionAdminForm(forms.ModelForm):
 
             if json.get("status") == "ok":
                 self.fields["source_id"].choices += tuple([(n, n) for n in json.get("spiders")])
-        except Exception:
-            # scrapy api doesnt respond
+        except requests.exceptions.ConnectionError as e:
+            logger.warning("Couldn't connect to Scrapyd: %s", e)
             sid = self.instance.source_id
             self.fields["source_id"].choices += tuple([(sid, sid)])
 
