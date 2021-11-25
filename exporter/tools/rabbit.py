@@ -1,4 +1,5 @@
 import functools
+import json
 import logging
 import threading
 from urllib.parse import parse_qs, urlencode, urlsplit
@@ -21,7 +22,7 @@ def publish(message, routing_key):
     channel.basic_publish(
         exchange=exchange,
         routing_key=routing_key,
-        body=message,
+        body=json.dumps(message, separators=(",", ":")).encode(),
         properties=pika.BasicProperties(delivery_mode=2),
     )
 
