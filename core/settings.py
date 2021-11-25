@@ -190,8 +190,6 @@ LOGGING = {
 
 # https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 if production and not local_access:
-    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-
     # Run: env DJANGO_ENV=production SECURE_HSTS_SECONDS=1 ./manage.py check --deploy
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
@@ -203,6 +201,11 @@ if production and not local_access:
         SECURE_HSTS_SECONDS = int(os.getenv("SECURE_HSTS_SECONDS"))
         SECURE_HSTS_INCLUDE_SUBDOMAINS = True
         SECURE_HSTS_PRELOAD = True
+
+# https://docs.djangoproject.com/en/3.2/ref/settings/#secure-proxy-ssl-header
+if "DJANGO_PROXY" in os.environ:
+    USE_X_FORWARDED_HOST = True
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 # https://docs.djangoproject.com/en/3.2/ref/settings/#email
 if production:
