@@ -8,3 +8,9 @@ pip-tools
 pre-commit
 psycopg2-binary
 transifex-client
+
+# mypy
+django-types
+mypy
+types-python-dateutil
+types-requests
