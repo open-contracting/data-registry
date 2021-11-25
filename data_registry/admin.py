@@ -46,7 +46,7 @@ class CollectionAdminForm(forms.ModelForm):
         super(CollectionAdminForm, self).__init__(*args, **kwargs)
 
         try:
-            url = urljoin(settings.SCRAPYD["url"], "/listspiders.json")
+            url = urljoin(settings.SCRAPYD["url"], "listspiders.json")
             response = requests.get(url, params={"project": settings.SCRAPYD["project"]})
             response.raise_for_status()
 

@@ -75,7 +75,7 @@ def detail(request, id):
 
 @login_required
 def spiders(request):
-    url = urljoin(settings.SCRAPYD["url"], "/listspiders.json")
+    url = urljoin(settings.SCRAPYD["url"], "listspiders.json")
     response = requests.get(url, params={"project": settings.SCRAPYD["project"]})
 
     json = response.json()

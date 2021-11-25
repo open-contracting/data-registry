@@ -3,6 +3,7 @@ import os
 import re
 import shutil
 from datetime import date
+from urllib.parse import urljoin
 
 from django.conf import settings
 from requests.exceptions import HTTPError
@@ -36,7 +37,7 @@ class Collect(BaseTask):
     def run(self):
         resp = request(
             "POST",
-            f"{self.host}schedule.json",
+            urljoin(self.host, "schedule.json"),
             data={
                 "project": self.project,
                 "spider": self.spider,
@@ -53,7 +54,7 @@ class Collect(BaseTask):
 
         self.job.context["job_id"] = jobid
         self.job.context["spider"] = self.spider
-        self.job.context["scrapy_log"] = f"{self.host}logs/{self.project}/{self.spider}/{jobid}.log"
+        self.job.context["scrapy_log"] = urljoin(self.host, f"logs/{self.project}/{self.spider}/{jobid}.log")
         self.job.save()
 
         self.collection.last_update = date.today()
@@ -70,7 +71,7 @@ class Collect(BaseTask):
 
         resp = request(
             "GET",
-            f"{self.host}listjobs.json",
+            urljoin(self.host, "listjobs.json"),
             params={"project": self.project},
             error_msg=f"Unable to get status of collect job #{jobid}",
         )
