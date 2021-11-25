@@ -1,6 +1,5 @@
 import json
 import logging
-import os
 from datetime import date, datetime
 from urllib.parse import urlencode, urljoin
 
@@ -23,7 +22,7 @@ from data_registry.process_manager.task.exporter import Exporter
 from data_registry.process_manager.task.pelican import Pelican
 from data_registry.process_manager.task.process import Process
 from data_registry.views.serializers import CollectionSerializer
-from exporter.export.general import export_years
+from exporter.export.general import Export
 
 logger = logging.getLogger(__name__)
 
@@ -60,7 +59,8 @@ def detail(request, id):
         .get(id=id)
     )
 
-    years = export_years(data.get("source_id"), data.get("active_job", {}).get("id", None))
+    job_id = data.get("active_job", {}).get("id", None)
+    years = Export(job_id).years_available()
 
     return render(
         request,
@@ -130,16 +130,12 @@ def wipe_job(request, job_id):
 
 
 def excel_data(request, job_id, job_range=None):
-
     job = Job.objects.get(id=job_id)
-
-    spider = job.collection.source_id
-
-    dump_dir = "{}/{}/{}".format(settings.EXPORTER_DIR, spider, job_id)
+    export = Export(job_id)
 
     urls = []
     if job_range is None:
-        urls.append("file://{}/full.jsonl.gz".format(dump_dir))
+        urls.append((export.directory / "full.jsonl.gz").as_uri())
         job_range = _("All")
     else:
         if job_range == "past-6-months":
@@ -163,12 +159,12 @@ def excel_data(request, job_id, job_range=None):
                 end_date = datetime.now()
                 job_range = f"> {d_from}"
 
-        while "{}{}".format(start_date.year, start_date.month) <= "{}{}".format(end_date.year, end_date.month):
-            file_path = "{}/{}.jsonl.gz".format(dump_dir, start_date.strftime("%Y_%m"))
+        while (start_date.year, start_date.month) <= (end_date.year, end_date.month):
+            file_path = export.directory / f"{start_date.strftime('%Y_%m')}.jsonl.gz"
 
-            if os.path.isfile(file_path):
+            if file_path.exists():
                 logger.debug("File %s exists, including in export.", file_path)
-                urls.append("file://{}".format(file_path))
+                urls.append(file_path.as_uri())
             else:
                 logger.debug("File %s does not found. Excluding from in export.", file_path)
 
@@ -176,12 +172,12 @@ def excel_data(request, job_id, job_range=None):
 
     body = {
         "urls": urls,
-        "country": "{} {}".format(job.collection.country, job.collection.title),
+        "country": f"{job.collection.country} {job.collection.title}",
         "period": _(job_range),
         "source": _("OCP Kingfisher Database"),
     }
 
-    headers = {"Accept-Language": "{}".format(get_language())}
+    headers = {"Accept-Language": f"{get_language()}"}
     response = requests.post(
         urljoin(settings.SPOONBILL_URL, "/api/urls/"),
         body,

@@ -1,12 +1,9 @@
 #!/usr/bin/env python
 import json
 import logging
-import os
-import shutil
 import sys
 
-from django.conf import settings
-
+from exporter.export.general import Export
 from exporter.tools.rabbit import ack, consume
 
 logger = logging.getLogger(__name__)
@@ -22,21 +19,13 @@ def start():
 
 def callback(connection, channel, delivery_tag, body):
     try:
-        # parse input message
         input_message = json.loads(body.decode("utf8"))
-        spider = input_message.get("spider")
-        job_id = input_message.get("job_id")
-
-        dump_dir = "{}/{}/{}".format(settings.EXPORTER_DIR, spider, job_id)
-
         logger.info("Processing message %s", input_message)
 
-        if os.path.exists(dump_dir):
-            shutil.rmtree(dump_dir)
+        export = Export(input_message.get("job_id"))
+        export.remove()
 
-        logger.info("Removed generated exports from %s", dump_dir)
-
-        # acknowledge message processing
+        logger.info("Removed generated exports from %s", export.directory)
         ack(connection, channel, delivery_tag)
     except Exception:
         logger.exception("Something went wrong when processing %s", body)

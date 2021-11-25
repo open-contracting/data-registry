@@ -2,7 +2,7 @@ import logging
 
 from data_registry.models import Task
 from data_registry.process_manager.task.task import BaseTask
-from exporter.export.general import exporter_start, exporter_status, wiper_start
+from exporter.export.general import Export, exporter_start, wiper_start
 
 logger = logging.getLogger(__name__)
 
@@ -19,13 +19,13 @@ class Exporter(BaseTask):
         exporter_start(self.collection_id, self.job.context.get("spider"), self.job.id)
 
     def get_status(self):
-        status = exporter_status(self.job.context.get("spider"), self.job.id)
+        status = Export(self.job.id).status
 
         if status == "WAITING":
             return Task.Status.WAITING
-        elif status == "RUNNING":
+        if status == "RUNNING":
             return Task.Status.RUNNING
-        elif status == "COMPLETED":
+        if status == "COMPLETED":
             return Task.Status.COMPLETED
 
     def wipe(self):

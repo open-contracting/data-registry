@@ -1,10 +1,10 @@
 import json
-import os
 
-from django.conf import settings
 from django.http import FileResponse
 from django.http.response import HttpResponseNotFound
 from django.views.decorators.csrf import csrf_exempt
+
+from exporter.export.general import Export
 
 
 @csrf_exempt
@@ -22,14 +22,15 @@ def download_export(request):
     job_id = input_message.get("job_id").get("id")
     year = input_message.get("year", None)
 
-    dump_dir = f"{settings.EXPORTER_DIR}/{spider}/{job_id}"
-    dump_file = f"{dump_dir}/{year}.jsonl.gz" if year else f"{dump_dir}/full.jsonl.gz"
-    lock_file = f"{dump_dir}/exporter.lock"
+    export = Export(job_id)
+    if year:
+        dump_file = export.directory / f"{year}.jsonl.gz"
+    else:
+        dump_file = export.directory / "full.jsonl.gz"
 
-    # reject download if the lock file exists (file is incomplete) or dump file doesn't exist
-    if os.path.exists(lock_file) or not os.path.exists(dump_file):
+    if export.running or not dump_file.exists():
         return HttpResponseNotFound("Unable to find export file")
 
     return FileResponse(
-        open(dump_file, "rb"), as_attachment=True, filename=f"{spider}_{year}" if year else f"{spider}_full"
+        dump_file.open("rb"), as_attachment=True, filename=f"{spider}_{year}" if year else f"{spider}_full"
     )

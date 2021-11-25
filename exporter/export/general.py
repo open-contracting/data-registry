@@ -1,13 +1,73 @@
 import logging
-import os
-import re
+import shutil
 from pathlib import Path
+from typing import List, Literal
 
 from django.conf import settings
 
 from exporter.tools.rabbit import publish
 
 logger = logging.getLogger(__name__)
+
+
+class Export:
+    def __init__(self, *components):
+        """
+        :param components: the path components of the export directory
+        """
+        self.directory = Path(settings.EXPORTER_DIR).joinpath(*components)
+        self.lockfile = self.directory / "exporter.lock"
+
+    def lock(self) -> None:
+        """
+        Create the lock file.
+        """
+        with self.lockfile.open("x"):
+            pass
+
+    def unlock(self) -> None:
+        """
+        Delete the lock file.
+        """
+        self.lockfile.unlink()
+
+    def remove(self):
+        """
+        Delete the export directory recursively.
+        """
+        if self.directory.exists():
+            shutil.rmtree(self.directory)
+
+    @property
+    def running(self) -> bool:
+        """
+        Return whether the exported file is being written.
+        """
+        return self.lockfile.exists()
+
+    @property
+    def completed(self) -> bool:
+        """
+        Return whether the final file has been written.
+        """
+        return (self.directory / "full.jsonl.gz").exists()
+
+    @property
+    def status(self) -> Literal["RUNNING", "COMPLETED", "WAITING"]:
+        """
+        Return the status of the export.
+        """
+        if self.running:
+            return "RUNNING"
+        if self.completed:
+            return "COMPLETED"
+        return "WAITING"
+
+    def years_available(self) -> List[int]:
+        """
+        Return the calendar years for which there are exported files in reverse chronological order.
+        """
+        return sorted((int(p.name[:4]) for p in self.directory.glob("[0-9][0-9][0-9][0-9].jsonl.gz")), reverse=True)
 
 
 def exporter_start(collection_id, spider, job_id):
@@ -41,45 +101,3 @@ def wiper_start(spider, job_id):
 
     publish(message, routing_key)
     logger.info("Published message to wipe exported of spider %s job_id %s", spider, job_id)
-
-
-def exporter_status(spider, job_id):
-    """
-    Returns the status of an exporter job task.
-
-    :param str spider: name of the spider
-    :param int job_id: id of the export job
-
-    :returns: one of ("WAITING", "RUNNING", "COMPLETED")
-    :rtype: str
-    """
-
-    dump_dir = f"{settings.EXPORTER_DIR}/{spider}/{job_id}"
-    dump_file = f"{dump_dir}/full.jsonl.gz"
-    lock_file = f"{dump_dir}/exporter.lock"
-
-    status = "WAITING"
-    if os.path.exists(lock_file):
-        status = "RUNNING"
-    elif os.path.exists(dump_file):
-        status = "COMPLETED"
-
-    return status
-
-
-def export_years(spider, job_id):
-    """
-    Returns the list of years for which there are exported files.
-
-    :param str spider: name of the spider
-    :param int job_id: id of the export job
-
-    :returns: sorted list of years
-    :rtype: list
-    """
-    dump_dir = f"{settings.EXPORTER_DIR}/{spider}/{job_id}"
-
-    # collect all years from annual dump files names
-    years = list({int(f.stem[:4]) for f in Path(dump_dir).glob("*") if f.is_file() and re.match("^[0-9]{4}", f.stem)})
-    years.sort(reverse=True)
-    return years
