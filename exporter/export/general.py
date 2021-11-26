@@ -15,7 +15,7 @@ class Export:
         """
         :param components: the path components of the export directory
         """
-        self.directory = Path(settings.EXPORTER_DIR).joinpath(*components)
+        self.directory = Path(settings.EXPORTER_DIR).joinpath(*map(str, components))
         self.lockfile = self.directory / "exporter.lock"
 
     def lock(self) -> None:
