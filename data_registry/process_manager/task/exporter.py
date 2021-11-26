@@ -2,25 +2,22 @@ import logging
 
 from data_registry.models import Task
 from data_registry.process_manager.task.task import BaseTask
-from exporter.export.general import Export, exporter_start, wiper_start
+from exporter.export.general import Export
+from exporter.tools.rabbit import publish
 
 logger = logging.getLogger(__name__)
 
 
 class Exporter(BaseTask):
-    job = None
-    collection_id = None
-
     def __init__(self, job):
         self.job = job
         self.collection_id = self.job.context.get("process_id_pelican", None)
 
     def run(self):
-        exporter_start(self.collection_id, self.job.context.get("spider"), self.job.id)
+        publish({"collection_id": self.collection_id, "job_id": self.job.id}, "_exporter_init")
 
     def get_status(self):
         status = Export(self.job.id).status
-
         if status == "WAITING":
             return Task.Status.WAITING
         if status == "RUNNING":
@@ -29,4 +26,4 @@ class Exporter(BaseTask):
             return Task.Status.COMPLETED
 
     def wipe(self):
-        wiper_start(self.job.context.get("spider"), self.job.id)
+        publish({"job_id": self.job.id}, "_wiper_init")

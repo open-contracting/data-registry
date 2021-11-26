@@ -15,12 +15,9 @@ class Command(BaseCommand):
     help = "Process, orchestrate and evaluate all jobs and tasks in data registry"
 
     def handle(self, *args, **options):
-        logging.captureWarnings(True)
-
         for collection in Collection.objects.all():
             process(collection)
 
-        # wipe jobs data
         wiped_jobs = Job.objects.filter(status=Job.Status.COMPLETED, keep_all_data=False, archived=False)
         for job in wiped_jobs:
             self.wipe_job(job)

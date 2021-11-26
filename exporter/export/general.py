@@ -5,8 +5,6 @@ from typing import List, Literal
 
 from django.conf import settings
 
-from exporter.tools.rabbit import publish
-
 logger = logging.getLogger(__name__)
 
 
@@ -68,36 +66,3 @@ class Export:
         Return the calendar years for which there are exported files in reverse chronological order.
         """
         return sorted((int(p.name[:4]) for p in self.directory.glob("[0-9][0-9][0-9][0-9].jsonl.gz")), reverse=True)
-
-
-def exporter_start(collection_id, spider, job_id):
-    """
-    Adds a message to a queue to export files from a collection in Kingfisher Process.
-
-    :param int collection_id: id of the collection in Kingfisher Process
-    :param str spider: spider name
-    :param int job_id: id of the job to deleted
-    """
-    routing_key = "_exporter_init"
-
-    message = {"collection_id": collection_id, "spider": spider, "job_id": job_id}
-
-    publish(message, routing_key)
-    logger.info(
-        "Published message to start export of collection_id %s spider %s job_id %s", collection_id, spider, job_id
-    )
-
-
-def wiper_start(spider, job_id):
-    """
-    Adds a message to a queue to delete the files exported from a collection.
-
-    :param str spider: spider name
-    :param int job_id: id of the job to deleted
-    """
-    routing_key = "_wiper_init"
-
-    message = {"spider": spider, "job_id": job_id}
-
-    publish(message, routing_key)
-    logger.info("Published message to wipe exported of spider %s job_id %s", spider, job_id)
