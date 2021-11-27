@@ -1,11 +1,22 @@
+import functools
 import logging
 import shutil
 from pathlib import Path
 from typing import List, Literal
 
 from django.conf import settings
+from yapw import clients
 
 logger = logging.getLogger(__name__)
+
+
+class Client(clients.Threaded, clients.Durable, clients.Blocking, clients.Base):
+    pass
+
+
+@functools.lru_cache(maxsize=None)
+def create_client():
+    return Client(url=settings.RABBIT_URL, exchange=settings.RABBIT_EXCHANGE_NAME)
 
 
 class Export:

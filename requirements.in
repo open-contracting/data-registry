@@ -9,3 +9,4 @@ psycopg2
 python-dateutil
 requests
 sentry-sdk
+yapw

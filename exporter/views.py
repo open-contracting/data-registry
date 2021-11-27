@@ -4,7 +4,7 @@ from django.http import FileResponse
 from django.http.response import HttpResponseNotFound
 from django.views.decorators.csrf import csrf_exempt
 
-from exporter.export.general import Export
+from exporter.util import Export
 
 
 @csrf_exempt

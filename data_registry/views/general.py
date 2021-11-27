@@ -22,7 +22,7 @@ from data_registry.process_manager.task.exporter import Exporter
 from data_registry.process_manager.task.pelican import Pelican
 from data_registry.process_manager.task.process import Process
 from data_registry.views.serializers import CollectionSerializer
-from exporter.export.general import Export
+from exporter.util import Export
 
 logger = logging.getLogger(__name__)
 
