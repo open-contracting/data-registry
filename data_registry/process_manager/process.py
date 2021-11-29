@@ -39,8 +39,11 @@ def process(collection):
                         status = _task.get_status()
                         logger.debug("Task %s is %s (%s: %s)", task, status, collection.country, collection)
                         if status in [Task.Status.WAITING, Task.Status.RUNNING]:
-                            # do nothing, the task is still running
+                            # Reset the task, in case it has recovered.
                             job_complete = False
+                            task.result = ""
+                            task.note = ""
+                            task.save()
                             break
                         elif status == Task.Status.COMPLETED:
                             # complete the task
