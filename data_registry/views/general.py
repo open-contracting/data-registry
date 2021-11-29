@@ -135,7 +135,7 @@ def excel_data(request, job_id, job_range=None):
 
     urls = []
     if job_range is None:
-        urls.append((export.directory / "full.jsonl.gz").as_uri())
+        urls.append((export.source_directory / "full.jsonl.gz").as_uri())
         job_range = _("All")
     else:
         if job_range == "past-6-months":
@@ -160,7 +160,7 @@ def excel_data(request, job_id, job_range=None):
                 job_range = f"> {d_from}"
 
         while (start_date.year, start_date.month) <= (end_date.year, end_date.month):
-            file_path = export.directory / f"{start_date.strftime('%Y_%m')}.jsonl.gz"
+            file_path = export.source_directory / f"{start_date.strftime('%Y_%m')}.jsonl.gz"
 
             if file_path.exists():
                 logger.debug("File %s exists, including in export.", file_path)
