@@ -181,6 +181,10 @@ LOGGING = {
             "handlers": ["console"],
             "level": os.getenv("LOG_LEVEL", "INFO"),
         },
+        "urllib3.connectionpool": {
+            "handlers": ["console"],
+            "level": "INFO",
+        },
         "django.security.DisallowedHost": {
             "handlers": ["null"],
             "propagate": False,

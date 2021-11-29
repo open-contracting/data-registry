@@ -16,8 +16,6 @@ logger = logging.getLogger(__name__)
 
 
 def process(collection):
-    logger.debug("Processing collection %s - %s", collection.country, collection)
-
     if should_be_planned(collection):
         plan(collection)
 
@@ -39,7 +37,7 @@ def process(collection):
                 try:
                     if task.status in [Task.Status.WAITING, Task.Status.RUNNING]:
                         status = _task.get_status()
-                        logger.debug("Task %s %s", task, status)
+                        logger.debug("Task %s is %s (%s: %s)", task, status, collection.country, collection)
                         if status in [Task.Status.WAITING, Task.Status.RUNNING]:
                             # do nothing, the task is still running
                             job_complete = False
@@ -56,7 +54,7 @@ def process(collection):
                             job.status = Job.Status.RUNNING
                             job.save()
 
-                            logger.debug("Job %s started", job)
+                            logger.debug("Job %s is starting (%s: %s)", job, collection.country, collection)
 
                         # run the task
                         _task.run()
@@ -67,7 +65,7 @@ def process(collection):
 
                         job_complete = False
 
-                        logger.debug("Task %s started", task)
+                        logger.debug("Task %s is starting (%s: %s)", task, collection.country, collection)
 
                         break
                 except RecoverableException as e:
@@ -95,7 +93,7 @@ def process(collection):
                     job.end = timezone.now()
                     job.save()
 
-                    logger.warning("Job %s failed", job)
+                    logger.warning("Job %s has failed (%s: %s)", job, collection.country, collection)
                     break
 
             # complete the job if all of its tasks are completed
@@ -117,7 +115,7 @@ def process(collection):
                         active=Case(When(id=job.id, then=True), default=False, output_field=BooleanField())
                     )
 
-                    logger.debug("Job %s completed", job)
+                    logger.debug("Job %s has completed (%s: %s)", job, collection.country, collection)
 
 
 def should_be_planned(collection):
