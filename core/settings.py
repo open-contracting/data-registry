@@ -288,11 +288,17 @@ KINGFISHER_PROCESS_URL = os.getenv("KINGFISHER_PROCESS_URL")
 # The base URL of Pelican frontend.
 PELICAN_FRONTEND_URL = os.getenv("PELICAN_FRONTEND_URL")
 
+# This project sends absolute filepaths to Spoonbill. If this project is deployed using Docker, then the filepath
+# from within this project's container may differ from the filepath on the host, which may in turn differ from the
+# filepath from within Sponbill's container.
+#
+# As such, during deployment, the mount point's source directory on the host is set using the `EXPORTER_HOST_DIR`
+# environment variable. In non-Docker environments, this environment variable can be unset, in which case the
+# `EXPORTER_HOST_DIR` will be the same as the `EXPORTER_DIR`.
+#
 # WARNING: If you change the production default, update `Dockerfile_django` and `docker-compose.yaml` to match.
-EXPORTER_MOUNT_DESTINATION = os.getenv(
-    "EXPORTER_MOUNT_DESTINATION", "/data/exporter" if production else BASE_DIR / "data" / "exporter"
-)
-EXPORTER_MOUNT_SOURCE = os.getenv("EXPORTER_MOUNT_SOURCE", EXPORTER_MOUNT_DESTINATION)
+EXPORTER_DIR = os.getenv("EXPORTER_DIR", "/data/exporter" if production else BASE_DIR / "data" / "exporter")
+EXPORTER_HOST_DIR = os.getenv("EXPORTER_HOST_DIR", EXPORTER_DIR)
 # The batch size of compiled releases to extract from Kingfisher Process.
 EXPORTER_PAGE_SIZE = 10000
 
