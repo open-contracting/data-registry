@@ -288,9 +288,8 @@ PELICAN_FRONTEND_URL = os.getenv("PELICAN_FRONTEND_URL")
 EXPORTER_MOUNT_DESTINATION = os.getenv(
     "EXPORTER_MOUNT_DESTINATION", "/data/exporter" if production else BASE_DIR / "data" / "exporter"
 )
-# WARNING: The production default needs to sync with Spoonbill's configuration.
 EXPORTER_MOUNT_SOURCE = os.getenv(
-    "EXPORTER_MOUNT_DESTINATION", "/data/storage/exporter_dumps" if production else BASE_DIR / "data" / "exporter"
+    "EXPORTER_MOUNT_SOURCE", EXPORTER_MOUNT_DESTINATION
 )
 # The batch size of compiled releases to extract from Kingfisher Process.
 EXPORTER_PAGE_SIZE = 10000

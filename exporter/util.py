@@ -25,8 +25,8 @@ class Export:
         :param components: the path components of the export directory
         """
         self.directory = Path(settings.EXPORTER_MOUNT_DESTINATION).joinpath(*map(str, components))
-        # To be used by Soonbill
-        self.source_directory = Path(settings.EXPORTER_MOUNT_DESTINATION).joinpath(*map(str, components))
+        # To be used by Spoonbill.
+        self.source_directory = Path(settings.EXPORTER_MOUNT_SOURCE).joinpath(*map(str, components))
         self.lockfile = self.directory / "exporter.lock"
 
     def lock(self) -> None:
