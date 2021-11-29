@@ -285,7 +285,9 @@ KINGFISHER_PROCESS_URL = os.getenv("KINGFISHER_PROCESS_URL")
 PELICAN_FRONTEND_URL = os.getenv("PELICAN_FRONTEND_URL")
 
 # WARNING: If you change the production default, update `Dockerfile_django` and `docker-compose.yaml` to match.
-EXPORTER_DIR = os.getenv("EXPORTER_DIR", "/data/storage/exporter_dumps" if production else BASE_DIR / "data" / "exporter")
+EXPORTER_DIR = os.getenv(
+    "EXPORTER_DIR", "/data/storage/exporter_dumps" if production else BASE_DIR / "data" / "exporter"
+)
 # The batch size of compiled releases to extract from Kingfisher Process.
 EXPORTER_PAGE_SIZE = 10000
 
