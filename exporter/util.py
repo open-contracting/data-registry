@@ -25,7 +25,7 @@ class Export:
         :param components: the path components of the export directory
         """
         self.directory = Path(settings.EXPORTER_DIR).joinpath(*map(str, components))
-        self.host_directory = Path(settings.EXPORTER_HOST_DIR).joinpath(*map(str, components))
+        self.spoonbill_directory = Path(settings.SPOONBILL_EXPORTER_DIR).joinpath(*map(str, components))
         self.lockfile = self.directory / "exporter.lock"
 
     def lock(self) -> None:
