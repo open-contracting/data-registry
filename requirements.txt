@@ -37,7 +37,7 @@ pika==1.2.0
     # via yapw
 pillow==8.3.2
     # via django-markdownx
-psycopg2==2.9.1
+psycopg2==2.9.2
     # via -r requirements.in
 python-dateutil==2.8.2
     # via -r requirements.in
