@@ -30,7 +30,7 @@ jobs:
           ./manage.py makemigrations --check --dry-run
           ./manage.py check --fail-level WARNING
           coverage run --source core,data_registry,exporter manage.py test
-      - uses: actions/setup-node@v2.5.0
+      - uses: actions/setup-node@v2.5.1
         with:
           node-version: "12.x"
       - run: cd data_registry/vue/; npm ci
