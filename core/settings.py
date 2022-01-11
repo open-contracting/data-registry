@@ -184,6 +184,7 @@ LOGGING = {
         "urllib3.connectionpool": {
             "handlers": ["console"],
             "level": "INFO",
+            "propagate": False,
         },
         "django.security.DisallowedHost": {
             "handlers": ["null"],
