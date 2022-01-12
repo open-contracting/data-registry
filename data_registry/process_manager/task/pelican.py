@@ -35,13 +35,13 @@ class Pelican(BaseTask):
         if not pelican_id:
             return Task.Status.WAITING
 
-        resp = request(
+        response = request(
             "GET",
             urljoin(settings.PELICAN_FRONTEND_URL, f"/datasets/{pelican_id}/status/"),
             error_msg=f"Publication {self.job.collection}: Pelican: Unable get status of dataset {pelican_id}",
         )
 
-        json = resp.json()
+        json = response.json()
         if not json:
             return Task.Status.WAITING
         if json["phase"] == "CHECKED" and json["state"] == "OK":
@@ -49,18 +49,18 @@ class Pelican(BaseTask):
         return Task.Status.RUNNING
 
     def get_pelican_id(self):
-        pelican_id = self.job.context.get("pelican_id", None)
+        pelican_id = self.job.context.get("pelican_id")
         if not pelican_id:
             name = self.get_pelican_dataset_name()
 
-            resp = request(
+            response = request(
                 "GET",
                 urljoin(settings.PELICAN_FRONTEND_URL, "/datasets/find_by_name/"),
                 params={"name": name},
                 error_msg=f"Publication {self.job.collection}: Pelican: Unable to get ID for name {name!r}",
             )
 
-            pelican_id = resp.json().get("id", None)
+            pelican_id = response.json().get("id")
             if pelican_id:
                 self.job.context["pelican_id"] = pelican_id
                 self.job.save()
@@ -68,7 +68,7 @@ class Pelican(BaseTask):
         return pelican_id
 
     def get_pelican_dataset_name(self):
-        dataset_name = self.job.context.get("pelican_dataset_name", None)
+        dataset_name = self.job.context.get("pelican_dataset_name")
         if not dataset_name:
             spider = self.job.context.get("spider")
             process_data_version = self.job.context.get("process_data_version")

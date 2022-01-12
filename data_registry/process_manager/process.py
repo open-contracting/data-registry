@@ -165,13 +165,13 @@ def plan(collection):
 def update_collection_availability(job):
     try:
         pelican_id = job.context.get("pelican_id")
-        resp = request("GET", urljoin(settings.PELICAN_FRONTEND_URL, f"/datasets/{pelican_id}/coverage/"))
+        response = request("GET", urljoin(settings.PELICAN_FRONTEND_URL, f"/datasets/{pelican_id}/coverage/"))
     except Exception as e:
         raise Exception(
             f"Publication {job.collection}: Pelican: Unable to get coverage of dataset {pelican_id}"
         ) from e
 
-    counts = resp.json()
+    counts = response.json()
 
     job.tenders_count = counts.get("tenders")
     job.tenderers_count = counts.get("tenderers")
@@ -193,13 +193,13 @@ def update_collection_availability(job):
 def update_collection_metadata(job):
     try:
         pelican_id = job.context.get("pelican_id")
-        resp = request("GET", urljoin(settings.PELICAN_FRONTEND_URL, f"/datasets/{pelican_id}/metadata/"))
+        response = request("GET", urljoin(settings.PELICAN_FRONTEND_URL, f"/datasets/{pelican_id}/metadata/"))
     except Exception as e:
         raise Exception(
             f"Publication {job.collection}: Pelican: Unable to get metadata of dataset {pelican_id}"
         ) from e
 
-    meta = resp.json()
+    meta = response.json()
 
     if meta:
         job.date_from = parse_date(meta.get("published_from"))

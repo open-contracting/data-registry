@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 class Exporter(BaseTask):
     def __init__(self, job):
         self.job = job
-        self.collection_id = self.job.context.get("process_id_pelican", None)
+        self.collection_id = self.job.context.get("process_id_pelican")
 
     def run(self):
         create_client().publish({"collection_id": self.collection_id, "job_id": self.job.id}, "exporter_init")

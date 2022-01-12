@@ -59,7 +59,7 @@ def detail(request, id):
         .get(id=id)
     )
 
-    job_id = data.get("active_job", {}).get("id", None)
+    job_id = data.get("active_job", {}).get("id")
     years = Export(job_id).years_available()
 
     return render(

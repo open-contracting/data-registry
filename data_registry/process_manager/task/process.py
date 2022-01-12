@@ -16,23 +16,23 @@ class Process(BaseTask):
 
     def __init__(self, job):
         self.job = job
-        self.process_id = job.context.get("process_id", None)
+        self.process_id = job.context.get("process_id")
 
     def run(self):
         # process is started through collect-process integration
         pass
 
     def get_status(self):
-        resp = request(
+        response = request(
             "GET",
             urljoin(settings.KINGFISHER_PROCESS_URL, f"/api/v1/tree/{self.process_id}/"),
             error_msg=f"Unable to get status of process #{self.process_id}",
         )
 
-        json = resp.json()
+        json = response.json()
 
-        compile_releases = next(n for n in json if n.get("transform_type", None) == "compile-releases")
-        is_last_completed = compile_releases.get("completed_at", None) is not None
+        compile_releases = next(n for n in json if n.get("transform_type") == "compile-releases")
+        is_last_completed = compile_releases.get("completed_at") is not None
 
         if "process_id_pelican" not in self.job.context:
             self.job.context["process_id_pelican"] = compile_releases.get("id")

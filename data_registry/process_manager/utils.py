@@ -13,9 +13,9 @@ def request(method, url, **kwargs):
     consume_exception = kwargs.pop("consume_exception", False)
 
     try:
-        resp = requests.request(method, url, **kwargs)
-        resp.raise_for_status()
-        return resp
+        response = requests.request(method, url, **kwargs)
+        response.raise_for_status()
+        return response
     except RequestException as e:
         if consume_exception:
             logger.exception(error_msg)

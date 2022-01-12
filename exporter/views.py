@@ -20,7 +20,7 @@ def download_export(request):
 
     spider = input_message.get("spider")
     job_id = input_message.get("job_id").get("id")
-    year = input_message.get("year", None)
+    year = input_message.get("year")
 
     export = Export(job_id)
     if year:

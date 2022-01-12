@@ -35,7 +35,7 @@ class Collect(BaseTask):
         self.collection = collection
 
     def run(self):
-        resp = request(
+        response = request(
             "POST",
             urljoin(self.host, "schedule.json"),
             data={
@@ -46,7 +46,7 @@ class Collect(BaseTask):
             error_msg=f"Unable to schedule scraping for project {self.project} and spider {self.spider}",
         )
 
-        json = resp.json()
+        json = response.json()
         if json.get("status") == "error":
             raise Exception(json)
 
@@ -62,21 +62,21 @@ class Collect(BaseTask):
 
     def get_status(self):
         job_id = self.job.context.get("job_id")
-        process_id = self.job.context.get("process_id", None)
+        process_id = self.job.context.get("process_id")
 
         if not process_id:
             process_id = self.get_process_id()
             self.job.context["process_id"] = process_id
             self.job.save()
 
-        resp = request(
+        response = request(
             "GET",
             urljoin(self.host, "listjobs.json"),
             params={"project": self.project},
             error_msg=f"Unable to get status of collect job #{job_id}",
         )
 
-        json = resp.json()
+        json = response.json()
 
         if json.get("status") == "error":
             raise Exception(json)
@@ -96,12 +96,12 @@ class Collect(BaseTask):
 
     def get_process_id(self):
         # process id is published in scrapy log
-        log = self.job.context.get("scrapy_log", None)
+        log = self.job.context.get("scrapy_log")
         if not log:
             raise Exception("Scrapy log is not set")
 
         try:
-            resp = request("get", log, error_msg=f"Unable to read scrapy log {log}")
+            response = request("get", log, error_msg=f"Unable to read scrapy log {log}")
         except RecoverableException as e:
             ex_cause = e.__cause__
 
@@ -113,11 +113,11 @@ class Collect(BaseTask):
             raise e
         # Must match
         # https://github.com/open-contracting/kingfisher-collect/blob/7b386e8e7a198a96b733e2d8437a814632db4def/kingfisher_scrapy/extensions.py#L541
-        m = re.search("Created collection (.+) in Kingfisher Process", resp.text)
+        m = re.search("Created collection (.+) in Kingfisher Process", response.text)
         return m.group(1) if m else None
 
     def wipe(self):
-        version = self.job.context.get("process_data_version", None)
+        version = self.job.context.get("process_data_version")
         if not version:
             logger.warning("Unable to wipe COLLECT - process_data_version is not set")
             return
