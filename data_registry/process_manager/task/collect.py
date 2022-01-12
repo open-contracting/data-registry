@@ -82,8 +82,6 @@ class Collect(BaseTask):
         # The log file does not exist if the job is pending.
         if not process_id:
             log = self.job.context.get("scrapy_log")
-            if not log:
-                raise Exception("Scrapy log is not set")
 
             try:
                 response = request("get", log, error_msg=f"Unable to read scrapy log {log}")
