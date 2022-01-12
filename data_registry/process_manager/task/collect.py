@@ -87,13 +87,12 @@ class Collect(BaseTask):
                 response = request("get", log, error_msg=f"Unable to read scrapy log {log}")
             except RecoverableException as e:
                 ex_cause = e.__cause__
-
                 # If the request on the log file returns the error 404, something went wrong with the scrapy.
                 # The file was probably lost, and the job will never be able to continue
                 if isinstance(ex_cause, HTTPError) and ex_cause.response.status_code == 404:
                     raise Exception("Scrapy log file doesn't exist")
-
                 raise e
+
             # Must match
             # https://github.com/open-contracting/kingfisher-collect/blob/7b386e8e7a198a96b733e2d8437a814632db4def/kingfisher_scrapy/extensions.py#L541
             m = re.search("Created collection (.+) in Kingfisher Process", response.text)
@@ -106,7 +105,6 @@ class Collect(BaseTask):
             return Task.Status.RUNNING
 
         if any(n["id"] == job_id for n in json.get("finished", [])):
-            # process id must be set on the end of collect task
             if not process_id:
                 raise Exception("Process id is not set")
 
