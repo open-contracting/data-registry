@@ -50,18 +50,18 @@ class Collect(BaseTask):
         if json.get("status") == "error":
             raise Exception(json)
 
-        jobid = json.get("jobid")
+        job_id = json.get("jobid")
 
-        self.job.context["job_id"] = jobid
+        self.job.context["job_id"] = job_id
         self.job.context["spider"] = self.spider
-        self.job.context["scrapy_log"] = urljoin(self.host, f"logs/{self.project}/{self.spider}/{jobid}.log")
+        self.job.context["scrapy_log"] = urljoin(self.host, f"logs/{self.project}/{self.spider}/{job_id}.log")
         self.job.save()
 
         self.collection.last_update = date.today()
         self.collection.save()
 
     def get_status(self):
-        jobid = self.job.context.get("job_id")
+        job_id = self.job.context.get("job_id")
         process_id = self.job.context.get("process_id", None)
 
         if not process_id:
@@ -73,7 +73,7 @@ class Collect(BaseTask):
             "GET",
             urljoin(self.host, "listjobs.json"),
             params={"project": self.project},
-            error_msg=f"Unable to get status of collect job #{jobid}",
+            error_msg=f"Unable to get status of collect job #{job_id}",
         )
 
         json = resp.json()
@@ -81,11 +81,11 @@ class Collect(BaseTask):
         if json.get("status") == "error":
             raise Exception(json)
 
-        if any(n["id"] == jobid for n in json.get("pending", [])):
+        if any(n["id"] == job_id for n in json.get("pending", [])):
             return Task.Status.WAITING
-        if any(n["id"] == jobid for n in json.get("running", [])):
+        if any(n["id"] == job_id for n in json.get("running", [])):
             return Task.Status.RUNNING
-        if any(n["id"] == jobid for n in json.get("finished", [])):
+        if any(n["id"] == job_id for n in json.get("finished", [])):
             # process id must be set on the end of collect task
             if not process_id:
                 raise Exception("Process id is not set")
