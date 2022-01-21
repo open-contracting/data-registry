@@ -35,7 +35,6 @@ jobs:
           node-version: 16.x
       - run: cd data_registry/vue/; npm ci
       - run: cd data_registry/vue/; npm run build --if-present
-      - run: cd data_registry/vue/; npm test
       - env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: coveralls --service=github
