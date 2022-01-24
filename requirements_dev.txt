@@ -82,6 +82,10 @@ mypy-extensions==0.4.3
     # via black
 nodeenv==1.6.0
     # via pre-commit
+orjson==3.6.6
+    # via
+    #   -r requirements.txt
+    #   yapw
 pathspec==0.9.0
     # via black
 pep517==0.12.0
@@ -166,7 +170,7 @@ virtualenv==20.10.0
     # via pre-commit
 wheel==0.37.0
     # via pip-tools
-yapw==0.0.10
+yapw[perf]==0.0.10
     # via -r requirements.txt
 
 # The following packages are considered to be unsafe in a requirements file:
