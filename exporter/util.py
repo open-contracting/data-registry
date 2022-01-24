@@ -10,13 +10,26 @@ from yapw import clients
 logger = logging.getLogger(__name__)
 
 
-class Client(clients.Threaded, clients.Durable, clients.Blocking, clients.Base):
+class Consumer(clients.Threaded, clients.Durable, clients.Blocking, clients.Base):
     pass
 
 
+class Publisher(clients.Durable, clients.Blocking, clients.Base):
+    pass
+
+
+def get_client(klass):
+    return klass(url=settings.RABBIT_URL, exchange=settings.RABBIT_EXCHANGE_NAME)
+
+
 @functools.lru_cache(maxsize=None)
-def create_client():
-    return Client(url=settings.RABBIT_URL, exchange=settings.RABBIT_EXCHANGE_NAME)
+def get_consumer():
+    return get_client(Consumer)
+
+
+@functools.lru_cache(maxsize=None)
+def get_publisher():
+    return get_client(Publisher)
 
 
 class Export:

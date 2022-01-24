@@ -3,7 +3,7 @@ import logging
 from django.core.management.base import BaseCommand
 from yapw.methods.blocking import ack
 
-from exporter.util import Export, create_client
+from exporter.util import Export, get_consumer
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +16,7 @@ class Command(BaseCommand):
     """
 
     def handle(self, *args, **options):
-        create_client().consume(callback, "wiper_init")
+        get_consumer().consume(callback, "wiper_init")
 
 
 def callback(state, channel, method, properties, input_message):

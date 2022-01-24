@@ -2,7 +2,7 @@ import logging
 
 from data_registry.models import Task
 from data_registry.process_manager.task.task import BaseTask
-from exporter.util import Export, create_client
+from exporter.util import Export, get_publisher
 
 logger = logging.getLogger(__name__)
 
@@ -13,7 +13,7 @@ class Exporter(BaseTask):
         self.collection_id = self.job.context.get("process_id_pelican")
 
     def run(self):
-        create_client().publish({"collection_id": self.collection_id, "job_id": self.job.id}, "exporter_init")
+        get_publisher().publish({"collection_id": self.collection_id, "job_id": self.job.id}, "exporter_init")
 
     def get_status(self):
         status = Export(self.job.id).status
@@ -25,4 +25,4 @@ class Exporter(BaseTask):
             return Task.Status.COMPLETED
 
     def wipe(self):
-        create_client().publish({"job_id": self.job.id}, "wiper_init")
+        get_publisher().publish({"job_id": self.job.id}, "wiper_init")
