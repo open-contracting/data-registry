@@ -1,4 +1,3 @@
-import functools
 import logging
 import shutil
 from pathlib import Path
@@ -22,12 +21,10 @@ def get_client(klass):
     return klass(url=settings.RABBIT_URL, exchange=settings.RABBIT_EXCHANGE_NAME)
 
 
-@functools.lru_cache(maxsize=None)
 def get_consumer():
     return get_client(Consumer)
 
 
-@functools.lru_cache(maxsize=None)
 def get_publisher():
     return get_client(Publisher)
 
