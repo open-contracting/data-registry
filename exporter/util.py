@@ -1,5 +1,6 @@
 import logging
 import shutil
+from contextlib import contextmanager
 from pathlib import Path
 from typing import List, Literal
 
@@ -25,8 +26,13 @@ def get_consumer():
     return get_client(Consumer)
 
 
+@contextmanager
 def get_publisher():
-    return get_client(Publisher)
+    client = get_client(Publisher)
+    try:
+        yield client
+    finally:
+        client.close()
 
 
 class Export:

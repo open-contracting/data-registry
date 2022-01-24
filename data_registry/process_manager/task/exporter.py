@@ -13,9 +13,8 @@ class Exporter(BaseTask):
         self.collection_id = self.job.context.get("process_id_pelican")
 
     def run(self):
-        client = get_publisher()
-        client.publish({"collection_id": self.collection_id, "job_id": self.job.id}, "exporter_init")
-        client.close()
+        with get_publisher() as client:
+            client.publish({"collection_id": self.collection_id, "job_id": self.job.id}, "exporter_init")
 
     def get_status(self):
         status = Export(self.job.id).status
@@ -27,6 +26,5 @@ class Exporter(BaseTask):
             return Task.Status.COMPLETED
 
     def wipe(self):
-        client = get_publisher()
-        client.publish({"job_id": self.job.id}, "wiper_init")
-        client.close()
+        with get_publisher() as client:
+            client.publish({"job_id": self.job.id}, "wiper_init")
