@@ -166,7 +166,7 @@ virtualenv==20.10.0
     # via pre-commit
 wheel==0.37.0
     # via pip-tools
-yapw==0.0.5
+yapw==0.0.10
     # via -r requirements.txt
 
 # The following packages are considered to be unsafe in a requirements file:

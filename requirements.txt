@@ -59,7 +59,7 @@ urllib3==1.26.5
     # via
     #   requests
     #   sentry-sdk
-yapw==0.0.5
+yapw==0.0.10
     # via -r requirements.in
 
 # The following packages are considered to be unsafe in a requirements file:
