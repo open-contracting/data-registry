@@ -1,9 +1,9 @@
 import logging
 import shutil
-from contextlib import contextmanager
 from pathlib import Path
 from typing import List, Literal
 
+import pika.exceptions
 from django.conf import settings
 from yapw import clients
 
@@ -22,15 +22,27 @@ def get_client(klass):
     return klass(url=settings.RABBIT_URL, exchange=settings.RABBIT_EXCHANGE_NAME)
 
 
-def get_consumer():
-    return get_client(Consumer)
+# https://github.com/pika/pika/blob/master/examples/blocking_consume_recover_multiple_hosts.py
+def consume(*args, **kwargs):
+    while True:
+        try:
+            client = get_client(Consumer)
+            client.consume(*args, **kwargs)
+            break
+        # Do not recover if the connection was closed by the broker.
+        except pika.exceptions.ConnectionClosedByBroker as e:  # subclass of AMQPConnectionError
+            logger.warning(e)
+            break
+        # Recover from "Connection reset by peer".
+        except pika.exceptions.StreamLostError as e:  # subclass of AMQPConnectionError
+            logger.warning(e)
+            continue
 
 
-@contextmanager
-def get_publisher():
+def publish(*args, **kwargs):
     client = get_client(Publisher)
     try:
-        yield client
+        client.publish(*args, **kwargs)
     finally:
         client.close()
 
