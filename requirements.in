@@ -4,6 +4,7 @@ django-markdownx
 django-modeltranslation
 gunicorn[setproctitle]
 markdown-it-py
+pika
 psycopg2
 python-dateutil
 requests
