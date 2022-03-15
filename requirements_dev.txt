@@ -94,7 +94,7 @@ pika==1.2.0
     # via
     #   -r requirements.txt
     #   yapw
-pillow==9.0.0
+pillow==9.0.1
     # via
     #   -r requirements.txt
     #   django-markdownx
