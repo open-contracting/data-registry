@@ -1,6 +1,7 @@
 import "babel-polyfill";
 var Promise = require('es6-promise').Promise;
 require('es6-promise').polyfill();
+const moment = require('moment');
 
 import Vue from "vue/dist/vue.min.js";
 import VueMoment from 'vue-moment';
@@ -12,7 +13,9 @@ import {BootstrapVue, IconsPlugin} from 'bootstrap-vue'
 
 import { CONFIG } from "./config.js"
 
-Vue.use(VueMoment)
+Vue.use(require('vue-moment'), {
+    moment
+})
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(Vuex)
@@ -375,6 +378,9 @@ if (document.getElementById("detail_app")) {
                 jsonDownloadBusy: false
             }
         },
+        created: function() {
+            this.$moment.locale(CURRENT_LANGUAGE)
+        },
         computed: {
             data: function() {
                 return DATA
@@ -466,13 +472,13 @@ if (document.getElementById("header")) {
         },
         created: function() {
             this.language = this.languages.find(n => n.code == this.currentLanguageCode)
+            this.$moment.locale(CURRENT_LANGUAGE)
         },
         computed: {
             currentLanguageCode: () => CURRENT_LANGUAGE,
             languages: () => LANGUAGES,
             next: function() {
                 var url = window.location.pathname
-
                 // check if url starts with language
                 if (url.startsWith(`/${this.currentLanguageCode}/`)) {
                     return url.substring(3)

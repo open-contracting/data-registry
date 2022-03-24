@@ -66,6 +66,7 @@
                         size="sm"
                         right
                         :date-format-options="{ year: 'numeric', month: 'short', day: 'numeric' }"
+                        :locale="CURRENT_LANGUAGE"
                         placeholder="{% translate 'Start date' %}"
                         :max="dateTo"
                         reset-button
@@ -76,6 +77,7 @@
                         size="sm"
                         right
                         :date-format-options="{ year: 'numeric', month: 'short', day: 'numeric' }"
+                        :locale="CURRENT_LANGUAGE"
                         placeholder="{% translate 'End date' %}"
                         :min="dateFrom"
                         reset-button
