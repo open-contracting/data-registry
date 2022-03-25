@@ -1,7 +1,7 @@
 import logging
 import shutil
 from pathlib import Path
-from typing import Dict, List, Literal
+from typing import Dict, Literal
 
 import pika.exceptions
 from django.conf import settings
