@@ -373,6 +373,7 @@ if (document.getElementById("detail_app")) {
                 feedbackType: null,
                 feedback: null,
                 feedbackSent: false,
+                exportFormat: "jsonl",
                 jsonYear: null,
                 jsonType: "full",
                 jsonDownloadBusy: false
@@ -396,7 +397,7 @@ if (document.getElementById("detail_app")) {
                 }
             },
             feedbackTypeOptions: () => FEEDBACK_TYPE_OPTIONS,
-            jsonYearOptions: () => JSON_YEAR_OPTIONS,
+            exportOptions: () => FORMAT_OPTIONS,
             exporterApiUrl: () => CONFIG.exporterApiBaseUrl,
             activeJob: function() {
                 return DATA.active_job ? DATA.active_job : {}
@@ -435,7 +436,8 @@ if (document.getElementById("detail_app")) {
                     {
                         spider: this.data.source_id,
                         job_id: this.data.active_job,
-                        year: this.jsonType == "full" ? null : this.jsonYear
+                        year: this.jsonType == "full" ? null : this.jsonYear,
+                        format: this.exportFormat
                     },
                     {
                         responseType: 'arraybuffer'

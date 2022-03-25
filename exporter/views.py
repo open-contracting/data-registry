@@ -21,16 +21,20 @@ def download_export(request):
     spider = input_message.get("spider")
     job_id = input_message.get("job_id").get("id")
     year = input_message.get("year")
+    export_format = input_message.get("format")
+    if export_format == "csv":
+        export_format = f"{export_format}.tar"
 
     export = Export(job_id)
     if year:
-        dump_file = export.directory / f"{year}.jsonl.gz"
+        dump_file = export.directory / f"{year}.{export_format}.gz"
     else:
-        dump_file = export.directory / "full.jsonl.gz"
+        dump_file = export.directory / f"full.{export_format}.gz"
 
     if export.running or not dump_file.exists():
         return HttpResponseNotFound("Unable to find export file")
 
     return FileResponse(
-        dump_file.open("rb"), as_attachment=True, filename=f"{spider}_{year}" if year else f"{spider}_full"
+        dump_file.open("rb"), as_attachment=True,
+        filename=f"{spider}_{year}_{export_format}" if year else f"{spider}_full_{export_format}"
     )

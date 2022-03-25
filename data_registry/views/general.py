@@ -60,15 +60,15 @@ def detail(request, id):
     )
 
     job_id = data.get("active_job", {}).get("id")
-    years = Export(job_id).years_available()
+    export_formats = Export(job_id).formats_available()
 
     return render(
         request,
         "detail.html",
         {
             "data": data,
-            "export_years": json.dumps(years),
             "feedback_email": settings.FEEDBACK_EMAIL,
+            "export_formats": json.dumps(export_formats)
         },
     )
 

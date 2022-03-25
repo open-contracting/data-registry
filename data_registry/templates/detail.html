@@ -200,68 +200,81 @@
             <div class="col-12">
                 <div id="access" class="info_card round access">
                     <h2>{% translate "Access data" %}</h2>
-                    <p>
-                        {% translate "The OCDS dataset is available to download as a JSON or Excel file." %}
-                    </p>
-
                     <div class="row">
                         <div class="col">
                             <div class="format-wrapper">
-                                <h3><check-icon :checked="data.json_format" class="mr-2"></check-icon>{% translate "JSON data" %}</h3>
                                 <p class="format-description">
                                     {% blocktrans trimmed %}
-                                    Easily access dumps of data from the Open Contracting Partnership's Kingfisher database.
+                                    Easily access dumps of data from the Open Contracting Partnership's Kingfisher database in different formats.
                                     {% endblocktrans %}
                                 </p>
 
                                 <div>
                                     <button class="btn btn-md" v-b-modal.json-export-form>
-                                        <chevron-btn right></chevron-btn> {% translate "Access JSON data" %}
+                                        <chevron-btn right></chevron-btn> {% translate "Access data" %}
                                     </button>
                                 </div>
                             </div>
 
-                            <modal id="json-export-form" title="{% translate 'Access JSON data' %}">
+                            <modal id="json-export-form" title="{% translate 'Access data' %}">
                                 <p class="light">
                                     {% blocktrans trimmed %}
-                                    Please, choose how you would like to access the JSON data. You can either download the full history as one dataset
+                                    Please, choose how you would like to access the data. You can either download the full history as one dataset
                                     or choose particular year that you are interested in.
                                     {% endblocktrans %}
                                 </p>
 
                                 <div class="subtitle">
-                                    <b-radio value="full" v-model="jsonType" id="json-full" size="lg" inline>
-                                        {% translate "Full history dataset" %}
-                                    </b-radio>
+                                    {% translate "Data format" %}
                                 </div>
                                 <p class="light indention">
                                     {% blocktrans trimmed %}
-                                    Dataset containing the full history of available data for given source. Depending on the source, the file may be
-                                    extremely large and might take some time process.
+                                    Select if you want to download JSON, Excel or CSV files.
                                     {% endblocktrans %}
                                 </p>
-
-                                <div class="subtitle">
-                                    <b-radio value="annual" v-model="jsonType" id="json-annual" size="lg" inline>
-                                        {% translate "Particular year dataset" %}
-                                    </b-radio>
-                                </div>
-                                <p class="light indention">
-                                    {% blocktrans trimmed %}
-                                    This file will contain OCDS data for all fields provided by the publisher, but only for the year selected below.
-                                    Depending on the source, the file may be extremely large and may take some time to process.
-                                    {% endblocktrans %}
-                                </p>
-
                                 <dropdown
-                                    v-model="jsonYear"
-                                    :options="jsonYearOptions"
+                                    v-model="exportFormat"
+                                    :options="Object.keys(exportOptions)"
                                     class="indention"
-                                    placeholder="{% translate 'Choose year' %}"
+                                    placeholder="{% translate 'Format' %}"
                                     auto-width
                                 >
                                 </dropdown>
+                                <template v-if="exportOptions[exportFormat]['full']">
+                                    <div class="subtitle">
+                                        <b-radio value="full" v-model="jsonType" id="json-full" size="lg" inline>
+                                            {% translate "Full history dataset" %}
+                                        </b-radio>
+                                    </div>
+                                    <p class="light indention">
+                                        {% blocktrans trimmed %}
+                                        Dataset containing the full history of available data for given source. Depending on the source, the file may be
+                                        extremely large and might take some time process.
+                                        {% endblocktrans %}
+                                    </p>
+                                </template>
+                                <template v-if="exportOptions[exportFormat]['years'].length > 0">
+                                    <div class="subtitle">
+                                        <b-radio value="annual" v-model="jsonType" id="json-annual" size="lg" inline>
+                                            {% translate "Particular year dataset" %}
+                                        </b-radio>
+                                    </div>
+                                    <p class="light indention">
+                                        {% blocktrans trimmed %}
+                                        This file will contain OCDS data for all fields provided by the publisher, but only for the year selected below.
+                                        Depending on the source, the file may be extremely large and may take some time to process.
+                                        {% endblocktrans %}
+                                    </p>
 
+                                    <dropdown
+                                        v-model="jsonYear"
+                                        :options="exportOptions[exportFormat]['years']"
+                                        class="indention"
+                                        placeholder="{% translate 'Choose year' %}"
+                                        auto-width
+                                    >
+                                    </dropdown>
+                                </template>
                                 <template #modal-footer>
                                     <div>
                                         <button
@@ -274,23 +287,6 @@
                                     </div>
                                 </template>
                             </modal>
-                        </div>
-                        <div class="col">
-                            <div class="format-wrapper">
-                                <h3><check-icon :checked="data.excel_format" class="mr-2"></check-icon>{% translate "Excel data via OCP Flatten tool" %}</h3>
-                                <p class="format-description">
-                                    {% blocktrans trimmed %}
-                                    Easily access data in Excel using the Open Contracting Partnership's Flatten Tool. This tool is designed to help users that prefer data
-                                    in spreadsheets to either select a small subset of fields / column headings or to customise their spreadsheet output.
-                                    {% endblocktrans %}
-                                </p>
-
-                                <div>
-                                    <button class="btn btn-md" @click="goToExcelData">
-                                        <chevron-btn right></chevron-btn> {% translate "Access Excel data" %}
-                                    </button>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -394,6 +390,6 @@
             '{% trans "Other" %}',
         ]
 
-        const JSON_YEAR_OPTIONS = JSON.parse("{{ export_years }}")
+        const FORMAT_OPTIONS = {{ export_formats|safe }}
     </script>
 {% endblock %}
