@@ -1,7 +1,10 @@
 import gzip
 import logging
+import os
 import shutil
+import tarfile
 
+import flatterer
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.db import connections
@@ -99,12 +102,38 @@ def callback(state, channel, method, properties, input_message):
         if len(records) < settings.EXPORTER_PAGE_SIZE:
             break
 
+    package_flatten_files(files, export.directory)
+
+    export.unlock()
+
+
+def flatten_and_package_file(path, directory):
+    if os.path.getsize(path) < settings.EXPORTER_MAX_JSON_BYTES_TO_EXCEL:
+        excel = True
+    else:
+        excel = False
+    tmp_flatten_dir = os.path.join(directory, "flatten")
+    output = flatterer.flatten(str(path), tmp_flatten_dir, xlsx=excel, json_lines=True, force=True)
+    base_name = str(path).replace('.jsonl', '')
+    # Excel file gz
+    if excel:
+        with open(output['xlsx'], 'rb') as excel_file:
+            with gzip.open(f"{base_name}.xlsx.gz", "wb") as packaged_excel:
+                shutil.copyfileobj(excel_file, packaged_excel)
+    # CSV folder tar.gz
+    csv_folder = os.path.dirname(output['data']['main'])
+    with tarfile.open(f"{base_name}.csv.tar.gz", "w:gz") as tar:
+        tar.add(csv_folder, arcname=os.path.basename(csv_folder))
+
+    shutil.rmtree(tmp_flatten_dir)
+
+
+def package_flatten_files(files, directory):
     for path, file in files.items():
         file.close()
-
+        flatten_and_package_file(path, directory)
+        # JSON file gz
         with path.open("rb") as f_in:
             with gzip.open(f"{path}.gz", "wb") as f_out:
                 shutil.copyfileobj(f_in, f_out)
         path.unlink()
-
-    export.unlock()

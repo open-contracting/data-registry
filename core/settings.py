@@ -294,6 +294,9 @@ EXPORTER_DIR = os.getenv("EXPORTER_DIR", "/data/exporter" if production else BAS
 # The batch size of compiled releases to extract from Kingfisher Process.
 EXPORTER_PAGE_SIZE = 10000
 
+# The maximum size (in bytes) allowed to convert JSON files to excel
+EXPORTER_MAX_JSON_BYTES_TO_EXCEL = 1073741824
+
 # The base URL of Spoonbill.
 SPOONBILL_URL = os.getenv("SPOONBILL_URL", "https://flatten.open-contracting.org")
 SPOONBILL_API_USERNAME = os.getenv("SPOONBILL_API_USERNAME")
