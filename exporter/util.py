@@ -1,7 +1,8 @@
 import logging
+import logging
 import shutil
 from pathlib import Path
-from typing import List, Literal
+from typing import List, Literal, Dict
 
 import pika.exceptions
 from django.conf import settings
@@ -101,8 +102,20 @@ class Export:
             return "COMPLETED"
         return "WAITING"
 
-    def years_available(self) -> List[int]:
+    def formats_available(self) -> Dict:
         """
-        Return the calendar years for which there are exported files in reverse chronological order.
+        Returns all the available file formats and segmentation (by years or full content).
         """
-        return sorted((int(p.name[:4]) for p in self.directory.glob("[0-9][0-9][0-9][0-9].jsonl.gz")), reverse=True)
+        formats = {}
+        for file_name in self.directory.glob("*.gz"):
+            file_format = file_name.name.split('.')[1]
+            if file_format not in formats:
+                formats[file_format] = {'years': [], 'full': False}
+            # year or full
+            prefix = file_name.name[:4]
+            if prefix.isdigit():
+                if prefix not in formats[file_format]['years']:
+                    formats[file_format]['years'].append(prefix)
+            else:
+                formats[file_format]['full'] = True
+        return formats
