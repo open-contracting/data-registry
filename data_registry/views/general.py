@@ -65,11 +65,7 @@ def detail(request, id):
     return render(
         request,
         "detail.html",
-        {
-            "data": data,
-            "feedback_email": settings.FEEDBACK_EMAIL,
-            "export_formats": json.dumps(export_formats)
-        },
+        {"data": data, "feedback_email": settings.FEEDBACK_EMAIL, "export_formats": json.dumps(export_formats)},
     )
 
 

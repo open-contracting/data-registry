@@ -114,14 +114,14 @@ def flatten_and_package_file(path, directory):
         excel = False
     tmp_flatten_dir = os.path.join(directory, "flatten")
     output = flatterer.flatten(str(path), tmp_flatten_dir, xlsx=excel, json_lines=True, force=True)
-    base_name = str(path).replace('.jsonl', '')
+    base_name = str(path).replace(".jsonl", "")
     # Excel file gz
     if excel:
-        with open(output['xlsx'], 'rb') as excel_file:
+        with open(output["xlsx"], "rb") as excel_file:
             with gzip.open(f"{base_name}.xlsx.gz", "wb") as packaged_excel:
                 shutil.copyfileobj(excel_file, packaged_excel)
     # CSV folder tar.gz
-    csv_folder = os.path.dirname(output['data']['main'])
+    csv_folder = os.path.dirname(output["data"]["main"])
     with tarfile.open(f"{base_name}.csv.tar.gz", "w:gz") as tar:
         tar.add(csv_folder, arcname=os.path.basename(csv_folder))
 

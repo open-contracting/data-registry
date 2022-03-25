@@ -1,8 +1,7 @@
 import logging
-import logging
 import shutil
 from pathlib import Path
-from typing import List, Literal, Dict
+from typing import Dict, List, Literal
 
 import pika.exceptions
 from django.conf import settings
@@ -108,14 +107,14 @@ class Export:
         """
         formats = {}
         for file_name in self.directory.glob("*.gz"):
-            file_format = file_name.name.split('.')[1]
+            file_format = file_name.name.split(".")[1]
             if file_format not in formats:
-                formats[file_format] = {'years': [], 'full': False}
+                formats[file_format] = {"years": [], "full": False}
             # year or full
             prefix = file_name.name[:4]
             if prefix.isdigit():
-                if prefix not in formats[file_format]['years']:
-                    formats[file_format]['years'].append(prefix)
+                if prefix not in formats[file_format]["years"]:
+                    formats[file_format]["years"].append(prefix)
             else:
-                formats[file_format]['full'] = True
+                formats[file_format]["full"] = True
         return formats

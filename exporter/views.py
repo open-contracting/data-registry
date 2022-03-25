@@ -35,6 +35,7 @@ def download_export(request):
         return HttpResponseNotFound("Unable to find export file")
 
     return FileResponse(
-        dump_file.open("rb"), as_attachment=True,
-        filename=f"{spider}_{year}_{export_format}" if year else f"{spider}_full_{export_format}"
+        dump_file.open("rb"),
+        as_attachment=True,
+        filename=f"{spider}_{year}_{export_format}" if year else f"{spider}_full_{export_format}",
     )
