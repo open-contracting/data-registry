@@ -102,7 +102,7 @@
                                 {% translate "Show more" %}
                             </button>
                             <button v-if="licenseExpanded" class="btn btn-link text-info description-long-btn"  @click="() => licenseExpanded = false">
-                                    {% translate "Show less" %}
+                                {% translate "Show less" %}
                             </button>
                             <div v-if="licenseExpanded">
                                 <markdown-box class="small" :content="data.license_custom.description"></markdown-box>
