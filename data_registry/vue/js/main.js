@@ -4,7 +4,6 @@ require('es6-promise').polyfill();
 const moment = require('moment');
 
 import Vue from "vue/dist/vue.min.js";
-import VueMoment from 'vue-moment';
 import axios from 'axios';
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
@@ -13,6 +12,7 @@ import {BootstrapVue, IconsPlugin} from 'bootstrap-vue'
 
 import { CONFIG } from "./config.js"
 
+// https://www.npmjs.com/package/vue-moment#configuration
 Vue.use(require('vue-moment'), {
     moment
 })
