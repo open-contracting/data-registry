@@ -141,7 +141,7 @@ USE_TZ = True
 
 if production:
     STATIC_VERSION = os.getenv("STATIC_VERSION")
-    STATIC_URL = "/static/{}/".format(STATIC_VERSION)
+    STATIC_URL = f"/static/{STATIC_VERSION}/"
 else:
     STATIC_URL = "/static/"
 

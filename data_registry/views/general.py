@@ -95,16 +95,14 @@ def send_feedback(request):
     if feedback_collection:
         subject = f"You have new feedback on the {feedback_collection} dataset"
 
-    mail_text = """
-        The following feedback was provided for the {} dataset.
+    mail_text = f"""
+        The following feedback was provided for the {feedback_collection} dataset.
 
-        Type of feedback: {}
+        Type of feedback: {feedback_type}
 
         Feedback detail:
-        {}
-    """.format(
-        feedback_collection, feedback_type, feedback_text
-    )
+        {feedback_text}
+    """
 
     send_mail(
         subject,

@@ -1,7 +1,7 @@
 name: CI
 on: [push, pull_request]
 jobs:
-  build:
+  build_backend:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     runs-on: ubuntu-20.04
     steps:
@@ -9,12 +9,8 @@ jobs:
       - uses: actions/setup-python@v3
         with:
           python-version: 3.8
-      - uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt', 'setup.py') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
+          cache: pip
+          cache-dependency-path: '**/requirements*.txt'
       - run: pip install -r requirements.txt
       # Check requirements.txt contains production requirements.
       - run: ./manage.py --help
@@ -30,11 +26,6 @@ jobs:
           ./manage.py makemigrations --check --dry-run
           ./manage.py check --fail-level WARNING
           coverage run --source core,data_registry,exporter manage.py test
-      - uses: actions/setup-node@v3.0.0
-        with:
-          node-version: 16.x
-      - run: cd data_registry/vue/; npm ci
-      - run: cd data_registry/vue/; npm run build --if-present
       - env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: coveralls --service=github
@@ -50,3 +41,19 @@ jobs:
           --health-retries 5
         ports:
           - 5432/tcp
+
+  build_frontend:
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+    runs-on: ubuntu-20.04
+    defaults:
+      run:
+        working-directory: data_registry/vue
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: npm
+          cache-dependency-path: '**/package-lock.json'
+      - run: npm ci
+      - run: npm run build --if-present
