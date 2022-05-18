@@ -95,13 +95,23 @@
                 </div>
                 <div class="license">
                     <span class="label">{% translate "License:" %}</span>
-                    <span class="value">
+                    <div class="value">
                         <template v-if="data.license_custom">
-                            <a :href="data.license_custom.url" target="_blank">[[ data.license_custom.name ]]</a>
-                            <markdown-box class="small" :content="data.license_custom.description"></markdown-box>
+                            <div class="license-link">
+                                <a :href="data.license_custom.url" target="_blank">[[ data.license_custom.name ]]</a>
+                                <button v-if="!licenseExpanded" class="btn btn-link text-info description-long-btn"  @click="() => licenseExpanded = true">
+                                    {% translate "Show more" %}
+                                </button>
+                                <button v-if="licenseExpanded" class="btn btn-link text-info description-long-btn"  @click="() => licenseExpanded = false">
+                                        {% translate "Show less" %}
+                                </button>
+                            </div>
+                            <div v-if="licenseExpanded">
+                                <markdown-box class="small" :content="data.license_custom.description"></markdown-box>
+                            </div>
                         </template>
                         <template v-else-if="activeJob">[[ activeJob.license ]]</template>
-                    </span>
+                    </div>
                 </div>
                 <div>
                     <span class="label">{% translate "Language:" %}</span>

@@ -370,6 +370,7 @@ if (document.getElementById("detail_app")) {
         data: function() {
             return {
                 descriptionExpanded: false,
+                licenseExpanded: false,
                 feedbackType: null,
                 feedback: null,
                 feedbackSent: false,

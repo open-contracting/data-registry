@@ -107,6 +107,10 @@ a {
     padding: 30px;
 }
 
+#footer a {
+    color: #d6e100;
+}
+
 #footer h4 {
     font-size: 14px;
 }
@@ -541,7 +545,6 @@ a {
 
         .license a {
             text-decoration: none;
-
             &[href] {
                 color: $info;
                 text-decoration: underline;
@@ -549,6 +552,9 @@ a {
                     text-decoration: none;
                 }
             }
+        }
+        .license-link {
+            display: flex;
         }
     }
 
