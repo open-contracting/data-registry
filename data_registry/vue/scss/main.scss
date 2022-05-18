@@ -556,6 +556,9 @@ a {
         .license-link {
             display: flex;
         }
+        .show-more {
+            padding: revert;
+        }
     }
 
     .detail-section.data {

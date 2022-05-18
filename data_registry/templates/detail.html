@@ -99,11 +99,13 @@
                         <template v-if="data.license_custom">
                             <div class="license-link">
                                 <a :href="data.license_custom.url" target="_blank">[[ data.license_custom.name ]]</a>
-                                <button v-if="!licenseExpanded" class="btn btn-link text-info description-long-btn"  @click="() => licenseExpanded = true">
-                                    {% translate "Show more" %}
-                                </button>
-                                <button v-if="licenseExpanded" class="btn btn-link text-info description-long-btn"  @click="() => licenseExpanded = false">
+                                <button class="btn btn-link text-info description-long-btn show-more"  @click="() => licenseExpanded = !licenseExpanded">
+                                    <template v-if="!licenseExpanded">
+                                        {% translate "Show more" %}
+                                    </template>
+                                    <template v-else>
                                         {% translate "Show less" %}
+                                    </template>
                                 </button>
                             </div>
                             <div v-if="licenseExpanded">
