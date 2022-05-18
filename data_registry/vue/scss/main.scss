@@ -541,7 +541,6 @@ a {
 
         .license a {
             text-decoration: none;
-
             &[href] {
                 color: $info;
                 text-decoration: underline;
@@ -549,6 +548,9 @@ a {
                     text-decoration: none;
                 }
             }
+        }
+        .license-link {
+            display: flex;
         }
     }
 
