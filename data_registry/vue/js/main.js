@@ -204,9 +204,23 @@ if (document.getElementById("search_app")) {
         },
         computed: {
             alphabet: function() {
-                var result = []
-                for (var i = 65; i <=90; i++) {
-                    result.push(String.fromCharCode(i))
+                let start, end;
+                const result = [];
+                if (this.currentLanguageCode === 'ru') {
+                    start = 1040;
+                    end = 1071;
+                } else {
+                    start = 65;
+                    end = 90;
+                }
+                for (let i = start; i <= end; i++) {
+                    result.push(String.fromCharCode(i));
+                    if (i === 1045) {
+                        // https://www.w3schools.com/charsets/ref_utf_cyrillic.asp
+                        // We manually put the Ё character after the E character because that code is before it in
+                        // the UTF-8 Cyrillic list of codes.
+                        result.push(String.fromCharCode(1025))
+                    }
                 }
                 return result
             },
@@ -307,21 +321,6 @@ if (document.getElementById("search_app")) {
             collectionsData: function() {
                 return COLLECTIONS
             },
-            countriesWithData: function() {
-                return this.collectionsData.reduce((list, n) => {
-                    var key = `country_${this.currentLanguageCode}`
-                    if (!n[key]) {
-                        return list
-                    }
-
-                    var letter = n[key][0].toUpperCase()
-                    if (!list.includes(letter)) {
-                        list.push(letter)
-                    }
-
-                    return list
-                }, [])
-            },
             currentLanguageCode: () => CURRENT_LANGUAGE,
             searchForStorage: function() {
                 return {
@@ -357,7 +356,22 @@ if (document.getElementById("search_app")) {
             },
             goToDetail: function(collection) {
                 window.location = collection.detail_url
-            }
+            },
+            countriesWithData: function() {
+                return this.collectionsData.reduce((list, n) => {
+                    var key = `country_${this.currentLanguageCode}`
+                    if (!n[key]) {
+                        return list
+                    }
+
+                    var letter = n[key][0].toUpperCase()
+                    if (!list.includes(letter)) {
+                        list.push(letter)
+                    }
+
+                    return list
+                }, [])
+            },
         }
     });
 }
