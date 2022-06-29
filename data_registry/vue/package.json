@@ -1,6 +1,6 @@
 {
     "name": "data-registry",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Helper applications for data registry",
     "author": "Kuba Krafka",
     "main": "webpack.common.js",
