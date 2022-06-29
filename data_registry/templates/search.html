@@ -37,7 +37,7 @@
 
                 <div class="country">
                     <div v-for="n in alphabet" :key="n">
-                        <span v-if="countriesWithData.includes(n)"
+                        <span v-if="countriesWithData().includes(n)"
                             class="letter has-data"
                             :class="{selected: countryFilter == n}"
                             @click="setCountryFilter(n)"
