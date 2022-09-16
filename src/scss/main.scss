@@ -206,17 +206,21 @@ $letter-size: $spacer * 2;
 
 // Results
 
+// https://github.com/twbs/bootstrap/blob/v4.6.2/scss/_variables.scss#L178
 .clickable {
     cursor: pointer;
     background-color: #eeeeee;
     &:hover {
-        background-color: darken(#eeeeee, 5%) !important;
+        background-color: darken(#eeeeee, 15%) !important;
+        h2 {
+            text-decoration: $link-hover-decoration;
+        }
         .click {
-            color: darken($primary, 15%) !important;
-            text-decoration: underline;
+            color: darken($link-color, 15%) !important;
+            text-decoration: $link-hover-decoration;
         }
         .circle {
-            color: darken($primary, 15%) !important;
+            color: darken($link-color, 15%) !important;
         }
     }
 }
