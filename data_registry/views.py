@@ -21,7 +21,7 @@ from data_registry.process_manager.task.collect import Collect
 from data_registry.process_manager.task.exporter import Exporter
 from data_registry.process_manager.task.pelican import Pelican
 from data_registry.process_manager.task.process import Process
-from data_registry.utils import collection_queryset
+from data_registry.util import collection_queryset
 from exporter.util import Export
 
 logger = logging.getLogger(__name__)

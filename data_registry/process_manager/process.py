@@ -10,7 +10,7 @@ from django.utils import timezone
 from data_registry.models import Job, Task
 from data_registry.process_manager.task.exceptions import RecoverableException
 from data_registry.process_manager.task.factory import TaskFactory
-from data_registry.process_manager.utils import request
+from data_registry.process_manager.util import request
 
 logger = logging.getLogger(__name__)
 

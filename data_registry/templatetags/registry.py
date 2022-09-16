@@ -7,7 +7,7 @@ from django.template.library import InclusionNode, parse_bits
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
-from data_registry.utils import markdownify as render
+from data_registry.util import markdownify as render
 
 register = template.Library()
 
