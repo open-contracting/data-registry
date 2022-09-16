@@ -21,9 +21,14 @@ django==3.2.15
     #   -r requirements.in
     #   django-markdownx
     #   django-modeltranslation
+    #   django-statici18n
+django-appconf==1.0.5
+    # via django-statici18n
 django-markdownx==3.0.1
     # via -r requirements.in
 django-modeltranslation==0.17.3
+    # via -r requirements.in
+django-statici18n==2.3.1
     # via -r requirements.in
 gunicorn[setproctitle]==20.1.0
     # via -r requirements.in

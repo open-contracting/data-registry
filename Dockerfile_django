@@ -21,9 +21,8 @@ COPY --chown=runner:runner . .
 ENV DJANGO_ENV=production
 ENV WEB_CONCURRENCY=2
 
-RUN VERSION=$(date +%Y%m%d%h%s); sed -i "s@STATIC_URL = .*@STATIC_URL = '/static/${VERSION}/'@g" ./core/settings.py
-
 RUN python manage.py compilemessages
+RUN python manage.py compilejsi18n
 
 EXPOSE 8000
 CMD ["gunicorn", "core.wsgi", "--bind", "0.0.0.0:8000", "--worker-tmp-dir", "/dev/shm", "--threads", "2", "--name", "data-registry"]

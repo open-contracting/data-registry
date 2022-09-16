@@ -1,13 +1,13 @@
 from django.urls import path
 
-from data_registry.views import general
+from data_registry import views
 
 urlpatterns = [
-    path("", general.index, name="index"),
-    path("search/", general.search, name="search"),
-    path("publication/<int:id>", general.detail, name="detail"),
-    path("send_feedback/", general.send_feedback, name="send-feedback"),
-    path("wipe_job/<int:job_id>", general.wipe_job, name="wipe-job"),
-    path("excel_data/<int:job_id>/<str:job_range>", general.excel_data, name="excel_data"),
-    path("excel_data/<int:job_id>", general.excel_data, name="all_excel_data"),
+    path("", views.index, name="index"),
+    path("search/", views.search, name="search"),
+    path("publication/<int:id>", views.detail, name="detail"),
+    path("wipe_job/<int:job_id>", views.wipe_job, name="wipe-job"),
+    # Uncomment after re-integrating Spoonbill.
+    # path("excel_data/<int:job_id>/<str:job_range>", views.excel_data, name="excel_data"),
+    # path("excel_data/<int:job_id>", views.excel_data, name="all_excel_data"),
 ]

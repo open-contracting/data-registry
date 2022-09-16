@@ -31,6 +31,12 @@ env SCRAPYD_URL=https://scrape:PASSWORD@collect.kingfisher.open-contracting.org 
 
 Note: If you also want to test the integration with Spoonbill to generate Excel/CSVs files, you need to set env SPOONBILL_API_USERNAME=USERNAME and SPOONBILL_API_PASSWORD=PASSWORD
 
+### Stylesheets
+
+```bash
+npx webpack --watch
+```
+
 ### Translation
 
 See how to [update Django translations](https://ocp-software-handbook.readthedocs.io/en/latest/python/i18n.html) and use [Transifex](https://www.transifex.com/open-contracting-partnership-1/data-registry/).

@@ -19,7 +19,7 @@ def process(collection):
     if should_be_planned(collection):
         plan(collection)
 
-    jobs = Job.objects.filter(collection=collection).filter(~Q(status=Job.Status.COMPLETED))
+    jobs = Job.objects.filter(~Q(status=Job.Status.COMPLETED), collection=collection)
 
     for job in jobs:
         with transaction.atomic():
@@ -126,7 +126,7 @@ def should_be_planned(collection):
     if collection.frozen:
         return False
 
-    jobs = Job.objects.filter(collection=collection).filter(~Q(status=Job.Status.COMPLETED))
+    jobs = Job.objects.filter(~Q(status=Job.Status.COMPLETED), collection=collection)
     if not jobs:
         # update frequency is not set, plan next job
         if not collection.update_frequency:

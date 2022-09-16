@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi b-iconstack b-icon chevron-btn {{ classes }}" viewBox="0 0 16 16">
+    <g>
+        <svg fill="currentColor" class="bi bi-circle-fill b-icon circle" viewBox="0 0 16 16">
+            <g><g><circle cx="8" cy="8" r="8"></circle></g></g>
+        </svg>
+        <svg fill="currentColor" class="bi bi-chevron-{{ direction }} b-icon chevron" viewBox="0 0 16 16">
+            <g><g transform="translate(8 8) scale(0.6 0.6) translate(-8 -8)">
+{% if direction == "left" %}
+{# https://icons.getbootstrap.com/icons/chevron-left/ #}
+                <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+{% elif direction == "up" %}
+{# https://icons.getbootstrap.com/icons/chevron-up/ #}
+                <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
+{% elif direction == "right" %}
+{# https://icons.getbootstrap.com/icons/chevron-right/ #}
+                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+{% elif direction == "down" %}
+{# https://icons.getbootstrap.com/icons/chevron-down/ #}
+                <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+{% endif %}
+            </g></g>
+        </svg>
+    </g>
+</svg>

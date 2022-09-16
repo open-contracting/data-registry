@@ -1,224 +1,126 @@
 {% extends 'base.html' %}
 {% load i18n %}
-{% load humanize %}
 {% load static %}
-{% load vue %}
-
-{% block header %}
-    {% include 'header.html' with title=_("Dataset by Country") %}
-{% endblock %}
+{% load registry %}
 
 {% block content %}
-    <div id="search_app" v-cloak>
-        <div class="row">
-            <div class="col col-3">
-                <a href="{% url 'index' %}" class="link-back">
-                    <chevron-btn class="mr-2 icon"></chevron-btn>
+<div class="row">
+    <div class="col">
+        <a href="{% url 'index' %}" class="d-flex align-items-center text-body text-uppercase small">
+            {% icon_chevron "left" "mr-2" %}
+            {% translate "BACK TO REGISTRY HOME" %}
+        </a>
+    </div>
+</div>
 
-                    <span>{% translate "BACK TO REGISTRY HOME" %}</span>
+<div class="row mt-5">
+    <div class="col-md-3 col-xl-2 d-none d-md-block mb-5">
+        <h2 class="h4">{% translate "Filters" %}</h2>
+
+        <a rel="nofollow" href="?" class="{% if request.GET %}d-block{% else %}d-none{% endif %} mt-4">
+            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi b-iconstack b-icon" viewBox="0 0 16 16">
+                <g>
+                    {# https://icons.getbootstrap.com/icons/slash/ #}
+                    <svg fill="currentColor" class="bi bi-slash b-icon slash" viewBox="0 0 16 16">
+                        <g><g transform="translate(8 8) scale(1.6 1.6) rotate(90) translate(-8 -8)">
+                            <path d="M11.354 4.646a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                        </g></g>
+                    </svg>
+                    {# https://icons.getbootstrap.com/icons/funnel/ #}
+                    <svg fill="currentColor" class="bi bi-funnel b-icon funnel" viewBox="0 0 16 16">
+                        <g><g transform="translate(8 8) scale(0.8 0.8) translate(-8 -8)">
+                            <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z"/>
+                        </g></g>
+                    </svg>
+                </g>
+            </svg>
+            {% translate "Clear all filters" %}
+        </a>
+
+        <h3 class="h5 mt-4">{% translate "Country starting with" %}</h3>
+        <ul class="list-inline letters">
+{% for letter in facets.letters %}
+            <li class="list-inline-item mb-1 mr-0 text-center">
+    {% if facets.letters|get_item:letter %}
+                <a rel="nofollow" href="?{% if letter == request.GET|get_item:"letter" %}{% remove_query_string_parameter 'letter' %}{% else %}{% replace_query_string_parameter 'letter' letter %}{% endif %}" title="{% blocktranslate count counter=facets.letters|get_item:letter %}1 dataset{% plural %}{{ counter }} datasets{% endblocktranslate %}" class="d-inline-block text-decoration-underline{% if letter == request.GET|get_item:"letter" %} bg-primary-20 font-weight-bold{% elif facets.letters|get_item:letter %} border border-secondary{% endif %}">
+                    {{ letter }}
                 </a>
-            </div>
-        </div>
+    {% else %}
+                <span class="d-inline-block">{{ letter }}</span>
+    {% endif %}
+            </li>
+{% endfor %}
+        </ul>
 
-        <div class="row">
-            <div class="col col-3 col-md-4 filter">
-                <h4>{% translate "Filters" %}</h4>
-
-                <div class="country-title">
-                    <h6>{% translate "Country starting with" %}</h6>
-                    <button class="btn btn-link text-info" @click="setCountryFilter()">
-                        <b-iconstack class="clear-selection">
-                            <b-icon stacked class="slash" icon="slash" rotate="90" scale="1.6"></b-icon>
-                            <b-icon stacked class="funnel" icon="funnel" scale="0.8"></b-icon>
-                        </b-iconstack>
-                        {% translate "Clear selection" %}
-                    </button>
-                </div>
-
-                <div class="country">
-                    <div v-for="n in alphabet" :key="n">
-                        <span v-if="countriesWithData().includes(n)"
-                            class="letter has-data"
-                            :class="{selected: countryFilter == n}"
-                            @click="setCountryFilter(n)"
-                        >
-                            [[ n ]]
-                        </span>
-                        <span v-else class="letter">[[ n ]]</span>
-                        <span v-if="n != 'Z'">|</span>
-                    </div>
-                </div>
-
-                <h6>{% translate "Data date range" %}</h6>
-
-                <dropdown
-                    :options="dateFilterOptions"
-                    v-model="dateFilter"
-                    class="date"
-                    preselect-first
-                    auto-width
-                >
-                </dropdown>
-
-                <template v-if="filter.date == 'custom'">
-                    <b-form-datepicker
-                        v-model="dateFrom"
-                        size="sm"
-                        right
-                        :date-format-options="{ year: 'numeric', month: 'short', day: 'numeric' }"
-                        :locale="CURRENT_LANGUAGE"
-                        placeholder="{% translate 'Start date' %}"
-                        :max="dateTo"
-                        reset-button
-                        label-reset-button="{% translate 'Reset' %}"
-                    ></b-form-datepicker>
-                    <b-form-datepicker
-                        v-model="dateTo"
-                        size="sm"
-                        right
-                        :date-format-options="{ year: 'numeric', month: 'short', day: 'numeric' }"
-                        :locale="CURRENT_LANGUAGE"
-                        placeholder="{% translate 'End date' %}"
-                        :min="dateFrom"
-                        reset-button
-                        label-reset-button="{% translate 'Reset' %}"
-                    ></b-form-datepicker>
-                </template>
-
-                <h6>{% translate "Update frequency" %}</h6>
-                <div class="form-group form-check">
-                    <input v-model="frequencyFilter" value="MONTHLY" type="checkbox" class="form-check-input" id="f-montly">
-                    <label class="form-check-label" for="f-montly">{% translate "Monthly" %}</label>
-                </div>
-                <div class="form-group form-check">
-                    <input v-model="frequencyFilter" value="HALF_YEARLY" type="checkbox" class="form-check-input" id="f-half-yearly">
-                    <label class="form-check-label" for="f-half-yearly">{% translate "Every 6 months" %}</label>
-                </div>
-                <div class="form-group form-check">
-                    <input v-model="frequencyFilter" value="ANNUALLY" type="checkbox" class="form-check-input" id="f-annually">
-                    <label class="form-check-label" for="f-annually">{% translate "Annually" %}</label>
-                </div>
-
-                <h6>{% translate "Data contains" %}</h6>
-                <div class="form-group form-check">
-                    <input v-model="dataFilter" value="parties_count" type="checkbox" class="form-check-input" id="d-parties">
-                    <label class="form-check-label" for="d-parties">{% translate "Parties data" %}</label>
-                </div>
-                <div class="form-group form-check">
-                    <input v-model="dataFilter" value="plannings_count" type="checkbox" class="form-check-input" id="d-plannings">
-                    <label class="form-check-label" for="d-plannings">{% translate "Plannings data" %}</label>
-                </div>
-                <div class="form-group form-check">
-                    <input v-model="dataFilter" value="tenders_count" type="checkbox" class="form-check-input" id="d-tedners">
-                    <label class="form-check-label" for="d-tedners">{% translate "Tenders data" %}</label>
-                </div>
-
-                <div class="form-group form-check">
-                    <input v-model="dataFilter" value="awards_count" type="checkbox" class="form-check-input" id="d-awards">
-                    <label class="form-check-label" for="d-awards">{% translate "Awards data" %}</label>
-                </div>
-                <div class="form-group form-check">
-                    <input v-model="dataFilter" value="contracts_count" type="checkbox" class="form-check-input" id="d-contracts">
-                    <label class="form-check-label" for="d-contracts">{% translate "Contracts data" %}</label>
-                </div>
-                <div class="form-group form-check">
-                    <input v-model="dataFilter" value="documents_count" type="checkbox" class="form-check-input" id="d-documents">
-                    <label class="form-check-label" for="d-documents">{% translate "Documents" %}</label>
-                </div>
-                <div class="form-group form-check">
-                    <input v-model="dataFilter" value="milestones_count" type="checkbox" class="form-check-input" id="d-milestones">
-                    <label class="form-check-label" for="d-milestones">{% translate "Milestones data" %}</label>
-                </div>
-                <div class="form-group form-check">
-                    <input v-model="dataFilter" value="amendments_count" type="checkbox" class="form-check-input" id="d-amendments">
-                    <label class="form-check-label" for="d-amendments">{% translate "Amendments data" %}</label>
-                </div>
-            </div>
-            <div class="col col-9 col-md-8">
-                <div v-if="busy" class="text-center">
-                    <b-icon icon="circle-fill" animation="throb" font-scale="4"></b-icon>
-                </div>
-                <template v-else>
-                    <h4>[[ collections.length ]] {% translate "datasets found" %}</h4>
-
-                    <div v-for="c in collections" :key="`collection-${c.id}`" class="collection-box" @click="goToDetail(c)">
-                        <div class="row">
-                            <div class="col-auto">
-                                <div class="flag">
-                                    <img v-if="c.country_flag" :src="`{% static 'img/flags/' %}${c.country_flag}`">
-                                </div>
-                            </div>
-                            <div class="col">
-                                <h2>[[ c.country ]] [[ c.title ]] <span class="badge badge-pill collection-badge">{% translate "OCDS" %}</span></h2>
-                                <markdown-box tag="p" class="description" :content="c.description"></markdown-box>
-                            </div>
-                        </div>
-                        <div v-if="c.overlap_alert" class="alert alert-danger">
-                            <b-icon icon="calendar-x"></b-icon>
-                            {% translate "This collection does not completely overlap with the selected date range. Date range matched: " %}
-                            <strong>[[ c.overlap_from | moment("MMM YYYY") ]] - [[ c.overlap_to | moment("MMM YYYY") ]]</strong>
-                        </div>
-                        <div class="row justify-content-between">
-                            <div class="col-auto">
-                                <div class="label mb-2">{% translate "Available formats:" %}</div>
-                                <div class="format-json mb-2"><check-icon :checked="c.json_format" class="mr-2"></check-icon>JSON</div>
-                                <div class="format-excel mb-2"><check-icon :checked="c.excel_format" class="mr-2"></check-icon>EXCEL</div>
-                            </div>
-                            <div class="col-auto">
-                                <div class="mb-2">
-                                    <span class="label">{% translate "Data date range:" %}</span>
-                                    <span class="value" v-if="c.active_job && c.active_job.date_from && c.active_job.date_to">
-                                        [[ c.active_job.date_from | moment("MMM YYYY") ]] - [[ c.active_job.date_to | moment("MMM YYYY") ]]
-                                    </span>
-                                </div>
-                                <div class="mb-2">
-                                    <span class="label">{% translate "Update frequency:" %}</span>
-                                    <span class="value">
-                                        <template v-if="c.update_frequency == 'MONTHLY'">{% translate "Monthly" %}</template>
-                                        <template v-else-if="c.update_frequency == 'HALF_YEARLY'">{% translate "Every 6 months" %}</template>
-                                        <template v-else-if="c.update_frequency == 'ANNUALLY'">{% translate "Annually" %}</template>
-                                    </span>
-                                </div>
-                                <div class="mb-2">
-                                    <span class="label">{% translate "Last updated:" %}</span>
-                                    <span class="value" v-if="c.last_update">[[ c.last_update | moment("MMM YYYY") ]]</span>
-                                </div>
-                            </div>
-                            <div class="col-auto align-self-end text-info text-right">
-                                <a :href="c.detail_url" class="link-detail text-info">
-                                    <chevron-btn class="mr-2 icon" right></chevron-btn>
-                                    <span>{% translate "See details" %}</span>
-                                </a>
-                            </div>
-                        </div>
-                    <div>
-                </template>
-            </div>
-        </div>
+        {% radiobuttons _("Data date range") "date_range" date_ranges.items facets.date_ranges %}
+        {% endradiobuttons %}
+        {% checkboxes _("Update frequency") "update_frequency" frequencies facets.frequencies %}
+        {% checkboxes _("Data contains") "counts" counts.items facets.counts %}
     </div>
 
-    {% chevron_btn_vue_template %}
+    <div class="col-md-9 col-xl-10">
+        <h1 class="h4">
+{% if request.GET %}
+            {% blocktranslate count counter=collections|length trimmed %}
+            {{ counter }} dataset matches the selected filters
+            {% plural %}
+            {{ counter }} datasets match the selected filters
+            {% endblocktranslate %}
+{% else %}
+            {% blocktranslate with counter=collections|length trimmed %}
+            Showing all {{ counter }} datasets
+            {% endblocktranslate %}
+{% endif %}
+{% if request.user.is_authenticated %}
+            (You are logged in)
+{% endif %}
+        </h1>
 
-    {% check_icon_vue_template %}
-
-    {% dropdown_vue_template %}
-
-    {% markdown_box_vue_template %}
-
-    {{ collections|json_script:"collections-data" }}
-
-    {% get_current_language as LANGUAGE_CODE %}
-
-    <script type="text/javascript">
-        const DATE_FILTER_OPTIONS = [
-            {"value": null, "label": '{% trans "All" %}'},
-            {"value": "last-year", "label": '{% trans "Past year" %}'},
-            {"value": "past-6-months", "label": '{% trans "Past 6 months" %}'},
-            {"value": "custom", "label": '{% trans "Custom" %}'}
-        ]
-
-        const COLLECTIONS = JSON.parse(document.getElementById('collections-data').textContent)
-
-        var CURRENT_LANGUAGE = "{{ LANGUAGE_CODE }}"
-    </script>
+        {% for collection in collections %}
+        <div class="mt-4 px-3 px-md-5 py-3 rounded-lg rounded-top-left-md rounded-bottom-right-md bg-light clickable">
+            <div class="row">
+                <div class="col-md mb-3 pt-md-2 fixed-9">
+{% if collection.country_flag %}
+                    <img src="{% static 'img/flags/' %}{{ collection.country_flag }}" alt="" class="img-fluid">
+{% endif %}
+                </div>
+                <div class="col-md">
+                    <h2>{{ collection.country }}: {{ collection.title }}</h2>
+                    {{ collection.description|markdownify }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                    <dl class="mb-0 mb-md-n2 list-desc-inline">
+                        <dt>{% translate "Data date range:" %}</dt>
+                        <dd>{{ collection.date_from|date:"M Y" }} - {{ collection.date_to|date:"M Y" }}</dd>
+                        <dt>{% translate "Update frequency:" %}</dt>
+                        <dd>{{ collection.get_update_frequency_display }}</dd>
+                        <dt>{% translate "Last retrieved:" %}</dt>
+                        <dd>{{ collection.last_update|date:"M Y" }}</dd>
+                    </dl>
+                </div>
+                <div class="col-md-auto col-lg">
+                    <p class="mb-2 text-thin">{% translate "Available formats:" %}</p>
+                    <ul class="mb-2 list-inline">
+                        <li class="list-inline-item text-uppercase">
+                            {% icon_check collection.json_format %}JSON
+                        </li>
+                        <li class="list-inline-item text-uppercase">
+                            {% icon_check collection.excel_format %}Excel
+                        </li>
+                        <li class="list-inline-item text-uppercase">
+                            {% icon_check collection.csv_format %}CSV
+                        </li>
+                    </ul>
+                    <a href="{% url 'detail' collection.id %}" class="d-flex align-items-center justify-content-end text-primary click">
+                        {% icon_chevron "right" "mr-2" %}
+                        {% translate "See details" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

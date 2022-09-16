@@ -1,10 +1,17 @@
 from markdown_it import MarkdownIt
 
+from data_registry.models import Collection
+
+
+def collection_queryset(request):
+    if request.user.is_authenticated:
+        return Collection.objects
+    return Collection.visible
+
 
 # https://markdown-it-py.readthedocs.io/en/latest/using.html#renderers
 def render_blank_link(self, tokens, idx, options, env):
     tokens[idx].attrSet("target", "_blank")
-    # pass token to default renderer.
     return self.renderToken(tokens, idx, options, env)
 
 

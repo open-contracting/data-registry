@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-16 18:37+0000\n"
+"POT-Creation-Date: 2022-08-26 01:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,14 +17,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: core/settings.py:234
-msgid "English"
+#: data_registry/static/js/main.js:6
+msgid "Show more"
 msgstr ""
 
-#: core/settings.py:235
-msgid "Spanish"
-msgstr ""
-
-#: core/settings.py:236
-msgid "Russian"
+#: data_registry/static/js/main.js:9
+msgid "Show less"
 msgstr ""
