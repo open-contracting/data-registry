@@ -127,7 +127,7 @@ class Collection(models.Model):
     last_update = models.DateField(
         blank=True,
         null=True,
-        verbose_name="last updated",
+        verbose_name="last retrieved",
         help_text="The date on which the most recent 'collect' job task completed.",
     )
 
