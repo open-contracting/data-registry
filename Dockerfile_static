@@ -21,8 +21,8 @@ RUN python manage.py collectstatic --noinput
 
 FROM nginxinc/nginx-unprivileged:latest as production-stage
 USER root
-# Destination of `npm run build` above is set by webpack.config.js.
-COPY --chown=nginx:root --from=build-stage-webpack /workdir/dist /usr/share/nginx/html/static
+# Destination of `npx webpack` above is set by webpack.config.js.
+COPY --chown=nginx:root --from=build-stage-webpack /workdir/core/static /usr/share/nginx/html/static
 # Destination of `manage.py collectstatic` above is set by STATIC_ROOT in core/settings.py.
 COPY --from=build-stage-django --chown=nginx:root /workdir/static /usr/share/nginx/html/static
 USER nginx
