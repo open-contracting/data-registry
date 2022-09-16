@@ -1,9 +1,11 @@
 FROM node:16 as build-stage-webpack
 WORKDIR /workdir
 COPY package*.json ./
+COPY webpack.config.json ./
+COPY postcss.config.json ./
 RUN npm install
 COPY src ./src
-RUN npx webpack
+RUN npx webpack --mode production
 
 FROM python:3.8 as build-stage-django
 
