@@ -170,7 +170,6 @@ class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
     list_editable = ["public", "frozen"]
     list_filter = ["public", "frozen", ("last_reviewed", CustomDateFieldListFilter), MissingContentFilter]
 
-    # json_format and excel_format will never be disabled in the current version.
     fieldsets = (
         (
             _("Management"),

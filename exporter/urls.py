@@ -1,7 +1,7 @@
 from django.urls import path
 
-from exporter.views import download_export
+from exporter import views
 
 urlpatterns = [
-    path("api/download_export", download_export, name="download_export"),
+    path("api/download_export", views.download_export, name="download_export"),
 ]

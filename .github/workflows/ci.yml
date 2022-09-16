@@ -1,7 +1,7 @@
 name: CI
 on: [push, pull_request]
 jobs:
-  build_backend:
+  build:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     runs-on: ubuntu-20.04
     steps:
@@ -41,19 +41,3 @@ jobs:
           --health-retries 5
         ports:
           - 5432/tcp
-
-  build_frontend:
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
-    runs-on: ubuntu-20.04
-    defaults:
-      run:
-        working-directory: data_registry/vue
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16.x
-          cache: npm
-          cache-dependency-path: '**/package-lock.json'
-      - run: npm ci
-      - run: npm run build --if-present

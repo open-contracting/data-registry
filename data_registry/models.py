@@ -3,13 +3,17 @@ from django.db.models import (
     BooleanField,
     DateField,
     DateTimeField,
+    Exists,
     ForeignKey,
     IntegerField,
     JSONField,
+    Manager,
     Model,
+    OuterRef,
     TextChoices,
     TextField,
 )
+from django.utils.translation import gettext_lazy as _
 from markdownx.models import MarkdownxField
 
 
@@ -98,6 +102,13 @@ class Job(Model):
         return dt.strftime("%d-%b-%y") if dt else ""
 
 
+class PublicCollectionManager(Manager):
+    def get_queryset(self):
+        # https://docs.djangoproject.com/en/3.2/ref/models/expressions/#some-examples
+        active_jobs = Job.objects.filter(collection=OuterRef("pk"), active=True)
+        return super().get_queryset().filter(Exists(active_jobs), public=True)
+
+
 class Collection(Model):
     class Meta:
         verbose_name = "publication"
@@ -149,9 +160,9 @@ class Collection(Model):
     source_url = TextField(blank=True, verbose_name="source URL", help_text="The URL of the publication.")
 
     class Frequency(TextChoices):
-        MONTHLY = "MONTHLY", "MONTHLY"
-        HALF_YEARLY = "HALF_YEARLY", "HALF_YEARLY"
-        ANNUALLY = "ANNUALLY", "ANNUALLY"
+        MONTHLY = "MONTHLY", _("Monthly")
+        HALF_YEARLY = "HALF_YEARLY", _("Every 6 months")
+        ANNUALLY = "ANNUALLY", _("Annually")
 
     update_frequency = TextField(
         choices=Frequency.choices,
@@ -184,6 +195,7 @@ class Collection(Model):
 
     json_format = BooleanField(default=True)
     excel_format = BooleanField(default=True)
+    csv_format = BooleanField(default=True)
 
     public = BooleanField(
         default=False,
@@ -198,87 +210,8 @@ class Collection(Model):
     created = DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)
     modified = DateTimeField(auto_now=True, blank=True, null=True, db_index=True)
 
-    # active job cache
-    _active_job = None
-
-    @property
-    def active_job(self):
-        if not self._active_job:
-            self._active_job = Job.objects.filter(active=True, collection=self).first()
-
-        return self._active_job
-
-    @property
-    def tenders_count(self):
-        return getattr(self.active_job, "tenders_count", 0)
-
-    @property
-    def tenderers_count(self):
-        return getattr(self.active_job, "tenderers_count", 0)
-
-    @property
-    def tenders_items_count(self):
-        return getattr(self.active_job, "tenders_items_count", 0)
-
-    @property
-    def parties_count(self):
-        return getattr(self.active_job, "parties_count", 0)
-
-    @property
-    def awards_count(self):
-        return getattr(self.active_job, "awards_count", 0)
-
-    @property
-    def awards_items_count(self):
-        return getattr(self.active_job, "awards_items_count", 0)
-
-    @property
-    def awards_suppliers_count(self):
-        return getattr(self.active_job, "awards_suppliers_count", 0)
-
-    @property
-    def contracts_count(self):
-        return getattr(self.active_job, "contracts_count", 0)
-
-    @property
-    def contracts_items_count(self):
-        return getattr(self.active_job, "contracts_items_count", 0)
-
-    @property
-    def contracts_transactions_count(self):
-        return getattr(self.active_job, "contracts_transactions_co", 0)
-
-    @property
-    def documents_count(self):
-        return getattr(self.active_job, "documents_count", 0)
-
-    @property
-    def plannings_count(self):
-        return getattr(self.active_job, "plannings_count", 0)
-
-    @property
-    def milestones_count(self):
-        return getattr(self.active_job, "milestones_count", 0)
-
-    @property
-    def amendments_count(self):
-        return getattr(self.active_job, "amendments_count", 0)
-
-    @property
-    def date_from(self):
-        return getattr(self.active_job, "date_from", None)
-
-    @property
-    def date_to(self):
-        return getattr(self.active_job, "date_to", None)
-
-    @property
-    def license(self):
-        return getattr(self.active_job, "license", None)
-
-    @property
-    def ocid_prefix(self):
-        return getattr(self.active_job, "ocid_prefix", None)
+    objects = Manager()
+    visible = PublicCollectionManager()
 
     def __str__(self):
         return f"{self.title} ({self.id})"

@@ -24,7 +24,7 @@ production = os.getenv("DJANGO_ENV") == "production"
 local_access = "LOCAL_ACCESS" in os.environ or "ALLOWED_HOSTS" not in os.environ
 
 # Build paths inside the project like this: BASE_DIR / "subdir".
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parents[1]
 
 
 # Quick-start development settings - unsuitable for production
@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.humanize",
+    "statici18n",
     "data_registry",
     "markdownx",
     "exporter",
@@ -59,6 +60,9 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    # This site is not affected by BREACH.
+    # https://docs.djangoproject.com/en/3.2/ref/middleware/#django.middleware.gzip.GZipMiddleware
+    "django.middleware.gzip.GZipMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -153,6 +157,12 @@ LOCALE_PATHS = glob(str(BASE_DIR / "**" / "locale"))
 
 STATIC_ROOT = BASE_DIR / "static"
 
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
+
+if not production:
+    # https://django-statici18n.readthedocs.io/en/v2.3.1/faq.html#using-a-placeholder-directory
+    STATICFILES_DIRS = [BASE_DIR / "core" / "static"]  # webpack.config.js
+
 # https://docs.djangoproject.com/en/3.2/topics/logging/#django-security
 LOGGING = {
     "version": 1,
@@ -181,7 +191,20 @@ LOGGING = {
             "level": "INFO",
             "propagate": False,
         },
+        "django": {
+            "handlers": ["console"],
+            "level": os.getenv("LOG_LEVEL", "INFO"),
+            "propagate": False,
+        },
         "django.security.DisallowedHost": {
+            "handlers": ["null"],
+            "propagate": False,
+        },
+        "django.utils.autoreload": {
+            "handlers": ["null"],
+            "propagate": False,
+        },
+        "markdown_it.rules_block": {
             "handlers": ["null"],
             "propagate": False,
         },
@@ -207,26 +230,11 @@ if "DJANGO_PROXY" in os.environ:
     USE_X_FORWARDED_HOST = True
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
-# https://docs.djangoproject.com/en/3.2/ref/settings/#email
-if production:
-    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-    EMAIL_HOST = os.getenv("EMAIL_HOST")
-    EMAIL_PORT = os.getenv("EMAIL_PORT")
-    EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
-    EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
-    EMAIL_USE_TLS = "EMAIL_USE_TLS" in os.environ
-else:
-    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-
 LANGUAGES = (
     ("en", _("English")),
     ("es", _("Spanish")),
     ("ru", _("Russian")),
 )
-
-DEFAULT_FROM_EMAIL = "noreply@noreply.open-contracting.org"
-
-USE_THOUSAND_SEPARATOR = True
 
 
 # Dependency configuration
@@ -246,6 +254,8 @@ MODELTRANSLATION_DEFAULT_LANGUAGE = "en"
 # https://neutronx.github.io/django-markdownx/customization/#markdownx_markdownify_function
 MARKDOWNX_MARKDOWNIFY_FUNCTION = "data_registry.utils.markdownify"
 
+STATICI18N_ROOT = BASE_DIR / "core" / "static"
+
 
 # Project configuration
 
@@ -253,9 +263,6 @@ FATHOM = {
     "domain": os.getenv("FATHOM_ANALYTICS_DOMAIN") or "cdn.usefathom.com",
     "id": os.getenv("FATHOM_ANALYTICS_ID"),
 }
-
-# The email to which form feedback is sent.
-FEEDBACK_EMAIL = os.getenv("FEEDBACK_EMAIL", "jmckinney@open-contracting.org")
 
 # The connection string for RabbitMQ.
 RABBIT_URL = os.getenv("RABBIT_URL", "amqp://localhost")

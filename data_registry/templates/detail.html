@@ -2,410 +2,316 @@
 {% load i18n %}
 {% load humanize %}
 {% load static %}
-{% load vue %}
-
-{% block header %}
-    {% include 'header.html' %}
-{% endblock %}
+{% load registry %}
 
 {% block content %}
-    <div id="detail_app" v-cloak>
-        <div class="row">
-            <div class="col col-auto">
-                <a href="{% url 'search' %}" class="link-back">
-                    <chevron-btn class="mr-2 icon"></chevron-btn>
-                    <span>{% translate "BACK TO DATASETS SEARCH" %}</span>
-                </a>
-            </div>
-        </div>
+<div class="row">
+    <div class="col">
+        <a href="{% url 'search' %}" class="d-flex align-items-center text-body text-uppercase small">
+            {% icon_chevron "left" "mr-2" %}
+            {% translate "BACK TO DATASETS SEARCH" %}
+        </a>
+    </div>
+</div>
 
-        <div class="row header-row">
-            <div class="col-auto">
-                <div class="flag">
-                    <img v-if="data.country_flag" :src="`{% static 'img/flags/' %}${data.country_flag}`">
+<div class="row mt-5">
+    <div class="col-sm mb-3 pt-sm-2 fixed-12">
+{% if collection.country_flag %}
+        <img src="{% static 'img/flags/' %}{{ collection.country_flag }}" alt="" class="img-fluid">
+{% endif %}
+    </div>
+    <div class="col-sm">
+        <div class="row">
+            <div class="col mb-xl-n3">
+                <h1 class="h2">{{ collection.country }}: {{ collection.title }}</h1>
+                {{ collection.description|markdownify }}
+
+{% if collection.description_long %}
+                <div class="toggleable">
+                    {{ collection.description_long|markdownify }}
                 </div>
+{% endif %}
             </div>
-            <div class="col">
+            <div class="col-xl-auto">{# Collapse under description under 1200px #}
                 <div class="row">
-                    <div class="col">
-                        <h1>[[ data.country ]] [[ data.title ]] <span class="badge badge-pill collection-badge">{% translate "OCDS" %}</span></h1>
-                        <markdown-box tag="p" class="description" :content="data.description"></markdown-box>
-                        <button v-if="data.description_long && !descriptionExpanded"
-                            class="btn btn-link text-info description-long-btn"
-                            @click="() => descriptionExpanded = true">
-                            {% translate "Show more" %}
-                        </button>
-                    </div>
-                    <div class="col-auto">
-                        <div class="label">{% translate "Available formats:" %}</div>
-                        <div class="formats">
-                            <span class="format-json mr-4">
-                                <check-icon :checked="data.json_format" class="mr-2"></check-icon>
-                                <span>JSON</span>
-                            </span>
-                            <span class="format-excel">
-                                <check-icon :checked="data.excel_format" class="mr-2"></check-icon>
-                                <span>EXCEL</span>
-                            </span>
+                    <div class="col-auto mb-3">{# No stretch #}
+                        <p class="h5">{% translate "Available formats:" %}</p>
+                        <div class="row">
+                            <div class="col text-uppercase text-nowrap text-lg">
+                                {% icon_check collection.json_format "24px" %}
+                                JSON
+                            </div>
+                            <div class="col text-uppercase text-nowrap text-lg">
+                                {% icon_check collection.excel_format "24px" %}
+                                Excel
+                            </div>
+                            <div class="col text-uppercase text-nowrap text-lg">
+                                {% icon_check collection.excel_format "24px" %}
+                                CSV
+                            </div>
                         </div>
                     </div>
-                    <div class="col-auto">
-                        <a class="btn btn-primary btn-md access-btn" href="#access">
-                            <chevron-btn class="mr-4 icon" right></chevron-btn>{% translate "ACCESS" %}
+                    <div class="col-auto mb-3">{# No stretch #}
+                        <a class="d-flex align-items-center px-4 btn btn-info btn-md text-lg text-uppercase" href="#access">
+                            {% icon_chevron "right" "mr-3 text-xl" %}
+                            {% translate "ACCESS" %}
                         </a>
                     </div>
-                </div>
-                <div class="row" v-if="descriptionExpanded">
-                    <div class="col-12 col-lg-10 col-xl-8">
-                        <markdown-box tag="p" class="description-long" :content="data.description_long"></markdown-box>
-                        <button
-                            class="btn btn-link text-info description-long-btn"
-                            @click="() => descriptionExpanded = false">
-                            {% translate "Show less" %}
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row detail-section overview">
-            <div class="col-3 label">
-                <h4>{% translate "Overview" %}</h4>
-            </div>
-            <div class="col-9 data">
-                <div>
-                    <span class="label">{% translate "Data date range:" %}</span>
-                    <span class="value" v-if="activeJob">[[ activeJob.date_from | moment("MMM YYYY") ]] - [[ activeJob.date_to | moment("MMM YYYY") ]]</span>
-                </div>
-                <div>
-                    <span class="label">{% translate "Last updated:" %}</span>
-                    <span class="value">[[ data.last_update | moment("D MMM YYYY") ]]</span>
-                </div>
-                <div>
-                    <span class="label">{% translate "Update frequency:" %}</span>
-                    <span class="value">
-                        <template v-if="data.update_frequency == 'MONTHLY'">{% translate "Monthly" %}</template>
-                        <template v-else-if="data.update_frequency == 'HALF_YEARLY'">{% translate "Every 6 months" %}</template>
-                        <template v-else-if="data.update_frequency == 'ANNUALLY'">{% translate "Annually" %}</template>
-                    </span>
-                </div>
-                <div>
-                    <span class="label">{% translate "OCID prefix:" %}</span>
-                    <span class="value" v-if="activeJob">[[ activeJob.ocid_prefix ]]</span>
-                </div>
-                <div class="license">
-                    <span class="label">{% translate "License:" %}</span>
-                    <div class="value">
-                        <template v-if="data.license_custom">
-                            <div class="license-link">
-                                <a :href="data.license_custom.url" target="_blank">[[ data.license_custom.name ]]</a>
-                                <button class="btn btn-link text-info description-long-btn show-more"  @click="() => licenseExpanded = !licenseExpanded">
-                                    <template v-if="!licenseExpanded">
-                                        {% translate "Show more" %}
-                                    </template>
-                                    <template v-else>
-                                        {% translate "Show less" %}
-                                    </template>
-                                </button>
-                            </div>
-                            <div v-if="licenseExpanded">
-                                <markdown-box class="small" :content="data.license_custom.description"></markdown-box>
-                            </div>
-                        </template>
-                        <template v-else-if="activeJob">[[ activeJob.license ]]</template>
-                    </div>
-                </div>
-                <div>
-                    <span class="label">{% translate "Language:" %}</span>
-                    <span class="value">[[ data.language ]]</span>
-                </div>
-                <div>
-                    <span class="label">{% translate "Retrieved from:" %}</span>
-                    <a :href="data.source_url" target="_blank">[[ data.source_url ]]</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="row detail-section data">
-            <div class="col-3 label">
-                <h4>{% translate "Data avaliable" %}</h4>
-            </div>
-            <div class="col-9">
-                <div class="row">
-                    <div class="col-4 item">
-                        <h6><check-icon :checked="activeJob.parties_count" class="mr-2"></check-icon>{% translate "Parties" %}</h6>
-                        <div>{% translate "Count of parties:" %} <span class="value">[[ activeJob.parties_count ]]</span></div>
-                    </div>
-                    <div class="col-4 item">
-                        <h6><check-icon :checked="activeJob.plannings_count" class="mr-2"></check-icon>{% translate "Plannings" %}</h6>
-                        <div>{% translate "Count of planning activities:" %} <span class="value">[[ activeJob.plannings_count ]]</span></div>
-                    </div>
-                    <div class="col-4 item">
-                        <h6><check-icon :checked="activeJob.tenders_count" class="mr-2"></check-icon>{% translate "Tenders" %}</h6>
-                        <div>{% translate "Count of tenders:" %} <span class="value">[[ activeJob.tenders_count ]]</span></div>
-                        <div>{% translate "Count of tenderers:" %} <span class="value">[[ activeJob.tenderers_count ]]</span></div>
-                        <div>{% translate "Count of tender items:" %} <span class="value">[[ activeJob.tenders_items_count ]]</span></div>
-                    </div>
-                    <div class="col-4 item">
-                        <h6><check-icon :checked="activeJob.awards_count" class="mr-2"></check-icon>{% translate "Awards" %}</h6>
-                        <div>{% translate "Count of awards:" %} <span class="value">[[ activeJob.awards_count ]]</span></div>
-                        <div>{% translate "Count of award items:" %} <span class="value">[[ activeJob.awards_items_count ]]</span></div>
-                        <div>{% translate "Count of award suppliers:" %} <span class="value">[[ activeJob.awards_suppliers_count ]]</span></div>
-                    </div>
-                    <div class="col-4 item">
-                        <h6><check-icon :checked="activeJob.contracts_count" class="mr-2"></check-icon>{% translate "Contracts" %}</h6>
-                        <div>{% translate "Count of contracts:" %} <span class="value">[[ activeJob.contracts_count ]]</span></div>
-                        <div>{% translate "Count of contract items:" %} <span class="value">[[ activeJob.contracts_items_count ]]</span></div>
-                        <div>{% translate "Count of contract transactions:" %} <span class="value">[[ activeJob.contracts_transactions_count ]]</span></div>
-                    </div>
-                    <div class="col-4 item">
-                        <h6><check-icon :checked="activeJob.documents_count" class="mr-2"></check-icon>{% translate "Documents" %}</h6>
-                        <div>{% translate "Count of documents:" %} <span class="value">[[ activeJob.documents_count ]]</span></div>
-                    </div>
-                    <div class="col-4 item">
-                        <h6><check-icon :checked="activeJob.milestones_count" class="mr-2"></check-icon>{% translate "Milestones" %}</h6>
-                        <div>{% translate "Count of milestones:" %} <span class="value">[[ activeJob.milestones_count ]]</span></div>
-                    </div>
-                    <div class="col-4 item">
-                        <h6><check-icon :checked="activeJob.amendments_count" class="mr-2"></check-icon>{% translate "Amendments" %}</h6>
-                        <div>{% translate "Count of amendments:" %} <span class="value">[[ activeJob.amendments_count ]]</span></div>
-                    </div>
-                </div>
-
-                <div class="row" v-if="data.additional_data">
-                    <div class="col">
-                        <div class="additional_data">
-                            <b-icon class="diamond-icon" icon="gem" scale="1.5"></b-icon>
-                            <markdown-box :content="data.additional_data"></markdown-box>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row detail-section quality">
-            <div class="col-3 label">
-                <h4>{% translate "Data quality" %}</h4>
-            </div>
-            <div class="col-9">
-                <h6>{% translate "Summary" %}</h6>
-                <markdown-box class="summary" tag="p" :content="data.summary">
-                    <template #empty>
-                        {% translate "We have not yet prepared a data quality summary for this dataset." %}
-                    </template>
-                </markdown-box>
-
-                <div class="last_reviewed" v-if="data.last_reviewed">{% translate "Last reviewed:" %} <span>[[ data.last_reviewed | moment("MMM YYYY") ]]</span></div>
-
-                <template v-if="data.issues">
-                    <h6>{% translate "Issues found" %}</h6>
-
-                    <div v-for="n in data.issues" class="issue">
-                        <b-icon icon="exclamation-circle"></b-icon>
-                        <markdown-box tag="span" :content="n"></markdown-box>
-                    </div>
-                </template>
-            </div>
-        </div>
-
-        <div class="row detail-section">
-            <div class="col-12">
-                <div id="access" class="info_card round access">
-                    <h2>{% translate "Access data" %}</h2>
-                    <p>
-                        {% translate "The OCDS dataset is available to download as a JSON or Excel file." %}
-                    </p>
-
-                    <div class="row">
-                        <div class="col">
-                            <div class="format-wrapper">
-                                <h3><check-icon :checked="data.json_format" class="mr-2"></check-icon>{% translate "JSON data" %}</h3>
-                                <p class="format-description">
-                                    {% blocktrans trimmed %}
-                                    Easily access dumps of data from the Open Contracting Partnership's Kingfisher database.
-                                    {% endblocktrans %}
-                                </p>
-
-                                <div>
-                                    <button class="btn btn-md" v-b-modal.json-export-form>
-                                        <chevron-btn right></chevron-btn> {% translate "Access JSON data" %}
-                                    </button>
-                                </div>
-                            </div>
-
-                            <modal id="json-export-form" title="{% translate 'Access JSON data' %}">
-                                <p class="light">
-                                    {% blocktrans trimmed %}
-                                    Please, choose how you would like to access the JSON data. You can either download the full history as one dataset
-                                    or choose particular year that you are interested in.
-                                    {% endblocktrans %}
-                                </p>
-
-                                <div class="subtitle">
-                                    <b-radio value="full" v-model="jsonType" id="json-full" size="lg" inline>
-                                        {% translate "Full history dataset" %}
-                                    </b-radio>
-                                </div>
-                                <p class="light indention">
-                                    {% blocktrans trimmed %}
-                                    Dataset containing the full history of available data for given source. Depending on the source, the file may be
-                                    extremely large and might take some time process.
-                                    {% endblocktrans %}
-                                </p>
-
-                                <div class="subtitle">
-                                    <b-radio value="annual" v-model="jsonType" id="json-annual" size="lg" inline>
-                                        {% translate "Particular year dataset" %}
-                                    </b-radio>
-                                </div>
-                                <p class="light indention">
-                                    {% blocktrans trimmed %}
-                                    This file will contain OCDS data for all fields provided by the publisher, but only for the year selected below.
-                                    Depending on the source, the file may be extremely large and may take some time to process.
-                                    {% endblocktrans %}
-                                </p>
-
-                                <dropdown
-                                    v-model="jsonYear"
-                                    :options="jsonYearOptions"
-                                    class="indention"
-                                    placeholder="{% translate 'Choose year' %}"
-                                    auto-width
-                                >
-                                </dropdown>
-
-                                <template #modal-footer>
-                                    <div>
-                                        <button
-                                            class="btn"
-                                            @click="submitJsonDownload"
-                                            :disabled="jsonDownloadBusy || (jsonType === 'annual' && !jsonYear)"
-                                        >
-                                            <chevron-btn right class="mr-3"></chevron-btn> {% translate "Download data" %}
-                                        </button>
-                                    </div>
-                                </template>
-                            </modal>
-                        </div>
-                        <div class="col">
-                            <div class="format-wrapper">
-                                <h3><check-icon :checked="data.excel_format" class="mr-2"></check-icon>{% translate "Excel data via OCP Flatten tool" %}</h3>
-                                <p class="format-description">
-                                    {% blocktrans trimmed %}
-                                    Easily access data in Excel using the Open Contracting Partnership's Flatten Tool. This tool is designed to help users that prefer data
-                                    in spreadsheets to either select a small subset of fields / column headings or to customise their spreadsheet output.
-                                    {% endblocktrans %}
-                                </p>
-
-                                <div>
-                                    <button class="btn btn-md" @click="goToExcelData">
-                                        <chevron-btn right></chevron-btn> {% translate "Access Excel data" %}
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-12">
-                <div class="info_card round helpdesk">
-                    <div><b-icon icon="question-circle" scale="1.5" class="mr-3"></b-icon> {% translate "Have questions, feedback on this dataset or content on this page?" %}</div>
-
-                    <button v-b-modal.feedback-form>
-                        <chevron-btn right class="mr-3"></chevron-btn> {% translate "Contact OCP helpdesk" %}
-                    </button>
-
-                    <modal id="feedback-form" @hidden="feedbackSent = false" :content-class="{centered: feedbackSent}">
-                        <template v-if="feedbackSent" #default>
-                            {% blocktrans trimmed %}
-                            <span class="light">You can also email us at</span>
-                            <span>{{ feedback_email }}</span><span class="light">. We try to read and respond to all your requests.</span>
-                            {% endblocktrans %}
-                        </template>
-                        <template v-else #default>
-                            <p class="light">
-                                {% blocktrans trimmed %}
-                                Our mission is to continually improve the quality of procurement data. We welcome feedback from the users of data and the open data community.
-                                {% endblocktrans %}
-                            </p>
-
-                            <p class="light">
-                                {% blocktrans trimmed %}
-                                To provide specific feedback on the data source, please complete the form below.
-                                {% endblocktrans %}
-                            </p>
-
-                            <h3 class="subtitle">{% translate "Type of feedback" %}</h3>
-                            <dropdown
-                                v-model="feedbackType"
-                                :options="feedbackTypeOptions"
-                                preselect-first
-                                auto-width
-                            >
-                            </dropdown>
-
-                            <h3 class="subtitle">{% translate "Please provide your feedback in more detail below" %}</h3>
-                            <textarea v-model="feedback" rows="10">
-                            </textarea>
-                        </template>
-
-                        <template v-if="feedbackSent" #modal-footer="{ close }">
-                            <button class="btn btn-close" @click="close">
-                                <chevron-btn right class="mr-3"></chevron-btn> {% translate "Close" %}
-                            </button>
-                        </template>
-                        <template v-else #modal-footer>
-                            <div>
-                                {% blocktrans trimmed %}
-                                <span class="light">You can also email us at</span>
-                                <span>{{ feedback_email }}</span><span class="light">. We try to read and respond to all your requests.</span>
-                                {% endblocktrans %}
-                            </div>
-                            <div>
-                                <button class="btn btn-submit" @click="submitFeedback" :disabled="!feedback || !feedbackType">
-                                    <chevron-btn right class="mr-3"></chevron-btn> {% translate "Submit feedback" %}
-                                </button>
-                            </div>
-                        </template>
-
-                        <template v-if="feedbackSent" #modal-title>
-                            <check-icon></check-icon>{% translate "Thanks for your feedback!" %}
-                        </template>
-                        <template v-else #modal-title>
-                            {% trans "Send feedback for" %} "[[ data.country ]] [[ data.title ]]"
-                        </template>
-                    </modal>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    {% chevron_btn_vue_template %}
+<div class="row mt-5 py-5 border-top">
+    <div class="col-sm fixed-sm-12">
+        <h2 class="h4 mb-3">{% translate "Overview" %}</h2>
+    </div>
+    <div class="col-sm">
+        <dl class="mb-n2 list-desc-grid">
+            <dt>{% translate "Data date range:" %}</dt>
+            <dd>{{ job.date_from|date:"M Y" }} - {{ job.date_to|date:"M Y" }}</dd>
+            <dt>{% translate "Last retrieved:" %}</dt>
+            <dd>{{ collection.last_update|date:"j M Y" }}</dd>
+            <dt>{% translate "Update frequency:" %}</dt>
+            <dd>
+{% if collection.update_frequency == "MONTHLY" %}
+                {% translate "Monthly" %}
+{% elif collection.update_frequency == "HALF_YEARLY" %}
+                {% translate "Every 6 months" %}
+{% elif collection.update_frequency == "ANNUALLY" %}
+                {% translate "Annually" %}
+{% endif %}
+            </dd>
+            <dt>{% translate "OCID prefix:" %}</dt>
+            <dd>{{ job.ocid_prefix }}</dd>
+            <dt>{% translate "License:" %}</dt>
+            <dd class="text-break">
+{% if collection.license_custom %}
+                <a href="{{ collection.license_custom.url }}" target="_blank" class="d-block">{{ collection.license_custom.name }}</a>
+                <div class="mt-2 mb-n3 pl-3 border-left small toggleable">
+                    {{ collection.license_custom.description|markdownify }}
+                </div>
+{% else %}
+                {{ job.license }}
+{% endif %}
+            </dd>
+            <dt>{% translate "Language:" %}</dt>
+            <dd>{{ collection.language }}</dd>
+            <dt>{% translate "Retrieved from:" %}</dt>
+            <dd class="text-break"><a href="{{ collection.source_url }}" target="_blank">{{ collection.source_url }}</a></dd>
+        </dl>
+    </div>
+</div>
 
-    {% check_icon_vue_template %}
+<div class="row py-5 border-top">
+    <div class="col-sm fixed-sm-12">
+        <h2 class="h4 mb-3">{% translate "Data avaliable" %}</h2s>
+    </div>
+    <div class="col-sm">
+        <div class="row">
+            <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                <h3 class="h6">{% icon_check job.parties_count %}{% translate "Parties" %}</h3>
+                <dl class="pl-4 list-desc-inline">
+                    <dt>{% translate "Count of parties:" %}</dt>
+                    <dd>{{ job.parties_count|intcomma }}</dd>
+                </dl>
+            </div>
+            <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                <h3 class="h6">{% icon_check job.plannings_count %}{% translate "Plannings" %}</h3>
+                <dl class="pl-4 list-desc-inline">
+                    <dt>{% translate "Count of planning activities:" %}</dt>
+                    <dd>{{ job.plannings_count|intcomma }}</dd>
+                </dl>
+            </div>
+            <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                <h3 class="h6">{% icon_check job.tenders_count %}{% translate "Tenders" %}</h3>
+                <dl class="pl-4 list-desc-inline">
+                    <dt>{% translate "Count of tenders:" %}</dt>
+                    <dd>{{ job.tenders_count|intcomma }}
+                    </li>
+                    <dt>{% translate "Count of tenderers:" %}</dt>
+                    <dd>{{ job.tenderers_count|intcomma }}
+                    </li>
+                    <dt>{% translate "Count of tender items:" %}</dt>
+                    <dd>{{ job.tenders_items_count|intcomma }}</dd>
+                </dl>
+            </div>
+            <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                <h3 class="h6">{% icon_check job.awards_count %}{% translate "Awards" %}</h3>
+                <dl class="pl-4 list-desc-inline">
+                    <dt>{% translate "Count of awards:" %}</dt>
+                    <dd>{{ job.awards_count|intcomma }}
+                    </li>
+                    <dt>{% translate "Count of award suppliers:" %}</dt>
+                    <dd>{{ job.awards_suppliers_count|intcomma }}
+                    </li>
+                    <dt>{% translate "Count of award items:" %}</dt>
+                    <dd>{{ job.awards_items_count|intcomma }}</dd>
+                </dl>
+            </div>
+            <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                <h3 class="h6">{% icon_check job.contracts_count %}{% translate "Contracts" %}</h3>
+                <dl class="pl-4 list-desc-inline">
+                    <dt>{% translate "Count of contracts:" %}</dt>
+                    <dd>{{ job.contracts_count|intcomma }}
+                    </li>
+                    <dt>{% translate "Count of contract items:" %}</dt>
+                    <dd>{{ job.contracts_items_count|intcomma }}
+                    </li>
+                    <dt>{% translate "Count of contract transactions:" %}</dt>
+                    <dd>{{ job.contracts_transactions_count|intcomma }}</dd>
+                </dl>
+            </div>
+            <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                <h3 class="h6">{% icon_check job.documents_count %}{% translate "Documents" %}</h3>
+                <dl class="pl-4 list-desc-inline">
+                    <dt>{% translate "Count of documents:" %}</dt>
+                    <dd>{{ job.documents_count|intcomma }}</dd>
+                </dl>
+            </div>
+            <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                <h3 class="h6">{% icon_check job.milestones_count %}{% translate "Milestones" %}</h3>
+                <dl class="pl-4 list-desc-inline">
+                    <dt>{% translate "Count of milestones:" %}</dt>
+                    <dd>{{ job.milestones_count|intcomma }}</dd>
+                </dl>
+            </div>
+            <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                <h3 class="h6">{% icon_check job.amendments_count %}{% translate "Amendments" %}</h3>
+                <dl class="pl-4 list-desc-inline">
+                    <dt>{% translate "Count of amendments:" %}</dt>
+                    <dd>{{ job.amendments_count|intcomma }}</dd>
+                </dl>
+            </div>
+        </div>
 
-    {% dropdown_vue_template %}
+{% if collection.additional_data %}
+        <div class="d-flex p-4 rounded-xl bg-primary-20 text-primary">
+            <div class="flex-fill mt-1 mr-3">
+                {# https://icons.getbootstrap.com/icons/gem/ #}
+                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-gem b-icon" viewBox="0 0 16 16">
+                    <g transform="translate(8 8) scale(1.5 1.5) translate(-8 -8)">
+                        <path d="M3.1.7a.5.5 0 0 1 .4-.2h9a.5.5 0 0 1 .4.2l2.976 3.974c.149.185.156.45.01.644L8.4 15.3a.5.5 0 0 1-.8 0L.1 5.3a.5.5 0 0 1 0-.6l3-4zm11.386 3.785-1.806-2.41-.776 2.413 2.582-.003zm-3.633.004.961-2.989H4.186l.963 2.995 5.704-.006zM5.47 5.495 8 13.366l2.532-7.876-5.062.005zm-1.371-.999-.78-2.422-1.818 2.425 2.598-.003zM1.499 5.5l5.113 6.817-2.192-6.82L1.5 5.5zm7.889 6.817 5.123-6.83-2.928.002-2.195 6.828z"/>
+                    </g>
+                </svg>
+            </div>
+            <div class="flex-fill mb-n3">
+                {{ collection.additional_data|markdownify }}
+            </div>
+        </div>
+{% endif %}
+    </div>
+</div>
 
-    {% modal_vue_template %}
+<div class="row py-5 border-top">
+    <div class="col-sm fixed-sm-12">
+        <h2 class="h4 mb-3">{% translate "Data quality" %}</h2>
+    </div>
+    <div class="col-sm">
+        <h3 class="h5 mb-3">{% translate "Summary" %}</h3>
+        <div class="p-4 rounded-xl bg-light">
+{% if collection.summary %}
+            <div class="mb-n3">
+                {{ collection.summary|markdownify }}
+            </div>
+{% else %}
+            <p class="mb-0">{% translate "We have not yet prepared a data quality summary for this dataset." %}</p>
+{% endif %}
+        </div>
 
-    {% markdown_box_vue_template %}
+{% if collection.last_reviewed %}
+        <p class="mt-3 mb-0 font-italic small">
+            {% translate "Last reviewed:" %} {{ collection.last_reviewed|date:"M Y" }}
+        </p>
+{% endif %}
 
-    {{ data|json_script:"detail-data" }}
+{% if collection.issues %}
+        <h3 class="h5">{% translate "Issues found" %}</h3>
 
-    <script type="text/javascript">
-        const DATA = JSON.parse(document.getElementById('detail-data').textContent)
+        <ul class="list-unstyled">
+{% for issue in collection.issues %}
+            <li class="d-flex mb-n3">
+                {# https://icons.getbootstrap.com/icons/exclamation-circle/ #}
+                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-exclamation-circle b-icon mt-1 mr-2" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                    <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+                </svg>
+                {{ issue|markdownify }}
+            </li>
+{% endfor %}
+        </ul>
+{% endif %}
+    </div>
+</div>
 
-        const FEEDBACK_TYPE_OPTIONS = [
-            '{% trans "Broken link" %}',
-            '{% trans "Incorrect metadata" %}',
-            '{% trans "New data quality issue found" %}',
-            '{% trans "Advice for users of this data source" %}',
-            '{% trans "Other" %}',
-        ]
+<div class="py-5 border-top" id="access">
+    <div class="p-5 rounded-xl rounded-top-left-xl bg-info">
+        <h2>{% translate "Access data" %}</h2>
 
-        const JSON_YEAR_OPTIONS = JSON.parse("{{ export_years }}")
-    </script>
+        <p>{% translate "This OCDS dataset is available for download in JSON, Excel or CSV format. You can download the data for contracting processes in a specific year or for all time." %}</p>
+
+        <div class="row mb-n3">
+            <div class="col-sm-4 mt-3 mt-sm-0">
+                <h3>{% translate "JSON" %}</h3>
+                <p>
+                    {% translate "JSON files are compressed as GZ files." %}
+                    {% blocktranslate trimmed %}
+                    Windows users need <a href="https://www.7-zip.org">7-Zip</a>, <a href="https://www.win-rar.com">WinRAR</a> or <a href="https://www.winzip.com">WinZip</a> to decompress GZ files.
+                    {% endblocktranslate %}
+                </p>
+                <ul>
+                    <li>
+                        <a href="{% url 'download_export' %}?spider={{ collection.source_id }}&job_id={{ job.id }}&full=true" rel="nofollow" download>
+                        {% translate "All time" %}
+                    </a>
+                </li>
+{% for year in years.split %}
+                    <li>
+                        <a href="{% url 'download_export' %}?spider={{ collection.source_id }}&job_id={{ job.id }}&year={{ year }}" rel="nofollow" download>
+                        {{ year }}
+                    </a>
+                </li>
+{% endfor %}
+                </ul>
+            </div>
+            <div class="col-sm-4 mt-3 mt-sm-0">
+                <h3>{% translate "Excel" %}</h3>
+                <p>
+                    {% blocktranslate trimmed %}
+                    Excel files can have at most <a href="https://support.microsoft.com/en-us/office/excel-specifications-and-limits-1672b34d-7043-467e-8e27-269d656771c3">1,048,576 rows</a>. If a year is missing, it had too many rows.
+                    {% endblocktranslate %}
+            </div>
+            <div class="col-sm-4 mt-3 mt-sm-0">
+                <h3>{% translate "CSV" %}</h3>
+                <p>
+                    {% translate "CSV files are compressed as GZ files." %}
+                    {% blocktranslate trimmed %}
+                    Windows users need <a href="https://www.7-zip.org">7-Zip</a>, <a href="https://www.win-rar.com">WinRAR</a> or <a href="https://www.winzip.com">WinZip</a> to decompress GZ files.
+                    {% endblocktranslate %}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mb-4 p-5 rounded-xl rounded-top-left-xl bg-primary text-white">
+    <div class="row">
+        <div class="col-md d-flex align-items-center mb-3 mb-md-0">
+            {# https://icons.getbootstrap.com/icons/question-circle/ #}
+            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-question-circle b-icon mr-3" viewBox="0 0 16 16">
+                <g transform="translate(8 8) scale(1.5 1.5) translate(-8 -8)">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                    <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+                </g>
+            </svg>
+            {% translate "Have questions, feedback on this dataset or content on this page?" %}
+        </div>
+        <div class="col-md-auto d-flex align-items-center">
+            <a href="mailto:data@open-contracting.org?{% feedback_query_string_parameters %}" class="text-white">
+                {% icon_chevron "right" "mr-2" %} {% translate "Contact Data Support Team" %}
+            </a>
+        </div>
+    </div>
+</div>
 {% endblock %}

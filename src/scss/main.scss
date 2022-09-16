@@ -1,0 +1,223 @@
+@import "custom";
+// https://getbootstrap.com/docs/4.6/getting-started/theming/
+// https://github.com/twbs/bootstrap/blob/v4.6.2/scss/bootstrap.scss
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
+@import "~bootstrap/scss/root";
+// Content
+@import "~bootstrap/scss/reboot";
+@import "~bootstrap/scss/type";
+@import "~bootstrap/scss/images";
+// Layout
+@import "~bootstrap/scss/grid";
+// Components
+@import '~bootstrap/scss/forms';
+@import "~bootstrap/scss/buttons";
+@import '~bootstrap/scss/custom-forms';
+@import '~bootstrap/scss/card';
+@import '~bootstrap/scss/badge';
+// Utilities
+@import "~bootstrap/scss/utilities";
+@import "~bootstrap/scss/print";
+// https://github.com/bootstrap-vue/bootstrap-vue/blob/dev/src/icons/README.md#usage
+@import '~bootstrap-vue/src/icons';
+
+// Anchor
+
+.text-primary {
+    a {
+        text-decoration: underline;
+        &:hover {
+            text-decoration: none;
+        }
+    }
+}
+
+// Description list
+
+dt {
+    font-family: $font-family-thin;
+}
+
+.list-desc-grid {
+    display: grid;
+    grid-template-columns: max-content auto;
+    column-gap: $spacer;
+}
+
+.list-desc-grid dt {
+    grid-column-start: 1;
+}
+
+.list-desc-grid dd {
+    grid-column-start: 2;
+}
+
+.list-desc-inline dt,
+.list-desc-inline dd {
+    float: left;
+}
+
+.list-desc-inline dt {
+    clear: left;
+    padding-right: $spacer * 0.25;
+}
+
+// Border
+
+.border-wide {
+    border-width: 3px;
+}
+
+.rounded-xl {
+    border-radius: 10px;
+}
+
+.rounded-top-left-md {
+    border-top-left-radius: $spacer * 1.25 !important;
+}
+.rounded-bottom-right-md {
+    border-bottom-right-radius: $spacer * 1.25 !important;
+}
+
+.rounded-top-left-lg {
+    border-top-left-radius: $spacer * 2 !important;
+}
+
+.rounded-top-left-xl {
+    border-top-left-radius: $spacer * 2.5 !important;
+}
+
+// Background
+
+@for $i from 1 through 9 {
+    .bg-primary-#{ $i }0 {
+        background-color: rgba($primary, calc($i / 10));
+    }
+}
+
+// Text
+
+.extra-small {
+    font-size: 0.75em;
+}
+
+.text-lg {
+    font-size: 1.25rem !important;
+}
+
+.text-xl {
+    font-size: 2rem !important;
+}
+
+.text-sans-serif {
+    font-family: $font-family-sans-serif;
+}
+
+.text-thin {
+    font-family: $font-family-thin;
+}
+
+.text-decoration-underline {
+    text-decoration: underline;
+}
+
+// Fixed-width columns
+
+@for $i from 1 through 12 {
+    .fixed-#{$i} {
+        flex: 0 0 $spacer * $i;
+    }
+}
+
+@include media-breakpoint-up(sm) {
+    @for $i from 1 through 12 {
+        .fixed-sm-#{$i} {
+            flex: 0 0 $spacer * $i;
+        }
+    }
+}
+
+@include media-breakpoint-up(md) {
+    @for $i from 1 through 12 {
+        .fixed-md-#{$i} {
+            flex: 0 0 $spacer * $i;
+        }
+    }
+}
+
+// Chevron button
+
+.chevron-btn {
+    font-size: 24px;
+
+    .circle {
+        color: $secondary;
+    }
+    .chevron {
+        color: white;
+    }
+}
+
+.bg-primary .chevron-btn {
+    .circle {
+        color: inherit;
+    }
+    .chevron {
+        color: $primary;
+    }
+}
+
+.bg-info .chevron-btn,
+.btn-info .chevron-btn {
+    .circle {
+        color: inherit;
+    }
+    .chevron {
+        color: $info;
+    }
+}
+
+.bg-light .chevron-btn,
+.btn-light .chevron-btn {
+    .circle {
+        color: $primary;
+    }
+}
+
+*:hover > .chevron-btn {
+    .circle {
+        color: inherit;
+    }
+}
+
+// Letters
+
+$letter-size: $spacer * 2;
+
+.letters {
+    a,
+    span {
+        width: $letter-size;
+        height: $letter-size;
+        border-radius: $letter-size;
+        line-height: $letter-size;
+    }
+}
+
+// Results
+
+.clickable {
+    cursor: pointer;
+    background-color: #eeeeee;
+    &:hover {
+        background-color: darken(#eeeeee, 5%) !important;
+        .click {
+            color: darken($primary, 15%) !important;
+            text-decoration: underline;
+        }
+        .circle {
+            color: darken($primary, 15%) !important;
+        }
+    }
+}

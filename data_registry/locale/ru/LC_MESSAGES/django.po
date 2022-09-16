@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-25 18:02+0000\n"
+"POT-Creation-Date: 2022-08-26 01:17+0000\n"
 "PO-Revision-Date: 2021-08-04 17:44+0000\n"
 "Last-Translator: Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2021\n"
 "Language-Team: Russian (https://www.transifex.com/open-contracting-"
@@ -63,7 +63,7 @@ msgid "Basics"
 msgstr "Основы"
 
 #: data_registry/admin.py:197 data_registry/admin.py:309
-#: data_registry/templates/detail.html:73
+#: data_registry/templates/detail.html:74
 msgid "Overview"
 msgstr "Обзор"
 
@@ -75,27 +75,27 @@ msgstr "Подробности"
 msgid "Data availability"
 msgstr "Доступность данных"
 
-#: data_registry/templates/base.html:15
+#: data_registry/templates/base.html:16
 msgid "Data Registry"
 msgstr "Реестр данных"
 
-#: data_registry/templates/base.html:41
+#: data_registry/templates/base.html:42
 msgid "What is open contracting"
 msgstr "Что собой являет открытое контрактирование?"
 
-#: data_registry/templates/base.html:43
+#: data_registry/templates/base.html:44
 msgid "Impact"
 msgstr "Влияние"
 
-#: data_registry/templates/base.html:45
+#: data_registry/templates/base.html:46
 msgid "Implement"
 msgstr "Внедрение"
 
-#: data_registry/templates/base.html:47
+#: data_registry/templates/base.html:48
 msgid "About"
 msgstr "Про проект"
 
-#: data_registry/templates/base.html:49
+#: data_registry/templates/base.html:50
 msgid "Latest"
 msgstr "Последние"
 
@@ -103,205 +103,202 @@ msgstr "Последние"
 msgid "BACK TO DATASETS SEARCH"
 msgstr "Назад к поиску датасетов"
 
-#: data_registry/templates/detail.html:31
-#: data_registry/templates/search.html:150
+#: data_registry/templates/detail.html:33
+#: data_registry/templates/search.html:149
 msgid "OCDS"
 msgstr "OCDS"
 
-#: data_registry/templates/detail.html:36
+#: data_registry/templates/detail.html:39
+#: data_registry/templates/detail.html:108
 msgid "Show more"
 msgstr "Больше"
 
-#: data_registry/templates/detail.html:40
-#: data_registry/templates/search.html:161
+#: data_registry/templates/detail.html:44
+#: data_registry/templates/search.html:160
 msgid "Available formats:"
 msgstr "Доступные форматы"
 
-#: data_registry/templates/detail.html:54
+#: data_registry/templates/detail.html:58
 msgid "ACCESS"
 msgstr "Доступ"
 
-#: data_registry/templates/detail.html:64
-msgid "Show less"
-msgstr "Меньше"
-
-#: data_registry/templates/detail.html:77
-#: data_registry/templates/search.html:167
+#: data_registry/templates/detail.html:78
+#: data_registry/templates/search.html:166
 msgid "Data date range:"
 msgstr "Диапазон дат"
 
-#: data_registry/templates/detail.html:81
-#: data_registry/templates/search.html:181
+#: data_registry/templates/detail.html:82
+#: data_registry/templates/search.html:180
 msgid "Last updated:"
 msgstr "Последнее обновление"
 
-#: data_registry/templates/detail.html:85
-#: data_registry/templates/search.html:173
+#: data_registry/templates/detail.html:86
+#: data_registry/templates/search.html:172
 msgid "Update frequency:"
 msgstr "Периодичность обновлений"
 
-#: data_registry/templates/detail.html:87
-#: data_registry/templates/search.html:89
-#: data_registry/templates/search.html:175
+#: data_registry/templates/detail.html:89
+#: data_registry/templates/search.html:91
+#: data_registry/templates/search.html:174
 msgid "Monthly"
 msgstr "Ежемесячно"
 
-#: data_registry/templates/detail.html:88
-#: data_registry/templates/search.html:93
-#: data_registry/templates/search.html:176
+#: data_registry/templates/detail.html:91
+#: data_registry/templates/search.html:95
+#: data_registry/templates/search.html:175
 msgid "Every 6 months"
 msgstr "Каждые 6 месяцев"
 
-#: data_registry/templates/detail.html:89
-#: data_registry/templates/search.html:97
-#: data_registry/templates/search.html:177
+#: data_registry/templates/detail.html:93
+#: data_registry/templates/search.html:99
+#: data_registry/templates/search.html:176
 msgid "Annually"
 msgstr "Раз в год"
 
-#: data_registry/templates/detail.html:93
+#: data_registry/templates/detail.html:98
 msgid "OCID prefix:"
 msgstr "OCID префикс"
 
-#: data_registry/templates/detail.html:97
+#: data_registry/templates/detail.html:102
 msgid "License:"
 msgstr "Лицензия"
 
-#: data_registry/templates/detail.html:107
+#: data_registry/templates/detail.html:120
 msgid "Language:"
 msgstr "Язык"
 
-#: data_registry/templates/detail.html:111
+#: data_registry/templates/detail.html:124
 msgid "Retrieved from:"
 msgstr "Извлекаются из:"
 
-#: data_registry/templates/detail.html:119
+#: data_registry/templates/detail.html:132
 msgid "Data avaliable"
 msgstr "Доступные данные"
 
-#: data_registry/templates/detail.html:124
+#: data_registry/templates/detail.html:137
 msgid "Parties"
 msgstr "Стороны"
 
-#: data_registry/templates/detail.html:125
+#: data_registry/templates/detail.html:138
 msgid "Count of parties:"
 msgstr "Количество сторон"
 
-#: data_registry/templates/detail.html:128
+#: data_registry/templates/detail.html:141
 msgid "Plannings"
 msgstr "Планы"
 
-#: data_registry/templates/detail.html:129
+#: data_registry/templates/detail.html:142
 msgid "Count of planning activities:"
 msgstr "Количество запланированых мероприятий"
 
-#: data_registry/templates/detail.html:132
+#: data_registry/templates/detail.html:145
 msgid "Tenders"
 msgstr "Тендеры"
 
-#: data_registry/templates/detail.html:133
+#: data_registry/templates/detail.html:146
 msgid "Count of tenders:"
 msgstr "Количество тендеров:"
 
-#: data_registry/templates/detail.html:134
+#: data_registry/templates/detail.html:147
 msgid "Count of tenderers:"
 msgstr "Количество участников тендера:"
 
-#: data_registry/templates/detail.html:135
+#: data_registry/templates/detail.html:148
 msgid "Count of tender items:"
 msgstr "Количество айтемов в тендере:"
 
-#: data_registry/templates/detail.html:138
+#: data_registry/templates/detail.html:151
 msgid "Awards"
 msgstr "Присуждение"
 
-#: data_registry/templates/detail.html:139
+#: data_registry/templates/detail.html:152
 msgid "Count of awards:"
 msgstr "Количество присуждений:"
 
-#: data_registry/templates/detail.html:140
+#: data_registry/templates/detail.html:153
 msgid "Count of award items:"
 msgstr "Колиечство айтемов с присуждениями:"
 
-#: data_registry/templates/detail.html:141
+#: data_registry/templates/detail.html:154
 msgid "Count of award suppliers:"
 msgstr "Количество присужденных поставщиков:"
 
-#: data_registry/templates/detail.html:144
+#: data_registry/templates/detail.html:157
 msgid "Contracts"
 msgstr "Контракты"
 
-#: data_registry/templates/detail.html:145
+#: data_registry/templates/detail.html:158
 msgid "Count of contracts:"
 msgstr "Количество контрактов:"
 
-#: data_registry/templates/detail.html:146
+#: data_registry/templates/detail.html:159
 msgid "Count of contract items:"
 msgstr "Количество законтрактированных айтемов:"
 
-#: data_registry/templates/detail.html:147
+#: data_registry/templates/detail.html:160
 msgid "Count of contract transactions:"
 msgstr "Количество транзакций по контракту:"
 
-#: data_registry/templates/detail.html:150
-#: data_registry/templates/search.html:124
+#: data_registry/templates/detail.html:163
+#: data_registry/templates/search.html:126
 msgid "Documents"
 msgstr "Документы"
 
-#: data_registry/templates/detail.html:151
+#: data_registry/templates/detail.html:164
 msgid "Count of documents:"
 msgstr "Количество документов:"
 
-#: data_registry/templates/detail.html:154
+#: data_registry/templates/detail.html:167
 msgid "Milestones"
 msgstr "Этапы"
 
-#: data_registry/templates/detail.html:155
+#: data_registry/templates/detail.html:168
 msgid "Count of milestones:"
 msgstr "Количество этапов:"
 
-#: data_registry/templates/detail.html:158
+#: data_registry/templates/detail.html:171
 msgid "Amendments"
 msgstr "Изменения"
 
-#: data_registry/templates/detail.html:159
+#: data_registry/templates/detail.html:172
 msgid "Count of amendments:"
 msgstr "Количество изменений:"
 
-#: data_registry/templates/detail.html:176
+#: data_registry/templates/detail.html:193
 msgid "Data quality"
 msgstr "Качество данных"
 
-#: data_registry/templates/detail.html:179
+#: data_registry/templates/detail.html:196
 msgid "Summary"
 msgstr "Резюме"
 
-#: data_registry/templates/detail.html:182
+#: data_registry/templates/detail.html:201
 msgid "We have not yet prepared a data quality summary for this dataset."
 msgstr ""
 "Мы еще не подготовили сводку по качеству данных для этого набора данных."
 
-#: data_registry/templates/detail.html:186
+#: data_registry/templates/detail.html:207
 msgid "Last reviewed:"
 msgstr "Последний отзыв:"
 
-#: data_registry/templates/detail.html:189
+#: data_registry/templates/detail.html:212
 msgid "Issues found"
 msgstr "Проблем обнаружено"
 
-#: data_registry/templates/detail.html:202
+#: data_registry/templates/detail.html:227
 msgid "Access data"
 msgstr "Доступ к данным"
 
-#: data_registry/templates/detail.html:204
+#: data_registry/templates/detail.html:229
 msgid "The OCDS dataset is available to download as a JSON or Excel file."
 msgstr ""
 "Набор данных OCDS доступен для загрузки в виде файла JSON или Excel/CSV."
 
-#: data_registry/templates/detail.html:210
+#: data_registry/templates/detail.html:235
 msgid "JSON data"
 msgstr "JSON данные"
 
-#: data_registry/templates/detail.html:212
+#: data_registry/templates/detail.html:237
 msgid ""
 "Easily access dumps of data from the Open Contracting Partnership's "
 "Kingfisher database."
@@ -309,12 +306,12 @@ msgstr ""
 "Легкий доступ к данных из базы данных Kingfisher Open Contracting "
 "Partnership."
 
-#: data_registry/templates/detail.html:219
-#: data_registry/templates/detail.html:224
+#: data_registry/templates/detail.html:244
+#: data_registry/templates/detail.html:249
 msgid "Access JSON data"
 msgstr "Доступ к JSON данным"
 
-#: data_registry/templates/detail.html:226
+#: data_registry/templates/detail.html:251
 msgid ""
 "Please, choose how you would like to access the JSON data. You can either "
 "download the full history as one dataset or choose particular year that you "
@@ -324,11 +321,11 @@ msgstr ""
 "либо загрузить полную историю в виде одного набора данных, либо выбрать "
 "интересующий вас год."
 
-#: data_registry/templates/detail.html:234
+#: data_registry/templates/detail.html:259
 msgid "Full history dataset"
 msgstr "Набор исторических данных "
 
-#: data_registry/templates/detail.html:238
+#: data_registry/templates/detail.html:263
 msgid ""
 "Dataset containing the full history of available data for given source. "
 "Depending on the source, the file may be extremely large and might take some "
@@ -338,11 +335,11 @@ msgstr ""
 "источника. В зависимости от источника файл может быть очень большим и "
 "загрузка может занять некоторое время."
 
-#: data_registry/templates/detail.html:246
+#: data_registry/templates/detail.html:271
 msgid "Particular year dataset"
 msgstr "Набор данных за определенный год"
 
-#: data_registry/templates/detail.html:250
+#: data_registry/templates/detail.html:275
 msgid ""
 "This file will contain OCDS data for all fields provided by the publisher, "
 "but only for the year selected below. Depending on the source, the file may "
@@ -352,19 +349,19 @@ msgstr ""
 "издателем, но только за год, выбранный ниже. В зависимости от источника файл "
 "может быть очень большим, и его обработка может занять некоторое время."
 
-#: data_registry/templates/detail.html:260
+#: data_registry/templates/detail.html:285
 msgid "Choose year"
 msgstr "Выберите год"
 
-#: data_registry/templates/detail.html:272
+#: data_registry/templates/detail.html:297
 msgid "Download data"
 msgstr "Скачать данные"
 
-#: data_registry/templates/detail.html:280
+#: data_registry/templates/detail.html:305
 msgid "Excel data via OCP Flatten tool"
 msgstr "Данные Excel/CSV с помощью OCP Flatten Tool"
 
-#: data_registry/templates/detail.html:282
+#: data_registry/templates/detail.html:307
 msgid ""
 "Easily access data in Excel using the Open Contracting Partnership's Flatten "
 "Tool. This tool is designed to help users that prefer data in spreadsheets "
@@ -377,22 +374,22 @@ msgstr ""
 "небольшое количество полей / заголовков столбцов или настроить вывод своих "
 "электронных таблиц."
 
-#: data_registry/templates/detail.html:290
+#: data_registry/templates/detail.html:315
 msgid "Access Excel data"
 msgstr "Доступ к данным Excel/CSV"
 
-#: data_registry/templates/detail.html:303
+#: data_registry/templates/detail.html:328
 msgid "Have questions, feedback on this dataset or content on this page?"
 msgstr ""
 "Есть ли у вас вопросы, отзывы об этом наборе данных или содержимом этой "
 "страницы?"
 
-#: data_registry/templates/detail.html:306
+#: data_registry/templates/detail.html:331
 msgid "Contact OCP helpdesk"
 msgstr "Обратитесь в службу поддержки OCP"
 
-#: data_registry/templates/detail.html:311
-#: data_registry/templates/detail.html:350
+#: data_registry/templates/detail.html:336
+#: data_registry/templates/detail.html:375
 #, python-format
 msgid ""
 "<span class=\"light\">You can also email us at</span> <span>"
@@ -403,7 +400,7 @@ msgstr ""
 "%(feedback_email)s</span><span class=\"light\">. Мы стараемся обрабатывать и "
 "отвечать на все запросы</span>"
 
-#: data_registry/templates/detail.html:318
+#: data_registry/templates/detail.html:343
 msgid ""
 "Our mission is to continually improve the quality of procurement data. We "
 "welcome feedback from the users of data and the open data community."
@@ -411,55 +408,59 @@ msgstr ""
 "Наша миссия - постоянно улучшать качество данных о закупках. Мы приветствуем "
 "отзывы пользователей данных и сообщества открытых данных."
 
-#: data_registry/templates/detail.html:324
+#: data_registry/templates/detail.html:349
 msgid ""
 "To provide specific feedback on the data source, please complete the form "
 "below."
 msgstr "Чтобы оставить отзыв об источнике данных, заполните форму ниже."
 
-#: data_registry/templates/detail.html:329
+#: data_registry/templates/detail.html:354
 msgid "Type of feedback"
 msgstr "Тип обратной связи"
 
-#: data_registry/templates/detail.html:338
+#: data_registry/templates/detail.html:363
 msgid "Please provide your feedback in more detail below"
 msgstr "Пожалуйста, оставьте более подродный отзыв ниже"
 
-#: data_registry/templates/detail.html:345
+#: data_registry/templates/detail.html:370
 msgid "Close"
 msgstr "Закрыть"
 
-#: data_registry/templates/detail.html:357
+#: data_registry/templates/detail.html:382
 msgid "Submit feedback"
 msgstr "Отправить отзыв"
 
-#: data_registry/templates/detail.html:363
+#: data_registry/templates/detail.html:392
 msgid "Thanks for your feedback!"
 msgstr "Спасибо за ваш отзыв"
 
-#: data_registry/templates/detail.html:366
+#: data_registry/templates/detail.html:395
 msgid "Send feedback for"
 msgstr "Отправить отзыв для"
 
-#: data_registry/templates/detail.html:390
+#: data_registry/templates/detail.html:405
 msgid "Broken link"
 msgstr "Неработающая ссылка"
 
-#: data_registry/templates/detail.html:391
+#: data_registry/templates/detail.html:406
 msgid "Incorrect metadata"
 msgstr "Неверные метаданные"
 
-#: data_registry/templates/detail.html:392
+#: data_registry/templates/detail.html:407
 msgid "New data quality issue found"
 msgstr "Обнаружена новая проблема с качеством данных"
 
-#: data_registry/templates/detail.html:393
+#: data_registry/templates/detail.html:408
 msgid "Advice for users of this data source"
 msgstr "Совет для пользователей этого источника данных"
 
-#: data_registry/templates/detail.html:394
+#: data_registry/templates/detail.html:409
 msgid "Other"
 msgstr "Другое"
+
+#: data_registry/templates/header.html:27
+msgid "Select language"
+msgstr ""
 
 #: data_registry/templates/index.html:9
 msgid "OCP Data Registry"
@@ -554,60 +555,60 @@ msgstr "Очистить выборку"
 msgid "Data date range"
 msgstr "Диапазон дат данных"
 
-#: data_registry/templates/search.html:69
+#: data_registry/templates/search.html:70
 msgid "Start date"
 msgstr "Дата начала"
 
-#: data_registry/templates/search.html:72
-#: data_registry/templates/search.html:82
+#: data_registry/templates/search.html:73
+#: data_registry/templates/search.html:84
 msgid "Reset"
 msgstr "Перезагрузить"
 
-#: data_registry/templates/search.html:79
+#: data_registry/templates/search.html:81
 msgid "End date"
 msgstr "Конечная дата"
 
-#: data_registry/templates/search.html:86
+#: data_registry/templates/search.html:88
 msgid "Update frequency"
 msgstr "Частота обновления"
 
-#: data_registry/templates/search.html:100
+#: data_registry/templates/search.html:102
 msgid "Data contains"
 msgstr "Данные содержат"
 
-#: data_registry/templates/search.html:103
+#: data_registry/templates/search.html:105
 msgid "Parties data"
 msgstr "Данные о сторонах"
 
-#: data_registry/templates/search.html:107
+#: data_registry/templates/search.html:109
 msgid "Plannings data"
 msgstr "Данные о планировании"
 
-#: data_registry/templates/search.html:111
+#: data_registry/templates/search.html:113
 msgid "Tenders data"
 msgstr "Данные о тендерах"
 
-#: data_registry/templates/search.html:116
+#: data_registry/templates/search.html:118
 msgid "Awards data"
 msgstr "Данные о присуждениях"
 
-#: data_registry/templates/search.html:120
+#: data_registry/templates/search.html:122
 msgid "Contracts data"
 msgstr "Данные о контрактах"
 
-#: data_registry/templates/search.html:128
+#: data_registry/templates/search.html:130
 msgid "Milestones data"
 msgstr "Данные о этапах"
 
-#: data_registry/templates/search.html:132
+#: data_registry/templates/search.html:134
 msgid "Amendments data"
 msgstr "Данные о изменениях"
 
-#: data_registry/templates/search.html:140
+#: data_registry/templates/search.html:139
 msgid "datasets found"
 msgstr "Набор данных найден"
 
-#: data_registry/templates/search.html:156
+#: data_registry/templates/search.html:155
 msgid ""
 "This collection does not completely overlap with the selected date range. "
 "Date range matched: "
@@ -615,26 +616,29 @@ msgstr ""
 "Эта выборка не полностью совпадает с выбранным диапазоном дат. "
 "Соответствующий диапазон дат:"
 
-#: data_registry/templates/search.html:188
+#: data_registry/templates/search.html:187
 msgid "See details"
 msgstr "Смотреть детали"
 
-#: data_registry/templates/search.html:212 data_registry/views/general.py:139
+#: data_registry/templates/search.html:203 data_registry/views.py:135
 msgid "All"
 msgstr "Все"
 
-#: data_registry/templates/search.html:213
+#: data_registry/templates/search.html:204
 msgid "Past year"
 msgstr "Прошлый год"
 
-#: data_registry/templates/search.html:214
+#: data_registry/templates/search.html:205
 msgid "Past 6 months"
 msgstr "Прошедшие 6 месяцев"
 
-#: data_registry/templates/search.html:215
+#: data_registry/templates/search.html:206
 msgid "Custom"
 msgstr "Обычный"
 
-#: data_registry/views/general.py:177
+#: data_registry/views.py:173
 msgid "OCP Kingfisher Database"
 msgstr "База данных OCP Kingfisher"
+
+#~ msgid "Show less"
+#~ msgstr "Меньше"
