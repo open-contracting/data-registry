@@ -1,7 +1,7 @@
 {% load i18n %}
 {% load registry %}
 
-<h3 class="h5 mt-4">{% translate title %}</h3>
+<h3 class="h5 mt-4">{{ title }}</h3>
 <div class="filterable" data-key="{{ key }}" data-method="append">
 {% for value, label in items %}
     <div class="custom-control custom-checkbox">

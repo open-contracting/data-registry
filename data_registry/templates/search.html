@@ -52,10 +52,10 @@
 {% endfor %}
         </ul>
 
-        {% radiobuttons "Data date range" "date_range" date_ranges.items facets.date_ranges %}
+        {% radiobuttons _("Data date range") "date_range" date_ranges.items facets.date_ranges %}
         {% endradiobuttons %}
-        {% checkboxes "Update frequency" "update_frequency" frequencies facets.frequencies %}
-        {% checkboxes "Data contains" "counts" counts.items facets.counts %}
+        {% checkboxes _("Update frequency") "update_frequency" frequencies facets.frequencies %}
+        {% checkboxes _("Data contains") "counts" counts.items facets.counts %}
     </div>
 
     <div class="col-md-9 col-xl-10">
@@ -94,7 +94,7 @@
                     <dl class="mb-0 mb-md-n2 list-desc-inline">
                         <dt>{% translate "Data date range:" %}</dt>
                         <dd>{{ collection.date_from|date:"M Y" }} - {{ collection.date_to|date:"M Y" }}</dd>
-                        <dt>{% translate "Retrieval frequency:" %}</dt>
+                        <dt>{% translate "Update frequency:" %}</dt>
                         <dd>{{ collection.get_update_frequency_display }}</dd>
                         <dt>{% translate "Last retrieved:" %}</dt>
                         <dd>{{ collection.last_update|date:"M Y" }}</dd>
