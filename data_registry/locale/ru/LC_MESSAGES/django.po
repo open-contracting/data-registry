@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-16 18:37+0000\n"
+"POT-Creation-Date: 2022-09-16 23:07+0000\n"
 "PO-Revision-Date: 2021-08-04 17:44+0000\n"
 "Last-Translator: Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2021\n"
 "Language-Team: Russian (https://www.transifex.com/open-contracting-"
@@ -75,15 +75,15 @@ msgstr "Подробности"
 msgid "Data availability"
 msgstr "Доступность данных"
 
-#: data_registry/models.py:163 data_registry/templates/detail.html:79
+#: data_registry/models.py:153 data_registry/templates/detail.html:79
 msgid "Monthly"
 msgstr "Ежемесячно"
 
-#: data_registry/models.py:164 data_registry/templates/detail.html:81
+#: data_registry/models.py:154 data_registry/templates/detail.html:81
 msgid "Every 6 months"
 msgstr "Каждые 6 месяцев"
 
-#: data_registry/models.py:165 data_registry/templates/detail.html:83
+#: data_registry/models.py:155 data_registry/templates/detail.html:83
 msgid "Annually"
 msgstr "Раз в год"
 
@@ -306,22 +306,30 @@ msgid ""
 msgstr ""
 
 #: data_registry/templates/detail.html:258
-msgid "JSON files are compressed as GZ files."
-msgstr ""
-
-#: data_registry/templates/detail.html:259
-#: data_registry/templates/detail.html:289
 msgid ""
-"Windows users need <a href=\"https://www.7-zip.org\">7-Zip</a>, <a href="
-"\"https://www.win-rar.com\">WinRAR</a> or <a href=\"https://www.winzip.com"
-"\">WinZip</a> to decompress GZ files."
+"Each contracting process is represented as one line of JSON text in the "
+"<code>.jsonl</code> file."
 msgstr ""
 
-#: data_registry/templates/detail.html:266
+#: data_registry/templates/detail.html:263
+msgid ""
+"The <code>.jsonl</code> file is compressed using Gzip. Windows users need <a "
+"href=\"https://www.7-zip.org\">7-Zip</a>, <a href=\"https://www.win-rar.com"
+"\">WinRAR</a> or <a href=\"https://www.winzip.com\">WinZip</a> to decompress "
+"the <code>.gz</code> file."
+msgstr ""
+
+#: data_registry/templates/detail.html:270
 msgid "All time"
 msgstr ""
 
-#: data_registry/templates/detail.html:281
+#: data_registry/templates/detail.html:285
+msgid ""
+"Each contracting process is represented as one row in the <code>main</code> "
+"sheet. Other sheets link to it via the <code>_link_main</code> column."
+msgstr ""
+
+#: data_registry/templates/detail.html:290
 msgid ""
 "Excel files can have at most <a href=\"https://support.microsoft.com/en-us/"
 "office/excel-specifications-and-"
@@ -329,17 +337,27 @@ msgid ""
 "is missing, it had too many rows."
 msgstr ""
 
-#: data_registry/templates/detail.html:288
-msgid "CSV files are compressed as GZ files."
+#: data_registry/templates/detail.html:298
+msgid ""
+"Each contracting process is represented as one row in the <code>main.csv</"
+"code> file. Other files link to it via the <code>_link_main</code> column."
 msgstr ""
 
-#: data_registry/templates/detail.html:308
+#: data_registry/templates/detail.html:303
+msgid ""
+"The <code>.csv</code> files are archived using tar and compressed using "
+"Gzip. Windows users need <a href=\"https://www.7-zip.org\">7-Zip</a>, <a "
+"href=\"https://www.win-rar.com\">WinRAR</a> or <a href=\"https://www.winzip."
+"com\">WinZip</a> to decompress the <code>.tar.gz</code> file."
+msgstr ""
+
+#: data_registry/templates/detail.html:322
 msgid "Have questions, feedback on this dataset or content on this page?"
 msgstr ""
 "Есть ли у вас вопросы, отзывы об этом наборе данных или содержимом этой "
 "страницы?"
 
-#: data_registry/templates/detail.html:312
+#: data_registry/templates/detail.html:326
 msgid "Contact Data Support Team"
 msgstr ""
 

@@ -255,9 +255,13 @@
             <div class="col-sm-4 mt-3 mt-sm-0">
                 <h3>JSON</h3>
                 <p>
-                    {% translate "JSON files are compressed as GZ files." %}
                     {% blocktranslate trimmed %}
-                    Windows users need <a href="https://www.7-zip.org">7-Zip</a>, <a href="https://www.win-rar.com">WinRAR</a> or <a href="https://www.winzip.com">WinZip</a> to decompress GZ files.
+                    Each contracting process is represented as one line of JSON text in the <code>.jsonl</code> file.
+                    {% endblocktranslate %}
+                </p>
+                <p>
+                    {% blocktranslate trimmed %}
+                    The <code>.jsonl</code> file is compressed using Gzip. Windows users need <a href="https://www.7-zip.org">7-Zip</a>, <a href="https://www.win-rar.com">WinRAR</a> or <a href="https://www.winzip.com">WinZip</a> to decompress the <code>.gz</code> file.
                     {% endblocktranslate %}
                 </p>
                 <ul>
@@ -279,15 +283,25 @@
                 <h3>Excel</h3>
                 <p>
                     {% blocktranslate trimmed %}
+                    Each contracting process is represented as one row in the <code>main</code> sheet. Other sheets link to it via the <code>_link_main</code> column.
+                    {% endblocktranslate %}
+                </p>
+                <p>
+                    {% blocktranslate trimmed %}
                     Excel files can have at most <a href="https://support.microsoft.com/en-us/office/excel-specifications-and-limits-1672b34d-7043-467e-8e27-269d656771c3">1,048,576 rows</a>. If a year is missing, it had too many rows.
                     {% endblocktranslate %}
+                </p>
             </div>
             <div class="col-sm-4 mt-3 mt-sm-0">
                 <h3>CSV</h3>
                 <p>
-                    {% translate "CSV files are compressed as GZ files." %}
                     {% blocktranslate trimmed %}
-                    Windows users need <a href="https://www.7-zip.org">7-Zip</a>, <a href="https://www.win-rar.com">WinRAR</a> or <a href="https://www.winzip.com">WinZip</a> to decompress GZ files.
+                    Each contracting process is represented as one row in the <code>main.csv</code> file. Other files link to it via the <code>_link_main</code> column.
+                    {% endblocktranslate %}
+                </p>
+                <p>
+                    {% blocktranslate trimmed %}
+                    The <code>.csv</code> files are archived using tar and compressed using Gzip. Windows users need <a href="https://www.7-zip.org">7-Zip</a>, <a href="https://www.win-rar.com">WinRAR</a> or <a href="https://www.winzip.com">WinZip</a> to decompress the <code>.tar.gz</code> file.
                     {% endblocktranslate %}
                 </p>
             </div>
