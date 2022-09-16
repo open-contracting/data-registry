@@ -3,7 +3,7 @@ WORKDIR /workdir
 COPY package*.json ./
 RUN npm install
 COPY src ./src
-RUN npm run build
+RUN npx webpack
 
 FROM python:3.8 as build-stage-django
 
