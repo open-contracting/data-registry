@@ -1,8 +1,8 @@
 FROM node:16 as build-stage-webpack
 WORKDIR /workdir
 COPY package*.json ./
-COPY webpack.config.json ./
-COPY postcss.config.json ./
+COPY webpack.config.js ./
+COPY postcss.config.js ./
 RUN npm install
 COPY src ./src
 RUN npx webpack --mode production
