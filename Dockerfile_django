@@ -27,7 +27,7 @@ ENV WEB_CONCURRENCY=2
 
 RUN python manage.py compilemessages
 RUN python manage.py compilejsi18n
-# Django needs a copy of staticfiles.json.
+# Django needs a copy of staticfiles.json for ManifestStaticFilesStorage to work.
 RUN npx webpack --mode production
 RUN python manage.py collectstatic --noinput -v2
 
