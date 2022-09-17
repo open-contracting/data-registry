@@ -13,20 +13,19 @@ register = template.Library()
 
 
 class BlockInclusionNode(InclusionNode):
-    def __init__(self, func, takes_context, args, kwargs, filename, nodelist, variable_name):
+    def __init__(self, func, takes_context, args, kwargs, filename, nodelist):
         super().__init__(func, takes_context, args, kwargs, filename)
         self.nodelist = nodelist
-        self.variable_name = variable_name
 
     def render(self, context):
-        context[self.variable_name] = self.nodelist.render(context)
+        context["content"] = self.nodelist.render(context)
         return super().render(context)
 
 
 # https://docs.djangoproject.com/en/3.2/howto/custom-template-tags/#parsing-until-another-block-tag-and-saving-contents
 # https://github.com/django/django/blob/stable/3.2.x/django/template/library.py#L136
 # https://github.com/jameelhamdan/django-block-inclusion-tag/blob/master/tags.py
-def block_inclusion_tag(filename, func=None, takes_context=None, name=None, variable_name="content"):
+def block_inclusion_tag(filename, func=None, takes_context=None, name=None):
     def dec(func):
         params, varargs, varkw, defaults, kwonly, kwonly_defaults, _ = getfullargspec(unwrap(func))
         function_name = name or getattr(func, "_decorated_function", func).__name__
@@ -57,7 +56,6 @@ def block_inclusion_tag(filename, func=None, takes_context=None, name=None, vari
                 kwargs,
                 filename,
                 nodelist,
-                variable_name,
             )
 
         register.tag(function_name, compile_func)
@@ -126,7 +124,7 @@ def radiobuttons(context, title, key, items, facet_counts):
         "items": items,
         "facet_counts": facet_counts,
         "request": context["request"],
-        "content": context["content"],
+        "content": context["content"],  # passing the content via the context is simpler than via an arg
     }
 
 
