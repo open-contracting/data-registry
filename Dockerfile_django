@@ -1,4 +1,21 @@
-FROM nikolaik/python-nodejs:python3.8-nodejs16
+FROM nikolaik/python-nodejs:python3.8-nodejs16 as build-stage
+
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install --no-cache-dir -r /tmp/requirements.txt
+
+WORKDIR /workdir
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+ENV DJANGO_ENV=production
+
+RUN npx webpack --mode production
+RUN python manage.py collectstatic --noinput -v2
+
+FROM python:3.8
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
       gettext \
@@ -16,21 +33,14 @@ RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
 WORKDIR /workdir
 USER runner:runner
-
-COPY package*.json ./
-RUN npm install
-
 COPY --chown=runner:runner . .
+COPY --from=build-stage --chown=runner:runner /workdir/core/static /workdir/core/static
 
 ENV DJANGO_ENV=production
 ENV WEB_CONCURRENCY=2
 
 RUN python manage.py compilemessages
 RUN python manage.py compilejsi18n
-
-# Django needs a copy of staticfiles.json for ManifestStaticFilesStorage to work.
-RUN npx webpack --mode production
-RUN python manage.py collectstatic --noinput -v2
 
 EXPOSE 8000
 CMD ["gunicorn", "core.wsgi", "--bind", "0.0.0.0:8000", "--worker-tmp-dir", "/dev/shm", "--threads", "2", "--name", "data-registry"]
