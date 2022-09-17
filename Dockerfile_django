@@ -13,6 +13,7 @@ COPY . .
 ENV DJANGO_ENV=production
 
 RUN npx webpack --mode production
+RUN python manage.py compilejsi18n
 RUN python manage.py collectstatic --noinput -v2
 
 FROM python:3.8
@@ -42,7 +43,6 @@ ENV DJANGO_ENV=production
 ENV WEB_CONCURRENCY=2
 
 RUN python manage.py compilemessages
-RUN python manage.py compilejsi18n
 
 EXPOSE 8000
 CMD ["gunicorn", "core.wsgi", "--bind", "0.0.0.0:8000", "--worker-tmp-dir", "/dev/shm", "--threads", "2", "--name", "data-registry"]

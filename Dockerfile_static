@@ -13,6 +13,7 @@ COPY . .
 ENV DJANGO_ENV=production
 
 RUN npx webpack --mode production
+RUN python manage.py compilejsi18n
 RUN python manage.py collectstatic --noinput -v2
 
 FROM nginxinc/nginx-unprivileged:latest as production-stage
