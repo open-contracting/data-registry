@@ -159,9 +159,8 @@ STATIC_ROOT = BASE_DIR / "static"
 
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
-if not production:
-    # https://django-statici18n.readthedocs.io/en/v2.3.1/faq.html#using-a-placeholder-directory
-    STATICFILES_DIRS = [BASE_DIR / "core" / "static"]  # webpack.config.js
+# https://django-statici18n.readthedocs.io/en/v2.3.1/faq.html#using-a-placeholder-directory
+STATICFILES_DIRS = [BASE_DIR / "core" / "static"]  # webpack.config.js
 
 # https://docs.djangoproject.com/en/3.2/topics/logging/#django-security
 LOGGING = {
