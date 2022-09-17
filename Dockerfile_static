@@ -1,28 +1,21 @@
-FROM node:16 as build-stage-webpack
-WORKDIR /workdir
-COPY package*.json ./
-COPY webpack.config.js ./
-COPY postcss.config.js ./
-RUN npm install
-COPY src ./src
-RUN npx webpack --mode production
+FROM nikolaik/python-nodejs:python3.8-nodejs16 as build-stage
 
-FROM python:3.8 as build-stage-django
+WORKDIR /workdir
+
+COPY package*.json ./
+RUN npm install
 
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
-WORKDIR /workdir
 COPY . .
 
 ENV DJANGO_ENV=production
 
+RUN npx webpack --mode production
 RUN python manage.py collectstatic --noinput
 
 FROM nginxinc/nginx-unprivileged:latest as production-stage
 USER root
-# Destination of `npx webpack` above is set by webpack.config.js.
-COPY --chown=nginx:root --from=build-stage-webpack /workdir/core/static /usr/share/nginx/html/static
-# Destination of `manage.py collectstatic` above is set by STATIC_ROOT in core/settings.py.
-COPY --from=build-stage-django --chown=nginx:root /workdir/static /usr/share/nginx/html/static
+COPY --from=build-stage --chown=nginx:root /workdir/static /usr/share/nginx/html/static
 USER nginx
