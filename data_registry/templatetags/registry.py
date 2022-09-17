@@ -112,7 +112,7 @@ def checkboxes(context, title, key, items, facet_counts):
     }
 
 
-@block_inclusion_tag("includes/facet_radiobuttons.html", takes_context=True)
+@register.inclusion_tag("includes/facet_radiobuttons.html", takes_context=True)
 def radiobuttons(context, title, key, items, facet_counts):
     return {
         "title": title,
