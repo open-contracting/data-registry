@@ -13,8 +13,13 @@ register = template.Library()
 
 
 class BlockInclusionNode(InclusionNode):
+    def __init__(self, func, takes_context, args, kwargs, filename, nodelist, variable_name):
+        super().__init__(func, takes_context, args, kwargs, filename)
+        self.nodelist = nodelist
+        self.variable_name = variable_name
+
     def render(self, context):
-        context[self.kwargs.pop("variable_name")] = self.kwargs.pop("nodelist").render(context)
+        context[self.variable_name] = self.nodelist.render(context)
         return super().render(context)
 
 
@@ -42,8 +47,7 @@ def block_inclusion_tag(filename, func=None, takes_context=None, name=None, vari
                 function_name,
             )
 
-            kwargs["variable_name"] = variable_name
-            kwargs["nodelist"] = parser.parse((f"end{function_name}",))
+            nodelist = parser.parse((f"end{function_name}",))
             parser.delete_first_token()
 
             return BlockInclusionNode(
@@ -52,6 +56,8 @@ def block_inclusion_tag(filename, func=None, takes_context=None, name=None, vari
                 args,
                 kwargs,
                 filename,
+                nodelist,
+                variable_name,
             )
 
         register.tag(function_name, compile_func)
@@ -112,7 +118,7 @@ def checkboxes(context, title, key, items, facet_counts):
     }
 
 
-@register.inclusion_tag("includes/facet_radiobuttons.html", takes_context=True)
+@block_inclusion_tag("includes/facet_radiobuttons.html", takes_context=True)
 def radiobuttons(context, title, key, items, facet_counts):
     return {
         "title": title,
@@ -120,6 +126,7 @@ def radiobuttons(context, title, key, items, facet_counts):
         "items": items,
         "facet_counts": facet_counts,
         "request": context["request"],
+        "content": context["content"],
     }
 
 

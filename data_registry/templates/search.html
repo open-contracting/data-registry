@@ -53,6 +53,7 @@
         </ul>
 
         {% radiobuttons _("Data date range") "date_range" date_ranges.items facets.date_ranges %}
+        {% endradiobuttons %}
         {% checkboxes _("Update frequency") "update_frequency" frequencies facets.frequencies %}
         {% checkboxes _("Data contains") "counts" counts.items facets.counts %}
     </div>
