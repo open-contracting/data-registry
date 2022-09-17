@@ -34,7 +34,9 @@ RUN pip install --no-cache-dir -r /tmp/requirements.txt
 WORKDIR /workdir
 USER runner:runner
 COPY --chown=runner:runner . .
-COPY --from=build-stage --chown=runner:runner /workdir/core/static /workdir/core/static
+
+# Django needs a copy of the staticfiles.json manifest file.
+COPY --from=build-stage --chown=runner:runner /workdir/static/staticfiles.json /workdir/static/staticfiles.json
 
 ENV DJANGO_ENV=production
 ENV WEB_CONCURRENCY=2
