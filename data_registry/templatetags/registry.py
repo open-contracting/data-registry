@@ -120,7 +120,6 @@ def radiobuttons(context, title, key, items, facet_counts):
         "items": items,
         "facet_counts": facet_counts,
         "request": context["request"],
-        "content": context["content"],
     }
 
 
