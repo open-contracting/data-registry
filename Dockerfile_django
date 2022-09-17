@@ -1,20 +1,24 @@
-FROM python:3.8
+FROM nikolaik/python-nodejs:python3.8-nodejs16
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
       gettext \
    && rm -rf /var/lib/apt/lists/*
 
+RUN groupadd -r runner && useradd --no-log-init -r -g runner runner
+
+# Must match the settings.KINGFISHER_COLLECT_FILES_STORE default value.
+RUN mkdir -p /data/collect && chown -R runner:runner /data/collect
+# Must match the settings.EXPORTER_DIR default value.
+RUN mkdir -p /data/exporter && chown -R runner:runner /data/exporter
+
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
-RUN groupadd -r runner && useradd --no-log-init -r -g runner runner
-
-# Must match the settings.EXPORTER_DIR default value.
-RUN mkdir -p /data/exporter && chown -R runner:runner /data/exporter
-# Must match the settings.KINGFISHER_COLLECT_FILES_STORE default value.
-RUN mkdir -p /data/collect && chown -R runner:runner /data/collect
-
 WORKDIR /workdir
+
+COPY package*.json ./
+RUN npm install
+
 USER runner:runner
 COPY --chown=runner:runner . .
 
@@ -23,6 +27,9 @@ ENV WEB_CONCURRENCY=2
 
 RUN python manage.py compilemessages
 RUN python manage.py compilejsi18n
+# Django needs a copy of staticfiles.json.
+RUN npx webpack --mode production
+RUN python manage.py collectstatic --noinput -v2
 
 EXPOSE 8000
 CMD ["gunicorn", "core.wsgi", "--bind", "0.0.0.0:8000", "--worker-tmp-dir", "/dev/shm", "--threads", "2", "--name", "data-registry"]
