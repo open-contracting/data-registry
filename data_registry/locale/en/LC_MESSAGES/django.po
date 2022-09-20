@@ -2,11 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 # Translators:
 # Georg <gneumann@open-contracting.org>, 2021
-# Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2021
-#
+# Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2022
+# James McKinney, 2022
+# 
 #, fuzzy
 msgid ""
 msgstr ""
@@ -14,13 +15,12 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-16 23:07+0000\n"
 "PO-Revision-Date: 2021-08-04 17:44+0000\n"
-"Last-Translator: Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2021\n"
-"Language-Team: English (https://www.transifex.com/open-contracting-"
-"partnership-1/teams/123427/en/)\n"
-"Language: en\n"
+"Last-Translator: James McKinney, 2022\n"
+"Language-Team: English (https://www.transifex.com/open-contracting-partnership-1/teams/123427/en/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data_registry/admin.py:23
@@ -128,7 +128,8 @@ msgstr ""
 "This work by the Open Contracting Partnership, unless otherwise noted, is "
 "licensed under a Creative Commons Attribution 4.0 International License."
 
-#: data_registry/templates/base.html:139 data_registry/templates/header.html:12
+#: data_registry/templates/base.html:139
+#: data_registry/templates/header.html:12
 msgid "Open Contracting Partnership"
 msgstr "Open Contracting Partnership"
 
@@ -316,15 +317,15 @@ msgstr ""
 
 #: data_registry/templates/detail.html:263
 msgid ""
-"The <code>.jsonl</code> file is compressed using Gzip. Windows users need <a "
-"href=\"https://www.7-zip.org\">7-Zip</a>, <a href=\"https://www.win-rar.com"
-"\">WinRAR</a> or <a href=\"https://www.winzip.com\">WinZip</a> to decompress "
-"the <code>.gz</code> file."
+"The <code>.jsonl</code> file is compressed using Gzip. Windows users need <a"
+" href=\"https://www.7-zip.org\">7-Zip</a>, <a href=\"https://www.win-"
+"rar.com\">WinRAR</a> or <a href=\"https://www.winzip.com\">WinZip</a> to "
+"decompress the <code>.gz</code> file."
 msgstr ""
-"The <code>.jsonl</code> file is compressed using Gzip. Windows users need <a "
-"href=\"https://www.7-zip.org\">7-Zip</a>, <a href=\"https://www.win-rar.com"
-"\">WinRAR</a> or <a href=\"https://www.winzip.com\">WinZip</a> to decompress "
-"the <code>.gz</code> file."
+"The <code>.jsonl</code> file is compressed using Gzip. Windows users need <a"
+" href=\"https://www.7-zip.org\">7-Zip</a>, <a href=\"https://www.win-"
+"rar.com\">WinRAR</a> or <a href=\"https://www.winzip.com\">WinZip</a> to "
+"decompress the <code>.gz</code> file."
 
 #: data_registry/templates/detail.html:270
 msgid "All time"
@@ -340,35 +341,39 @@ msgstr ""
 
 #: data_registry/templates/detail.html:290
 msgid ""
-"Excel files can have at most <a href=\"https://support.microsoft.com/en-us/"
-"office/excel-specifications-and-"
+"Excel files can have at most <a href=\"https://support.microsoft.com/en-"
+"us/office/excel-specifications-and-"
 "limits-1672b34d-7043-467e-8e27-269d656771c3\">1,048,576 rows</a>. If a year "
 "is missing, it had too many rows."
 msgstr ""
-"Excel files can have at most <a href=\"https://support.microsoft.com/en-us/"
-"office/excel-specifications-and-"
+"Excel files can have at most <a href=\"https://support.microsoft.com/en-"
+"us/office/excel-specifications-and-"
 "limits-1672b34d-7043-467e-8e27-269d656771c3\">1,048,576 rows</a>. If a year "
 "is missing, it had too many rows."
 
 #: data_registry/templates/detail.html:298
 msgid ""
-"Each contracting process is represented as one row in the <code>main.csv</"
-"code> file. Other files link to it via the <code>_link_main</code> column."
+"Each contracting process is represented as one row in the "
+"<code>main.csv</code> file. Other files link to it via the "
+"<code>_link_main</code> column."
 msgstr ""
-"Each contracting process is represented as one row in the <code>main.csv</"
-"code> file. Other files link to it via the <code>_link_main</code> column."
+"Each contracting process is represented as one row in the "
+"<code>main.csv</code> file. Other files link to it via the "
+"<code>_link_main</code> column."
 
 #: data_registry/templates/detail.html:303
 msgid ""
 "The <code>.csv</code> files are archived using tar and compressed using "
 "Gzip. Windows users need <a href=\"https://www.7-zip.org\">7-Zip</a>, <a "
-"href=\"https://www.win-rar.com\">WinRAR</a> or <a href=\"https://www.winzip."
-"com\">WinZip</a> to decompress the <code>.tar.gz</code> file."
+"href=\"https://www.win-rar.com\">WinRAR</a> or <a "
+"href=\"https://www.winzip.com\">WinZip</a> to decompress the "
+"<code>.tar.gz</code> file."
 msgstr ""
 "The <code>.csv</code> files are archived using tar and compressed using "
 "Gzip. Windows users need <a href=\"https://www.7-zip.org\">7-Zip</a>, <a "
-"href=\"https://www.win-rar.com\">WinRAR</a> or <a href=\"https://www.winzip."
-"com\">WinZip</a> to decompress the <code>.tar.gz</code> file."
+"href=\"https://www.win-rar.com\">WinRAR</a> or <a "
+"href=\"https://www.winzip.com\">WinZip</a> to decompress the "
+"<code>.tar.gz</code> file."
 
 #: data_registry/templates/detail.html:322
 msgid "Have questions, feedback on this dataset or content on this page?"
@@ -409,7 +414,8 @@ msgid ""
 "This includes if data is available to access directly form the OCP's "
 "Kingfisher database."
 msgstr ""
-"Currently, you can access data from over 50 publishers from around the world."
+"Currently, you can access data from over 50 publishers from around the "
+"world."
 
 #: data_registry/templates/index.html:54
 msgid "Learn about the source"
@@ -487,8 +493,8 @@ msgstr "Data contains"
 #, python-format
 msgid "%(counter)s dataset matches the selected filters"
 msgid_plural "%(counter)s datasets match the selected filters"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(counter)s dataset matches the selected filters"
+msgstr[1] "%(counter)s datasets match the selected filters"
 
 #: data_registry/templates/search.html:70
 #, python-format
@@ -551,28 +557,3 @@ msgstr "Amendments data"
 #: data_registry/views.py:228
 msgid "OCP Kingfisher Database"
 msgstr "OCP Kingfisher Database"
-
-#~ msgid "JSON files are compressed as GZ files."
-#~ msgstr "JSON files are compressed as GZ files."
-
-#~ msgid "CSV files are compressed as GZ files."
-#~ msgstr "CSV files are compressed as GZ files."
-
-#~ msgid "Start date"
-#~ msgstr "Start date"
-
-#~ msgid "Reset"
-#~ msgstr "Reset"
-
-#~ msgid "End date"
-#~ msgstr "End date"
-
-#~ msgid ""
-#~ "This collection does not completely overlap with the selected date range. "
-#~ "Date range matched: "
-#~ msgstr ""
-#~ "This collection does not completely overlap with the selected dates. Date "
-#~ "range matched: "
-
-#~ msgid "Custom"
-#~ msgstr "Custom"
