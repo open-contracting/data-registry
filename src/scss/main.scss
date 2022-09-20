@@ -34,10 +34,6 @@
 
 // Description list
 
-dt {
-    font-family: $font-family-thin;
-}
-
 .list-desc-grid {
     display: grid;
     grid-template-columns: max-content auto;
@@ -107,14 +103,6 @@ dt {
 
 .text-xl {
     font-size: 2rem !important;
-}
-
-.text-sans-serif {
-    font-family: $font-family-sans-serif;
-}
-
-.text-thin {
-    font-family: $font-family-thin;
 }
 
 .text-decoration-underline {

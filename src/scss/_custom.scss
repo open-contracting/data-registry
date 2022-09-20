@@ -1,18 +1,24 @@
 @import '~bootstrap/scss/functions';
 
 @font-face {
-    font-family: "GTEestiProDisplay-Bold";
-    src: url("../fonts/GTEestiProDisplay-Bold.otf") format("opentype");
-}
-
-@font-face {
-    font-family: "GTEestiProText-Regular";
     src: url("../fonts/GTEestiProText-Regular.otf") format("opentype");
+    font-family: "GT Eesti Pro";
+    font-weight: 400;
+    font-display: swap;
 }
 
 @font-face {
-    font-family: "GTEestiProDisplay-Thin";
+    src: url("../fonts/GTEestiProDisplay-Bold.otf") format("opentype");
+    font-family: "GT Eesti Pro";
+    font-weight: 500; // $headings-font-weight
+    font-display: swap;
+}
+
+@font-face {
     src: url("../fonts/GTEestiProDisplay-Thin.otf") format("opentype");
+    font-family: "GT Eesti Pro";
+    font-weight: 300;
+    font-display: swap;
 }
 
 // https://getbootstrap.com/docs/4.6/getting-started/theming/
@@ -27,12 +33,10 @@ $dark: #323232;
 
 $body-color: #2f3a26 !default;
 
-$font-family-sans-serif: "GTEestiProText-Regular", "Helvetica Neue", Arial, sans-serif !default;
+$font-family-sans-serif: "GT Eesti Pro", "Helvetica Neue", Arial, sans-serif !default;
 $monospace-font-family: "Roboto Mono", monospace;
 
-$headings-font-family: "GTEestiProDisplay-Bold", "Helvetica Neue", Arial, sans-serif !default;
-
-$dt-font-weight: 400 !default;
+$dt-font-weight: 300 !default;
 
 $btn-padding-y: 1rem !default;
 $btn-padding-x: 1.3rem !default;
@@ -51,7 +55,3 @@ $btn-border-radius-lg: 0px;
 $card-border-width: 0 !default;
 $card-height: 100% !default;
 $card-bg: $light !default;
-
-// Non-Bootstrap
-
-$font-family-thin: "GTEestiProDisplay-Thin", "Helvetica Neue", Arial, sans-serif !default;

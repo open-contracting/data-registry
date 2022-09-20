@@ -116,7 +116,7 @@
             <div class="row">
                 <div class="col-md mb-3 pt-md-2 fixed-9">
 {% if collection.country_flag %}
-                    <img src="{% static 'img/flags/' %}{{ collection.country_flag }}" width="114" height="76" alt="">
+                    <img src="{% static 'img/flags/' %}{{ collection.country_flag }}" width="114" height="76" alt="" loading="lazy">
 {% endif %}
                 </div>
                 <div class="col-md">
@@ -136,7 +136,7 @@
                     </dl>
                 </div>
                 <div class="col-md-auto col-lg">
-                    <p class="mb-2 text-thin">{% translate "Available formats:" %}</p>
+                    <p class="mb-2 font-weight-light">{% translate "Available formats:" %}</p>
                     <ul class="mb-2 list-inline">
                         <li class="list-inline-item text-uppercase">
                             {% icon_check collection.json_format %}JSON
