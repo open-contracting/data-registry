@@ -37,6 +37,18 @@ Note: If you also want to test the integration with Spoonbill to generate Excel/
 npx webpack --watch
 ```
 
+### Flags
+
+[Hampus Joakim Borgos](https://github.com/hampusborgos/country-flags) maintains more accurate flags than [Lipis](https://github.com/lipis/flag-icons).
+
+```bash
+curl -LO https://github.com/hampusborgos/country-flags/archive/refs/heads/main.zip
+unzip main.zip
+rm -rf data_registry/static/img/flags/
+mv country-flags-main/ data_registry/static/img/flags
+rm -rf country-flags-main/ main.zip
+```
+
 ### Translation
 
 See how to [update Django translations](https://ocp-software-handbook.readthedocs.io/en/latest/python/i18n.html) and use [Transifex](https://www.transifex.com/open-contracting-partnership-1/data-registry/).
