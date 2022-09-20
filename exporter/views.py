@@ -1,7 +1,6 @@
 from django.http import FileResponse
 from django.http.response import HttpResponseNotFound
 
-from exporter.management.commands import flattener
 from exporter.util import Export
 
 
