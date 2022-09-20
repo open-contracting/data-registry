@@ -19,8 +19,6 @@ def download_export(request):
 
     export = Export(job_id)
 
-    flattener.callback(None, None, None, None, None)
-
     if full:
         dump_file = export.directory / f"full.{export_format}.gz"
         filename = f"{spider}_full.{export_format}.gz"

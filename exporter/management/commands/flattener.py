@@ -28,7 +28,7 @@ class Command(BaseCommand):
 
 
 def callback(state, channel, method, properties, input_message):
-    job_id = 10
+    job_id = input_message.get("job_id")
 
     export = Export(job_id, export_type='flat')
     export.lock()
