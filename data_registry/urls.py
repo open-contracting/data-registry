@@ -7,6 +7,7 @@ urlpatterns = [
     path("search/", views.search, name="search"),
     path("publication/<int:id>", views.detail, name="detail"),
     path("wipe_job/<int:job_id>", views.wipe_job, name="wipe-job"),
+    path("i18n/setlang/", views.set_language, name="set_language"),
     # Uncomment after re-integrating Spoonbill.
     # path("excel_data/<int:job_id>/<str:job_range>", views.excel_data, name="excel_data"),
     # path("excel_data/<int:job_id>", views.excel_data, name="all_excel_data"),

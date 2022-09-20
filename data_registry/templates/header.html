@@ -23,7 +23,7 @@
 
         <div class="col-auto ml-auto">
 {# https://docs.djangoproject.com/en/4.0/topics/i18n/translation/#the-set-language-redirect-view #}
-            <form action="{% url 'set_language' %}" method="post" class="form-inline">{% csrf_token %}
+            <form action="{% url 'set_language' %}" method="post" class="form-inline">
                 <input type="hidden" name="next" value="{% redirect_to %}">
                 <select name="language" aria-label="{% translate 'Select language' %}" onchange="this.form.submit()" class="custom-select custom-select-lg">
 {% for language in languages %}
