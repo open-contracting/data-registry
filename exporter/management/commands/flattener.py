@@ -48,14 +48,14 @@ def callback(state, channel, method, properties, input_message):
     export.unlock()
 
 
-def flatten_and_package_file(path, directory):
-    if os.path.getsize(path) < settings.EXPORTER_MAX_JSON_BYTES_TO_EXCEL:
+def flatten_and_package_file(file_path, base_directory):
+    if os.path.getsize(file_path) < settings.EXPORTER_MAX_JSON_BYTES_TO_EXCEL:
         excel = True
     else:
         excel = False
-    tmp_flatten_dir = os.path.join(directory, "flatten")
-    output = flatterer.flatten(str(path), tmp_flatten_dir, xlsx=excel, json_stream=True, force=True)
-    base_name = str(path).replace(".jsonl", "")
+    tmp_flatten_dir = os.path.join(base_directory, "flatten")
+    output = flatterer.flatten(str(file_path), tmp_flatten_dir, xlsx=excel, json_stream=True, force=True)
+    base_name = str(file_path).replace(".jsonl", "")
     # Excel file gz
     if excel:
         with open(output["xlsx"], "rb") as excel_file:
