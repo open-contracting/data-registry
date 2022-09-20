@@ -1,5 +1,6 @@
 from data_registry.process_manager.task.collect import Collect
 from data_registry.process_manager.task.exporter import Exporter
+from data_registry.process_manager.task.flattener import Flattener
 from data_registry.process_manager.task.pelican import Pelican
 from data_registry.process_manager.task.process import Process
 
@@ -17,5 +18,7 @@ class TaskFactory:
             return Pelican(job)
         elif type == "exporter":
             return Exporter(job)
+        elif type == "flatenner":
+            return Flattener(job)
         else:
             raise Exception("Unsupported task type")
