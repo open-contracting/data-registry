@@ -1,7 +1,7 @@
 import logging
 import shutil
 from pathlib import Path
-from typing import Literal, Dict
+from typing import Dict, Literal
 
 import pika.exceptions
 from django.conf import settings
@@ -48,7 +48,7 @@ def publish(*args, **kwargs):
 
 
 class Export:
-    def __init__(self, *components, export_type: str = 'json'):
+    def __init__(self, *components, export_type: str = "json"):
         """
         :param components: the path components of the export directory
         :param export_type: the export type, 'json' or 'flat' files (CSV and Excel)
@@ -56,7 +56,7 @@ class Export:
         self.directory = Path(settings.EXPORTER_DIR).joinpath(*map(str, components))
         self.spoonbill_directory = Path(settings.SPOONBILL_EXPORTER_DIR).joinpath(*map(str, components))
         self.lockfile = self.directory / f"exporter_{export_type}.lock"
-        self.export_format = 'jsonl' if export_type == 'json' else 'csv'
+        self.export_format = "jsonl" if export_type == "json" else "csv"
 
     def lock(self) -> None:
         """
@@ -90,7 +90,7 @@ class Export:
         """
         Return whether the final file has been written.
         """
-        if self.export_format == 'json':
+        if self.export_format == "json":
             final_file_name = "full.jsonl.gz"
         else:
             final_file_name = "full.csv.gz"

@@ -30,17 +30,17 @@ class Command(BaseCommand):
 def callback(state, channel, method, properties, input_message):
     job_id = input_message.get("job_id")
 
-    export = Export(job_id, export_type='flat')
+    export = Export(job_id, export_type="flat")
     export.lock()
     # acknowledge message processing now to avoid connection loses
     # the rest can run for hours and is irreversible anyway
     ack(state, channel, method.delivery_tag)
 
     for file in os.listdir(export.directory):
-        if file.endswith('.jsonl.gz'):
-            with gzip.open(os.path.join(export.directory, file), 'rb') as compressed:
+        if file.endswith(".jsonl.gz"):
+            with gzip.open(os.path.join(export.directory, file), "rb") as compressed:
                 json_path = os.path.join(export.directory, f"{file.replace('.gz', '')}.jsonl")
-                with open(json_path, 'wb') as tmp_json_file:
+                with open(json_path, "wb") as tmp_json_file:
                     shutil.copyfileobj(compressed, tmp_json_file)
                     flatten_and_package_file(json_path, export.directory)
                 os.remove(json_path)
@@ -62,7 +62,7 @@ def flatten_and_package_file(path, directory):
             with gzip.open(f"{base_name}.xlsx.gz", "wb") as packaged_excel:
                 shutil.copyfileobj(excel_file, packaged_excel)
     # CSV folder tar.gz
-    csv_folder = os.path.join(tmp_flatten_dir, 'csv')
+    csv_folder = os.path.join(tmp_flatten_dir, "csv")
     with tarfile.open(f"{base_name}.csv.tar.gz", "w:gz") as tar:
         tar.add(csv_folder, arcname=os.path.basename(base_name))
 
