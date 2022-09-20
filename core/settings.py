@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.humanize",
-    "statici18n",
     "data_registry",
     "markdownx",
     "exporter",
@@ -159,7 +158,6 @@ STATIC_ROOT = BASE_DIR / "static"
 
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
-# https://django-statici18n.readthedocs.io/en/v2.3.1/faq.html#using-a-placeholder-directory
 STATICFILES_DIRS = [BASE_DIR / "core" / "static"]  # webpack.config.js
 
 # https://docs.djangoproject.com/en/3.2/topics/logging/#django-security
@@ -252,8 +250,6 @@ MODELTRANSLATION_DEFAULT_LANGUAGE = "en"
 
 # https://neutronx.github.io/django-markdownx/customization/#markdownx_markdownify_function
 MARKDOWNX_MARKDOWNIFY_FUNCTION = "data_registry.utils.markdownify"
-
-STATICI18N_ROOT = BASE_DIR / "core" / "static"
 
 
 # Project configuration

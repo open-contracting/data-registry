@@ -44,19 +44,11 @@ dj-database-url==0.5.0
 django==3.2.15
     # via
     #   -r requirements.txt
-    #   django-appconf
     #   django-markdownx
     #   django-modeltranslation
-    #   django-statici18n
-django-appconf==1.0.5
-    # via
-    #   -r requirements.txt
-    #   django-statici18n
 django-markdownx==3.0.1
     # via -r requirements.txt
 django-modeltranslation==0.18.4
-    # via -r requirements.txt
-django-statici18n==2.3.1
     # via -r requirements.txt
 docopt==0.6.2
     # via coveralls

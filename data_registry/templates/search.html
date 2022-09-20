@@ -3,6 +3,41 @@
 {% load static %}
 {% load registry %}
 
+{% block script %}
+<script>
+    document.querySelectorAll('.clickable').forEach(div => {
+        div.addEventListener('click', event => {
+            window.location.href = div.querySelector('.click').href
+        })
+    })
+
+    document.querySelectorAll('.filterable').forEach(filter => {
+        const key = filter.dataset.key
+        const method = filter.dataset.method
+        filter.querySelectorAll('input').forEach(input => {
+            input.addEventListener('change', event => {
+                let url = new URL(window.location.href)
+                let params = new URLSearchParams(url.search)
+                let values = params.getAll(key)
+                if (values.includes(input.value)) {
+                    // URLSearchParams has no method to delete a key-value pair, and set() yields "x=a,b" not "x=a&x=b".
+                    params.delete(key)
+                    values.forEach(value => {
+                        if (value != input.value) {
+                            params.append(key, value)
+                        }
+                    })
+                } else {
+                    params[method](key, input.value)
+                }
+                url.search = params.toString()
+                window.location.href = url.toString()
+            })
+        })
+    })
+</script>
+{% endblock %}
+
 {% block content %}
 <div class="row">
     <div class="col">

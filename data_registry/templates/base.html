@@ -1,6 +1,5 @@
 {% load i18n %}
 {% load static %}
-{% load statici18n %}
 {% get_current_language as LANGUAGE_CODE %}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
@@ -143,8 +142,7 @@
     </div>
 </div>
 
-<script src="{% statici18n LANGUAGE_CODE %}"></script>
-<script src="{% static 'js/main.js' %}"></script>
+{% block script %}{% endblock %}
 
 </body>
 </html>

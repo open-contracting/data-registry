@@ -221,6 +221,8 @@ def excel_data(request, job_id, job_range=None):
 
             start_date = start_date + relativedelta(months=+1)
 
+    language = get_language()
+
     body = {
         "urls": urls,
         "country": f"{job.collection.country} {job.collection.title}",
@@ -228,7 +230,7 @@ def excel_data(request, job_id, job_range=None):
         "source": _("OCP Kingfisher Database"),
     }
 
-    headers = {"Accept-Language": f"{get_language()}"}
+    headers = {"Accept-Language": f"{language}"}
     response = requests.post(
         urljoin(settings.SPOONBILL_URL, "/api/urls/"),
         body,
@@ -247,5 +249,5 @@ def excel_data(request, job_id, job_range=None):
         logger.error("Invalid response from spoonbill %s.", response.text)
         return HttpResponse(status=500)
 
-    params = urlencode({"lang": get_language(), "url": response.json()["id"]})
+    params = urlencode({"lang": language, "url": response.json()["id"]})
     return redirect(urljoin(settings.SPOONBILL_URL, f"/#/upload-file?{params}"))
