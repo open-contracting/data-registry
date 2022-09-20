@@ -2,11 +2,11 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 # Translators:
 # Maria Esther Cervantes <mcervantes@cds.com.py>, 2021
-# Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2021
-#
+# Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2022
+# 
 #, fuzzy
 msgid ""
 msgstr ""
@@ -14,14 +14,13 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-16 23:07+0000\n"
 "PO-Revision-Date: 2021-08-04 17:44+0000\n"
-"Last-Translator: Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2021\n"
-"Language-Team: Spanish (https://www.transifex.com/open-contracting-"
-"partnership-1/teams/123427/es/)\n"
-"Language: es\n"
+"Last-Translator: Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2022\n"
+"Language-Team: Spanish (https://www.transifex.com/open-contracting-partnership-1/teams/123427/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: es\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #: data_registry/admin.py:23
 msgid ""
@@ -46,7 +45,7 @@ msgstr "No"
 
 #: data_registry/admin.py:151
 msgid "Previous year"
-msgstr "Año pasado"
+msgstr "Año anterior"
 
 #: data_registry/admin.py:158
 msgid "More than a year ago"
@@ -111,29 +110,33 @@ msgstr "Acerca de"
 
 #: data_registry/templates/base.html:47
 msgid "News & Community"
-msgstr ""
+msgstr "Noticias & Comunidad"
 
 #: data_registry/templates/base.html:54
 msgid "Contact"
-msgstr ""
+msgstr "Contacto"
 
 #: data_registry/templates/base.html:70
 msgid "Connect with us:"
-msgstr ""
+msgstr "Conecta con nosotros:"
 
 #: data_registry/templates/base.html:136
 msgid ""
 "This work by the Open Contracting Partnership, unless otherwise noted, is "
 "licensed under a Creative Commons Attribution 4.0 International License."
 msgstr ""
+"Este trabajo de Open Contracting Partnership, a menos que se indique lo "
+"contrario, tiene una licencia Creative Commons Attribution 4.0 International"
+" License."
 
-#: data_registry/templates/base.html:139 data_registry/templates/header.html:12
+#: data_registry/templates/base.html:139
+#: data_registry/templates/header.html:12
 msgid "Open Contracting Partnership"
-msgstr ""
+msgstr "Open Contracting Partnership"
 
 #: data_registry/templates/base.html:140
 msgid "Terms"
-msgstr ""
+msgstr "Términos"
 
 #: data_registry/templates/detail.html:12
 msgid "BACK TO DATASETS SEARCH"
@@ -156,7 +159,7 @@ msgstr "Rango de fechas de los datos:"
 #: data_registry/templates/detail.html:74
 #: data_registry/templates/search.html:99
 msgid "Last retrieved:"
-msgstr ""
+msgstr "Obtenido por última vez:"
 
 #: data_registry/templates/detail.html:76
 #: data_registry/templates/search.html:97
@@ -303,52 +306,79 @@ msgid ""
 "You can download the data for contracting processes in a specific year or "
 "for all time."
 msgstr ""
+"Este conjunto de datos OCDS está disponible para ser descargado en formato "
+"JSON, Excel o CSV. Puedes descargar los datos de los procesos de "
+"contratación de un año específico o de todos los años."
 
 #: data_registry/templates/detail.html:258
 msgid ""
 "Each contracting process is represented as one line of JSON text in the "
 "<code>.jsonl</code> file."
 msgstr ""
+"Cada proceso de contratación está representado como una línea de texto JSON "
+"en el archivo <code>.jsonl</code>."
 
 #: data_registry/templates/detail.html:263
 msgid ""
-"The <code>.jsonl</code> file is compressed using Gzip. Windows users need <a "
-"href=\"https://www.7-zip.org\">7-Zip</a>, <a href=\"https://www.win-rar.com"
-"\">WinRAR</a> or <a href=\"https://www.winzip.com\">WinZip</a> to decompress "
-"the <code>.gz</code> file."
+"The <code>.jsonl</code> file is compressed using Gzip. Windows users need <a"
+" href=\"https://www.7-zip.org\">7-Zip</a>, <a href=\"https://www.win-"
+"rar.com\">WinRAR</a> or <a href=\"https://www.winzip.com\">WinZip</a> to "
+"decompress the <code>.gz</code> file."
 msgstr ""
+"El archivo <code>.jsonl</code> es comprimido usango Gzip. Los usuarios de "
+"Windows necesitan <a href=\"https://www.7-zip.org\">7-Zip</a>, <a "
+"href=\"https://www.win-rar.com\">WinRAR</a> o <a "
+"href=\"https://www.winzip.com\">WinZip</a> para descomprimir el archivo "
+"<code>.gz</code>."
 
 #: data_registry/templates/detail.html:270
 msgid "All time"
-msgstr ""
+msgstr "Todos los años"
 
 #: data_registry/templates/detail.html:285
 msgid ""
 "Each contracting process is represented as one row in the <code>main</code> "
 "sheet. Other sheets link to it via the <code>_link_main</code> column."
 msgstr ""
+"Cada proceso de contratación está representado como una fila en la hoja "
+"<code>main</code>. Otras hojas pueden enlazarse a esta a través de la "
+"columna <code>_link_main</code>."
 
 #: data_registry/templates/detail.html:290
 msgid ""
-"Excel files can have at most <a href=\"https://support.microsoft.com/en-us/"
-"office/excel-specifications-and-"
+"Excel files can have at most <a href=\"https://support.microsoft.com/en-"
+"us/office/excel-specifications-and-"
 "limits-1672b34d-7043-467e-8e27-269d656771c3\">1,048,576 rows</a>. If a year "
 "is missing, it had too many rows."
 msgstr ""
+"Los archivos Excel pueden tener como máximo <a "
+"href=\"https://support.microsoft.com/en-us/office/excel-specifications-and-"
+"limits-1672b34d-7043-467e-8e27-269d656771c3\">1,048,576 filas</a>. Si falta "
+"un año, es que tiene demasiadas filas."
 
 #: data_registry/templates/detail.html:298
 msgid ""
-"Each contracting process is represented as one row in the <code>main.csv</"
-"code> file. Other files link to it via the <code>_link_main</code> column."
+"Each contracting process is represented as one row in the "
+"<code>main.csv</code> file. Other files link to it via the "
+"<code>_link_main</code> column."
 msgstr ""
+"Cada proceso de contratación es representado como una fila en el archivo "
+"<code>main.csv</code>. Otros archivos pueden enlazarse a este a través de la"
+" columna <code>_link_main</code>."
 
 #: data_registry/templates/detail.html:303
 msgid ""
 "The <code>.csv</code> files are archived using tar and compressed using "
 "Gzip. Windows users need <a href=\"https://www.7-zip.org\">7-Zip</a>, <a "
-"href=\"https://www.win-rar.com\">WinRAR</a> or <a href=\"https://www.winzip."
-"com\">WinZip</a> to decompress the <code>.tar.gz</code> file."
+"href=\"https://www.win-rar.com\">WinRAR</a> or <a "
+"href=\"https://www.winzip.com\">WinZip</a> to decompress the "
+"<code>.tar.gz</code> file."
 msgstr ""
+"Los archivos <code>.csv</code> son archivados usando tar y comprimidos usand"
+" Gzip. Usuarios de Windows necesitan <a "
+"href=\"https://www.7-zip.org\">7-Zip</a>, <a href=\"https://www.win-"
+"rar.com\">WinRAR</a> o <a href=\"https://www.winzip.com\">WinZip</a> para "
+"descomprimir los archivos <code>.tar.gz</code>."
 
 #: data_registry/templates/detail.html:322
 msgid "Have questions, feedback on this dataset or content on this page?"
@@ -358,11 +388,11 @@ msgstr ""
 
 #: data_registry/templates/detail.html:326
 msgid "Contact Data Support Team"
-msgstr ""
+msgstr "Contacta al Equipo de Datos"
 
 #: data_registry/templates/header.html:28
 msgid "Select language"
-msgstr ""
+msgstr "Elige el idioma"
 
 #: data_registry/templates/index.html:9
 msgid "OCP Data Registry"
@@ -440,7 +470,7 @@ msgstr "Filtros"
 
 #: data_registry/templates/search.html:37
 msgid "Clear all filters"
-msgstr ""
+msgstr "Borrar todos los filtros"
 
 #: data_registry/templates/search.html:40
 msgid "Country starting with"
@@ -450,8 +480,9 @@ msgstr "El nombre del país empieza con"
 #, python-format
 msgid "1 dataset"
 msgid_plural "%(counter)s datasets"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "1 conjunto de datos"
+msgstr[1] "%(counter)s conjuntos de datos"
+msgstr[2] "%(counter)s conjuntos de datos"
 
 #: data_registry/templates/search.html:55
 msgid "Data date range"
@@ -470,12 +501,16 @@ msgstr "Los datos contienen"
 msgid "%(counter)s dataset matches the selected filters"
 msgid_plural "%(counter)s datasets match the selected filters"
 msgstr[0] ""
+"%(counter)s conjunto de datos coincide con los filtros seleccionados"
 msgstr[1] ""
+"%(counter)s conjuntos de datos coinciden con los filtros seleccionados "
+msgstr[2] ""
+"%(counter)s conjuntos de datos coinciden con los filtros seleccionados"
 
 #: data_registry/templates/search.html:70
 #, python-format
 msgid "Showing all %(counter)s datasets"
-msgstr ""
+msgstr "Mostrando todos los %(counter)s conjuntos de datos"
 
 #: data_registry/templates/search.html:118
 msgid "See details"
@@ -484,7 +519,7 @@ msgstr "Ver detalles"
 #: data_registry/templatetags/registry.py:90
 #, python-format
 msgid "[data-registry] Re: %(collection)s"
-msgstr ""
+msgstr "[data-registry] Re: %(collection)s"
 
 #: data_registry/views.py:61 data_registry/views.py:190
 msgid "All"
@@ -533,22 +568,3 @@ msgstr "Datos de enmiendas"
 #: data_registry/views.py:228
 msgid "OCP Kingfisher Database"
 msgstr "Base de datos Kingfisher de OCP"
-
-#~ msgid "Start date"
-#~ msgstr "Fecha de inicio"
-
-#~ msgid "Reset"
-#~ msgstr "Reiniciar"
-
-#~ msgid "End date"
-#~ msgstr "Fecha de finalización"
-
-#~ msgid ""
-#~ "This collection does not completely overlap with the selected date range. "
-#~ "Date range matched: "
-#~ msgstr ""
-#~ "Esta colección no se superpone completamente con las fechas "
-#~ "seleccionadas. Rango de fechas coincidente: "
-
-#~ msgid "Custom"
-#~ msgstr "Personalizado"
