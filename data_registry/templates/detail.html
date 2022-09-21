@@ -24,12 +24,15 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
     const toggle = document.createElement('a')
 
     toggle.textContent = gettext('Show more')
+    toggle.setAttribute("aria-controls", toggleable.id)
+    toggle.ariaExpanded = false
     toggle.href = '#'
 
     toggle.addEventListener('click', event => {
         event.preventDefault()
-        toggleable.toggleAttribute('hidden')
-        toggle.textContent = toggleable.hasAttribute('hidden') ? gettext('Show more') : gettext('Show less')
+        const collapsed = toggleable.toggleAttribute('hidden')
+        toggle.textContent = collapsed ? gettext('Show more') : gettext('Show less')
+        toggle.ariaExpanded = collapsed ? false : true
     })
 
     let insert = toggle;
@@ -67,7 +70,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
                 {{ collection.description|markdownify }}
 
 {% if collection.description_long %}
-                <div class="toggleable">
+                <div class="toggleable" id="description">
                     {{ collection.description_long|markdownify }}
                 </div>
 {% endif %}
@@ -129,7 +132,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
             <dd class="text-break">
 {% if collection.license_custom %}
                 <a href="{{ collection.license_custom.url }}" target="_blank" class="d-block">{{ collection.license_custom.name }}</a>
-                <div class="mt-2 mb-n3 pl-3 border-left small toggleable">
+                <div class="mt-2 mb-n3 pl-3 border-left small toggleable" id="license">
                     {{ collection.license_custom.description|markdownify }}
                 </div>
 {% else %}
