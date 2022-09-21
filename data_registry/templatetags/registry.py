@@ -141,3 +141,8 @@ def get_item(dictionary, key):
 @register.filter
 def getlist(query_dict, key):
     return query_dict.getlist(key, [""])  # Use "" as a default value for radio buttons, etc.
+
+
+@register.filter
+def sortreversed(sequence):
+    return sorted(sequence, reverse=True)

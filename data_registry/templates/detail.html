@@ -265,17 +265,23 @@
                     {% endblocktranslate %}
                 </p>
                 <ul>
+{% if formats.jsonl.full %}
                     <li>
-                        <a href="{% url 'download_export' %}?spider={{ collection.source_id }}&job_id={{ job.id }}&full=true&export_format=jsonl" rel="nofollow" download>
-                        {% translate "All time" %}
-                    </a>
-                </li>
-{% for year in export_formats.jsonl.years %}
+                        <a href="{% url 'download_export' %}?spider={{ collection.source_id }}&job_id={{ job.id }}&full=true&format=jsonl.gz" rel="nofollow" download>
+                            {% translate "All time" %}
+                        </a>
+                    </li>
+{% endif %}
+{% for year in formats.jsonl.years|sortreversed %}
                     <li>
-                        <a href="{% url 'download_export' %}?spider={{ collection.source_id }}&job_id={{ job.id }}&year={{ year }}&export_format=jsonl" rel="nofollow" download>
-                        {{ year }}
-                    </a>
-                </li>
+                        <a href="{% url 'download_export' %}?spider={{ collection.source_id }}&job_id={{ job.id }}&year={{ year }}&format=jsonl.gz" rel="nofollow" download>
+                            {{ year }}
+                        </a>
+                    </li>
+{% empty %}
+                    <li>
+                        {% translate "Files not yet available." %}
+                    </li>
 {% endfor %}
                 </ul>
             </div>
@@ -291,22 +297,22 @@
                     Excel files can have at most <a href="https://support.microsoft.com/en-us/office/excel-specifications-and-limits-1672b34d-7043-467e-8e27-269d656771c3">1,048,576 rows</a>. If a year is missing, it had too many rows.
                     {% endblocktranslate %}
                 </p>
-            <ul>
-                {% if export_formats.xlsx.full %}
+                    <ul>
+{% if formats.xlsx.full %}
+                        <li>
+                            <a href="{% url 'download_export' %}?spider={{ collection.source_id }}&job_id={{ job.id }}&full=true&format=xlsx" rel="nofollow" download>
+                                {% translate "All time" %}
+                            </a>
+                        </li>
+{% endif %}
+{% for year in formats.xlsx.years|sortreversed %}
                     <li>
-                        <a href="{% url 'download_export' %}?spider={{ collection.source_id }}&job_id={{ job.id }}&full=true&export_format=xlsx" rel="nofollow" download>
-                            {% translate "All time" %}
+                        <a href="{% url 'download_export' %}?spider={{ collection.source_id }}&job_id={{ job.id }}&year={{ year }}&format=xlsx" rel="nofollow" download>
+                            {{ year }}
                         </a>
                     </li>
-                {% endif %}
-                {% for year in export_formats.xlsx.years %}
-                    <li>
-                        <a href="{% url 'download_export' %}?spider={{ collection.source_id }}&job_id={{ job.id }}&year={{ year }}&export_format=xlsx" rel="nofollow" download>
-                        {{ year }}
-                    </a>
-                </li>
-                {% endfor %}
-            </ul>
+{% endfor %}
+                </ul>
             </div>
             <div class="col-sm-4 mt-3 mt-sm-0">
                 <h3>CSV</h3>
@@ -321,18 +327,23 @@
                     {% endblocktranslate %}
                 </p>
                 <ul>
+{% if formats.csv.full %}
                     <li>
-                        <a href="{% url 'download_export' %}?spider={{ collection.source_id }}&job_id={{ job.id }}&full=true&export_format=csv" rel="nofollow" download>
+                        <a href="{% url 'download_export' %}?spider={{ collection.source_id }}&job_id={{ job.id }}&full=true&format=csv.tar.gz" rel="nofollow" download>
                             {% translate "All time" %}
                         </a>
                     </li>
-                    {% for year in export_formats.csv.years %}
-                        <li>
-                            <a href="{% url 'download_export' %}?spider={{ collection.source_id }}&job_id={{ job.id }}&year={{ year }}&export_format=csv" rel="nofollow" download>
+{% for year in formats.csv.years|sortreversed %}
+                    <li>
+                        <a href="{% url 'download_export' %}?spider={{ collection.source_id }}&job_id={{ job.id }}&year={{ year }}&format=csv.tar.gz" rel="nofollow" download>
                             {{ year }}
                         </a>
                     </li>
-                    {% endfor %}
+{% empty %}
+                    <li>
+                        {% translate "Files not yet available." %}
+                    </li>
+{% endfor %}
                 </ul>
             </div>
         </div>

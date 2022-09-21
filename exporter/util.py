@@ -51,12 +51,12 @@ class Export:
     def __init__(self, *components, export_type: str = "json"):
         """
         :param components: the path components of the export directory
-        :param export_type: the export type, 'json' or 'flat' files (CSV and Excel)
+        :param export_type: the export type, "json" or "flat" files (CSV and Excel)
         """
         self.directory = Path(settings.EXPORTER_DIR).joinpath(*map(str, components))
         self.spoonbill_directory = Path(settings.SPOONBILL_EXPORTER_DIR).joinpath(*map(str, components))
         self.lockfile = self.directory / f"exporter_{export_type}.lock"
-        self.export_format = "jsonl" if export_type == "json" else "csv"
+        self.export_type = export_type
 
     def lock(self) -> None:
         """
@@ -90,11 +90,11 @@ class Export:
         """
         Return whether the final file has been written.
         """
-        if self.export_format == "json":
-            final_file_name = "full.jsonl.gz"
+        if self.export_type == "json":
+            filename = "full.jsonl.gz"
         else:
-            final_file_name = "full.csv.gz"
-        return (self.directory / final_file_name).exists()
+            filename = "full.csv.tar.gz"
+        return (self.directory / filename).exists()
 
     @property
     def status(self) -> Literal["RUNNING", "COMPLETED", "WAITING"]:
@@ -109,18 +109,21 @@ class Export:
 
     def formats_available(self) -> Dict:
         """
-        Returns all the available file formats and segmentation (by years or full content).
+        Returns all the available file formats and segments (by year or full).
         """
         formats = {}
-        for file_name in self.directory.glob("*.gz"):
-            file_format = file_name.name.split(".")[1]
-            if file_format not in formats:
-                formats[file_format] = {"years": [], "full": False}
-            # year or full
-            prefix = file_name.name[:4]
+        # Ensure the template always receives expected keys.
+        for suffix in ("csv", "jsonl", "xlsx"):
+            formats[suffix] = {"years": [], "full": False}
+
+        for path in self.directory.glob("*"):
+            suffix = path.name.split(".", 2)[1]
+            if suffix not in formats:
+                continue
+            prefix = path.name[:4]  # year or "full"
             if prefix.isdigit():
-                if prefix not in formats[file_format]["years"]:
-                    formats[file_format]["years"].append(prefix)
-            else:
-                formats[file_format]["full"] = True
+                formats[suffix]["years"].append(int(prefix))
+            elif prefix == "full":
+                formats[suffix]["full"] = True
+
         return formats

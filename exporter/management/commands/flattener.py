@@ -3,6 +3,8 @@ import logging
 import os
 import shutil
 import tarfile
+import tempfile
+from pathlib import Path
 
 import flatterer
 from django.conf import settings
@@ -18,7 +20,7 @@ class Command(BaseCommand):
     """
     Start a worker to flatten JSON files.
 
-    Data is exported as gzipped CSV and Excel files, with one file per year and one ``full.[csv|xlsx].gz`` file.
+    Data is exported as gzipped CSV and Excel files, with one file per year and one full file per format.
 
     Multiple workers can run at the same time.
     """
@@ -32,38 +34,30 @@ def callback(state, channel, method, properties, input_message):
 
     export = Export(job_id, export_type="flat")
     export.lock()
-    # acknowledge message processing now to avoid connection loses
-    # the rest can run for hours and is irreversible anyway
+
+    # Acknowledge now to avoid connection losses. The rest can run for hours and is irreversible anyhow.
     ack(state, channel, method.delivery_tag)
 
-    for file in os.listdir(export.directory):
-        if file.endswith(".jsonl.gz"):
-            with gzip.open(os.path.join(export.directory, file), "rb") as compressed:
-                json_path = os.path.join(export.directory, f"{file.replace('.gz', '')}.jsonl")
-                with open(json_path, "wb") as tmp_json_file:
-                    shutil.copyfileobj(compressed, tmp_json_file)
-                    flatten_and_package_file(json_path, export.directory)
-                os.remove(json_path)
+    for entry in os.scandir(export.directory):
+        if not entry.name.endswith(".jsonl.gz"):
+            continue
+
+        with tempfile.TemporaryDirectory() as tmpdirname:
+            tmpdir = Path(tmpdirname)
+            tmpfile = tmpdir / entry.name[:-3]  # remove .gz
+            outpath = entry.path[:-9]  # remove .jsonl.gz
+
+            with gzip.open(entry.path) as infile:
+                with tmpfile.open("wb") as outfile:
+                    shutil.copyfileobj(infile, outfile)
+
+            excel = tmpfile.stat().st_size < settings.EXPORTER_MAX_JSON_BYTES_TO_EXCEL
+            output = flatterer.flatten(tmpfile.path, tmpdirname, xlsx=excel, json_stream=True, force=True)
+
+            if excel:
+                shutil.move(output["xlsx"], f"{outpath}.xlsx")
+
+            with tarfile.open(f"{outpath}.csv.tar.gz", "w:gz") as tar:
+                tar.add(tmpdir / "csv", arcname=tmpfile.stem)  # remove .jsonl
 
     export.unlock()
-
-
-def flatten_and_package_file(file_path, base_directory):
-    if os.path.getsize(file_path) < settings.EXPORTER_MAX_JSON_BYTES_TO_EXCEL:
-        excel = True
-    else:
-        excel = False
-    tmp_flatten_dir = os.path.join(base_directory, "flatten")
-    output = flatterer.flatten(str(file_path), tmp_flatten_dir, xlsx=excel, json_stream=True, force=True)
-    base_name = str(file_path).replace(".jsonl", "")
-    # Excel file gz
-    if excel:
-        with open(output["xlsx"], "rb") as excel_file:
-            with gzip.open(f"{base_name}.xlsx.gz", "wb") as packaged_excel:
-                shutil.copyfileobj(excel_file, packaged_excel)
-    # CSV folder tar.gz
-    csv_folder = os.path.join(tmp_flatten_dir, "csv")
-    with tarfile.open(f"{base_name}.csv.tar.gz", "w:gz") as tar:
-        tar.add(csv_folder, arcname=os.path.basename(base_name))
-
-    shutil.rmtree(tmp_flatten_dir)

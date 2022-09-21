@@ -151,9 +151,9 @@ def detail(request, id):
 
     job = collection.job.filter(active=True).first()
 
-    export_formats = Export(job.id).formats_available()
+    formats = Export(job.id).formats_available()
 
-    return render(request, "detail.html", {"collection": collection, "job": job, "export_formats": export_formats})
+    return render(request, "detail.html", {"collection": collection, "job": job, "formats": formats})
 
 
 @login_required
