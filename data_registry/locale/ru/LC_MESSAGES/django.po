@@ -393,7 +393,7 @@ msgstr "Все время"
 
 #: data_registry/templates/includes/files.html:22
 msgid "Files not yet available."
-msgstr ""
+msgstr "Файлы пока недоступны."
 
 #: data_registry/templates/index.html:7
 msgid "OCP Data Registry"
