@@ -1,5 +1,15 @@
 @import '~bootstrap/scss/functions';
 
+// GT Eesti Pro Display has (plus Italic for each):
+// https://www.grillitype.com/typeface/gt-eesti
+// - UltraLight
+// - Thin *
+// - Light
+// - Regular
+// - Medium
+// - Bold *
+// - UltraBold
+
 @font-face {
     src: url("../fonts/GTEestiProText-Regular.otf") format("opentype");
     font-family: "GT Eesti Pro";
