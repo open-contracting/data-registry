@@ -114,7 +114,7 @@ class Export:
         files = {}
         # Ensure the template always receives expected keys.
         for suffix in ("csv", "jsonl", "xlsx"):
-            files[suffix] = {"years": [], "full": False}
+            files[suffix] = {"years": set(), "full": False}
 
         for path in self.directory.glob("*"):
             suffix = path.name.split(".", 2)[1]
@@ -122,7 +122,7 @@ class Export:
                 continue
             prefix = path.name[:4]  # year or "full"
             if prefix.isdigit():
-                files[suffix]["years"].append(int(prefix))
+                files[suffix]["years"].add(int(prefix))
             elif prefix == "full":
                 files[suffix]["full"] = True
 

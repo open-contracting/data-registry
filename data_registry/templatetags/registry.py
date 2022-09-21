@@ -153,6 +153,8 @@ def files(context, key, suffix, showempty=True):
         "key": key,
         "suffix": suffix,
         "showempty": showempty,
+        "collection": context["collection"],
+        "job": context["job"],
         "files": context["files"],
     }
 

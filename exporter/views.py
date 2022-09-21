@@ -11,7 +11,7 @@ def download_export(request):
     spider = request.GET.get("spider")
     job_id = request.GET.get("job_id")
     full = request.GET.get("full")
-    year = int(request.GET.get("year"))  # guard against path traversal
+    year = request.GET.get("year")
     suffix = request.GET.get("suffix")
 
     # Guard against path traversal.
@@ -24,6 +24,8 @@ def download_export(request):
         dump_file = export.directory / f"full.{suffix}"
         filename = f"{spider}_full.{suffix}"
     else:
+        # Guard against path traversal.
+        year = int(year)
         dump_file = export.directory / f"{year}.{suffix}"
         filename = f"{spider}_{year}.{suffix}"
 
