@@ -5,15 +5,17 @@ from django.test import TransactionTestCase
 
 from data_registry.models import Collection, Job, Task
 from data_registry.process_manager.process import process
-from data_registry.process_manager.task.task import BaseTask
 
 
-class TestTask(BaseTask):
+class TestTask:
     def run(self):
         pass
 
     def get_status(self):
         return Task.Status.COMPLETED
+
+    def wipe(self):
+        pass
 
 
 class ProcessTests(TransactionTestCase):

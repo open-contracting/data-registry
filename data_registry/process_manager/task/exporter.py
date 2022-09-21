@@ -1,13 +1,12 @@
 import logging
 
 from data_registry.models import Task
-from data_registry.process_manager.task.task import BaseTask
 from exporter.util import Export, publish
 
 logger = logging.getLogger(__name__)
 
 
-class Exporter(BaseTask):
+class Exporter:
     def __init__(self, job):
         self.job = job
         self.collection_id = self.job.context.get("process_id_pelican")
