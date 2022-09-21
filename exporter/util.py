@@ -48,6 +48,14 @@ def publish(*args, **kwargs):
 
 
 class Export:
+    @classmethod
+    def default_files_available(cls):
+        files = {}
+        # Ensure the template always receives expected keys.
+        for suffix in ("csv", "jsonl", "xlsx"):
+            files[suffix] = {"years": set(), "full": False}
+        return files
+
     def __init__(self, *components, export_type: str = "json"):
         """
         :param components: the path components of the export directory
@@ -111,10 +119,7 @@ class Export:
         """
         Returns all the available file formats and segments (by year or full).
         """
-        files = {}
-        # Ensure the template always receives expected keys.
-        for suffix in ("csv", "jsonl", "xlsx"):
-            files[suffix] = {"years": set(), "full": False}
+        files = self.default_files_available()
 
         for path in self.directory.glob("*"):
             suffix = path.name.split(".", 2)[1]

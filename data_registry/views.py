@@ -151,7 +151,10 @@ def detail(request, id):
 
     job = collection.job.filter(active=True).first()
 
-    files = Export(job.id).files_available()
+    if job:
+        files = Export(job.id).files_available()
+    else:
+        files = Export.default_files_available()
 
     return render(request, "detail.html", {"collection": collection, "job": job, "files": files})
 
