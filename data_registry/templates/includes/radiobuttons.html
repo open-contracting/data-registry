@@ -1,11 +1,10 @@
-{% load i18n %}
 {% load registry %}
 
 <h3 class="h5 mt-4">{{ title }}</h3>
-<div class="filterable" data-key="{{ key }}" data-method="append">
+<div class="filterable" data-key="{{ key }}" data-method="set">
 {% for value, label in items %}
-    <div class="custom-control custom-checkbox">
-        <input type="checkbox" value="{{ value }}" class="custom-control-input" id="f-{{ value }}"{% if value in request.GET|getlist:key %} checked{% endif %}{% if not facet_counts|get_item:value %} disabled{% endif %}>
+    <div class="custom-control custom-radio">
+        <input type="radio" value="{{ value }}" class="custom-control-input" name="{{ key }}" id="f-{{ value }}"{% if value in request.GET|getlist:key %} checked{% endif %}{% if not facet_counts|get_item:value %} disabled{% endif %}>
         <label class="custom-control-label" for="f-{{ value }}">
             {{ label }}
     {% if facet_counts|get_item:value %}
@@ -15,3 +14,4 @@
     </div>
 {% endfor %}
 </div>
+{{ content }}
