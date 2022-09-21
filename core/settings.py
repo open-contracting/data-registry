@@ -249,7 +249,7 @@ if "SENTRY_DSN" in os.environ:
 MODELTRANSLATION_DEFAULT_LANGUAGE = "en"
 
 # https://neutronx.github.io/django-markdownx/customization/#markdownx_markdownify_function
-MARKDOWNX_MARKDOWNIFY_FUNCTION = "data_registry.utils.markdownify"
+MARKDOWNX_MARKDOWNIFY_FUNCTION = "data_registry.util.markdownify"
 
 
 # Project configuration
