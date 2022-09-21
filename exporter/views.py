@@ -12,11 +12,11 @@ def download_export(request):
     job_id = request.GET.get("job_id")
     full = request.GET.get("full")
     year = int(request.GET.get("year"))  # guard against path traversal
-    suffix = request.GET.get("format")
+    suffix = request.GET.get("suffix")
 
     # Guard against path traversal.
     if suffix not in ("jsonl.gz", "csv.tar.gz", "xlsx"):
-        return HttpResponseBadRequest("Format not recognized")
+        return HttpResponseBadRequest("Suffix not recognized")
 
     export = Export(job_id)
 

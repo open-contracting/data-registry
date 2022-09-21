@@ -264,26 +264,7 @@
                     The <code>.jsonl</code> file is compressed using Gzip. Windows users need <a href="https://www.7-zip.org">7-Zip</a>, <a href="https://www.win-rar.com">WinRAR</a> or <a href="https://www.winzip.com">WinZip</a> to decompress the <code>.gz</code> file.
                     {% endblocktranslate %}
                 </p>
-                <ul>
-{% if formats.jsonl.full %}
-                    <li>
-                        <a href="{% url 'download_export' %}?spider={{ collection.source_id }}&job_id={{ job.id }}&full=true&format=jsonl.gz" rel="nofollow" download>
-                            {% translate "All time" %}
-                        </a>
-                    </li>
-{% endif %}
-{% for year in formats.jsonl.years|sortreversed %}
-                    <li>
-                        <a href="{% url 'download_export' %}?spider={{ collection.source_id }}&job_id={{ job.id }}&year={{ year }}&format=jsonl.gz" rel="nofollow" download>
-                            {{ year }}
-                        </a>
-                    </li>
-{% empty %}
-                    <li class="text-muted">
-                        {% translate "Files not yet available." %}
-                    </li>
-{% endfor %}
-                </ul>
+                {% files "jsonl" "jsonl.gz" %}
             </div>
             <div class="col-sm-4 mt-3 mt-sm-0">
                 <h3>Excel</h3>
@@ -297,22 +278,7 @@
                     Excel files can have at most <a href="https://support.microsoft.com/en-us/office/excel-specifications-and-limits-1672b34d-7043-467e-8e27-269d656771c3">1,048,576 rows</a>. If a year is missing, it had too many rows.
                     {% endblocktranslate %}
                 </p>
-                <ul>
-{% if formats.xlsx.full %}
-                    <li>
-                        <a href="{% url 'download_export' %}?spider={{ collection.source_id }}&job_id={{ job.id }}&full=true&format=xlsx" rel="nofollow" download>
-                            {% translate "All time" %}
-                        </a>
-                    </li>
-{% endif %}
-{% for year in formats.xlsx.years|sortreversed %}
-                    <li>
-                        <a href="{% url 'download_export' %}?spider={{ collection.source_id }}&job_id={{ job.id }}&year={{ year }}&format=xlsx" rel="nofollow" download>
-                            {{ year }}
-                        </a>
-                    </li>
-{% endfor %}
-                </ul>
+                {% files "xlsx" "xlsx" False %}
             </div>
             <div class="col-sm-4 mt-3 mt-sm-0">
                 <h3>CSV</h3>
@@ -326,26 +292,7 @@
                     The <code>.csv</code> files are archived using tar and compressed using Gzip. Windows users need <a href="https://www.7-zip.org">7-Zip</a>, <a href="https://www.win-rar.com">WinRAR</a> or <a href="https://www.winzip.com">WinZip</a> to decompress the <code>.tar.gz</code> file.
                     {% endblocktranslate %}
                 </p>
-                <ul>
-{% if formats.csv.full %}
-                    <li>
-                        <a href="{% url 'download_export' %}?spider={{ collection.source_id }}&job_id={{ job.id }}&full=true&format=csv.tar.gz" rel="nofollow" download>
-                            {% translate "All time" %}
-                        </a>
-                    </li>
-{% endif %}
-{% for year in formats.csv.years|sortreversed %}
-                    <li>
-                        <a href="{% url 'download_export' %}?spider={{ collection.source_id }}&job_id={{ job.id }}&year={{ year }}&format=csv.tar.gz" rel="nofollow" download>
-                            {{ year }}
-                        </a>
-                    </li>
-{% empty %}
-                    <li class="text-muted">
-                        {% translate "Files not yet available." %}
-                    </li>
-{% endfor %}
-                </ul>
+                {% files "csv" "csv.tar.gz" %}
             </div>
         </div>
     </div>

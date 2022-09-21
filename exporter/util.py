@@ -107,23 +107,23 @@ class Export:
             return "COMPLETED"
         return "WAITING"
 
-    def formats_available(self) -> Dict:
+    def files_available(self) -> Dict:
         """
         Returns all the available file formats and segments (by year or full).
         """
-        formats = {}
+        files = {}
         # Ensure the template always receives expected keys.
         for suffix in ("csv", "jsonl", "xlsx"):
-            formats[suffix] = {"years": [], "full": False}
+            files[suffix] = {"years": [], "full": False}
 
         for path in self.directory.glob("*"):
             suffix = path.name.split(".", 2)[1]
-            if suffix not in formats:
+            if suffix not in files:
                 continue
             prefix = path.name[:4]  # year or "full"
             if prefix.isdigit():
-                formats[suffix]["years"].append(int(prefix))
+                files[suffix]["years"].append(int(prefix))
             elif prefix == "full":
-                formats[suffix]["full"] = True
+                files[suffix]["full"] = True
 
-        return formats
+        return files
