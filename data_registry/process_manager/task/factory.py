@@ -18,7 +18,7 @@ class TaskFactory:
             return Pelican(job)
         elif type == "exporter":
             return Exporter(job)
-        elif type == "flatenner":
+        elif type == "flattener":
             return Flattener(job)
         else:
             raise Exception("Unsupported task type")
