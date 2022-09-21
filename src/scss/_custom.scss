@@ -1,21 +1,31 @@
 @import '~bootstrap/scss/functions';
 
+// GT Eesti Pro Display has (plus Italic for each):
+// https://www.grillitype.com/typeface/gt-eesti
+// - UltraLight
+// - Thin *
+// - Light
+// - Regular
+// - Medium
+// - Bold *
+// - UltraBold
+
 @font-face {
-    src: url("../fonts/GTEestiProText-Regular.otf") format("opentype");
+    src: url("../fonts/GTEestiProText-Regular.woff2") format("woff2"), url("../fonts/GTEestiProText-Regular.otf") format("opentype");
     font-family: "GT Eesti Pro";
     font-weight: 400;
     font-display: swap;
 }
 
 @font-face {
-    src: url("../fonts/GTEestiProDisplay-Bold.otf") format("opentype");
+    src: url("../fonts/GTEestiProDisplay-Bold.woff2") format("woff2"), url("../fonts/GTEestiProDisplay-Bold.otf") format("opentype");
     font-family: "GT Eesti Pro";
     font-weight: 500; // $headings-font-weight
     font-display: swap;
 }
 
 @font-face {
-    src: url("../fonts/GTEestiProDisplay-Thin.otf") format("opentype");
+    src: url("../fonts/GTEestiProDisplay-Thin.woff2") format("woff2"), url("../fonts/GTEestiProDisplay-Thin.otf") format("opentype");
     font-family: "GT Eesti Pro";
     font-weight: 300;
     font-display: swap;
