@@ -1,5 +1,4 @@
 import gzip
-import logging
 import os
 import shutil
 import tarfile
@@ -12,8 +11,6 @@ from django.core.management.base import BaseCommand
 from yapw.methods.blocking import ack
 
 from exporter.util import Export, consume
-
-logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):

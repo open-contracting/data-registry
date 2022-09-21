@@ -1,9 +1,5 @@
-import logging
-
 from data_registry.models import Task
 from exporter.util import Export, publish
-
-logger = logging.getLogger(__name__)
 
 
 class Exporter:
