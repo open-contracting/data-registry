@@ -49,7 +49,7 @@ def callback(state, channel, method, properties, input_message):
                     shutil.copyfileobj(infile, outfile)
 
             excel = tmpfile.stat().st_size < settings.EXPORTER_MAX_JSON_BYTES_TO_EXCEL
-            output = flatterer.flatten(tmpfile.path, tmpdirname, xlsx=excel, json_stream=True, force=True)
+            output = flatterer.flatten(tmpfile.as_posix(), tmpdirname, xlsx=excel, json_stream=True, force=True)
 
             if excel:
                 shutil.move(output["xlsx"], f"{outpath}.xlsx")
