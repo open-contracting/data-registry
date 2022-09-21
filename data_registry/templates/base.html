@@ -1,6 +1,5 @@
 {% load i18n %}
 {% load static %}
-{% load statici18n %}
 {% get_current_language as LANGUAGE_CODE %}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
@@ -25,7 +24,7 @@
 <div class="container-fluid p-4 bg-dark text-light">
     <div class="row small">
         <div class="col d-none d-md-block fixed-6">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 90 149" width="88">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 90 149" width="88" height="146">
                 <path fill="#E5D800" d="M11 19.9c0 6 4.1 9.5 9.6 9.5 5.4 0 9.5-3.6 9.5-9.5 0-6-4-9.5-9.5-9.5S11 14 11 19.9zm30.1 0c0 12-9 19.9-20.5 19.9S0 31.8 0 19.8C0 8 9.1 0 20.6 0 32 0 41 7.9 41 19.9zM11 70.6c0 6.1 4.1 9.8 9.6 9.8 5.4 0 9.5-3.7 9.5-9.8 0-6.1-4-9.9-9.5-9.9S11 64.5 11 70.6zm30.1 0c0 12.4-9 20.5-20.5 20.5A19.9 19.9 0 010 70.6C0 58.2 9.1 50 20.6 50 32 50 41 58.2 41 70.6z"></path>
                 <path fill="#fff" d="M15 101.2L0 140h11.6l9-27.7 8.9 27.7h11.6l-15-38.8H15zm75 45.5H46.5v2.2H90v-2.2z"></path>
             </svg>
@@ -143,8 +142,7 @@
     </div>
 </div>
 
-<script src="{% statici18n LANGUAGE_CODE %}"></script>
-<script src="{% static 'js/main.js' %}"></script>
+{% block script %}{% endblock %}
 
 </body>
 </html>

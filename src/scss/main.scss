@@ -34,10 +34,6 @@
 
 // Description list
 
-dt {
-    font-family: $font-family-thin;
-}
-
 .list-desc-grid {
     display: grid;
     grid-template-columns: max-content auto;
@@ -107,14 +103,6 @@ dt {
 
 .text-xl {
     font-size: 2rem !important;
-}
-
-.text-sans-serif {
-    font-family: $font-family-sans-serif;
-}
-
-.text-thin {
-    font-family: $font-family-thin;
 }
 
 .text-decoration-underline {
@@ -209,9 +197,9 @@ $letter-size: $spacer * 2;
 // https://github.com/twbs/bootstrap/blob/v4.6.2/scss/_variables.scss#L178
 .clickable {
     cursor: pointer;
-    background-color: #eeeeee;
+    background-color: $light;
     &:hover {
-        background-color: darken(#eeeeee, 15%) !important;
+        background-color: darken($light, 15%) !important;
         h2 {
             text-decoration: $link-hover-decoration;
         }

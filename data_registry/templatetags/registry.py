@@ -1,11 +1,17 @@
 import functools
+import json
+import os.path
 from inspect import getfullargspec, unwrap
 from urllib.parse import quote, urlencode
 
 from django import template
+from django.apps import apps
 from django.template.library import InclusionNode, parse_bits
 from django.utils.safestring import mark_safe
+from django.utils.translation import get_language
 from django.utils.translation import gettext_lazy as _
+from django.utils.translation.trans_real import DjangoTranslation
+from django.views.i18n import JavaScriptCatalog
 
 from data_registry.util import markdownify as render
 
@@ -62,6 +68,19 @@ def block_inclusion_tag(filename, func=None, takes_context=None, name=None):
         return func
 
     return dec
+
+
+@register.simple_tag()
+def catalog_str():
+    catalog = JavaScriptCatalog()
+    catalog.translation = DjangoTranslation(
+        get_language(),
+        domain="djangojs",
+        localedirs=[
+            os.path.join(apps.get_app_config("data_registry").path, "locale"),
+        ],
+    )
+    return mark_safe(json.dumps(catalog.get_catalog()))
 
 
 @register.simple_tag(takes_context=True)
