@@ -279,7 +279,7 @@
                         </a>
                     </li>
 {% empty %}
-                    <li>
+                    <li class="text-muted">
                         {% translate "Files not yet available." %}
                     </li>
 {% endfor %}
@@ -333,6 +333,7 @@
                             {% translate "All time" %}
                         </a>
                     </li>
+{% endif %}
 {% for year in formats.csv.years|sortreversed %}
                     <li>
                         <a href="{% url 'download_export' %}?spider={{ collection.source_id }}&job_id={{ job.id }}&year={{ year }}&format=csv.tar.gz" rel="nofollow" download>
@@ -340,7 +341,7 @@
                         </a>
                     </li>
 {% empty %}
-                    <li>
+                    <li class="text-muted">
                         {% translate "Files not yet available." %}
                     </li>
 {% endfor %}
