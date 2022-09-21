@@ -10,13 +10,12 @@ from requests.exceptions import HTTPError
 
 from data_registry.models import Task
 from data_registry.process_manager.task.exceptions import RecoverableException
-from data_registry.process_manager.task.task import BaseTask
 from data_registry.process_manager.util import request
 
 logger = logging.getLogger(__name__)
 
 
-class Collect(BaseTask):
+class Collect:
     host = None
     job = None
     project = None

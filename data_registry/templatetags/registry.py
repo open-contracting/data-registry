@@ -77,6 +77,18 @@ def feedback_query_string_parameters(context):
     return urlencode({"subject": subject}, quote_via=quote)
 
 
+@register.inclusion_tag("includes/files.html", takes_context=True)
+def files(context, key, suffix, showempty=True):
+    return {
+        "key": key,
+        "suffix": suffix,
+        "showempty": showempty,
+        "collection": context["collection"],
+        "job": context["job"],
+        "files": context["files"],
+    }
+
+
 @register.filter
 def markdownify(value):
     return mark_safe(render(value))
@@ -90,3 +102,8 @@ def get_item(dictionary, key):
 @register.filter
 def getlist(query_dict, key):
     return query_dict.getlist(key, [""])  # Use "" as a default value for radio buttons, etc.
+
+
+@register.filter
+def sortreversed(sequence):
+    return sorted(sequence, reverse=True)

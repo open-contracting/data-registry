@@ -35,7 +35,9 @@ def callback(state, channel, method, properties, input_message):
     try:
         export.directory.mkdir(parents=True)
     except FileExistsError:
-        [f.unlink() for f in export.directory.glob("*") if f.is_file()]
+        for f in export.directory.glob("*"):
+            if f.is_file():
+                f.unlink()
 
     export.lock()
 
@@ -43,11 +45,9 @@ def callback(state, channel, method, properties, input_message):
     page = 1
     files = {}
 
-    # acknowledge message processing now to avoid connection loses
-    # the rest can run for hours and is irreversible anyways
+    # Acknowledge now to avoid connection losses. The rest can run for hours and is irreversible anyhow.
     ack(state, channel, method.delivery_tag)
 
-    # load data from kf-process and save
     while True:
         with connections["kingfisher_process"].cursor() as cursor:
             logger.debug("Processing page %s with id > %s", page, id)
@@ -78,7 +78,6 @@ def callback(state, channel, method, properties, input_message):
                 full.write(r[1])
                 full.write("\n")
 
-                # annual and monthly dump
                 if r[2] is not None and len(r[2]) > 9:
                     year_path = export.directory / f"{int(r[2][:4])}.jsonl"
                     if year_path not in files:
@@ -95,7 +94,7 @@ def callback(state, channel, method, properties, input_message):
                     files[month_path].write("\n")
         page = page + 1
 
-        # last page
+        # Last page.
         if len(records) < settings.EXPORTER_PAGE_SIZE:
             break
 

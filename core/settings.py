@@ -265,7 +265,7 @@ RABBIT_URL = os.getenv("RABBIT_URL", "amqp://localhost")
 RABBIT_EXCHANGE_NAME = os.getenv("RABBIT_EXCHANGE_NAME", "data_registry_development")
 
 # The job tasks to run.
-JOB_TASKS_PLAN = ["collect", "process", "pelican", "exporter"]
+JOB_TASKS_PLAN = ["collect", "process", "pelican", "exporter", "flattener"]
 
 SCRAPYD = {
     # The base URL of Scrapyd.
@@ -290,6 +290,9 @@ PELICAN_FRONTEND_URL = os.getenv("PELICAN_FRONTEND_URL")
 EXPORTER_DIR = os.getenv("EXPORTER_DIR", "/data/exporter" if production else BASE_DIR / "data" / "exporter")
 # The batch size of compiled releases to extract from Kingfisher Process.
 EXPORTER_PAGE_SIZE = 10000
+
+# The maximum size (in bytes) allowed to convert JSON files to Excel.
+EXPORTER_MAX_JSON_BYTES_TO_EXCEL = 1073741824  # 1 GB
 
 # The base URL of Spoonbill.
 SPOONBILL_URL = os.getenv("SPOONBILL_URL", "https://flatten.open-contracting.org")

@@ -1,7 +1,7 @@
 import logging
 import shutil
 from pathlib import Path
-from typing import List, Literal
+from typing import Dict, Literal
 
 import pika.exceptions
 from django.conf import settings
@@ -48,13 +48,15 @@ def publish(*args, **kwargs):
 
 
 class Export:
-    def __init__(self, *components):
+    def __init__(self, *components, export_type: str = "json"):
         """
         :param components: the path components of the export directory
+        :param export_type: the export type, "json" or "flat" files (CSV and Excel)
         """
         self.directory = Path(settings.EXPORTER_DIR).joinpath(*map(str, components))
         self.spoonbill_directory = Path(settings.SPOONBILL_EXPORTER_DIR).joinpath(*map(str, components))
-        self.lockfile = self.directory / "exporter.lock"
+        self.lockfile = self.directory / f"exporter_{export_type}.lock"
+        self.export_type = export_type
 
     def lock(self) -> None:
         """
@@ -88,7 +90,11 @@ class Export:
         """
         Return whether the final file has been written.
         """
-        return (self.directory / "full.jsonl.gz").exists()
+        if self.export_type == "json":
+            filename = "full.jsonl.gz"
+        else:
+            filename = "full.csv.tar.gz"
+        return (self.directory / filename).exists()
 
     @property
     def status(self) -> Literal["RUNNING", "COMPLETED", "WAITING"]:
@@ -101,8 +107,23 @@ class Export:
             return "COMPLETED"
         return "WAITING"
 
-    def years_available(self) -> List[int]:
+    def files_available(self) -> Dict:
         """
-        Return the calendar years for which there are exported files in reverse chronological order.
+        Returns all the available file formats and segments (by year or full).
         """
-        return sorted((int(p.name[:4]) for p in self.directory.glob("[0-9][0-9][0-9][0-9].jsonl.gz")), reverse=True)
+        files = {}
+        # Ensure the template always receives expected keys.
+        for suffix in ("csv", "jsonl", "xlsx"):
+            files[suffix] = {"years": set(), "full": False}
+
+        for path in self.directory.glob("*"):
+            suffix = path.name.split(".", 2)[1]
+            if suffix not in files:
+                continue
+            prefix = path.name[:4]  # year or "full"
+            if prefix.isdigit():
+                files[suffix]["years"].add(int(prefix))
+            elif prefix == "full":
+                files[suffix]["full"] = True
+
+        return files

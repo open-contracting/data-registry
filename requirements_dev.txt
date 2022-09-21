@@ -27,9 +27,11 @@ chardet==4.0.0
     # via
     #   -r requirements.txt
     #   requests
-click==7.1.2
+click==8.1.3
     # via
+    #   -r requirements.txt
     #   black
+    #   flatterer
     #   pip-tools
 coverage==5.4
     # via
@@ -56,6 +58,8 @@ filelock==3.3.2
     # via virtualenv
 flake8==3.8.4
     # via -r requirements_dev.in
+flatterer==0.16.0
+    # via -r requirements.txt
 gitdb==4.0.7
     # via gitpython
 gitpython==3.1.18
@@ -68,6 +72,10 @@ idna==2.10
     # via
     #   -r requirements.txt
     #   requests
+ijson==3.1.4
+    # via
+    #   -r requirements.txt
+    #   flatterer
 isort==5.7.0
     # via -r requirements_dev.in
 markdown==3.3.4
@@ -82,10 +90,19 @@ mypy-extensions==0.4.3
     # via black
 nodeenv==1.6.0
     # via pre-commit
+numpy==1.23.3
+    # via
+    #   -r requirements.txt
+    #   pandas
 orjson==3.6.6
     # via
     #   -r requirements.txt
+    #   flatterer
     #   yapw
+pandas==1.5.0
+    # via
+    #   -r requirements.txt
+    #   flatterer
 pathspec==0.9.0
     # via black
 pep517==0.12.0
@@ -115,13 +132,16 @@ pycodestyle==2.6.0
 pyflakes==2.2.0
     # via flake8
 python-dateutil==2.8.2
-    # via -r requirements.txt
+    # via
+    #   -r requirements.txt
+    #   pandas
 python-slugify==4.0.1
     # via transifex-client
 pytz==2021.1
     # via
     #   -r requirements.txt
     #   django
+    #   pandas
 pyyaml==6.0
     # via pre-commit
 requests==2.25.1
