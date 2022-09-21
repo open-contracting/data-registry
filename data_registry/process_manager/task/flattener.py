@@ -9,10 +9,9 @@ logger = logging.getLogger(__name__)
 class Flattener:
     def __init__(self, job):
         self.job = job
-        self.collection_id = self.job.context.get("process_id_pelican")
 
     def run(self):
-        publish({"collection_id": self.collection_id, "job_id": self.job.id}, "flattener_init")
+        publish({"job_id": self.job.id}, "flattener_init")
 
     def get_status(self):
         status = Export(self.job.id, export_type="flat").status
