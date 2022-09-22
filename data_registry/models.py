@@ -90,11 +90,11 @@ class Job(models.Model):
         return dt.strftime("%d-%b-%y") if dt else ""
 
 
-class PublicCollectionManager(models.Manager):
-    def get_queryset(self):
+class CollectionQuerySet(models.QuerySet):
+    def visible(self):
         # https://docs.djangoproject.com/en/3.2/ref/models/expressions/#some-examples
         active_jobs = Job.objects.filter(collection=models.OuterRef("pk"), active=True)
-        return super().get_queryset().filter(models.Exists(active_jobs), public=True)
+        return self.filter(models.Exists(active_jobs), public=True)
 
 
 class Collection(models.Model):
@@ -200,8 +200,7 @@ class Collection(models.Model):
     created = models.DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)
     modified = models.DateTimeField(auto_now=True, blank=True, null=True, db_index=True)
 
-    objects = models.Manager()
-    visible = PublicCollectionManager()
+    objects = CollectionQuerySet.as_manager()
 
     def __str__(self):
         return f"{self.title} ({self.id})"
