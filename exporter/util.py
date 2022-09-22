@@ -126,7 +126,7 @@ class Export:
             if suffix not in files:
                 continue
             prefix = path.name[:4]  # year or "full"
-            if prefix.isdigit():
+            if prefix.isdigit() and "_" not in path.name:  # don't return month files
                 files[suffix]["years"].add(int(prefix))
             elif prefix == "full":
                 files[suffix]["full"] = True

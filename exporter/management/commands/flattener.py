@@ -10,6 +10,7 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 from yapw.methods.blocking import ack
 
+from data_registry.models import Job
 from exporter.util import Export, consume
 
 
@@ -28,6 +29,7 @@ class Command(BaseCommand):
 
 def callback(state, channel, method, properties, input_message):
     job_id = input_message.get("job_id")
+    max_rows_lower_bound = Job.objects.get(id=job_id).get_max_rows_lower_bound()
 
     export = Export(job_id, export_type="flat")
     export.lock()
@@ -48,7 +50,8 @@ def callback(state, channel, method, properties, input_message):
                 with tmpfile.open("wb") as outfile:
                     shutil.copyfileobj(infile, outfile)
 
-            excel = tmpfile.stat().st_size < settings.EXPORTER_MAX_JSON_BYTES_TO_EXCEL
+            # For max_rows_lower_bound, see https://github.com/kindly/libflatterer/issues/1
+            excel = tmpfile.stat().st_size < settings.EXPORTER_MAX_JSON_BYTES_TO_EXCEL and max_rows_lower_bound < 65536
             output = flatterer.flatten(str(tmpfile), tmpdirname, xlsx=excel, json_stream=True, force=True)
 
             if excel:
