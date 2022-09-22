@@ -89,9 +89,10 @@ class Job(models.Model):
     def format_datetime(self, dt):
         return dt.strftime("%d-%b-%y") if dt else ""
 
-    def get_max_number_of_rows(self):
-        count_columns = filter(lambda name: "_count" in name, dir(self))
-        return max([self.__getattribute__(column) for column in count_columns])
+    def get_max_rows_lower_bound(self):
+        return max(
+            getattr(self, field.attname) or 0 for field in Job._meta.get_fields() if field.name.endswith("_count")
+        )
 
 
 class CollectionQuerySet(models.QuerySet):
