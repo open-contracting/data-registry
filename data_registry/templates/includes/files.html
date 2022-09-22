@@ -17,7 +17,7 @@
         </a>
     </li>
     {% empty %}
-        {% if showempty %}
+        {% if showempty|default:True %}
     <li class="text-muted">
         {% translate "Files not yet available." %}
     </li>

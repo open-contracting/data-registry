@@ -1,13 +1,15 @@
 {% extends 'base.html' %}
-{% load i18n %}
+{% load cache %}
 {% load humanize %}
+{% load i18n %}
 {% load static %}
 {% load registry %}
 
 {% block script %}
+{% get_current_language as LANGUAGE_CODE %}
 <script>
 {# https://github.com/django/django/blob/stable/3.2.x/django/views/i18n.py #}
-const catalog = {% catalog_str %}
+const catalog = {% cache None catalog LANGUAGE_CODE %}{% catalog_str %}{% endcache %}
 
 function gettext(msgid) {
     const value = catalog[msgid]
@@ -307,7 +309,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
                     The <code>.jsonl</code> file is compressed using Gzip. Windows users need <a href="https://www.7-zip.org">7-Zip</a>, <a href="https://www.win-rar.com">WinRAR</a> or <a href="https://www.winzip.com">WinZip</a> to decompress the <code>.gz</code> file.
                     {% endblocktranslate %}
                 </p>
-                {% files "jsonl" "jsonl.gz" %}
+                {% include "includes/files.html" key="jsonl" suffix="jsonl.gz" %}
             </div>
             <div class="col-sm-4 mt-3 mt-sm-0">
                 <h3>Excel</h3>
@@ -321,7 +323,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
                     Excel files can have at most <a href="https://support.microsoft.com/en-us/office/excel-specifications-and-limits-1672b34d-7043-467e-8e27-269d656771c3">1,048,576 rows</a>. If a year is missing, it had too many rows.
                     {% endblocktranslate %}
                 </p>
-                {% files "xlsx" "xlsx" False %}
+                {% include "includes/files.html" key="xlsx" suffix="xlsx" showempty=False %}
             </div>
             <div class="col-sm-4 mt-3 mt-sm-0">
                 <h3>CSV</h3>
@@ -335,7 +337,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
                     The <code>.csv</code> files are archived using tar and compressed using Gzip. Windows users need <a href="https://www.7-zip.org">7-Zip</a>, <a href="https://www.win-rar.com">WinRAR</a> or <a href="https://www.winzip.com">WinZip</a> to decompress the <code>.tar.gz</code> file.
                     {% endblocktranslate %}
                 </p>
-                {% files "csv" "csv.tar.gz" %}
+                {% include "includes/files.html" key="csv" suffix="csv.tar.gz" %}
             </div>
         </div>
     </div>

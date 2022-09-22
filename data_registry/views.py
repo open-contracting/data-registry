@@ -32,9 +32,7 @@ alphabets["ru"] = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬ�
 
 
 def index(request):
-    response = render(request, "index.html")
-
-    return response
+    return render(request, "index.html")
 
 
 def search(request):
