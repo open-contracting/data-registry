@@ -90,7 +90,7 @@ class Job(models.Model):
         return dt.strftime("%d-%b-%y") if dt else ""
 
     def get_max_number_of_rows(self):
-        count_columns = filter(lambda name: '_count' in name, dir(self))
+        count_columns = filter(lambda name: "_count" in name, dir(self))
         return max([self.__getattribute__(column) for column in count_columns])
 
 
