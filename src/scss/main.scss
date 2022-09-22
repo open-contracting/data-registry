@@ -1,4 +1,5 @@
 @import "custom";
+
 // https://getbootstrap.com/docs/4.6/getting-started/theming/
 // https://github.com/twbs/bootstrap/blob/v4.6.2/scss/bootstrap.scss
 @import '~bootstrap/scss/variables';
@@ -18,6 +19,7 @@
 @import '~bootstrap/scss/badge';
 // Utilities
 @import "~bootstrap/scss/utilities";
+
 // https://github.com/bootstrap-vue/bootstrap-vue/blob/dev/src/icons/README.md#usage
 @import '~bootstrap-vue/src/icons';
 
