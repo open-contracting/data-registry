@@ -51,13 +51,34 @@ def callback(state, channel, method, properties, input_message):
                     shutil.copyfileobj(infile, outfile)
 
             # For max_rows_lower_bound, see https://github.com/kindly/libflatterer/issues/1
-            excel = tmpfile.stat().st_size < settings.EXPORTER_MAX_JSON_BYTES_TO_EXCEL and max_rows_lower_bound < 65536
-            output = flatterer.flatten(str(tmpfile), tmpdirname, xlsx=excel, json_stream=True, force=True)
+            xlsx = tmpfile.stat().st_size < settings.EXPORTER_MAX_JSON_BYTES_TO_EXCEL and max_rows_lower_bound < 65536
+            output = flatterer_flatten(export, str(tmpfile), tmpdirname, xlsx)
 
-            if excel:
+            if "xlsx" in output:
                 shutil.move(output["xlsx"], f"{outpath}.xlsx")
 
             with tarfile.open(f"{outpath}.csv.tar.gz", "w:gz") as tar:
                 tar.add(tmpdir / "csv", arcname=tmpfile.stem)  # remove .jsonl
 
     export.unlock()
+
+
+def flatterer_flatten(export, infile, outdir, xlsx):
+    """
+    Convert the file from JSON to CSV and Excel.
+
+    If an error occurs:
+
+    -  If ``xlsx=True``, attempt with ``xlsx=False``.
+    -  Otherwise, unlock the export and re-raise the error.
+    """
+    try:
+        return flatterer.flatten(infile, outdir, xlsx=xlsx, json_stream=True, force=True)
+    except RuntimeError:
+        if xlsx:
+            return flatterer_flatten(export, infile, outdir, False)
+
+        # The lock prevents multiple threads from creating the same files in the export directory. Since we
+        # re-raise the error before writing those files, we can unlock here.
+        export.unlock()
+        raise
