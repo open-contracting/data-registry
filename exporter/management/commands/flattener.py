@@ -1,4 +1,5 @@
 import gzip
+import logging
 import os
 import shutil
 import tarfile
@@ -12,6 +13,8 @@ from yapw.methods.blocking import ack
 
 from data_registry.models import Job
 from exporter.util import Export, consume
+
+logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
@@ -76,6 +79,7 @@ def flatterer_flatten(export, infile, outdir, xlsx):
         return flatterer.flatten(infile, outdir, xlsx=xlsx, json_stream=True, force=True)
     except RuntimeError:
         if xlsx:
+            logger.exception("Attempting CSV-only conversion after failing CSV+Excel conversion")
             return flatterer_flatten(export, infile, outdir, False)
 
         # The lock prevents multiple threads from creating the same files in the export directory. Since we
