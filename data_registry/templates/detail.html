@@ -129,7 +129,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
 {% endif %}
             </dd>
             <dt>{% translate "OCID prefix:" %}</dt>
-            <dd>{{ job.ocid_prefix }}</dd>
+            <dd>{{ job.ocid_prefix|default:"-" }}</dd>
             <dt>{% translate "License:" %}</dt>
             <dd class="text-break">
 {% if collection.license_custom %}
@@ -138,7 +138,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
                     {{ collection.license_custom.description|markdownify }}
                 </div>
 {% else %}
-                {{ job.license }}
+                {{ job.license|default:"-" }}
 {% endif %}
             </dd>
             <dt>{% translate "Language:" %}</dt>
@@ -154,6 +154,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
         <h2 class="h4 mb-3">{% translate "Data avaliable" %}</h2s>
     </div>
     <div class="col-sm">
+{% if job %}
         <div class="row">
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
                 <h3 class="h6">{% include "includes/check_icon.html" with checked=job.parties_count only %}{% translate "Parties" %}</h3>
@@ -230,10 +231,15 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
                 </dl>
             </div>
         </div>
+{% else %}
+        <p class="p-4 rounded-xl bg-light">
+            {% translate "This dataset has not yet been retrieved." %}
+        </p>
+{% endif %}
 
 {% if collection.additional_data %}
         <div class="d-flex p-4 rounded-xl bg-primary-20 text-primary">
-            <div class="flex-fill mt-1 mr-3">
+            <div class="mt-1 mr-3">
                 {# https://icons.getbootstrap.com/icons/gem/ #}
                 <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-gem b-icon" width="1em" height="1em" viewBox="0 0 16 16" role="img" focusable="false" fill="currentColor">
                     <g transform="translate(8 8) scale(1.5 1.5) translate(-8 -8)">
@@ -323,7 +329,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
                     Excel files can have at most <a href="https://support.microsoft.com/en-us/office/excel-specifications-and-limits-1672b34d-7043-467e-8e27-269d656771c3">1,048,576 rows</a>. If a year is missing, it had too many rows.
                     {% endblocktranslate %}
                 </p>
-                {% include "includes/files.html" with key="xlsx" suffix="xlsx" showempty=False %}
+                {% include "includes/files.html" with key="xlsx" suffix="xlsx" hideempty=True %}
             </div>
             <div class="col-sm-4 mt-3 mt-sm-0">
                 <h3>CSV</h3>
