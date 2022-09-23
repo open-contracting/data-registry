@@ -41,7 +41,7 @@ def callback(state, channel, method, properties, input_message):
     ack(state, channel, method.delivery_tag)
 
     for entry in os.scandir(export.directory):
-        if not entry.name.endswith(".jsonl.gz"):
+        if not entry.name.endswith(".jsonl.gz") or "_" in entry.name:  # don't process months at the moment
             continue
 
         with tempfile.TemporaryDirectory() as tmpdirname:
