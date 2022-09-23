@@ -79,12 +79,19 @@ def decorator(decode, callback, state, channel, method, properties, body):
 
 class Export:
     @classmethod
-    def default_files_available(cls):
-        files = {}
-        # Ensure the template always receives expected keys.
-        for suffix in ("csv", "jsonl", "xlsx"):
-            files[suffix] = {"years": set(), "full": False}
-        return files
+    def get_files(cls, *components, **kwargs):
+        components = [c for c in components if c]
+        if components:
+            return cls(*components, **kwargs).files
+        return cls.default_files()
+
+    @classmethod
+    def default_files(cls):
+        return {
+            "csv": {"full": False, "years": set()},
+            "jsonl": {"full": False, "years": set()},
+            "xlsx": {"full": False, "years": set()},
+        }
 
     def __init__(self, *components, export_type: str = "json"):
         """
@@ -151,11 +158,12 @@ class Export:
             return "COMPLETED"
         return "WAITING"
 
-    def files_available(self) -> Dict:
+    @property
+    def files(self) -> Dict:
         """
         Returns all the available file formats and segments (by year or full).
         """
-        files = self.default_files_available()
+        files = self.default_files()
 
         for path in self.directory.glob("*"):
             suffix = path.name.split(".", 2)[1]

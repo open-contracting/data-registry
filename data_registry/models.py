@@ -188,10 +188,6 @@ class Collection(models.Model):
         "used or additional fields, as Markdown text.",
     )
 
-    json_format = models.BooleanField(default=True)
-    excel_format = models.BooleanField(default=True)
-    csv_format = models.BooleanField(default=True)
-
     public = models.BooleanField(
         default=False,
         help_text="If the active job's tasks completed without errors and all the fields below in "

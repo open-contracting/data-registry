@@ -197,12 +197,19 @@ LOGGING = {
             "handlers": ["null"],
             "propagate": False,
         },
+        "django.template": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
         "django.utils.autoreload": {
-            "handlers": ["null"],
+            "handlers": ["console"],
+            "level": "INFO",
             "propagate": False,
         },
         "markdown_it.rules_block": {
-            "handlers": ["null"],
+            "handlers": ["console"],
+            "level": "INFO",
             "propagate": False,
         },
     },

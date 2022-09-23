@@ -81,6 +81,7 @@ def search(request):
     # https://docs.djangoproject.com/en/3.2/ref/models/expressions/#subquery-expressions
     active_job = Job.objects.filter(collection=OuterRef("pk"), active=True)[:1]
     qs = collection_queryset(request).annotate(
+        job_id=Subquery(active_job.values("pk")),
         # Display
         date_from=Subquery(active_job.values("date_from")),
         date_to=Subquery(active_job.values("date_to")),
@@ -125,6 +126,7 @@ def search(request):
     qs = qs.filter(*filter_args, **filter_kwargs).order_by("country", "title")
 
     for collection in qs:
+        collection.files = Export.get_files(collection.job_id)
         for value in counts:
             if getattr(collection, value):
                 facets["counts"][value] += 1
@@ -148,11 +150,7 @@ def detail(request, id):
     )
 
     job = collection.job.filter(active=True).first()
-
-    if job:
-        files = Export(job.id).files_available()
-    else:
-        files = Export.default_files_available()
+    files = Export.get_files(job and job.id)
 
     return render(request, "detail.html", {"collection": collection, "job": job, "files": files})
 
