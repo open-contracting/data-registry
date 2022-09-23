@@ -57,11 +57,11 @@ class Export:
 
     @classmethod
     def default_files(cls):
-        files = {}
-        # Ensure the template always receives expected keys.
-        for suffix in ("csv", "jsonl", "xlsx"):
-            files[suffix] = {"years": set(), "full": False}
-        return files
+        return {
+            "csv": {"full": False, "years": set()},
+            "jsonl": {"full": False, "years": set()},
+            "xlsx": {"full": False, "years": set()},
+        }
 
     def __init__(self, *components, export_type: str = "json"):
         """
