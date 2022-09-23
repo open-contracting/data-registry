@@ -125,6 +125,7 @@ def search(request):
     qs = qs.filter(*filter_args, **filter_kwargs).order_by("country", "title")
 
     for collection in qs:
+        collection.files = collection.get_available_files()
         for value in counts:
             if getattr(collection, value):
                 facets["counts"][value] += 1
@@ -149,12 +150,8 @@ def detail(request, id):
 
     job = collection.job.filter(active=True).first()
 
-    if job:
-        files = Export(job.id).files_available()
-    else:
-        files = Export.default_files_available()
-
-    return render(request, "detail.html", {"collection": collection, "job": job, "files": files})
+    return render(request, "detail.html", {"collection": collection, "job": job,
+                                           "files": collection.get_available_files()})
 
 
 @login_required

@@ -2,6 +2,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from markdownx.models import MarkdownxField
 
+from exporter.util import Export
+
 
 class Job(models.Model):
     collection = models.ForeignKey(
@@ -188,10 +190,6 @@ class Collection(models.Model):
         "used or additional fields, as Markdown text.",
     )
 
-    json_format = models.BooleanField(default=True)
-    excel_format = models.BooleanField(default=True)
-    csv_format = models.BooleanField(default=True)
-
     public = models.BooleanField(
         default=False,
         help_text="If the active job's tasks completed without errors and all the fields below in "
@@ -209,6 +207,15 @@ class Collection(models.Model):
 
     def __str__(self):
         return f"{self.title} ({self.id})"
+
+    def get_available_files(self):
+        job = self.job.filter(active=True).first()
+
+        if job:
+            files = Export(job.id).files_available()
+        else:
+            files = Export.default_files_available()
+        return files
 
 
 class License(models.Model):

@@ -142,13 +142,13 @@ document.querySelectorAll('.filterable').forEach(filter => {
                     <p class="mb-2 font-weight-light">{% translate "Available formats:" %}</p>
                     <ul class="mb-2 list-inline">
                         <li class="list-inline-item text-uppercase">
-                            {% include "includes/check_icon.html" with checked=collection.json_format only %}JSON
+                            {% include "includes/check_icon.html" with checked=collection.files.jsonl.years only %}JSON
                         </li>
                         <li class="list-inline-item text-uppercase">
-                            {% include "includes/check_icon.html" with checked=collection.excel_format only %}Excel
+                            {% include "includes/check_icon.html" with checked=collection.files.xlsx.years only %}Excel
                         </li>
                         <li class="list-inline-item text-uppercase">
-                            {% include "includes/check_icon.html" with checked=collection.csv_format only %}CSV
+                            {% include "includes/check_icon.html" with checked=collection.files.csv.years only %}CSV
                         </li>
                     </ul>
                     <a href="{% url 'detail' collection.id %}" class="d-flex align-items-center justify-content-end text-primary click">
