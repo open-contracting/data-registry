@@ -150,8 +150,9 @@ def detail(request, id):
 
     job = collection.job.filter(active=True).first()
 
-    return render(request, "detail.html", {"collection": collection, "job": job,
-                                           "files": collection.get_available_files()})
+    return render(
+        request, "detail.html", {"collection": collection, "job": job, "files": collection.get_available_files()}
+    )
 
 
 @login_required
