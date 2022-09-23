@@ -66,6 +66,9 @@ class Export:
         self.lockfile = self.directory / f"exporter_{export_type}.lock"
         self.export_type = export_type
 
+    def __str__(self):
+        return f"{self.directory} ({self.export_type})"
+
     def lock(self) -> None:
         """
         Create the lock file.

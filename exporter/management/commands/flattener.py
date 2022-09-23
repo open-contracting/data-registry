@@ -79,7 +79,7 @@ def flatterer_flatten(export, infile, outdir, xlsx):
         return flatterer.flatten(infile, outdir, xlsx=xlsx, json_stream=True, force=True)
     except RuntimeError:
         if xlsx:
-            logger.exception("Attempting CSV-only conversion after failing CSV+Excel conversion")
+            logger.exception("Attempting CSV-only conversion after failing CSV+Excel conversion in %s", export)
             return flatterer_flatten(export, infile, outdir, False)
 
         # The lock prevents multiple threads from creating the same files in the export directory. Since we
