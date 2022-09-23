@@ -2,8 +2,6 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from markdownx.models import MarkdownxField
 
-from exporter.util import Export
-
 
 class Job(models.Model):
     collection = models.ForeignKey(
@@ -207,15 +205,6 @@ class Collection(models.Model):
 
     def __str__(self):
         return f"{self.title} ({self.id})"
-
-    def get_available_files(self):
-        job = self.job.filter(active=True).first()
-
-        if job:
-            files = Export(job.id).files_available()
-        else:
-            files = Export.default_files_available()
-        return files
 
 
 class License(models.Model):
