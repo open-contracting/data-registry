@@ -380,6 +380,6 @@ class JobAdmin(ModelAdmin):
         )
 
         if last_completed_task:
-            return f"{last_completed_task.get('type')} ({last_completed_task.get('order')}/4)"
+            return f"{last_completed_task['type']} ({last_completed_task['order']}/{len(settings.JOB_TASKS_PLAN)})"
 
         return None
