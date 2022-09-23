@@ -12,7 +12,7 @@ from django.core.management.base import BaseCommand
 from yapw.methods.blocking import ack
 
 from data_registry.models import Job
-from exporter.util import Export, consume
+from exporter.util import Export, consume, decorator
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +27,7 @@ class Command(BaseCommand):
     """
 
     def handle(self, *args, **options):
-        consume(callback, "flattener_init")
+        consume(callback, "flattener_init", decorator=decorator)
 
 
 def callback(state, channel, method, properties, input_message):

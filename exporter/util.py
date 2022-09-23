@@ -1,11 +1,18 @@
 import logging
+import os
 import shutil
+import signal
 from pathlib import Path
 from typing import Dict, Literal
 
 import pika.exceptions
 from django.conf import settings
+from django.db import connections
 from yapw import clients
+from yapw.decorators import decorate
+from yapw.methods.blocking import nack
+
+from data_registry.exceptions import LockFileError
 
 logger = logging.getLogger(__name__)
 
@@ -20,6 +27,14 @@ class Publisher(clients.Durable, clients.Blocking, clients.Base):
 
 def get_client(klass):
     return klass(url=settings.RABBIT_URL, exchange=settings.RABBIT_EXCHANGE_NAME)
+
+
+def publish(*args, **kwargs):
+    client = get_client(Publisher)
+    try:
+        client.publish(*args, **kwargs)
+    finally:
+        client.close()
 
 
 # https://github.com/pika/pika/blob/master/examples/blocking_consume_recover_multiple_hosts.py
@@ -39,12 +54,27 @@ def consume(*args, **kwargs):
             continue
 
 
-def publish(*args, **kwargs):
-    client = get_client(Publisher)
-    try:
-        client.publish(*args, **kwargs)
-    finally:
-        client.close()
+def decorator(decode, callback, state, channel, method, properties, body):
+    """
+    Close the database connections opened by the callback, before returning.
+
+    If the callback raises an exception, send the SIGUSR1 signal to the main thread, without acknowledgment. For some
+    exceptions, assume that the same message was delivered twice, log an error, and nack the message.
+    """
+
+    def errback(exception):
+        if isinstance(exception, LockFileError):
+            logger.exception("Locked since %s, maybe caused by duplicate message %r, skipping", exception, body)
+            nack(state, channel, method.delivery_tag, requeue=False)
+        else:
+            logger.exception("Unhandled exception when consuming %r, sending SIGUSR1", body)
+            os.kill(os.getpid(), signal.SIGUSR1)
+
+    def finalback():
+        for conn in connections.all():
+            conn.close()
+
+    decorate(decode, callback, state, channel, method, properties, body, errback, finalback)
 
 
 class Export:
@@ -73,8 +103,11 @@ class Export:
         """
         Create the lock file.
         """
-        with self.lockfile.open("x"):
-            pass
+        try:
+            with self.lockfile.open("x"):
+                pass
+        except FileExistsError:
+            raise LockFileError(self.lockfile.stat().st_mtime)
 
     def unlock(self) -> None:
         """

@@ -7,7 +7,7 @@ from django.core.management.base import BaseCommand
 from django.db import connections
 from yapw.methods.blocking import ack
 
-from exporter.util import Export, consume
+from exporter.util import Export, consume, decorator
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +22,7 @@ class Command(BaseCommand):
     """
 
     def handle(self, *args, **options):
-        consume(callback, "exporter_init")
+        consume(callback, "exporter_init", decorator=decorator)
 
 
 def callback(state, channel, method, properties, input_message):
