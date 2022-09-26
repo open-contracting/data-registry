@@ -46,23 +46,23 @@ def callback(state, channel, method, properties, input_message):
 
         with tempfile.TemporaryDirectory() as tmpdirname:
             tmpdir = Path(tmpdirname)
-            tmpfile = tmpdir / entry.name[:-3]  # remove .gz
-            outpath = entry.path[:-9]  # remove .jsonl.gz
-            flatten_output = tmpdir / 'flatten'
+            infile = tmpdir / entry.name[:-3]  # remove .gz
+            outdir = tmpdir / "flatten"  # force=True deletes this directory
+            final_path_prefix = entry.path[:-9]  # remove .jsonl.gz
 
-            with gzip.open(entry.path) as infile:
-                with tmpfile.open("wb") as outfile:
-                    shutil.copyfileobj(infile, outfile)
+            with gzip.open(entry.path) as i:
+                with infile.open("wb") as o:
+                    shutil.copyfileobj(i, o)
 
             # For max_rows_lower_bound, see https://github.com/kindly/libflatterer/issues/1
-            xlsx = tmpfile.stat().st_size < settings.EXPORTER_MAX_JSON_BYTES_TO_EXCEL and max_rows_lower_bound < 65536
-            output = flatterer_flatten(export, str(tmpfile), str(flatten_output), xlsx)
+            xlsx = infile.stat().st_size < settings.EXPORTER_MAX_JSON_BYTES_TO_EXCEL and max_rows_lower_bound < 65536
+            output = flatterer_flatten(export, str(infile), str(outdir), xlsx)
 
             if "xlsx" in output:
-                shutil.move(output["xlsx"], f"{outpath}.xlsx")
+                shutil.move(output["xlsx"], f"{final_path_prefix}.xlsx")
 
-            with tarfile.open(f"{outpath}.csv.tar.gz", "w:gz") as tar:
-                tar.add(flatten_output / "csv", arcname=tmpfile.stem)  # remove .jsonl
+            with tarfile.open(f"{final_path_prefix}.csv.tar.gz", "w:gz") as tar:
+                tar.add(outdir / "csv", arcname=infile.stem)  # remove .jsonl
 
     export.unlock()
 
