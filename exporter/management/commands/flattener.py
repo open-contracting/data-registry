@@ -56,7 +56,7 @@ def callback(state, channel, method, properties, input_message):
 
             # For max_rows_lower_bound, see https://github.com/kindly/libflatterer/issues/1
             xlsx = infile.stat().st_size < settings.EXPORTER_MAX_JSON_BYTES_TO_EXCEL and max_rows_lower_bound < 65536
-            output = flatterer_flatten(export, str(infile), str(outdir), xlsx)
+            output = flatterer_flatten(export, str(infile), str(outdir), xlsx=xlsx, bound=max_rows_lower_bound)
 
             if "xlsx" in output:
                 shutil.move(output["xlsx"], f"{final_path_prefix}.xlsx")
@@ -67,7 +67,7 @@ def callback(state, channel, method, properties, input_message):
     export.unlock()
 
 
-def flatterer_flatten(export, infile, outdir, xlsx):
+def flatterer_flatten(export, infile, outdir, xlsx=False, bound=None):
     """
     Convert the file from JSON to CSV and Excel.
 
@@ -80,8 +80,8 @@ def flatterer_flatten(export, infile, outdir, xlsx):
         return flatterer.flatten(infile, outdir, xlsx=xlsx, json_stream=True, force=True)
     except RuntimeError:
         if xlsx:
-            logger.exception("Attempting CSV-only conversion after failing CSV+Excel conversion in %s", export)
-            return flatterer_flatten(export, infile, outdir, False)
+            logger.exception("Attempting CSV-only conversion in %s (max_rows_lower_bound=%s)", export, bound)
+            return flatterer_flatten(export, infile, outdir)
 
         # The lock prevents multiple threads from creating the same files in the export directory. Since we
         # re-raise the error before writing those files, we can unlock here.
