@@ -48,6 +48,7 @@ def callback(state, channel, method, properties, input_message):
             tmpdir = Path(tmpdirname)
             tmpfile = tmpdir / entry.name[:-3]  # remove .gz
             outpath = entry.path[:-9]  # remove .jsonl.gz
+            flatten_output = tmpdir / 'flatten'
 
             with gzip.open(entry.path) as infile:
                 with tmpfile.open("wb") as outfile:
@@ -55,13 +56,13 @@ def callback(state, channel, method, properties, input_message):
 
             # For max_rows_lower_bound, see https://github.com/kindly/libflatterer/issues/1
             xlsx = tmpfile.stat().st_size < settings.EXPORTER_MAX_JSON_BYTES_TO_EXCEL and max_rows_lower_bound < 65536
-            output = flatterer_flatten(export, str(tmpfile), tmpdirname, xlsx)
+            output = flatterer_flatten(export, str(tmpfile), str(flatten_output), xlsx)
 
             if "xlsx" in output:
                 shutil.move(output["xlsx"], f"{outpath}.xlsx")
 
             with tarfile.open(f"{outpath}.csv.tar.gz", "w:gz") as tar:
-                tar.add(tmpdir / "csv", arcname=tmpfile.stem)  # remove .jsonl
+                tar.add(flatten_output / "csv", arcname=tmpfile.stem)  # remove .jsonl
 
     export.unlock()
 
