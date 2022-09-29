@@ -19,11 +19,11 @@
             </svg>
         </div>
 
-        <div class="col-auto ml-auto">
+        <div class="col-auto ms-auto">
 {# https://docs.djangoproject.com/en/4.0/topics/i18n/translation/#the-set-language-redirect-view #}
             <form action="{% url 'set_language' %}" method="post" class="form-inline">
                 <input type="hidden" name="next" value="{% redirect_to %}">
-                <select name="language" aria-label="{% translate 'Select language' %}" onchange="this.form.submit()" class="custom-select custom-select-lg">
+                <select name="language" aria-label="{% translate 'Select language' %}" onchange="this.form.submit()" class="form-select form-select-lg">
 {% for language in languages %}
                     <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}>
                         {{ language.name_local }}
@@ -31,7 +31,7 @@
 {% endfor %}
                 </select>
                 <noscript>
-                    <input type="submit" value="➜" class="btn btn-sm btn-info ml-sm-2 mt-2 mt-sm-0">
+                    <input type="submit" value="➜" class="btn btn-sm btn-info ms-sm-2 mt-2 mt-sm-0">
                 </noscript>
             </form>
         </div>

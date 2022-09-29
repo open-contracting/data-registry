@@ -1,40 +1,36 @@
 @import "custom";
 
-// https://getbootstrap.com/docs/4.6/getting-started/theming/
-// https://github.com/twbs/bootstrap/blob/v4.6.2/scss/bootstrap.scss
+// https://github.com/twbs/bootstrap/blob/v5.2.1/scss/bootstrap.scss
+// Configuration
+@import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/maps';
 @import '~bootstrap/scss/mixins';
-@import "~bootstrap/scss/root";
+@import '~bootstrap/scss/utilities';
 // Content
-@import "~bootstrap/scss/reboot";
-@import "~bootstrap/scss/type";
-@import "~bootstrap/scss/images";
+@import '~bootstrap/scss/root';
+@import '~bootstrap/scss/reboot';
+@import '~bootstrap/scss/type';
+@import '~bootstrap/scss/images';
 // Layout
-@import "~bootstrap/scss/grid";
+@import '~bootstrap/scss/containers';
+@import '~bootstrap/scss/grid';
 // Components
 @import '~bootstrap/scss/forms';
-@import "~bootstrap/scss/buttons";
-@import '~bootstrap/scss/custom-forms';
+@import '~bootstrap/scss/buttons';
 @import '~bootstrap/scss/card';
 @import '~bootstrap/scss/badge';
+@import '~bootstrap/scss/offcanvas';
+// Helpers
+@import '~bootstrap/scss/helpers';
 // Utilities
-@import "~bootstrap/scss/utilities";
+@import '~bootstrap/scss/utilities/api';
 
 // https://github.com/bootstrap-vue/bootstrap-vue/blob/dev/src/icons/README.md#usage
-@import '~bootstrap-vue/src/icons';
+// Import "icons/index" instead of "icons". "icons" loads "variables", which requires Bootstrap 4.
+@import '~bootstrap-vue/src/icons/index';
 
-// Anchor
-
-.text-primary {
-    a {
-        text-decoration: underline;
-        &:hover {
-            text-decoration: none;
-        }
-    }
-}
-
-// Description list
+// Grid description list
 
 .list-desc-grid {
     display: grid;
@@ -51,6 +47,8 @@
     grid-column-start: 2;
 }
 
+// Inline description list
+
 .list-desc-inline dt,
 .list-desc-inline dd {
     float: left;
@@ -61,55 +59,28 @@
     padding-right: $spacer * 0.25;
 }
 
-// Border
+// Single corner radius
 
-.border-wide {
-    border-width: 3px;
-}
-
-.rounded-xl {
-    border-radius: 10px;
-}
-
-.rounded-top-left-md {
-    border-top-left-radius: $spacer * 1.25 !important;
-}
-.rounded-bottom-right-md {
+.rounded-bottom-end-md {
     border-bottom-right-radius: $spacer * 1.25 !important;
 }
 
-.rounded-top-left-lg {
+.rounded-top-start-md {
+    border-top-left-radius: $spacer * 1.25 !important;
+}
+
+.rounded-top-start-lg {
     border-top-left-radius: $spacer * 2 !important;
 }
 
-.rounded-top-left-xl {
+.rounded-top-start-xl {
     border-top-left-radius: $spacer * 2.5 !important;
-}
-
-// Background
-
-@for $i from 1 through 9 {
-    .bg-primary-#{ $i }0 {
-        background-color: rgba($primary, calc($i / 10));
-    }
 }
 
 // Text
 
 .extra-small {
-    font-size: 0.75em;
-}
-
-.text-lg {
-    font-size: 1.25rem !important;
-}
-
-.text-xl {
-    font-size: 2rem !important;
-}
-
-.text-decoration-underline {
-    text-decoration: underline;
+    @include font-size($sub-sup-font-size);
 }
 
 // Fixed-width columns
@@ -158,7 +129,7 @@
     }
 }
 
-.bg-info .chevron-btn,
+.text-bg-info .chevron-btn,
 .btn-info .chevron-btn {
     .circle {
         color: inherit;
@@ -168,7 +139,7 @@
     }
 }
 
-.bg-light .chevron-btn,
+.text-bg-light .chevron-btn,
 .btn-light .chevron-btn {
     .circle {
         color: $primary;
@@ -202,16 +173,16 @@ $letter-size: $spacer * 2;
     cursor: pointer;
     background-color: $light;
     &:hover {
-        background-color: darken($light, 15%) !important;
+        background-color: shade-color($light, $link-shade-percentage) !important;
         h2 {
             text-decoration: $link-hover-decoration;
         }
         .click {
-            color: darken($link-color, 15%) !important;
+            color: shade-color($link-color, $link-shade-percentage) !important;
             text-decoration: $link-hover-decoration;
         }
         .circle {
-            color: darken($link-color, 15%) !important;
+            color: shade-color($link-color, $link-shade-percentage) !important;
         }
     }
 }

@@ -31,8 +31,7 @@
     font-display: swap;
 }
 
-// https://getbootstrap.com/docs/4.6/getting-started/theming/
-// https://github.com/twbs/bootstrap/blob/v4.6.2/scss/_variables.scss
+// https://github.com/twbs/bootstrap/blob/v5.2.1/scss/_variables.scss
 
 $primary: #6d78da; // blue
 $secondary: #b4b4b6; // gray
@@ -41,6 +40,8 @@ $info: #d6e100; // yellow
 $warning: #fb6045; // red
 $light: #f0f1f2;
 $dark: #323232;
+
+$enable-negative-margins: true;
 
 $body-color: #2f3a26 !default;
 
@@ -63,6 +64,21 @@ $btn-font-weight: 400 !default;
 
 $btn-border-radius-lg: 0px;
 
+$card-spacer-y: 1.25rem !default;
+$card-spacer-x: 1.25rem !default;
 $card-border-width: 0 !default;
 $card-height: 100% !default;
 $card-bg: $light !default;
+
+// Bootstrap-Vue variables.
+// https://github.com/bootstrap-vue/bootstrap-vue/blob/dev/src/_variables.scss
+
+$b-icon-vertical-offset: -0.15em;
+$b-icon-animation-cylon-duration: 0.75s !default;
+$b-icon-animation-cylon-vertical-duration: $b-icon-animation-cylon-duration !default;
+$b-icon-animation-fade-duration: 0.75s !default;
+$b-icon-animation-spin-duration: 2s !default;
+$b-icon-animation-spin-reverse-duration: $b-icon-animation-spin-duration !default;
+$b-icon-animation-spin-pulse-duration: 1s !default;
+$b-icon-animation-spin-reverse-pulse-duration: $b-icon-animation-spin-pulse-duration !default;
+$b-icon-animation-throb-duration: 0.75s !default;

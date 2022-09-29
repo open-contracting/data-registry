@@ -41,8 +41,8 @@ document.querySelectorAll('.filterable').forEach(filter => {
 {% block content %}
 <div class="row">
     <div class="col">
-        <a href="{% url 'index' %}" class="d-flex align-items-center text-body text-uppercase small">
-            {% include "includes/chevron_icon.html" with direction="left" classes="mr-2" only %}
+        <a href="{% url 'index' %}" class="d-flex align-items-center text-uppercase link-dark small">
+            {% include "includes/chevron_icon.html" with direction="left" classes="me-2" only %}
             {% translate "BACK TO REGISTRY HOME" %}
         </a>
     </div>
@@ -52,7 +52,7 @@ document.querySelectorAll('.filterable').forEach(filter => {
     <div class="col-md-3 col-xl-2 mb-5">
         <h2 class="h4">{% translate "Filters" %}</h2>
 
-        <div class="d-none d-md-block">
+        <div class="d-none d-md-block" id="filters">
             <a rel="nofollow" href="?" class="{% if request.GET %}d-block{% else %}d-none{% endif %} mt-4">
                 <svg xmlns="http://www.w3.org/2000/svg" class="bi b-iconstack b-icon" width="1em" height="1em" viewBox="0 0 16 16" role="img" focusable="false" fill="currentColor">
                     <g>
@@ -76,9 +76,9 @@ document.querySelectorAll('.filterable').forEach(filter => {
             <h3 class="h5 mt-4">{% translate "Country starting with" %}</h3>
             <ul class="list-inline letters">
 {% for letter in facets.letters %}
-                <li class="list-inline-item mb-1 mr-0 text-center">
+                <li class="list-inline-item mb-1 me-0 text-center">
     {% if facets.letters|get_item:letter %}
-                    <a rel="nofollow" href="?{% if letter == request.GET|get_item:"letter" %}{% remove_query_string_parameter 'letter' %}{% else %}{% replace_query_string_parameter 'letter' letter %}{% endif %}" title="{% blocktranslate count counter=facets.letters|get_item:letter %}1 dataset{% plural %}{{ counter }} datasets{% endblocktranslate %}" class="d-inline-block text-decoration-underline{% if letter == request.GET|get_item:"letter" %} bg-primary-20 font-weight-bold{% elif facets.letters|get_item:letter %} border border-secondary{% endif %}">
+                    <a rel="nofollow" href="?{% if letter == request.GET|get_item:'letter' %}{% remove_query_string_parameter 'letter' %}{% else %}{% replace_query_string_parameter 'letter' letter %}{% endif %}" title="{% blocktranslate count counter=facets.letters|get_item:letter %}1 dataset{% plural %}{{ counter }} datasets{% endblocktranslate %}" class="d-inline-block text-decoration-underline{% if letter == request.GET|get_item:'letter' %} bg-primary bg-opacity-25 fw-bold{% elif facets.letters|get_item:letter %} border border-secondary{% endif %}">
                         {{ letter }}
                     </a>
     {% else %}
@@ -115,7 +115,7 @@ document.querySelectorAll('.filterable').forEach(filter => {
         </h1>
 
 {% for collection in collections %}
-        <div class="mt-4 px-3 px-md-5 py-3 rounded-lg rounded-top-left-md rounded-bottom-right-md bg-light clickable">
+        <div class="mt-4 px-3 px-md-5 py-3 rounded-2 rounded-top-start-md rounded-bottom-end-md text-bg-light clickable">
             <div class="row">
                 <div class="col-md mb-3 pt-md-2 fixed-9">
     {% if collection.country_flag %}
@@ -139,7 +139,7 @@ document.querySelectorAll('.filterable').forEach(filter => {
                     </dl>
                 </div>
                 <div class="col-md-auto col-lg">
-                    <p class="mb-2 font-weight-light">{% translate "Available formats:" %}</p>
+                    <p class="mb-2 fw-light">{% translate "Available formats:" %}</p>
                     <ul class="mb-2 list-inline">
                         <li class="list-inline-item text-uppercase">
                             {% include "includes/check_icon.html" with checked=collection.files.jsonl.years only %}JSON
@@ -151,8 +151,8 @@ document.querySelectorAll('.filterable').forEach(filter => {
                             {% include "includes/check_icon.html" with checked=collection.files.csv.years only %}CSV
                         </li>
                     </ul>
-                    <a href="{% url 'detail' collection.id %}" class="d-flex align-items-center justify-content-end text-primary click">
-                        {% include "includes/chevron_icon.html" with direction="right" classes="mr-2" only %}
+                    <a href="{% url 'detail' collection.id %}" class="d-flex align-items-center justify-content-end link-primary click">
+                        {% include "includes/chevron_icon.html" with direction="right" classes="me-2" only %}
                         {% translate "See details" %}
                     </a>
                 </div>
