@@ -241,10 +241,8 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
         <div class="d-flex p-4 rounded-3 bg-primary bg-opacity-10 text-primary">
             <div class="mt-1 me-3">
                 {# https://icons.getbootstrap.com/icons/gem/ #}
-                <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-gem b-icon" width="1em" height="1em" viewBox="0 0 16 16" role="img" focusable="false" fill="currentColor">
-                    <g transform="translate(8 8) scale(1.5 1.5) translate(-8 -8)">
-                        <path d="M3.1.7a.5.5 0 0 1 .4-.2h9a.5.5 0 0 1 .4.2l2.976 3.974c.149.185.156.45.01.644L8.4 15.3a.5.5 0 0 1-.8 0L.1 5.3a.5.5 0 0 1 0-.6l3-4zm11.386 3.785-1.806-2.41-.776 2.413 2.582-.003zm-3.633.004.961-2.989H4.186l.963 2.995 5.704-.006zM5.47 5.495 8 13.366l2.532-7.876-5.062.005zm-1.371-.999-.78-2.422-1.818 2.425 2.598-.003zM1.499 5.5l5.113 6.817-2.192-6.82L1.5 5.5zm7.889 6.817 5.123-6.83-2.928.002-2.195 6.828z"/>
-                    </g>
+                <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-gem b-icon" width="1.5em" height="1.5em" viewBox="0 0 16 16" role="img" focusable="false" fill="currentColor">
+                    <path d="M3.1.7a.5.5 0 0 1 .4-.2h9a.5.5 0 0 1 .4.2l2.976 3.974c.149.185.156.45.01.644L8.4 15.3a.5.5 0 0 1-.8 0L.1 5.3a.5.5 0 0 1 0-.6l3-4zm11.386 3.785-1.806-2.41-.776 2.413 2.582-.003zm-3.633.004.961-2.989H4.186l.963 2.995 5.704-.006zM5.47 5.495 8 13.366l2.532-7.876-5.062.005zm-1.371-.999-.78-2.422-1.818 2.425 2.598-.003zM1.499 5.5l5.113 6.817-2.192-6.82L1.5 5.5zm7.889 6.817 5.123-6.83-2.928.002-2.195 6.828z"/>
                 </svg>
             </div>
             <div class="flex-fill mb-n3">
@@ -353,17 +351,15 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
     <div class="row">
         <div class="col-md d-flex align-items-center mb-3 mb-md-0">
             {# https://icons.getbootstrap.com/icons/question-circle/ #}
-            <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-question-circle b-icon me-3" width="1em" height="1em" viewBox="0 0 16 16" role="img" focusable="false" fill="currentColor">
-                <g transform="translate(8 8) scale(1.5 1.5) translate(-8 -8)">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                    <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
-                </g>
+            <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-question-circle b-icon me-2" width="1.5em" height="1.5em" viewBox="0 0 16 16" role="img" focusable="false" fill="currentColor">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
             </svg>
             {% translate "Have questions, feedback on this dataset or content on this page?" %}
         </div>
         <div class="col-md-auto d-flex align-items-center">
             <a href="mailto:data@open-contracting.org?{% feedback_query_string_parameters %}" class="link-light">
-                {% include "includes/chevron_icon.html" with direction="right" classes="me-2" only %} {% translate "Contact Data Support Team" %}
+                {% include "includes/chevron_icon.html" with direction="right" classes="me-2" only %}{% translate "Contact Data Support Team" %}
             </a>
         </div>
     </div>
