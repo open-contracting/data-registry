@@ -1,4 +1,10 @@
+// https://getbootstrap.com/docs/5.2/customize/sass/
+
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
 @import '~bootstrap/scss/functions';
+
+// 2. Include any default variable overrides here
+// https://github.com/twbs/bootstrap/blob/v5.2.1/scss/_variables.scss
 
 // GT Eesti Pro Display has (plus Italic for each):
 // https://www.grillitype.com/typeface/gt-eesti
@@ -31,8 +37,6 @@
     font-display: swap;
 }
 
-// https://github.com/twbs/bootstrap/blob/v5.2.1/scss/_variables.scss
-
 $primary: #6d78da; // blue
 $secondary: #b4b4b6; // gray
 $success: #72a735; // green
@@ -42,43 +46,89 @@ $light: #f0f1f2;
 $dark: #323232;
 
 $enable-negative-margins: true;
+$enable-validation-icons: false;
 
-$body-color: #2f3a26 !default;
+$body-color: #2f3a26;
 
-$font-family-sans-serif: "GT Eesti Pro", "Helvetica Neue", Arial, sans-serif !default;
+$font-family-sans-serif: "GT Eesti Pro", "Helvetica Neue", Arial, sans-serif;
 $monospace-font-family: "Roboto Mono", monospace;
 
-$dt-font-weight: 300 !default;
+$dt-font-weight: 300;
 
-$btn-padding-y: 1rem !default;
-$btn-padding-x: 1.3rem !default;
+$btn-padding-y: 1rem;
+$btn-padding-x: 1.3125rem;
 
-$btn-padding-y-sm: .7rem !default;
-$btn-padding-x-sm: 1rem !default;
+$btn-padding-y-sm: .6875rem;
+$btn-padding-x-sm: 1rem;
 
-$btn-padding-y-lg: 22px !default;
-$btn-padding-x-lg: 32px !default;
+$btn-padding-y-lg: 22px;
+$btn-padding-x-lg: 32px;
 
 $btn-font-family: $font-family-sans-serif;
-$btn-font-weight: 400 !default;
+$btn-font-weight: 400;
 
 $btn-border-radius-lg: 0px;
 
-$card-spacer-y: 1.25rem !default;
-$card-spacer-x: 1.25rem !default;
-$card-border-width: 0 !default;
-$card-height: 100% !default;
-$card-bg: $light !default;
+$card-spacer-y: 1.25rem;
+$card-spacer-x: 1.25rem;
+$card-border-width: 0;
+$card-height: 100%;
+$card-bg: $light;
 
 // Bootstrap-Vue variables.
 // https://github.com/bootstrap-vue/bootstrap-vue/blob/dev/src/_variables.scss
 
 $b-icon-vertical-offset: -0.15em;
-$b-icon-animation-cylon-duration: 0.75s !default;
-$b-icon-animation-cylon-vertical-duration: $b-icon-animation-cylon-duration !default;
-$b-icon-animation-fade-duration: 0.75s !default;
-$b-icon-animation-spin-duration: 2s !default;
-$b-icon-animation-spin-reverse-duration: $b-icon-animation-spin-duration !default;
-$b-icon-animation-spin-pulse-duration: 1s !default;
-$b-icon-animation-spin-reverse-pulse-duration: $b-icon-animation-spin-pulse-duration !default;
-$b-icon-animation-throb-duration: 0.75s !default;
+$b-icon-animation-cylon-duration: 0.75s;
+$b-icon-animation-cylon-vertical-duration: $b-icon-animation-cylon-duration;
+$b-icon-animation-fade-duration: 0.75s;
+$b-icon-animation-spin-duration: 2s;
+$b-icon-animation-spin-reverse-duration: $b-icon-animation-spin-duration;
+$b-icon-animation-spin-pulse-duration: 1s;
+$b-icon-animation-spin-reverse-pulse-duration: $b-icon-animation-spin-pulse-duration;
+$b-icon-animation-throb-duration: 0.75s;
+
+// 3. Include remainder of required Bootstrap stylesheets
+@import '~bootstrap/scss/variables';
+
+// 4. Include any default map overrides here
+$colors: map-remove($colors, "blue", "indigo", "purple", "pink", "red", "orange", "yellow", "green", "teal", "cyan");
+$theme-colors: map-remove($theme-colors, "danger", "warning");
+$grid-breakpoints: map-remove($grid-breakpoints, "xxl");
+$container-max-widths: map-remove($container-max-widths, "xxl");
+
+// 5. Include remainder of required parts
+@import '~bootstrap/scss/maps';
+@import '~bootstrap/scss/mixins';
+@import '~bootstrap/scss/root';
+
+// 6. Optionally include any other parts as needed
+@import '~bootstrap/scss/utilities';
+// Content
+@import '~bootstrap/scss/reboot';
+@import '~bootstrap/scss/type';
+@import '~bootstrap/scss/images';
+
+// Layout
+@import '~bootstrap/scss/containers';
+@import '~bootstrap/scss/grid';
+
+// Forms
+@import '~bootstrap/scss/forms';
+
+// Components
+@import '~bootstrap/scss/buttons';
+@import '~bootstrap/scss/card';
+@import '~bootstrap/scss/badge';
+@import '~bootstrap/scss/offcanvas';
+
+// Helpers
+@import '~bootstrap/scss/helpers';
+
+// 7. Optionally include utilities API last to generate classes based on the Sass map in `_utilities.scss`
+@import '~bootstrap/scss/utilities/api';
+
+// 8. Add additional custom code here
+// https://github.com/bootstrap-vue/bootstrap-vue/blob/dev/src/icons/README.md#usage
+// Import "icons/index" instead of "icons". "icons" loads "variables", which requires Bootstrap 4.
+@import '~bootstrap-vue/src/icons/index';

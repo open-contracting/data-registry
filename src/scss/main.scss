@@ -1,34 +1,4 @@
-@import "custom";
-
-// https://github.com/twbs/bootstrap/blob/v5.2.1/scss/bootstrap.scss
-// Configuration
-@import '~bootstrap/scss/functions';
-@import '~bootstrap/scss/variables';
-@import '~bootstrap/scss/maps';
-@import '~bootstrap/scss/mixins';
-@import '~bootstrap/scss/utilities';
-// Content
-@import '~bootstrap/scss/root';
-@import '~bootstrap/scss/reboot';
-@import '~bootstrap/scss/type';
-@import '~bootstrap/scss/images';
-// Layout
-@import '~bootstrap/scss/containers';
-@import '~bootstrap/scss/grid';
-// Components
-@import '~bootstrap/scss/forms';
-@import '~bootstrap/scss/buttons';
-@import '~bootstrap/scss/card';
-@import '~bootstrap/scss/badge';
-@import '~bootstrap/scss/offcanvas';
-// Helpers
-@import '~bootstrap/scss/helpers';
-// Utilities
-@import '~bootstrap/scss/utilities/api';
-
-// https://github.com/bootstrap-vue/bootstrap-vue/blob/dev/src/icons/README.md#usage
-// Import "icons/index" instead of "icons". "icons" loads "variables", which requires Bootstrap 4.
-@import '~bootstrap-vue/src/icons/index';
+@import 'custom';
 
 // Grid description list
 
@@ -110,8 +80,6 @@
 // Chevron button
 
 .chevron-btn {
-    font-size: 24px;
-
     .circle {
         color: $secondary;
     }
