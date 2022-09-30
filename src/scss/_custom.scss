@@ -1,11 +1,3 @@
-// https://getbootstrap.com/docs/5.2/customize/sass/
-
-// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
-@import '~bootstrap/scss/functions';
-
-// 2. Include any default variable overrides here
-// https://github.com/twbs/bootstrap/blob/v5.2.1/scss/_variables.scss
-
 // GT Eesti Pro Display has (plus Italic for each):
 // https://www.grillitype.com/typeface/gt-eesti
 // - UltraLight
@@ -37,65 +29,88 @@
     font-display: swap;
 }
 
-$primary: #6d78da; // blue
-$secondary: #b4b4b6; // gray
+// https://getbootstrap.com/docs/5.2/customize/sass/
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import '~bootstrap/scss/functions';
+
+// 2. Include any default variable overrides here
+// https://github.com/twbs/bootstrap/blob/v5.2.1/scss/_variables.scss
+
+// https://docs.google.com/presentation/d/1RpN-JhsNiHHITX5xZ-8NOC6HTOKcywaUy_oG2X2DeN8/edit
+$primary: #6c75e1; // blue
+$secondary: #808080; // 50%
 $success: #72a735; // green
 $info: #d6e100; // yellow
 $warning: #fb6045; // red
-$light: #f0f1f2;
-$dark: #323232;
+$light: #eeeeee; // gray
+$dark: #323232; // OCP footer
 
 $enable-negative-margins: true;
-$enable-validation-icons: false;
+// Adding the following has <1KiB effect:
+// $enable-caret: false;
+// $enable-validation-icons: false;
+// $enable-deprecation-messages: false;
 
-$body-color: #2f3a26;
+$font-family-sans-serif: "GT Eesti Pro", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+$font-family-monospace: "Roboto Mono", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
-$font-family-sans-serif: "GT Eesti Pro", "Helvetica Neue", Arial, sans-serif;
-$monospace-font-family: "Roboto Mono", monospace;
+$dt-font-weight: 300; // 700
 
-$dt-font-weight: 300;
+$btn-padding-y: 1rem; // .375rem
+$btn-padding-x: 1.3125rem; // .75rem
 
-$btn-padding-y: 1rem;
-$btn-padding-x: 1.3125rem;
+$btn-padding-y-sm: .6875rem; // .25rem
+$btn-padding-x-sm: 1rem; // .5rem
 
-$btn-padding-y-sm: .6875rem;
-$btn-padding-x-sm: 1rem;
+$btn-padding-y-lg: 1.375rem; // .5rem
+$btn-padding-x-lg: 2rem; // 1rem
 
-$btn-padding-y-lg: 22px;
-$btn-padding-x-lg: 32px;
+$btn-border-radius-lg: 0; // .5rem
 
-$btn-font-family: $font-family-sans-serif;
-$btn-font-weight: 400;
-
-$btn-border-radius-lg: 0px;
-
-$card-spacer-y: 1.25rem;
-$card-spacer-x: 1.25rem;
-$card-border-width: 0;
-$card-height: 100%;
-$card-bg: $light;
+$card-spacer-y: 1.25rem; // 1rem
+$card-spacer-x: 1.25rem; // 1rem
+$card-border-width: 0; // 1px
+$card-height: 100%; // null
+$card-bg: $light; // $white
 
 // Bootstrap-Vue variables.
 // https://github.com/bootstrap-vue/bootstrap-vue/blob/dev/src/_variables.scss
 
-$b-icon-vertical-offset: -0.15em;
-$b-icon-animation-cylon-duration: 0.75s;
+$b-icon-vertical-offset: -.15em;
+$b-icon-animation-cylon-duration: .75s;
 $b-icon-animation-cylon-vertical-duration: $b-icon-animation-cylon-duration;
-$b-icon-animation-fade-duration: 0.75s;
+$b-icon-animation-fade-duration: .75s;
 $b-icon-animation-spin-duration: 2s;
 $b-icon-animation-spin-reverse-duration: $b-icon-animation-spin-duration;
 $b-icon-animation-spin-pulse-duration: 1s;
 $b-icon-animation-spin-reverse-pulse-duration: $b-icon-animation-spin-pulse-duration;
-$b-icon-animation-throb-duration: 0.75s;
+$b-icon-animation-throb-duration: .75s;
 
 // 3. Include remainder of required Bootstrap stylesheets
 @import '~bootstrap/scss/variables';
 
 // 4. Include any default map overrides here
-$colors: map-remove($colors, "blue", "indigo", "purple", "pink", "red", "orange", "yellow", "green", "teal", "cyan");
-$theme-colors: map-remove($theme-colors, "danger", "warning");
-$grid-breakpoints: map-remove($grid-breakpoints, "xxl");
-$container-max-widths: map-remove($container-max-widths, "xxl");
+$theme-colors: map-merge(map-remove($theme-colors, "danger", "warning"), ("white": $white)); // 2 KiB
+$grid-breakpoints: map-remove($grid-breakpoints, "xxl"); // 13 KiB
+$display-font-sizes: (); // 1 KiB
+// Adding the following has 1KiB effect:
+// $position-values: (0: 0);
+// $border-widths: (3: 3px);
+// $font-sizes: (2: $h2-font-size, 5: $h5-font-size);
+// Adding the following has <1KiB effect:
+// $grays: ();
+// $colors: ();
+// $blues: ();
+// $indigos: ();
+// $purples: ();
+// $pinks: ();
+// $reds: ();
+// $oranges: ();
+// $yellows: ();
+// $greens: ();
+// $teals: ();
+// $cyans: ();
+// $container-max-widths: map-remove($container-max-widths, "xxl");
 
 // 5. Include remainder of required parts
 @import '~bootstrap/scss/maps';
@@ -104,17 +119,18 @@ $container-max-widths: map-remove($container-max-widths, "xxl");
 
 // 6. Optionally include any other parts as needed
 @import '~bootstrap/scss/utilities';
+
 // Content
 @import '~bootstrap/scss/reboot';
 @import '~bootstrap/scss/type';
-@import '~bootstrap/scss/images';
 
 // Layout
 @import '~bootstrap/scss/containers';
 @import '~bootstrap/scss/grid';
 
 // Forms
-@import '~bootstrap/scss/forms';
+@import '~bootstrap/scss/forms/form-select';
+@import '~bootstrap/scss/forms/form-check';
 
 // Components
 @import '~bootstrap/scss/buttons';
@@ -123,7 +139,12 @@ $container-max-widths: map-remove($container-max-widths, "xxl");
 @import '~bootstrap/scss/offcanvas';
 
 // Helpers
-@import '~bootstrap/scss/helpers';
+@import '~bootstrap/scss/helpers/clearfix';
+@import '~bootstrap/scss/helpers/color-bg';
+@import '~bootstrap/scss/helpers/colored-links';
+@import '~bootstrap/scss/helpers/position';
+@import '~bootstrap/scss/helpers/stacks';
+@import '~bootstrap/scss/helpers/visually-hidden';
 
 // 7. Optionally include utilities API last to generate classes based on the Sass map in `_utilities.scss`
 @import '~bootstrap/scss/utilities/api';
