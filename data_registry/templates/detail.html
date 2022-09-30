@@ -293,11 +293,12 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
 
 <div class="py-5 border-top" id="access">
     <div class="p-5 rounded-3 rounded-top-start-xl text-bg-info">
-        <h2>{% translate "Access data" %}</h2>
+        <div class="row gy-4">
+            <div class="col-12">
+                <h2>{% translate "Access data" %}</h2>
 
-        <p>{% translate "This OCDS dataset is available for download in JSON, Excel or CSV format. You can download the data for contracting processes in a specific year or for all time." %}</p>
-
-        <div class="row gy-5 pt-4">
+                <p class="mb-0">{% translate "This OCDS dataset is available for download in JSON, Excel or CSV format. You can download the data for contracting processes in a specific year or for all time." %}</p>
+            </div>
             <div class="col-sm-4 mb-n3">
                 <h3>JSON</h3>
                 <p>
