@@ -39,7 +39,7 @@ document.querySelectorAll('.filterable').forEach(filter => {
 {% endblock %}
 
 {% block content %}
-<div class="row">
+<div class="row mb-5">
     <div class="col">
         <a href="{% url 'index' %}" class="hstack text-uppercase link-dark small">
             {% include "includes/chevron_icon.html" with direction="left" classes="me-2" size="24" only %}
@@ -48,12 +48,12 @@ document.querySelectorAll('.filterable').forEach(filter => {
     </div>
 </div>
 
-<div class="row mt-5">
+<div class="row">
     <div class="col-md-3 col-xl-2 mb-5">
         <h2 class="h4">{% translate "Filters" %}</h2>
 
         <div class="d-none d-md-block" id="filters">
-            <a rel="nofollow" href="?" class="{% if request.GET %}d-block{% else %}d-none{% endif %} mt-4">
+            <a rel="nofollow" href="?" class="{% if request.GET %}d-block{% else %}d-none{% endif %} mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" class="bi b-iconstack b-icon" width="1em" height="1em" viewBox="0 0 16 16" role="img" focusable="false" aria-hidden="true" fill="currentColor">
                     <g>
                         {# https://icons.getbootstrap.com/icons/slash/ #}
@@ -71,8 +71,8 @@ document.querySelectorAll('.filterable').forEach(filter => {
                 {% translate "Clear all filters" %}
             </a>
 
-            <h3 class="h5 mt-4">{% translate "Country starting with" %}</h3>
-            <ul class="list-inline letters">
+            <h3 class="h5">{% translate "Country starting with" %}</h3>
+            <ul class="mb-4 list-inline letters">
 {% for letter in facets.letters %}
                 <li class="list-inline-item mb-1 me-0 text-center">
     {% if facets.letters|get_item:letter %}
@@ -95,7 +95,7 @@ document.querySelectorAll('.filterable').forEach(filter => {
     </div>
 
     <div class="col-md-9 col-xl-10">
-        <h1 class="h4">
+        <h1 class="h4 mb-4">
 {% if request.GET %}
             {% blocktranslate count counter=collections|length trimmed %}
             {{ counter }} dataset matches the selected filters
@@ -113,9 +113,9 @@ document.querySelectorAll('.filterable').forEach(filter => {
         </h1>
 
 {% for collection in collections %}
-        <div class="mt-4 px-3 px-md-5 py-3 rounded-2 rounded-top-start-md rounded-bottom-end-md text-bg-light clickable">
+        <div class="mb-4 px-3 px-md-5 py-3 rounded-2 rounded-top-start-md rounded-bottom-end-md text-bg-light clickable">
             <div class="row">
-                <div class="col-md mb-3 pt-md-2 fixed-9">
+                <div class="col-md mt-md-2 mb-3 fixed-9">
     {% if collection.country_flag %}
                     <img src="{% static 'img/flags/' %}{{ collection.country_flag }}" width="114" height="76" alt="" loading="lazy">
     {% endif %}

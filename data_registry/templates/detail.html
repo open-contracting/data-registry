@@ -50,7 +50,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
 {% endblock %}
 
 {% block content %}
-<div class="row">
+<div class="row mb-5">
     <div class="col">
         <a href="{% url 'search' %}" class="hstack text-uppercase link-dark small">
             {% include "includes/chevron_icon.html" with direction="left" classes="me-2" size="24" only %}
@@ -59,8 +59,8 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
     </div>
 </div>
 
-<div class="row mt-5">
-    <div class="col-sm mb-3 pt-sm-2 fixed-12">
+<div class="row mb-5">
+    <div class="col-sm mt-sm-2 mb-3 fixed-12">
 {% if collection.country_flag %}
         <img src="{% static 'img/flags/' %}{{ collection.country_flag }}" width="162" height="108" alt="">
 {% endif %}
@@ -105,7 +105,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
     </div>
 </div>
 
-<div class="row mt-5 py-5 border-top">
+<div class="row py-5 border-top">
     <div class="col-sm fixed-sm-12">
         <h2 class="h4 mb-3">{% translate "Overview" %}</h2>
     </div>
@@ -155,21 +155,21 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
         <div class="row">
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
                 <h3 class="h6">{% include "includes/check_icon.html" with checked=job.parties_count only %}{% translate "Parties" %}</h3>
-                <dl class="ps-4 list-desc-inline">
+                <dl class="ms-4 list-desc-inline">
                     <dt>{% translate "Count of parties:" %}</dt>
                     <dd>{{ job.parties_count|intcomma }}</dd>
                 </dl>
             </div>
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
                 <h3 class="h6">{% include "includes/check_icon.html" with checked=job.plannings_count only %}{% translate "Plannings" %}</h3>
-                <dl class="ps-4 list-desc-inline">
+                <dl class="ms-4 list-desc-inline">
                     <dt>{% translate "Count of planning activities:" %}</dt>
                     <dd>{{ job.plannings_count|intcomma }}</dd>
                 </dl>
             </div>
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
                 <h3 class="h6">{% include "includes/check_icon.html" with checked=job.tenders_count only %}{% translate "Tenders" %}</h3>
-                <dl class="ps-4 list-desc-inline">
+                <dl class="ms-4 list-desc-inline">
                     <dt>{% translate "Count of tenders:" %}</dt>
                     <dd>{{ job.tenders_count|intcomma }}
                     </li>
@@ -182,7 +182,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
             </div>
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
                 <h3 class="h6">{% include "includes/check_icon.html" with checked=job.awards_count only %}{% translate "Awards" %}</h3>
-                <dl class="ps-4 list-desc-inline">
+                <dl class="ms-4 list-desc-inline">
                     <dt>{% translate "Count of awards:" %}</dt>
                     <dd>{{ job.awards_count|intcomma }}
                     </li>
@@ -195,7 +195,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
             </div>
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
                 <h3 class="h6">{% include "includes/check_icon.html" with checked=job.contracts_count only %}{% translate "Contracts" %}</h3>
-                <dl class="ps-4 list-desc-inline">
+                <dl class="ms-4 list-desc-inline">
                     <dt>{% translate "Count of contracts:" %}</dt>
                     <dd>{{ job.contracts_count|intcomma }}
                     </li>
@@ -208,21 +208,21 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
             </div>
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
                 <h3 class="h6">{% include "includes/check_icon.html" with checked=job.documents_count only %}{% translate "Documents" %}</h3>
-                <dl class="ps-4 list-desc-inline">
+                <dl class="ms-4 list-desc-inline">
                     <dt>{% translate "Count of documents:" %}</dt>
                     <dd>{{ job.documents_count|intcomma }}</dd>
                 </dl>
             </div>
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
                 <h3 class="h6">{% include "includes/check_icon.html" with checked=job.milestones_count only %}{% translate "Milestones" %}</h3>
-                <dl class="ps-4 list-desc-inline">
+                <dl class="ms-4 list-desc-inline">
                     <dt>{% translate "Count of milestones:" %}</dt>
                     <dd>{{ job.milestones_count|intcomma }}</dd>
                 </dl>
             </div>
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
                 <h3 class="h6">{% include "includes/check_icon.html" with checked=job.amendments_count only %}{% translate "Amendments" %}</h3>
-                <dl class="ps-4 list-desc-inline">
+                <dl class="ms-4 list-desc-inline">
                     <dt>{% translate "Count of amendments:" %}</dt>
                     <dd>{{ job.amendments_count|intcomma }}</dd>
                 </dl>
@@ -236,7 +236,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
 
 {% if collection.additional_data %}
         <div class="d-flex p-4 rounded-3 bg-primary bg-opacity-10 text-primary">
-            <div class="mt-1 me-3">
+            <div class="mt-1 me-2">
                 {# https://icons.getbootstrap.com/icons/gem/ #}
                 <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-gem b-icon" width="1.5em" height="1.5em" viewBox="0 0 16 16" role="img" focusable="false" aria-hidden="true" fill="currentColor">
                     <path d="M3.1.7a.5.5 0 0 1 .4-.2h9a.5.5 0 0 1 .4.2l2.976 3.974c.149.185.156.45.01.644L8.4 15.3a.5.5 0 0 1-.8 0L.1 5.3a.5.5 0 0 1 0-.6l3-4zm11.386 3.785-1.806-2.41-.776 2.413 2.582-.003zm-3.633.004.961-2.989H4.186l.963 2.995 5.704-.006zM5.47 5.495 8 13.366l2.532-7.876-5.062.005zm-1.371-.999-.78-2.422-1.818 2.425 2.598-.003zM1.499 5.5l5.113 6.817-2.192-6.82L1.5 5.5zm7.889 6.817 5.123-6.83-2.928.002-2.195 6.828z"/>
@@ -297,8 +297,8 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
 
         <p>{% translate "This OCDS dataset is available for download in JSON, Excel or CSV format. You can download the data for contracting processes in a specific year or for all time." %}</p>
 
-        <div class="row mb-n3">
-            <div class="col-sm-4 mt-3 mt-sm-0">
+        <div class="row gy-5 pt-4">
+            <div class="col-sm-4 mb-n3">
                 <h3>JSON</h3>
                 <p>
                     {% blocktranslate trimmed %}
@@ -312,7 +312,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
                 </p>
                 {% include "includes/files.html" with key="jsonl" suffix="jsonl.gz" %}
             </div>
-            <div class="col-sm-4 mt-3 mt-sm-0">
+            <div class="col-sm-4 mb-n3">
                 <h3>Excel</h3>
                 <p>
                     {% blocktranslate trimmed %}
@@ -326,7 +326,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
                 </p>
                 {% include "includes/files.html" with key="xlsx" suffix="xlsx" hideempty=True %}
             </div>
-            <div class="col-sm-4 mt-3 mt-sm-0">
+            <div class="col-sm-4 mb-n3">
                 <h3>CSV</h3>
                 <p>
                     {% blocktranslate trimmed %}
@@ -345,8 +345,8 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
 </div>
 
 <div class="mb-4 p-5 rounded-3 rounded-top-start-xl bg-primary text-white">
-    <div class="row">
-        <div class="col-md mb-3 mb-md-0">
+    <div class="row gy-3">
+        <div class="col-md">
             <div class="hstack">
                 {# https://icons.getbootstrap.com/icons/question-circle/ #}
                 <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-question-circle b-icon me-2" width="1.5em" height="1.5em" viewBox="0 0 16 16" role="img" focusable="false" aria-hidden="true" fill="currentColor">
