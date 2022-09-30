@@ -83,16 +83,13 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
                         <p class="h5">{% translate "Available formats:" %}</p>
                         <div class="row">
                             <div class="col text-uppercase text-nowrap fs-5">
-                                {% include "includes/check_icon.html" with checked=files.jsonl.years size="24px" only %}
-                                JSON
+                                {% include "includes/check_icon.html" with checked=files.jsonl.years size="24px" only %}JSON
                             </div>
                             <div class="col text-uppercase text-nowrap fs-5">
-                                {% include "includes/check_icon.html" with checked=files.xlsx.years size="24px" only %}
-                                Excel
+                                {% include "includes/check_icon.html" with checked=files.xlsx.years size="24px" only %}Excel
                             </div>
                             <div class="col text-uppercase text-nowrap fs-5">
-                                {% include "includes/check_icon.html" with checked=files.csv.years size="24px" only %}
-                                CSV
+                                {% include "includes/check_icon.html" with checked=files.csv.years size="24px" only %}CSV
                             </div>
                         </div>
                     </div>
