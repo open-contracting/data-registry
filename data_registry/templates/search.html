@@ -41,7 +41,7 @@ document.querySelectorAll('.filterable').forEach(filter => {
 {% block content %}
 <div class="row">
     <div class="col">
-        <a href="{% url 'index' %}" class="d-flex align-items-center text-uppercase link-dark small">
+        <a href="{% url 'index' %}" class="hstack text-uppercase link-dark small">
             {% include "includes/chevron_icon.html" with direction="left" classes="me-2" size="24" only %}
             {% translate "BACK TO REGISTRY HOME" %}
         </a>
@@ -149,8 +149,8 @@ document.querySelectorAll('.filterable').forEach(filter => {
                             {% include "includes/check_icon.html" with checked=collection.files.csv.years only %}CSV
                         </li>
                     </ul>
-                    <a href="{% url 'detail' collection.id %}" class="d-flex align-items-center justify-content-end link-primary click">
-                        {% include "includes/chevron_icon.html" with direction="right" classes="me-2" only %}
+                    <a href="{% url 'detail' collection.id %}" class="hstack justify-content-end link-primary click">
+                        {% include "includes/chevron_icon.html" with direction="right" classes="me-2" size="24" only %}
                         {% translate "See details" %}
                     </a>
                 </div>
