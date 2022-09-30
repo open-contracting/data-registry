@@ -94,23 +94,14 @@ $theme-colors: map-merge(map-remove($theme-colors, "danger", "warning"), ("white
 $grid-breakpoints: map-remove($grid-breakpoints, "xxl"); // 13 KiB
 $display-font-sizes: (); // 1 KiB
 // Adding the following has 1KiB effect:
-// $position-values: (0: 0);
 // $border-widths: (3: 3px);
 // $font-sizes: (2: $h2-font-size, 5: $h5-font-size);
 // Adding the following has <1KiB effect:
 // $grays: ();
 // $colors: ();
-// $blues: ();
-// $indigos: ();
-// $purples: ();
-// $pinks: ();
-// $reds: ();
-// $oranges: ();
-// $yellows: ();
-// $greens: ();
-// $teals: ();
-// $cyans: ();
 // $container-max-widths: map-remove($container-max-widths, "xxl");
+// $grays and $colors are "not used to generate any utilities", but are used in _root.scss. $blues, etc. are not used.
+// https://getbootstrap.com/docs/5.2/utilities/colors/#sass
 
 // 5. Include remainder of required parts
 @import '~bootstrap/scss/maps';
@@ -119,6 +110,92 @@ $display-font-sizes: (); // 1 KiB
 
 // 6. Optionally include any other parts as needed
 @import '~bootstrap/scss/utilities';
+
+$utilities: map-merge(
+    $utilities,
+    (
+        // https://getbootstrap.com/docs/5.2/utilities/background/
+        // background-color bg-opacity
+        // https://getbootstrap.com/docs/5.2/utilities/borders/
+        // border border-top border-start border-color border-width
+        "border-end": null,
+        "border-bottom": null,
+        "border-opacity": null,
+        // rounded
+        "rounded-top": null,
+        "rounded-end": null,
+        "rounded-bottom": null,
+        "rounded-start": null,
+        // https://getbootstrap.com/docs/5.2/utilities/colors/
+        // color
+        "text-opacity": null,
+        // https://getbootstrap.com/docs/5.2/utilities/display/
+        "display": map-merge( // 2 KiB
+            map-get($utilities, "display"),
+            (values: inline-block block flex none)
+        ),
+        // https://getbootstrap.com/docs/5.2/utilities/flex/
+        // flex justify-content
+        "flex-direction": null,
+        "flex-grow": null,
+        "flex-shrink": null,
+        "flex-wrap": null,
+        "align-items": null,
+        "align-content": null,
+        "align-self": null,
+        "order": null,
+        // https://getbootstrap.com/docs/5.2/utilities/float/
+        "float": null,
+        // https://getbootstrap.com/docs/5.2/utilities/interactions/
+        "user-select": null,
+        "pointer-events": null,
+        // https://getbootstrap.com/docs/5.2/utilities/opacity/
+        "opacity": null,
+        // https://getbootstrap.com/docs/5.2/utilities/overflow/
+        "overflow": null,
+        // https://getbootstrap.com/docs/5.2/utilities/position/
+        "position": null,
+        "top": null,
+        "bottom": null,
+        "start": null,
+        "end": null,
+        "translate-middle": null,
+        // https://getbootstrap.com/docs/5.2/utilities/sizing/
+        // height
+        "width": null,
+        "max-width": null,
+        "viewport-width": null,
+        "min-viewport-width": null,
+        "max-height": null,
+        "viewport-height": null,
+        "min-viewport-height": null,
+        // https://getbootstrap.com/docs/5.2/utilities/spacing/
+        // margin-top margin-end margin-bottom margin-start
+        "margin": null,
+        "margin-x": null,
+        "margin-y": null,
+        // padding padding-x padding-y padding-start
+        "padding-top": null,
+        "padding-end": null,
+        "padding-bottom": null,
+        // negative-margin-bottom
+        "negative-margin": null,
+        "negative-margin-x": null,
+        "negative-margin-y": null,
+        "negative-margin-top": null,
+        "negative-margin-end": null,
+        "negative-margin-start": null,
+        "gap": null,
+        // https://getbootstrap.com/docs/5.2/utilities/text/
+        // font-size font-style font-weight text-align text-decoration text-transform white-space word-wrap
+        "font-family": null,
+        "line-height": null,
+        // https://getbootstrap.com/docs/5.2/utilities/vertical-align/
+        "align": null,
+        // https://getbootstrap.com/docs/5.2/utilities/visibility/
+        "visibility": null
+    )
+);
 
 // Content
 @import '~bootstrap/scss/reboot';
