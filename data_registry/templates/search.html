@@ -38,16 +38,18 @@ document.querySelectorAll('.filterable').forEach(filter => {
 </script>
 {% endblock %}
 
-{% block content %}
-<div class="row mb-5">
+{% block nav %}
+<nav class="row mb-5">
     <div class="col">
         <a href="{% url 'index' %}" class="hstack text-uppercase link-dark small">
             {% include "includes/chevron_icon.html" with direction="left" classes="me-2" size="24" only %}
             {% translate "BACK TO REGISTRY HOME" %}
         </a>
     </div>
-</div>
+</nav>
+{% endblock %}
 
+{% block content %}
 <div class="row">
     <div class="col-md-3 col-xl-2 mb-5">
         <h2 class="h4">{% translate "Filters" %}</h2>
@@ -113,7 +115,7 @@ document.querySelectorAll('.filterable').forEach(filter => {
         </h1>
 
 {% for collection in collections %}
-        <div class="mb-4 px-3 px-md-5 py-3 rounded-2 rounded-top-start-md rounded-bottom-end-md text-bg-light clickable">
+        <div class="mb-4 p-3 px-md-5 rounded-2 rounded-top-start-md rounded-bottom-end-md text-bg-light clickable">
             <div class="row">
                 <div class="col-md mt-md-2 mb-3 fixed-9">
     {% if collection.country_flag %}
