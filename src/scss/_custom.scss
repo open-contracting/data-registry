@@ -36,6 +36,12 @@
 // 2. Include any default variable overrides here
 // https://github.com/twbs/bootstrap/blob/v5.2.1/scss/_variables.scss
 
+$enable-negative-margins: true;
+// Adding the following has <0.1 KiB effect:
+// $enable-caret: false;
+// $enable-validation-icons: false;
+// $enable-deprecation-messages: false;
+
 // https://docs.google.com/presentation/d/1RpN-JhsNiHHITX5xZ-8NOC6HTOKcywaUy_oG2X2DeN8/edit
 $primary: #6c75e1; // blue
 $secondary: #808080; // 50%
@@ -43,13 +49,7 @@ $success: #72a735; // green
 $info: #d6e100; // yellow
 $warning: #fb6045; // red
 $light: #eeeeee; // gray
-$dark: #323232; // OCP footer
-
-$enable-negative-margins: true;
-// Adding the following has <1KiB effect:
-// $enable-caret: false;
-// $enable-validation-icons: false;
-// $enable-deprecation-messages: false;
+$dark: #323232; // same as OCP footer
 
 $font-family-sans-serif: "GT Eesti Pro", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 $font-family-monospace: "Roboto Mono", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
@@ -90,18 +90,30 @@ $b-icon-animation-throb-duration: .75s;
 @import '~bootstrap/scss/variables';
 
 // 4. Include any default map overrides here
+// $grays and $colors are "not used to generate any utilities", but are used in _root.scss.
+// https://getbootstrap.com/docs/5.2/utilities/colors/#sass
+$grays: (); // 0.2 KiB
+$colors: (); // 0.3 KiB
 $theme-colors: map-merge(map-remove($theme-colors, "danger", "warning"), ("white": $white)); // 2 KiB
 $grid-breakpoints: map-remove($grid-breakpoints, "xxl"); // 13 KiB
-$display-font-sizes: (); // 1 KiB
-// Adding the following has 1KiB effect:
+$container-max-widths: map-remove($container-max-widths, "xxl"); // 0.1 KiB
+$display-font-sizes: (); // 0.7 KiB
+
+// Adding the following has 0.4 KiB effect, but makes it hard to know which classes are available.
 // $border-widths: (3: 3px);
 // $font-sizes: (2: $h2-font-size, 5: $h5-font-size);
-// Adding the following has <1KiB effect:
-// $grays: ();
-// $colors: ();
-// $container-max-widths: map-remove($container-max-widths, "xxl");
-// $grays and $colors are "not used to generate any utilities", but are used in _root.scss. $blues, etc. are not used.
-// https://getbootstrap.com/docs/5.2/utilities/colors/#sass
+
+// The following are not used in imported files:
+// - $position-values
+// - $aspect-ratios
+// - $table-variants
+// - $form-validation-states
+
+// The following are not used in any files:
+// - $blues ...
+// - $escaped-characters
+
+// All $spacers values are used.
 
 // 5. Include remainder of required parts
 @import '~bootstrap/scss/maps';
@@ -111,15 +123,17 @@ $display-font-sizes: (); // 1 KiB
 // 6. Optionally include any other parts as needed
 @import '~bootstrap/scss/utilities';
 
+// We remove unused directions for border, margin and padding. If confusing, restore them.
 $utilities: map-merge(
     $utilities,
     (
         // https://getbootstrap.com/docs/5.2/utilities/background/
         // background-color bg-opacity
         // https://getbootstrap.com/docs/5.2/utilities/borders/
-        // border border-top border-start border-color border-width
+        // border border-top border-start
         "border-end": null,
         "border-bottom": null,
+        // border-color border-width
         "border-opacity": null,
         // rounded
         "rounded-top": null,
@@ -135,7 +149,8 @@ $utilities: map-merge(
             (values: inline-block block flex none)
         ),
         // https://getbootstrap.com/docs/5.2/utilities/flex/
-        // flex justify-content
+        // justify-content
+        "flex": null,
         "flex-direction": null,
         "flex-grow": null,
         "flex-shrink": null,
