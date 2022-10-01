@@ -39,13 +39,11 @@ document.querySelectorAll('.filterable').forEach(filter => {
 {% endblock %}
 
 {% block nav %}
-<nav class="row mb-5">
-    <div class="col">
-        <a href="{% url 'index' %}" class="hstack text-uppercase link-dark small">
-            {% include "includes/chevron_icon.html" with direction="left" classes="me-2" size="24" only %}
-            {% translate "BACK TO REGISTRY HOME" %}
-        </a>
-    </div>
+<nav class="ms-2">
+    <a href="{% url 'index' %}" class="hstack ms-1 mb-5 text-uppercase link-dark small">
+        {% include "includes/chevron_icon.html" with direction="left" classes="me-2" size="24" only %}
+        {% translate "BACK TO REGISTRY HOME" %}
+    </a>
 </nav>
 {% endblock %}
 

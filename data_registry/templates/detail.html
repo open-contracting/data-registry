@@ -50,13 +50,11 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
 {% endblock %}
 
 {% block nav %}
-<nav class="row mb-5">
-    <div class="col">
-        <a href="{% url 'search' %}" class="hstack text-uppercase link-dark small">
-            {% include "includes/chevron_icon.html" with direction="left" classes="me-2" size="24" only %}
-            {% translate "BACK TO DATASETS SEARCH" %}
-        </a>
-    </div>
+<nav class="ms-2">
+    <a href="{% url 'search' %}" class="hstack ms-1 mb-5 text-uppercase link-dark small">
+        {% include "includes/chevron_icon.html" with direction="left" classes="me-2" size="24" only %}
+        {% translate "BACK TO DATASETS SEARCH" %}
+    </a>
 </nav>
 {% endblock %}
 
