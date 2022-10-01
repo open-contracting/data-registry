@@ -82,18 +82,18 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
             <div class="col-xl-auto">{# Collapse under description under 1200px #}
                 <div class="row">
                     <div class="col-auto mb-3">{# No stretch #}
-                        <p class="h5">{% translate "Available formats:" %}</p>
-                        <div class="row">
-                            <div class="col text-uppercase text-nowrap fs-5">
+                        <dl class="mb-n2">
+                            <dt class="h5">{% translate "Available formats:" %}</dt>
+                            <dd class="d-inline-block text-uppercase fs-5 me-3">
                                 {% include "includes/check_icon.html" with checked=files.jsonl.years size="24px" only %}JSON
-                            </div>
-                            <div class="col text-uppercase text-nowrap fs-5">
+                            </dd>
+                            <dd class="d-inline-block text-uppercase fs-5 me-3">
                                 {% include "includes/check_icon.html" with checked=files.xlsx.years size="24px" only %}Excel
-                            </div>
-                            <div class="col text-uppercase text-nowrap fs-5">
+                            </dd>
+                            <dd class="d-inline-block text-uppercase fs-5">
                                 {% include "includes/check_icon.html" with checked=files.csv.years size="24px" only %}CSV
-                            </div>
-                        </div>
+                            </dd>
+                        </dl>
                     </div>
                     <div class="col-auto mb-3">{# No stretch #}
                         <a class="hstack px-4 btn btn-info text-uppercase fs-5" href="#access">
@@ -238,12 +238,10 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
 
 {% if collection.additional_data %}
         <div class="d-flex p-4 rounded-3 bg-primary bg-opacity-10 text-primary">
-            <div class="mt-1 me-2">
-                {# https://icons.getbootstrap.com/icons/gem/ #}
-                <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-gem b-icon" width="1.5em" height="1.5em" viewBox="0 0 16 16" role="img" focusable="false" aria-hidden="true" fill="currentColor">
-                    <path d="M3.1.7a.5.5 0 0 1 .4-.2h9a.5.5 0 0 1 .4.2l2.976 3.974c.149.185.156.45.01.644L8.4 15.3a.5.5 0 0 1-.8 0L.1 5.3a.5.5 0 0 1 0-.6l3-4zm11.386 3.785-1.806-2.41-.776 2.413 2.582-.003zm-3.633.004.961-2.989H4.186l.963 2.995 5.704-.006zM5.47 5.495 8 13.366l2.532-7.876-5.062.005zm-1.371-.999-.78-2.422-1.818 2.425 2.598-.003zM1.499 5.5l5.113 6.817-2.192-6.82L1.5 5.5zm7.889 6.817 5.123-6.83-2.928.002-2.195 6.828z"/>
-                </svg>
-            </div>
+            {# https://icons.getbootstrap.com/icons/gem/ #}
+            <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-gem b-icon mt-1 me-2" width="1.5em" height="1.5em" viewBox="0 0 16 16" role="img" focusable="false" aria-hidden="true" fill="currentColor">
+                <path d="M3.1.7a.5.5 0 0 1 .4-.2h9a.5.5 0 0 1 .4.2l2.976 3.974c.149.185.156.45.01.644L8.4 15.3a.5.5 0 0 1-.8 0L.1 5.3a.5.5 0 0 1 0-.6l3-4zm11.386 3.785-1.806-2.41-.776 2.413 2.582-.003zm-3.633.004.961-2.989H4.186l.963 2.995 5.704-.006zM5.47 5.495 8 13.366l2.532-7.876-5.062.005zm-1.371-.999-.78-2.422-1.818 2.425 2.598-.003zM1.499 5.5l5.113 6.817-2.192-6.82L1.5 5.5zm7.889 6.817 5.123-6.83-2.928.002-2.195 6.828z"/>
+            </svg>
             <div class="mb-n3">
                 {{ collection.additional_data|markdownify }}
             </div>

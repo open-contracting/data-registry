@@ -115,7 +115,7 @@ document.querySelectorAll('.filterable').forEach(filter => {
         </h1>
 
 {% for collection in collections %}
-        <div class="mb-4 p-3 px-md-5 rounded-2 rounded-top-start-md rounded-bottom-end-md text-bg-light clickable">
+        <article class="mb-4 p-3 px-md-5 rounded-2 rounded-top-start-md rounded-bottom-end-md text-bg-light clickable">
             <div class="row">
                 <div class="col-md mt-md-2 mb-3 fixed-9">
     {% if collection.country_flag %}
@@ -139,25 +139,25 @@ document.querySelectorAll('.filterable').forEach(filter => {
                     </dl>
                 </div>
                 <div class="col-md-auto col-lg">
-                    <p class="mb-2 fw-light">{% translate "Available formats:" %}</p>
-                    <ul class="mb-2 list-inline">
-                        <li class="list-inline-item text-uppercase">
+                    <dl class="mb-n2">
+                        <dt class="mb-2">{% translate "Available formats:" %}</dt>
+                        <dd class="d-inline-block text-uppercase me-2">
                             {% include "includes/check_icon.html" with checked=collection.files.jsonl.years only %}JSON
-                        </li>
-                        <li class="list-inline-item text-uppercase">
+                        </dd>
+                        <dd class="d-inline-block text-uppercase me-2">
                             {% include "includes/check_icon.html" with checked=collection.files.xlsx.years only %}Excel
-                        </li>
-                        <li class="list-inline-item text-uppercase">
+                        </dd>
+                        <dd class="d-inline-block text-uppercase">
                             {% include "includes/check_icon.html" with checked=collection.files.csv.years only %}CSV
-                        </li>
-                    </ul>
+                        </dd>
+                    </dl>
                     <a href="{% url 'detail' collection.id %}" class="hstack justify-content-end link-primary click">
                         {% include "includes/chevron_icon.html" with direction="right" classes="me-2" size="24" only %}
                         {% translate "See details" %}
                     </a>
                 </div>
             </div>
-        </div>
+        </article>
 {% endfor %}
     </div>
 </div>
