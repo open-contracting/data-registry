@@ -1,3 +1,5 @@
+{% load i18n %}
+
 <footer class="container-fluid p-4 text-bg-dark">
     <div class="row gy-3 mb-3 small">
         <div class="col d-none d-md-block fixed-6">
@@ -7,21 +9,33 @@
             </svg>
         </div>
         <div class="col d-none d-lg-block">
-            <a href="https://www.open-contracting.org/what-is-open-contracting/" class="me-4 link-white">
-                {% translate "What is open contracting" %}
-            </a>
-            <a href="https://www.open-contracting.org/impact/" class="me-4 link-white">
-                {% translate "Impact" %}
-            </a>
-            <a href="https://www.open-contracting.org/implement-old/" class="me-4 link-white">
-                {% translate "Implement" %}
-            </a>
-            <a href="https://www.open-contracting.org/about/" class="me-4 link-white">
-                {% translate "About" %}
-            </a>
-            <a href="https://www.open-contracting.org/latest-news/" class="me-4 link-white">
-                {% translate "News & Community"%}
-            </a>
+            <ul class="list-inline">
+                <li class="list-inline-item">
+                    <a href="https://www.open-contracting.org/what-is-open-contracting/" class="link-white">
+                        {% translate "What is open contracting" %}
+                    </a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="https://www.open-contracting.org/impact/" class="link-white">
+                        {% translate "Impact" %}
+                    </a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="https://www.open-contracting.org/implement-old/" class="link-white">
+                        {% translate "Implement" %}
+                    </a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="https://www.open-contracting.org/about/" class="link-white">
+                        {% translate "About" %}
+                    </a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="https://www.open-contracting.org/latest-news/" class="link-white">
+                        {% translate "News & Community"%}
+                    </a>
+                </li>
+            </ul>
         </div>
         <div class="col-auto">
             <div class="card h-auto border border-3 border-info rounded-top-start-lg text-bg-dark">
