@@ -158,3 +158,19 @@ $letter-size: $spacer * 2;
         }
     }
 }
+
+// https://moderncss.dev/pure-css-smooth-scroll-back-to-top/
+// https://www.nngroup.com/articles/back-to-top/
+.toppable {
+    // "1. Use a Back to Top button for pages that are longer than 4 screens"
+    // "7. Consider delaying the appearance of a Back to Top option until after users scroll a few pages"
+    // Can't "AND indicate that they want to scroll up" due to performance impact of onScroll event.
+    top: 400vh;
+    // Can't "2. Place a persistent Back to Top button in the lower right side of the page" due to overlap.
+    left: .75rem;
+    bottom: 3rem;
+
+    a {
+        top: calc(100vh - 5rem);
+    }
+}

@@ -20,7 +20,7 @@ document.querySelectorAll('.filterable').forEach(filter => {
             let params = new URLSearchParams(url.search)
             let values = params.getAll(key)
             if (values.includes(input.value)) {
-                // URLSearchParams has no method to delete a key-value pair, and set() yields "x=a,b" not "x=a&x=b".
+                {# URLSearchParams has no method to delete a key-value pair, and set() yields "x=a,b" not "x=a&x=b". #}
                 params.delete(key)
                 values.forEach(value => {
                     if (value != input.value) {
@@ -35,6 +35,15 @@ document.querySelectorAll('.filterable').forEach(filter => {
         })
     })
 })
+
+{# "8. Make the button stationary." https://www.nngroup.com/articles/back-to-top/ #}
+const observer = new IntersectionObserver(entries => {
+    entry[0].target.querySelector('a').toggleAttribute('hidden', !entry.isIntersecting)
+}, {
+    rootMargin: "0px 0px -80px 0px" {# 5rem #}
+})
+
+observer.observe(document.querySelector('.toppable'))
 </script>
 {% endblock %}
 
@@ -158,5 +167,13 @@ document.querySelectorAll('.filterable').forEach(filter => {
         </article>
 {% endfor %}
     </div>
+</div>
+
+{# https://moderncss.dev/pure-css-smooth-scroll-back-to-top/ #}
+{# https://www.nngroup.com/articles/back-to-top/ #}
+<div class="d-none d-md-block pe-none position-absolute toppable">{# "4. Have one sticky Back to Top link per page" #}
+    <a href="#top" class="pe-auto position-sticky btn btn-sm btn-dark" hidden>{# "5. Keep the button small" "6. Make the button stand out visually" #}
+        {% translate "Back to Top" %}{# "3. Label the button Back to Top" #}
+    </a>
 </div>
 {% endblock %}
