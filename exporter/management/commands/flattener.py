@@ -12,7 +12,7 @@ from django.core.management.base import BaseCommand
 from yapw.methods.blocking import ack
 
 from data_registry.models import Job
-from exporter.util import Export, consume, decorator
+from exporter.util import Export, consume, decorator, publish
 
 logger = logging.getLogger(__name__)
 
@@ -32,37 +32,47 @@ class Command(BaseCommand):
 
 def callback(state, channel, method, properties, input_message):
     job_id = input_message.get("job_id")
-    max_rows_lower_bound = Job.objects.get(id=job_id).get_max_rows_lower_bound()
-
+    file_path = input_message.get("file_path")
     export = Export(job_id, export_type="flat")
-    export.lock()
 
     # Acknowledge now to avoid connection losses. The rest can run for hours and is irreversible anyhow.
     ack(state, channel, method.delivery_tag)
 
-    for entry in os.scandir(export.directory):
-        if not entry.name.endswith(".jsonl.gz") or "_" in entry.name:  # don't process months at the moment
-            continue
+    if file_path:
+        process_file(file_path, job_id)
+    else:
+        for entry in os.scandir(export.directory):
+            if not entry.name.endswith(".jsonl.gz") or "_" in entry.name:  # don't process months at the moment
+                continue
+            publish({"job_id": job_id, "file_path": entry.path}, "flattener_init")
 
-        with tempfile.TemporaryDirectory() as tmpdirname:
-            tmpdir = Path(tmpdirname)
-            infile = tmpdir / entry.name[:-3]  # remove .gz
-            outdir = tmpdir / "flatten"  # force=True deletes this directory
-            final_path_prefix = entry.path[:-9]  # remove .jsonl.gz
 
-            with gzip.open(entry.path) as i:
-                with infile.open("wb") as o:
-                    shutil.copyfileobj(i, o)
+def process_file(file_path, job_id):
+    max_rows_lower_bound = Job.objects.get(id=job_id).get_max_rows_lower_bound()
+    file_name = Path(file_path).name
 
-            # For max_rows_lower_bound, see https://github.com/kindly/libflatterer/issues/1
-            xlsx = infile.stat().st_size < settings.EXPORTER_MAX_JSON_BYTES_TO_EXCEL and max_rows_lower_bound < 65536
-            output = flatterer_flatten(export, str(infile), str(outdir), xlsx=xlsx, bound=max_rows_lower_bound)
+    export = Export(job_id, export_type="flat", lockfile_suffix=file_name)
+    export.lock()
 
-            if "xlsx" in output:
-                shutil.move(output["xlsx"], f"{final_path_prefix}.xlsx")
+    with tempfile.TemporaryDirectory() as tmpdirname:
+        tmpdir = Path(tmpdirname)
+        infile = tmpdir / file_name[:-3]  # remove .gz
+        outdir = tmpdir / "flatten"  # force=True deletes this directory
+        final_path_prefix = file_path[:-9]  # remove .jsonl.gz
 
-            with tarfile.open(f"{final_path_prefix}.csv.tar.gz", "w:gz") as tar:
-                tar.add(outdir / "csv", arcname=infile.stem)  # remove .jsonl
+        with gzip.open(file_path) as i:
+            with infile.open("wb") as o:
+                shutil.copyfileobj(i, o)
+
+        # For max_rows_lower_bound, see https://github.com/kindly/libflatterer/issues/1
+        xlsx = infile.stat().st_size < settings.EXPORTER_MAX_JSON_BYTES_TO_EXCEL and max_rows_lower_bound < 65536
+        output = flatterer_flatten(export, str(infile), str(outdir), xlsx=xlsx, bound=max_rows_lower_bound)
+
+        if "xlsx" in output:
+            shutil.move(output["xlsx"], f"{final_path_prefix}.xlsx")
+
+        with tarfile.open(f"{final_path_prefix}.csv.tar.gz", "w:gz") as tar:
+            tar.add(outdir / "csv", arcname=infile.stem)  # remove .jsonl
 
     export.unlock()
 
