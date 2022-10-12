@@ -2,92 +2,92 @@
 {% load i18n %}
 
 {% block content %}
-    <div class="row mb-5">
-        <div class="col-sm-8">
-            <h1>{% translate "OCP Data Registry" %}</h1>
-            <p class="lead">{% translate "Search for and access datasets by country" %}</p>
-        </div>
-        <div class="col-sm-4 text-sm-end">
-            <a href="{% url 'search' %}" class="btn btn-lg btn-info text-uppercase">{% translate "START YOUR SEARCH" %}</a>
+<div class="row mb-5">
+    <div class="col-sm-8">
+        <h1>{% translate "OCP Data Registry" %}</h1>
+        <p class="lead">{% translate "Search for and access datasets by country" %}</p>
+    </div>
+    <div class="col-sm-4 text-sm-end">
+        <a href="{% url 'search' %}" class="btn btn-lg btn-info text-uppercase">{% translate "START YOUR SEARCH" %}</a>
+    </div>
+</div>
+
+<div class="row gy-5 mb-4">
+    <div class="col-md">
+        <div class="card rounded-top-start-xl">
+            <div class="card-body p-5">
+                <h2 class="card-title mb-4 h5">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-globe me-1" width="30" height="30" viewBox="0 0 24 24" role="img" focusable="false" aria-hidden="true" fill="none" stroke="#2c3e50" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                        <circle cx="12" cy="10" r="4"/>
+                        <path d="M6.75 16a8.015 8.015 0 1 0 9.25 -13"/>
+                        <line x1="12" y1="18" x2="12" y2="22"/>
+                        <line x1="8" y1="22" x2="16" y2="22"/>
+                    </svg>
+                    {% translate "Data by Country" %}
+                </h2>
+                <p class="card-text">
+                    {% blocktranslate trimmed %}
+                        The Data Registry has been designed to hlep you find open data sources for public sector procurement in different countries.
+                    {% endblocktranslate %}
+                </p>
+                <p class="card-text">
+                    {% blocktranslate trimmed %}
+                        This includes if data is available to access directly form the OCP's Kingfisher database.
+                    {% endblocktranslate %}
+                </p>
+            </div>
         </div>
     </div>
 
-    <div class="row gy-5 mb-4">
-        <div class="col-md">
-            <div class="card rounded-top-start-xl">
-                <div class="card-body p-5">
-                    <h2 class="card-title mb-4 h5">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-globe me-1" width="30" height="30" viewBox="0 0 24 24" role="img" focusable="false" aria-hidden="true" fill="none" stroke="#2c3e50" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                            <circle cx="12" cy="10" r="4"/>
-                            <path d="M6.75 16a8.015 8.015 0 1 0 9.25 -13"/>
-                            <line x1="12" y1="18" x2="12" y2="22"/>
-                            <line x1="8" y1="22" x2="16" y2="22"/>
-                        </svg>
-                        {% translate "Data by Country" %}
-                    </h2>
-                    <p class="card-text">
-                        {% blocktranslate trimmed %}
-                            The Data Registry has been designed to hlep you find open data sources for public sector procurement in different countries.
-                        {% endblocktranslate %}
-                    </p>
-                    <p class="card-text">
-                        {% blocktranslate trimmed %}
-                            This includes if data is available to access directly form the OCP's Kingfisher database.
-                        {% endblocktranslate %}
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md">
-            <div class="card rounded-top-start-xl">
-                <div class="card-body p-5">
-                    <h2 class="card-title mb-4 h5">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-school me-1" width="30" height="30" viewBox="0 0 24 24" role="img" focusable="false" aria-hidden="true" fill="none" stroke="#2c3e50" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                            <path d="M22 9l-10 -4l-10 4l10 4l10 -4v6"/>
-                            <path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4"/>
-                        </svg>
-                        {% translate "Learn about the source" %}
-                    </h2>
-                    <p class="card-text">
-                        {% blocktranslate trimmed %}
-                            Information about each data source is provided to help you to understand what fields are avaliable or if there are any documents.
-                        {% endblocktranslate %}
-                    </p>
-                    <p class="card-text">
-                        {% blocktranslate trimmed %}
-                            Any known data quality issues and advice on how to access data is provided here too.
-                        {% endblocktranslate %}
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md">
-            <div class="card rounded-top-start-xl">
-                <div class="card-body p-5">
-                    <h2 class="card-title mb-4 h5">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-directions me-1" width="30" height="30" viewBox="0 0 24 24" role="img" focusable="false" aria-hidden="true" fill="none" stroke="#2c3e50" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                            <path d="M9 5h10l2 2l-2 2h-10a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1"/>
-                            <path d="M13 13h-7l-2 2l2 2h7a1 1 0 0 0 1 -1v-2a1 1 0 0 0 -1 -1"/>
-                            <line x1="12" y1="22" x2="12" y2="17"/>
-                            <line x1="12" y1="13" x2="12" y2="9"/>
-                            <line x1="12" y1="5" x2="12" y2="3"/>
-                        </svg>
-                        {% translate "Get Directed" %}
-                    </h2>
-                    <p class="card-text">
-                        {% blocktranslate trimmed %}
-                            The registry links you directly to the data source for you to access data.
-                        {% endblocktranslate %}
-                    </p>
-                    <p class="card-text">
-                        {% blocktranslate trimmed %}
-                            If data is available from the OCP Kingfisher database you can download it directly in JSON or Excel using the Flatten Tool Interface.
-                        {% endblocktranslate %}
-                    </p>
-                </div>
+    <div class="col-md">
+        <div class="card rounded-top-start-xl">
+            <div class="card-body p-5">
+                <h2 class="card-title mb-4 h5">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-school me-1" width="30" height="30" viewBox="0 0 24 24" role="img" focusable="false" aria-hidden="true" fill="none" stroke="#2c3e50" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                        <path d="M22 9l-10 -4l-10 4l10 4l10 -4v6"/>
+                        <path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4"/>
+                    </svg>
+                    {% translate "Learn about the source" %}
+                </h2>
+                <p class="card-text">
+                    {% blocktranslate trimmed %}
+                        Information about each data source is provided to help you to understand what fields are avaliable or if there are any documents.
+                    {% endblocktranslate %}
+                </p>
+                <p class="card-text">
+                    {% blocktranslate trimmed %}
+                        Any known data quality issues and advice on how to access data is provided here too.
+                    {% endblocktranslate %}
+                </p>
             </div>
         </div>
     </div>
+
+    <div class="col-md">
+        <div class="card rounded-top-start-xl">
+            <div class="card-body p-5">
+                <h2 class="card-title mb-4 h5">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-directions me-1" width="30" height="30" viewBox="0 0 24 24" role="img" focusable="false" aria-hidden="true" fill="none" stroke="#2c3e50" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                        <path d="M9 5h10l2 2l-2 2h-10a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1"/>
+                        <path d="M13 13h-7l-2 2l2 2h7a1 1 0 0 0 1 -1v-2a1 1 0 0 0 -1 -1"/>
+                        <line x1="12" y1="22" x2="12" y2="17"/>
+                        <line x1="12" y1="13" x2="12" y2="9"/>
+                        <line x1="12" y1="5" x2="12" y2="3"/>
+                    </svg>
+                    {% translate "Get Directed" %}
+                </h2>
+                <p class="card-text">
+                    {% blocktranslate trimmed %}
+                        The registry links you directly to the data source for you to access data.
+                    {% endblocktranslate %}
+                </p>
+                <p class="card-text">
+                    {% blocktranslate trimmed %}
+                        If data is available from the OCP Kingfisher database you can download it directly in JSON or Excel using the Flatten Tool Interface.
+                    {% endblocktranslate %}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
