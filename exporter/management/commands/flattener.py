@@ -27,7 +27,7 @@ class Command(BaseCommand):
     """
 
     def handle(self, *args, **options):
-        consume(callback, "flattener_init", decorator=decorator)
+        consume(callback, "flattener_init", ["flattener_init", "flattener_file"], decorator=decorator)
 
 
 def callback(state, channel, method, properties, input_message):
@@ -44,7 +44,7 @@ def callback(state, channel, method, properties, input_message):
         for entry in os.scandir(export.directory):
             if not entry.name.endswith(".jsonl.gz") or "_" in entry.name:  # don't process months at the moment
                 continue
-            publish({"job_id": job_id, "file_path": entry.path}, "flattener_init")
+            publish({"job_id": job_id, "file_path": entry.path}, "flattener_file")
 
 
 def process_file(file_path, job_id):
