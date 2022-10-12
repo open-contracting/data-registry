@@ -50,8 +50,8 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
 {% endblock %}
 
 {% block nav %}
-<nav class="ms-2">
-    <a href="{% url 'search' %}" class="hstack ms-1 mb-5 text-uppercase link-dark small">
+<nav class="ms-2 py-4">
+    <a href="{% url 'search' %}" class="hstack ms-1 text-uppercase link-dark small">
         {% include "includes/chevron_icon.html" with direction="left" classes="me-2" size="24" only %}
         {% translate "BACK TO DATASETS SEARCH" %}
     </a>
@@ -155,21 +155,21 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
         <div class="row">
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
                 <h3 class="h6">{% include "includes/check_icon.html" with checked=job.parties_count only %}{% translate "Parties" %}</h3>
-                <dl class="ms-4 list-desc-inline">
+                <dl class="ms-4 mb-0 list-desc-inline">
                     <dt>{% translate "Count of parties:" %}</dt>
                     <dd>{{ job.parties_count|intcomma }}</dd>
                 </dl>
             </div>
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
                 <h3 class="h6">{% include "includes/check_icon.html" with checked=job.plannings_count only %}{% translate "Plannings" %}</h3>
-                <dl class="ms-4 list-desc-inline">
+                <dl class="ms-4 mb-0 list-desc-inline">
                     <dt>{% translate "Count of planning activities:" %}</dt>
                     <dd>{{ job.plannings_count|intcomma }}</dd>
                 </dl>
             </div>
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
                 <h3 class="h6">{% include "includes/check_icon.html" with checked=job.tenders_count only %}{% translate "Tenders" %}</h3>
-                <dl class="ms-4 list-desc-inline">
+                <dl class="ms-4 mb-0 list-desc-inline">
                     <dt>{% translate "Count of tenders:" %}</dt>
                     <dd>{{ job.tenders_count|intcomma }}
                     </li>
@@ -182,7 +182,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
             </div>
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
                 <h3 class="h6">{% include "includes/check_icon.html" with checked=job.awards_count only %}{% translate "Awards" %}</h3>
-                <dl class="ms-4 list-desc-inline">
+                <dl class="ms-4 mb-0 list-desc-inline">
                     <dt>{% translate "Count of awards:" %}</dt>
                     <dd>{{ job.awards_count|intcomma }}
                     </li>
@@ -195,7 +195,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
             </div>
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
                 <h3 class="h6">{% include "includes/check_icon.html" with checked=job.contracts_count only %}{% translate "Contracts" %}</h3>
-                <dl class="ms-4 list-desc-inline">
+                <dl class="ms-4 mb-0 list-desc-inline">
                     <dt>{% translate "Count of contracts:" %}</dt>
                     <dd>{{ job.contracts_count|intcomma }}
                     </li>
@@ -208,21 +208,21 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
             </div>
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
                 <h3 class="h6">{% include "includes/check_icon.html" with checked=job.documents_count only %}{% translate "Documents" %}</h3>
-                <dl class="ms-4 list-desc-inline">
+                <dl class="ms-4 mb-0 list-desc-inline">
                     <dt>{% translate "Count of documents:" %}</dt>
                     <dd>{{ job.documents_count|intcomma }}</dd>
                 </dl>
             </div>
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
                 <h3 class="h6">{% include "includes/check_icon.html" with checked=job.milestones_count only %}{% translate "Milestones" %}</h3>
-                <dl class="ms-4 list-desc-inline">
+                <dl class="ms-4 mb-0 list-desc-inline">
                     <dt>{% translate "Count of milestones:" %}</dt>
                     <dd>{{ job.milestones_count|intcomma }}</dd>
                 </dl>
             </div>
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
                 <h3 class="h6">{% include "includes/check_icon.html" with checked=job.amendments_count only %}{% translate "Amendments" %}</h3>
-                <dl class="ms-4 list-desc-inline">
+                <dl class="ms-4 mb-0 list-desc-inline">
                     <dt>{% translate "Count of amendments:" %}</dt>
                     <dd>{{ job.amendments_count|intcomma }}</dd>
                 </dl>
