@@ -33,7 +33,6 @@ class Command(BaseCommand):
 def callback(state, channel, method, properties, input_message):
     job_id = input_message.get("job_id")
     file_path = input_message.get("file_path")
-    export = Export(job_id, export_type="flat")
 
     # Acknowledge now to avoid connection losses. The rest can run for hours and is irreversible anyhow.
     ack(state, channel, method.delivery_tag)
@@ -41,10 +40,15 @@ def callback(state, channel, method, properties, input_message):
     if file_path:
         process_file(file_path, job_id)
     else:
-        for entry in os.scandir(export.directory):
-            if not entry.name.endswith(".jsonl.gz") or "_" in entry.name:  # don't process months at the moment
-                continue
-            publish({"job_id": job_id, "file_path": entry.path}, "flattener_file")
+        publish_file(job_id)
+
+
+def publish_file(job_id):
+    export = Export(job_id, export_type="flat")
+    for entry in os.scandir(export.directory):
+        if not entry.name.endswith(".jsonl.gz") or "_" in entry.name:  # don't process months at the moment
+            continue
+        publish({"job_id": job_id, "file_path": entry.path}, "flattener_file")
 
 
 def process_file(file_path, job_id):
@@ -52,48 +56,59 @@ def process_file(file_path, job_id):
     file_name = Path(file_path).name
 
     export = Export(job_id, export_type="flat", lockfile_suffix=file_name)
+
+    final_path_prefix = file_path[:-9]  # remove .jsonl.gz
+
+    csv_path = f"{final_path_prefix}.csv.tar.gz"
+    xlsx_path = f"{final_path_prefix}.xlsx"
+
+    if os.path.isfile(xlsx_path) and os.path.isfile(csv_path):
+        return
+
     export.lock()
 
-    with tempfile.TemporaryDirectory() as tmpdirname:
-        tmpdir = Path(tmpdirname)
-        infile = tmpdir / file_name[:-3]  # remove .gz
-        outdir = tmpdir / "flatten"  # force=True deletes this directory
-        final_path_prefix = file_path[:-9]  # remove .jsonl.gz
+    try:
+        with tempfile.TemporaryDirectory() as tmpdirname:
+            tmpdir = Path(tmpdirname)
+            infile = tmpdir / file_name[:-3]  # remove .gz
+            outdir = tmpdir / "flatten"  # force=True deletes this directory
 
-        with gzip.open(file_path) as i:
-            with infile.open("wb") as o:
-                shutil.copyfileobj(i, o)
+            with gzip.open(file_path) as i:
+                with infile.open("wb") as o:
+                    shutil.copyfileobj(i, o)
 
-        # For max_rows_lower_bound, see https://github.com/kindly/libflatterer/issues/1
-        xlsx = infile.stat().st_size < settings.EXPORTER_MAX_JSON_BYTES_TO_EXCEL and max_rows_lower_bound < 65536
-        output = flatterer_flatten(export, str(infile), str(outdir), xlsx=xlsx, bound=max_rows_lower_bound)
+            # For max_rows_lower_bound, see https://github.com/kindly/libflatterer/issues/1
+            xlsx = infile.stat().st_size < settings.EXPORTER_MAX_JSON_BYTES_TO_EXCEL and max_rows_lower_bound < 65536 \
+                   and not os.path.isfile(xlsx_path)
+            csv = not os.path.isfile(csv_path)
+            output = flatterer_flatten(export, str(infile), str(outdir), xlsx=xlsx, csv=csv, bound=max_rows_lower_bound)
 
-        if "xlsx" in output:
-            shutil.move(output["xlsx"], f"{final_path_prefix}.xlsx")
+            if xlsx and "xlsx" in output:
+                shutil.move(output["xlsx"], xlsx_path)
+            if csv:
+                with tarfile.open(csv_path, "w:gz") as tar:
+                    tar.add(outdir / "csv", arcname=infile.stem)  # remove .jsonl
+    except FileNotFoundError:
+        for path in [xlsx_path, csv_path]:
+            Path(path).unlink(missing_ok=True)
+    finally:
+        export.unlock()
 
-        with tarfile.open(f"{final_path_prefix}.csv.tar.gz", "w:gz") as tar:
-            tar.add(outdir / "csv", arcname=infile.stem)  # remove .jsonl
 
-    export.unlock()
-
-
-def flatterer_flatten(export, infile, outdir, xlsx=False, bound=None):
+def flatterer_flatten(export, infile, outdir, xlsx=False, csv=True, bound=None):
     """
     Convert the file from JSON to CSV and Excel.
 
     If an error occurs:
 
     -  If ``xlsx=True``, attempt with ``xlsx=False``.
-    -  Otherwise, unlock the export and re-raise the error.
+    -  Otherwise, re-raise the error.
     """
     try:
-        return flatterer.flatten(infile, outdir, xlsx=xlsx, json_stream=True, force=True)
+        if csv or xlsx:
+            return flatterer.flatten(infile, outdir, csv=csv, xlsx=xlsx, json_stream=True, force=True)
     except RuntimeError:
         if xlsx:
             logger.exception("Attempting CSV-only conversion in %s (max_rows_lower_bound=%s)", export, bound)
             return flatterer_flatten(export, infile, outdir)
-
-        # The lock prevents multiple threads from creating the same files in the export directory. Since we
-        # re-raise the error before writing those files, we can unlock here.
-        export.unlock()
         raise
