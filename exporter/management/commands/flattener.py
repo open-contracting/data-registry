@@ -78,10 +78,15 @@ def process_file(file_path, job_id):
                     shutil.copyfileobj(i, o)
 
             # For max_rows_lower_bound, see https://github.com/kindly/libflatterer/issues/1
-            xlsx = infile.stat().st_size < settings.EXPORTER_MAX_JSON_BYTES_TO_EXCEL and max_rows_lower_bound < 65536 \
-                   and not os.path.isfile(xlsx_path)
+            xlsx = (
+                infile.stat().st_size < settings.EXPORTER_MAX_JSON_BYTES_TO_EXCEL
+                and max_rows_lower_bound < 65536
+                and not os.path.isfile(xlsx_path)
+            )
             csv = not os.path.isfile(csv_path)
-            output = flatterer_flatten(export, str(infile), str(outdir), xlsx=xlsx, csv=csv, bound=max_rows_lower_bound)
+            output = flatterer_flatten(
+                export, str(infile), str(outdir), xlsx=xlsx, csv=csv, bound=max_rows_lower_bound
+            )
 
             if xlsx and "xlsx" in output:
                 shutil.move(output["xlsx"], xlsx_path)
