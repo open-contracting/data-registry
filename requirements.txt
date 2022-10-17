@@ -28,7 +28,7 @@ django-markdownx==3.0.1
     # via -r requirements.in
 django-modeltranslation==0.18.4
     # via -r requirements.in
-flatterer==0.16.0
+flatterer==0.16.2
     # via -r requirements.in
 gunicorn[setproctitle]==20.1.0
     # via -r requirements.in

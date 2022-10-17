@@ -52,7 +52,6 @@ def publish_file(job_id):
 
 
 def process_file(file_path, job_id):
-    max_rows_lower_bound = Job.objects.get(id=job_id).get_max_rows_lower_bound()
     file_name = Path(file_path).name
 
     export = Export(job_id, export_type="flat", lockfile_suffix=file_name)
@@ -77,16 +76,9 @@ def process_file(file_path, job_id):
                 with infile.open("wb") as o:
                     shutil.copyfileobj(i, o)
 
-            # For max_rows_lower_bound, see https://github.com/kindly/libflatterer/issues/1
-            xlsx = (
-                infile.stat().st_size < settings.EXPORTER_MAX_JSON_BYTES_TO_EXCEL
-                and max_rows_lower_bound < 65536
-                and not os.path.isfile(xlsx_path)
-            )
+            xlsx = infile.stat().st_size < settings.EXPORTER_MAX_JSON_BYTES_TO_EXCEL and not os.path.isfile(xlsx_path)
             csv = not os.path.isfile(csv_path)
-            output = flatterer_flatten(
-                export, str(infile), str(outdir), xlsx=xlsx, csv=csv, bound=max_rows_lower_bound
-            )
+            output = flatterer_flatten(export, str(infile), str(outdir), xlsx=xlsx, csv=csv)
 
             if xlsx and "xlsx" in output:
                 shutil.move(output["xlsx"], xlsx_path)
@@ -100,7 +92,7 @@ def process_file(file_path, job_id):
         export.unlock()
 
 
-def flatterer_flatten(export, infile, outdir, xlsx=False, csv=True, bound=None):
+def flatterer_flatten(export, infile, outdir, xlsx=False, csv=True):
     """
     Convert the file from JSON to CSV and Excel.
 
@@ -114,6 +106,6 @@ def flatterer_flatten(export, infile, outdir, xlsx=False, csv=True, bound=None):
             return flatterer.flatten(infile, outdir, csv=csv, xlsx=xlsx, json_stream=True, force=True)
     except RuntimeError:
         if xlsx:
-            logger.exception("Attempting CSV-only conversion in %s (max_rows_lower_bound=%s)", export, bound)
+            logger.exception("Attempting CSV-only conversion in %s (max_rows_lower_bound=%s)", export)
             return flatterer_flatten(export, infile, outdir)
         raise
