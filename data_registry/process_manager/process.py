@@ -213,5 +213,7 @@ def parse_date(datetime_str):
     if not datetime_str:
         return None
 
-    datetime_obj = datetime.strptime(datetime_str, "%Y-%m-%d %H.%M.%S")
-    return datetime_obj.date()
+    try:
+        return datetime.strptime(datetime_str, "%Y-%m-%d %H.%M.%S").date()
+    except ValueError as e:
+        logger.exception(e)
