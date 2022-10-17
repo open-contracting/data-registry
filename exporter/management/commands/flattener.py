@@ -11,7 +11,6 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 from yapw.methods.blocking import ack
 
-from data_registry.models import Job
 from exporter.util import Export, consume, decorator, publish
 
 logger = logging.getLogger(__name__)
