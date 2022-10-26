@@ -37,7 +37,7 @@ def callback(state, channel, method, properties, input_message):
     ack(state, channel, method.delivery_tag)
 
     if file_path:
-        process_file(file_path, job_id)
+        process_file(job_id, file_path)
     else:
         publish_file(job_id)
 
@@ -50,8 +50,8 @@ def publish_file(job_id):
         publish({"job_id": job_id, "file_path": entry.path}, "flattener_file")
 
 
-def process_file(file_path, job_id):
-    file_name = Path(file_path).name
+def process_file(job_id, file_path):
+    file_name = os.path.basename(file_path)
 
     export = Export(job_id, export_type="flat", lockfile_suffix=file_name)
 
@@ -75,17 +75,17 @@ def process_file(file_path, job_id):
                 with infile.open("wb") as o:
                     shutil.copyfileobj(i, o)
 
-            xlsx = infile.stat().st_size < settings.EXPORTER_MAX_JSON_BYTES_TO_EXCEL and not os.path.isfile(xlsx_path)
             csv = not os.path.isfile(csv_path)
-            output = flatterer_flatten(export, str(infile), str(outdir), xlsx=xlsx, csv=csv)
+            xlsx = not os.path.isfile(xlsx_path) and infile.stat().st_size < settings.EXPORTER_MAX_JSON_BYTES_TO_EXCEL
+            output = flatterer_flatten(export, str(infile), str(outdir), csv=csv, xlsx=xlsx)
 
-            if xlsx and "xlsx" in output:
-                shutil.move(output["xlsx"], xlsx_path)
             if csv:
                 with tarfile.open(csv_path, "w:gz") as tar:
                     tar.add(outdir / "csv", arcname=infile.stem)  # remove .jsonl
+            if xlsx and "xlsx" in output:
+                shutil.move(output["xlsx"], xlsx_path)
     except FileNotFoundError:
-        for path in [xlsx_path, csv_path]:
+        for path in (xlsx_path, csv_path):
             Path(path).unlink(missing_ok=True)
     finally:
         export.unlock()
