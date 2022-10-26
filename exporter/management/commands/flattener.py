@@ -59,8 +59,10 @@ def process_file(job_id, file_path):
 
     csv_path = f"{final_path_prefix}.csv.tar.gz"
     xlsx_path = f"{final_path_prefix}.xlsx"
+    csv_exists = os.path.isfile(csv_path)
+    xlsx_exists = os.path.isfile(xlsx_path)
 
-    if os.path.isfile(xlsx_path) and os.path.isfile(csv_path):
+    if csv_exists and xlsx_exists:
         return
 
     export.lock()
@@ -75,8 +77,8 @@ def process_file(job_id, file_path):
                 with infile.open("wb") as o:
                     shutil.copyfileobj(i, o)
 
-            csv = not os.path.isfile(csv_path)
-            xlsx = not os.path.isfile(xlsx_path) and infile.stat().st_size < settings.EXPORTER_MAX_JSON_BYTES_TO_EXCEL
+            csv = not csv_exists
+            xlsx = not xlsx_exists and infile.stat().st_size < settings.EXPORTER_MAX_JSON_BYTES_TO_EXCEL
             output = flatterer_flatten(export, str(infile), str(outdir), csv=csv, xlsx=xlsx)
 
             if csv:
@@ -85,8 +87,10 @@ def process_file(job_id, file_path):
             if xlsx and "xlsx" in output:
                 shutil.move(output["xlsx"], xlsx_path)
     except FileNotFoundError:
-        for path in (xlsx_path, csv_path):
-            Path(path).unlink(missing_ok=True)
+        # Only delete any files whose creation was attempted.
+        for path, exists in ((csv_path, csv_exists), (xlsx_path, xlsx_exists)):
+            if not exists:
+                Path(path).unlink(missing_ok=True)
     finally:
         export.unlock()
 
@@ -97,14 +101,18 @@ def flatterer_flatten(export, infile, outdir, csv, xlsx):
 
     If an error occurs:
 
-    -  If ``xlsx=True``, attempt with ``xlsx=False``.
-    -  Otherwise, re-raise the error.
+    -  If ``xlsx=True`` and ``csv=True``, attempt with ``xlsx=False``.
+    -  If ``xlsx=True`` and ``csv=False``, log the error and return.
+    -  Otherwise (``csv=True``), re-raise the error.
     """
     try:
-        if csv or xlsx:
-            return flatterer.flatten(infile, outdir, csv=csv, xlsx=xlsx, json_stream=True, force=True)
+        return flatterer.flatten(infile, outdir, csv=csv, xlsx=xlsx, json_stream=True, force=True)
     except RuntimeError:
         if xlsx:
-            logger.exception("Attempting CSV-only conversion in %s", export)
-            return flatterer_flatten(export, infile, outdir, csv=csv, xlsx=False)
+            if csv:
+                logger.exception("Attempting CSV-only conversion in %s", export)
+                return flatterer_flatten(export, infile, outdir, csv=csv, xlsx=False)
+            else:
+                logger.exception("Failed Excel-only conversion in %s", export)
+                return {}
         raise
