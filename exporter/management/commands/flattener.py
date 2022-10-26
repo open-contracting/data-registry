@@ -91,7 +91,7 @@ def process_file(job_id, file_path):
         export.unlock()
 
 
-def flatterer_flatten(export, infile, outdir, xlsx=False, csv=True):
+def flatterer_flatten(export, infile, outdir, csv, xlsx):
     """
     Convert the file from JSON to CSV and Excel.
 
@@ -105,6 +105,6 @@ def flatterer_flatten(export, infile, outdir, xlsx=False, csv=True):
             return flatterer.flatten(infile, outdir, csv=csv, xlsx=xlsx, json_stream=True, force=True)
     except RuntimeError:
         if xlsx:
-            logger.exception("Attempting CSV-only conversion in %s (max_rows_lower_bound=%s)", export)
-            return flatterer_flatten(export, infile, outdir)
+            logger.exception("Attempting CSV-only conversion in %s", export)
+            return flatterer_flatten(export, infile, outdir, csv=csv, xlsx=False)
         raise
