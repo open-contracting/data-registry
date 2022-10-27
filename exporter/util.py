@@ -93,14 +93,14 @@ class Export:
             "xlsx": {"full": False, "years": set()},
         }
 
-    def __init__(self, *components, export_type: str = "json"):
+    def __init__(self, *components, export_type: str = "json", lockfile_suffix: str = ""):
         """
         :param components: the path components of the export directory
         :param export_type: the export type, "json" or "flat" files (CSV and Excel)
         """
         self.directory = Path(settings.EXPORTER_DIR).joinpath(*map(str, components))
         self.spoonbill_directory = Path(settings.SPOONBILL_EXPORTER_DIR).joinpath(*map(str, components))
-        self.lockfile = self.directory / f"exporter_{export_type}.lock"
+        self.lockfile = self.directory / f"exporter_{export_type}{lockfile_suffix}.lock"
         self.export_type = export_type
 
     def __str__(self):
