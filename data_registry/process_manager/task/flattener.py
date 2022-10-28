@@ -10,7 +10,7 @@ class Flattener:
         publish({"job_id": self.job.id}, "flattener_init")
 
     def get_status(self):
-        status = Export(self.job.id, "full.csv.tar.gz").status
+        status = Export(self.job.id, basename="full.csv.tar.gz").status
         if status == TaskStatus.WAITING:
             return Task.Status.WAITING
         if status == TaskStatus.RUNNING:

@@ -11,7 +11,7 @@ class Exporter:
         publish({"collection_id": self.collection_id, "job_id": self.job.id}, "exporter_init")
 
     def get_status(self):
-        status = Export(self.job.id, "full.jsonl.gz").status
+        status = Export(self.job.id, basename="full.jsonl.gz").status
         if status == TaskStatus.WAITING:
             return Task.Status.WAITING
         if status == TaskStatus.RUNNING:

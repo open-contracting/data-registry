@@ -27,7 +27,7 @@ def download_export(request):
         basename = f"{year}.{suffix}"
         filename = f"{spider}_{year}.{suffix}"
 
-    export = Export(job_id, basename)
+    export = Export(job_id, basename=basename)
 
     if export.status != TaskStatus.COMPLETED:
         return HttpResponseNotFound("File not found")

@@ -54,7 +54,7 @@ def process_file(job_id, file_path):
     file_name = os.path.basename(file_path)
     stem = file_name[:-9]  # remove .jsonl.gz
 
-    export = Export(job_id, f"{stem}.csv.tar.gz")
+    export = Export(job_id, basename=f"{stem}.csv.tar.gz")
 
     csv_path = export.directory / f"{stem}.csv.tar.gz"
     xlsx_path = export.directory / f"{stem}.xlsx"
