@@ -1,5 +1,5 @@
 from data_registry.models import Task
-from exporter.util import Export, publish
+from exporter.util import Export, TaskStatus, publish
 
 
 class Exporter:
@@ -11,12 +11,12 @@ class Exporter:
         publish({"collection_id": self.collection_id, "job_id": self.job.id}, "exporter_init")
 
     def get_status(self):
-        status = Export(self.job.id).status
-        if status == "WAITING":
+        status = Export(self.job.id, "full.jsonl.gz").status
+        if status == TaskStatus.WAITING:
             return Task.Status.WAITING
-        if status == "RUNNING":
+        if status == TaskStatus.RUNNING:
             return Task.Status.RUNNING
-        if status == "COMPLETED":
+        if status == TaskStatus.COMPLETED:
             return Task.Status.COMPLETED
 
     def wipe(self):

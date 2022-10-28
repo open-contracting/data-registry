@@ -1,7 +1,7 @@
 from django.http import FileResponse
 from django.http.response import HttpResponseBadRequest, HttpResponseNotFound
 
-from exporter.util import Export
+from exporter.util import Export, TaskStatus
 
 
 def download_export(request):
@@ -18,18 +18,18 @@ def download_export(request):
     if suffix not in ("jsonl.gz", "csv.tar.gz", "xlsx"):
         return HttpResponseBadRequest("Suffix not recognized")
 
-    export = Export(job_id)
-
     if full:
-        dump_file = export.directory / f"full.{suffix}"
+        basename = f"full.{suffix}"
         filename = f"{spider}_full.{suffix}"
     else:
         # Guard against path traversal.
         year = int(year)
-        dump_file = export.directory / f"{year}.{suffix}"
+        basename = f"{year}.{suffix}"
         filename = f"{spider}_{year}.{suffix}"
 
-    if export.running or not dump_file.exists():
+    export = Export(job_id, basename)
+
+    if export.status != TaskStatus.COMPLETED:
         return HttpResponseNotFound("File not found")
 
-    return FileResponse(dump_file.open("rb"), as_attachment=True, filename=filename)
+    return FileResponse(export.path.open("rb"), as_attachment=True, filename=filename)
