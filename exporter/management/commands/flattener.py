@@ -43,22 +43,21 @@ def callback(state, channel, method, properties, input_message):
 
 
 def publish_file(job_id):
-    export = Export(job_id, export_type="flat")
+    export = Export(job_id)
     for entry in os.scandir(export.directory):
-        if not entry.name.endswith(".jsonl.gz") or "_" in entry.name:  # don't process months at the moment
+        if not entry.name.endswith(".jsonl.gz") or "_" in entry.name:  # don't process months files
             continue
         publish({"job_id": job_id, "file_path": entry.path}, "flattener_file")
 
 
 def process_file(job_id, file_path):
     file_name = os.path.basename(file_path)
+    stem = file_name[:-9]  # remove .jsonl.gz
 
-    export = Export(job_id, export_type="flat", lockfile_suffix=file_name)
+    export = Export(job_id, basename=f"{stem}.csv.tar.gz")
 
-    final_path_prefix = file_path[:-9]  # remove .jsonl.gz
-
-    csv_path = f"{final_path_prefix}.csv.tar.gz"
-    xlsx_path = f"{final_path_prefix}.xlsx"
+    csv_path = export.directory / f"{stem}.csv.tar.gz"
+    xlsx_path = export.directory / f"{stem}.xlsx"
     csv_exists = os.path.isfile(csv_path)
     xlsx_exists = os.path.isfile(xlsx_path)
 

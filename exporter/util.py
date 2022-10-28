@@ -3,7 +3,7 @@ import os
 import shutil
 import signal
 from pathlib import Path
-from typing import Dict, Literal
+from typing import Dict, Literal, Optional
 
 import pika.exceptions
 from django.conf import settings
@@ -77,6 +77,12 @@ def decorator(decode, callback, state, channel, method, properties, body):
     decorate(decode, callback, state, channel, method, properties, body, errback, finalback)
 
 
+class TaskStatus:
+    WAITING = "WAITING"
+    RUNNING = "RUNNING"
+    COMPLETED = "COMPLETED"
+
+
 class Export:
     @classmethod
     def get_files(cls, *components, **kwargs):
@@ -93,18 +99,40 @@ class Export:
             "xlsx": {"full": False, "years": set()},
         }
 
-    def __init__(self, *components, export_type: str = "json", lockfile_suffix: str = ""):
+    def __init__(self, *components, basename: Optional[str] = None):
         """
+        ``basename`` is required to use ``lock()``, ``unlock()``, ``running``, ``completed`` and ``status``.
+
         :param components: the path components of the export directory
-        :param export_type: the export type, "json" or "flat" files (CSV and Excel)
+        :param basename: the basename of the output file of the export operation
         """
         self.directory = Path(settings.EXPORTER_DIR).joinpath(*map(str, components))
         self.spoonbill_directory = Path(settings.SPOONBILL_EXPORTER_DIR).joinpath(*map(str, components))
-        self.lockfile = self.directory / f"exporter_{export_type}{lockfile_suffix}.lock"
-        self.export_type = export_type
+        # Cause methods that require ``basename`` to error if the instance is improperly initialized.
+        if basename:
+            self.basename = basename
 
     def __str__(self):
-        return f"{self.directory} ({self.export_type})"
+        return f"{self.directory}/{self.basename}"
+
+    def __repr__(self):
+        return f"Export(directory={self.directory}, basename={self.basename})"
+
+    @property
+    def path(self):
+        return self.directory / self.basename
+
+    # This method's logic must match the workers' logic, so that views can get the status of an export task, by
+    # providing only the desired filename.
+    @property
+    def lockfile(self) -> str:
+        # All JSON files are exported at once.
+        if self.basename.endswith(".jsonl.gz"):
+            return self.directory / "exporter_full.jsonl.gz.lock"
+        # Each XLSX file is exported with a CSV file.
+        if self.basename.endswith(".xlsx"):
+            return self.directory / f"exporter_{self.basename[:-5]}.csv.tar.gz.lock"
+        return self.directory / f"exporter_{self.basename}.lock"
 
     def lock(self) -> None:
         """
@@ -132,20 +160,16 @@ class Export:
     @property
     def running(self) -> bool:
         """
-        Return whether the exported file is being written.
+        Return whether the output file is being written.
         """
         return self.lockfile.exists()
 
     @property
     def completed(self) -> bool:
         """
-        Return whether the final file has been written.
+        Return whether the output file has been written.
         """
-        if self.export_type == "json":
-            filename = "full.jsonl.gz"
-        else:
-            filename = "full.csv.tar.gz"
-        return (self.directory / filename).exists()
+        return self.path.exists()
 
     @property
     def status(self) -> Literal["RUNNING", "COMPLETED", "WAITING"]:
@@ -153,10 +177,10 @@ class Export:
         Return the status of the export.
         """
         if self.running:
-            return "RUNNING"
+            return TaskStatus.RUNNING
         if self.completed:
-            return "COMPLETED"
-        return "WAITING"
+            return TaskStatus.COMPLETED
+        return TaskStatus.WAITING
 
     @property
     def files(self) -> Dict:
@@ -166,7 +190,7 @@ class Export:
         files = self.default_files()
 
         for path in self.directory.glob("*"):
-            suffix = path.name.split(".", 2)[1]
+            suffix = path.name.split(".", 2)[1]  # works for .xlsx .jsonl.gz .csv.tar.gz
             if suffix not in files:
                 continue
             prefix = path.name[:4]  # year or "full"
