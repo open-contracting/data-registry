@@ -18,6 +18,12 @@ def download_export(request):
     if suffix not in ("jsonl.gz", "csv.tar.gz", "xlsx"):
         return HttpResponseBadRequest("Suffix not recognized")
 
+    # Set Content-Encoding to skip GZipMiddleware.
+    # https://docs.djangoproject.com/en/3.2/ref/middleware/#module-django.middleware.gzip
+    headers = {}
+    if suffix in ("jsonl.gz", "csv.tar.gz"):
+        headers = {"Content-Encoding": "gzip"}
+
     if full:
         basename = f"full.{suffix}"
         filename = f"{spider}_full.{suffix}"
@@ -32,4 +38,4 @@ def download_export(request):
     if export.status != TaskStatus.COMPLETED:
         return HttpResponseNotFound("File not found")
 
-    return FileResponse(export.path.open("rb"), as_attachment=True, filename=filename)
+    return FileResponse(export.path.open("rb"), as_attachment=True, filename=filename, headers=headers)
