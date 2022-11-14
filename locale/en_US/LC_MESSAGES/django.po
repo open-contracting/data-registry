@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-30 20:20+0000\n"
+"POT-Creation-Date: 2022-11-14 18:09+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,18 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: TODO.txt:7
+msgid "Filters"
+msgstr ""
+
+#: TODO.txt:10
+msgid "Toggle filters menu"
+msgstr ""
+
+#: TODO.txt:11
+msgid "Menu"
+msgstr ""
 
 #: core/settings.py:238
 msgid "English"

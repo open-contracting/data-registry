@@ -306,7 +306,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
                 </p>
                 <p>
                     {% blocktranslate trimmed %}
-                    The <code>.jsonl</code> file is compressed using Gzip. Windows users need <a href="https://www.7-zip.org">7-Zip</a>, <a href="https://www.win-rar.com">WinRAR</a> or <a href="https://www.winzip.com">WinZip</a> to decompress the <code>.gz</code> file.
+                    The <code>.jsonl</code> file is compressed using Gzip. Windows users need <a href="https://www.7-zip.org" target="_blank">7-Zip</a>, <a href="https://www.win-rar.com" target="_blank">WinRAR</a> or <a href="https://www.winzip.com" target="_blank">WinZip</a> to decompress the <code>.gz</code> file.
                     {% endblocktranslate %}
                 </p>
                 {% include "includes/files.html" with key="jsonl" suffix="jsonl.gz" %}
@@ -320,7 +320,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
                 </p>
                 <p>
                     {% blocktranslate trimmed %}
-                    Excel files can have at most <a href="https://support.microsoft.com/en-us/office/excel-specifications-and-limits-1672b34d-7043-467e-8e27-269d656771c3">1,048,576 rows</a>. If a year is missing, it had too many rows.
+                    Excel files can have at most <a href="https://support.microsoft.com/en-us/office/excel-specifications-and-limits-1672b34d-7043-467e-8e27-269d656771c3" target="_blank">1,048,576 rows</a>. If a year is missing, it had too many rows.
                     {% endblocktranslate %}
                 </p>
                 {% include "includes/files.html" with key="xlsx" suffix="xlsx" hideempty=True %}
@@ -334,7 +334,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
                 </p>
                 <p>
                     {% blocktranslate trimmed %}
-                    The <code>.csv</code> files are archived using tar and compressed using Gzip. Windows users need <a href="https://www.7-zip.org">7-Zip</a>, <a href="https://www.win-rar.com">WinRAR</a> or <a href="https://www.winzip.com">WinZip</a> to decompress the <code>.tar.gz</code> file.
+                    The <code>.csv</code> files are archived using tar and compressed using Gzip. Windows users need <a href="https://www.7-zip.org" target="_blank">7-Zip</a>, <a href="https://www.win-rar.com" target="_blank">WinRAR</a> or <a href="https://www.winzip.com" target="_blank">WinZip</a> to decompress the <code>.tar.gz</code> file.
                     {% endblocktranslate %}
                 </p>
                 {% include "includes/files.html" with key="csv" suffix="csv.tar.gz" %}
@@ -356,7 +356,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
             </div>
         </div>
         <div class="col-md-auto">
-            <a href="mailto:data@open-contracting.org?{% feedback_query_string_parameters %}" class="hstack link-white">
+            <a href="mailto:data@open-contracting.org?{% feedback_query_string_parameters %}" target="_blank" class="hstack link-white">
                 {% include "includes/chevron_icon.html" with direction="right" classes="me-2" size="24" only %}{% translate "Contact Data Support Team" %}
             </a>
         </div>

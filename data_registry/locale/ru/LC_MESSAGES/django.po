@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-30 20:20+0000\n"
+"POT-Creation-Date: 2022-11-14 18:09+0000\n"
 "PO-Revision-Date: 2021-08-04 17:44+0000\n"
 "Last-Translator: Volodymyr <vtarnay@open-contracting.org>, 2022\n"
 "Language-Team: Russian (https://www.transifex.com/open-contracting-"
@@ -21,9 +21,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
-"%100>=11 && n%100<=14)? 2 : 3);\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
+"(n%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #: data_registry/admin.py:23
 msgid ""
@@ -95,56 +95,12 @@ msgstr "Реестр данных"
 msgid "Search for and access datasets by country"
 msgstr "Поиск и доступ к наборам данных по странам"
 
-#: data_registry/templates/base.html:36
-msgid "What is open contracting"
-msgstr "Что собой являет открытое контрактирование?"
-
-#: data_registry/templates/base.html:39
-msgid "Impact"
-msgstr "Влияние"
-
-#: data_registry/templates/base.html:42
-msgid "Implement"
-msgstr "Внедрение"
-
-#: data_registry/templates/base.html:45
-msgid "About"
-msgstr "Про проект"
-
-#: data_registry/templates/base.html:48
-msgid "News & Community"
-msgstr "Новости и сообщество"
-
-#: data_registry/templates/base.html:55
-msgid "Contact"
-msgstr "Контакты"
-
-#: data_registry/templates/base.html:71
-msgid "Connect with us:"
-msgstr "Связаться с нами:"
-
-#: data_registry/templates/base.html:137
-msgid ""
-"This work by the Open Contracting Partnership, unless otherwise noted, is "
-"licensed under a Creative Commons Attribution 4.0 International License."
-msgstr ""
-"Эта работа Open Contracting Partnership, если не указано иное, находится под "
-"лицензией Creative Commons Attribution 4.0 International License."
-
-#: data_registry/templates/base.html:140 data_registry/templates/header.html:12
-msgid "Open Contracting Partnership"
-msgstr "Партнерство за открытое контрактирование"
-
-#: data_registry/templates/base.html:141
-msgid "Terms"
-msgstr "Условия"
-
-#: data_registry/templates/detail.html:57
+#: data_registry/templates/detail.html:56
 msgid "BACK TO DATASETS SEARCH"
 msgstr "Назад к поиску датасетов"
 
-#: data_registry/templates/detail.html:83
-#: data_registry/templates/search.html:151
+#: data_registry/templates/detail.html:84
+#: data_registry/templates/search.html:150
 msgid "Available formats:"
 msgstr "Доступные форматы"
 
@@ -153,17 +109,17 @@ msgid "ACCESS"
 msgstr "Доступ"
 
 #: data_registry/templates/detail.html:114
-#: data_registry/templates/search.html:142
+#: data_registry/templates/search.html:140
 msgid "Data date range:"
 msgstr "Диапазон дат"
 
 #: data_registry/templates/detail.html:116
-#: data_registry/templates/search.html:146
+#: data_registry/templates/search.html:144
 msgid "Last retrieved:"
 msgstr "Последнее получено:"
 
 #: data_registry/templates/detail.html:118
-#: data_registry/templates/search.html:144
+#: data_registry/templates/search.html:142
 msgid "Update frequency:"
 msgstr "Периодичность обновлений"
 
@@ -279,24 +235,24 @@ msgstr "Количество изменений:"
 msgid "This dataset has not yet been retrieved."
 msgstr ""
 
-#: data_registry/templates/detail.html:255
+#: data_registry/templates/detail.html:253
 msgid "Data quality"
 msgstr "Качество данных"
 
-#: data_registry/templates/detail.html:258
+#: data_registry/templates/detail.html:256
 msgid "Summary"
 msgstr "Резюме"
 
-#: data_registry/templates/detail.html:265
+#: data_registry/templates/detail.html:263
 msgid "We have not yet prepared a data quality summary for this dataset."
 msgstr ""
 "Мы еще не подготовили сводку по качеству данных для этого набора данных."
 
-#: data_registry/templates/detail.html:271
+#: data_registry/templates/detail.html:269
 msgid "Last reviewed:"
 msgstr "Последний отзыв:"
 
-#: data_registry/templates/detail.html:276
+#: data_registry/templates/detail.html:274
 msgid "Issues found"
 msgstr "Проблем обнаружено"
 
@@ -314,7 +270,7 @@ msgstr ""
 "Вы можете загрузить данные о процессах заключения договоров за определенный "
 "год или за все время."
 
-#: data_registry/templates/detail.html:304
+#: data_registry/templates/detail.html:303
 msgid ""
 "Each contracting process is represented as one line of JSON text in the "
 "<code>.jsonl</code> file."
@@ -322,19 +278,21 @@ msgstr ""
 "Каждый процесс заключения контракта представлен в виде одной строки текста "
 "JSON в <code> .jsonl </code> файле."
 
-#: data_registry/templates/detail.html:309
+#: data_registry/templates/detail.html:308
 msgid ""
 "The <code>.jsonl</code> file is compressed using Gzip. Windows users need <a "
-"href=\"https://www.7-zip.org\">7-Zip</a>, <a href=\"https://www.win-rar.com"
-"\">WinRAR</a> or <a href=\"https://www.winzip.com\">WinZip</a> to decompress "
+"href=\"https://www.7-zip.org\" target=\"_blank\">7-Zip</a>, <a "
+"href=\"https://www.win-rar.com\" target=\"_blank\">WinRAR</a> or <a "
+"href=\"https://www.winzip.com\" target=\"_blank\">WinZip</a> to decompress "
 "the <code>.gz</code> file."
 msgstr ""
 "Файл <code> .jsonl </code> сжат с помощью Gzip. Пользователям Windows "
-"требуется <a href=\"www.7-zip.org\"> 7-Zip </a>,  <a href=\"https://win-rar."
-"com\"> WinRAR </a>3 или  <a href=\"https://winzip.com\"> WinZip </a> для "
-"распаковки файла <code> .gz </code>."
+"требуется <a href=\"www.7-zip.org\" target=\"_blank\"> 7-Zip </a>,  <a "
+"href=\"https://win-rar.com\" target=\"_blank\"> WinRAR </a>3 или  <a "
+"href=\"https://winzip.com\" target=\"_blank\"> WinZip </a> для распаковки "
+"файла <code> .gz </code>."
 
-#: data_registry/templates/detail.html:318
+#: data_registry/templates/detail.html:317
 msgid ""
 "Each contracting process is represented as one row in the <code>main</code> "
 "sheet. Other sheets link to it via the <code>_link_main</code> column."
@@ -343,19 +301,19 @@ msgstr ""
 "основном </code> листе. Другие листы ссылаются на него через столбец <code> "
 "_link_main </code>."
 
-#: data_registry/templates/detail.html:323
+#: data_registry/templates/detail.html:322
 msgid ""
 "Excel files can have at most <a href=\"https://support.microsoft.com/en-us/"
 "office/excel-specifications-and-"
-"limits-1672b34d-7043-467e-8e27-269d656771c3\">1,048,576 rows</a>. If a year "
-"is missing, it had too many rows."
+"limits-1672b34d-7043-467e-8e27-269d656771c3\" target=\"_blank\">1,048,576 "
+"rows</a>. If a year is missing, it had too many rows."
 msgstr ""
 "Файлы Excel могут содержать не более <a href=\"https://support.microsoft.com/"
 "en-us/office/excel-specifications-and-"
-"limits-1672b34d-7043-467e-8e27-269d656771c3\"> 1 048 576 строк </a>. Если "
-"год отсутствует, в нем было слишком много строк."
+"limits-1672b34d-7043-467e-8e27-269d656771c3\" target=\"_blank\"> 1 048 576 "
+"строк </a>. Если год отсутствует, в нем было слишком много строк."
 
-#: data_registry/templates/detail.html:332
+#: data_registry/templates/detail.html:331
 msgid ""
 "Each contracting process is represented as one row in the <code>main.csv</"
 "code> file. Other files link to it via the <code>_link_main</code> column."
@@ -364,38 +322,35 @@ msgstr ""
 "main.csv </code>. Другие файлы ссылаются на него через столбец <code> "
 "_link_main </code>."
 
-#: data_registry/templates/detail.html:337
+#: data_registry/templates/detail.html:336
 msgid ""
 "The <code>.csv</code> files are archived using tar and compressed using "
-"Gzip. Windows users need <a href=\"https://www.7-zip.org\">7-Zip</a>, <a "
-"href=\"https://www.win-rar.com\">WinRAR</a> or <a href=\"https://www.winzip."
-"com\">WinZip</a> to decompress the <code>.tar.gz</code> file."
+"Gzip. Windows users need <a href=\"https://www.7-zip.org\" "
+"target=\"_blank\">7-Zip</a>, <a href=\"https://www.win-rar.com\" "
+"target=\"_blank\">WinRAR</a> or <a href=\"https://www.winzip.com\" "
+"target=\"_blank\">WinZip</a> to decompress the <code>.tar.gz</code> file."
 msgstr ""
 "Файлы <code> .csv </code> архивируются с помощью tar и сжимаются с помощью "
-"Gzip. Пользователям Windows потребуется <a href=\"https://www.7-zip.org\"> 7-"
-"Zip </a>, <a href=\"https://www.win-rar.com\"> WinRAR </a> или <a href="
-"\"https://www.winzip.com\"> WinZip  </a> для распаковки файла <code> .tar.gz "
-"</code>."
+"Gzip. Пользователям Windows потребуется <a href=\"https://www.7-zip.org\" "
+"target=\"_blank\"> 7-Zip </a>, <a href=\"https://www.win-rar.com\" "
+"target=\"_blank\"> WinRAR </a> или <a href=\"https://www.winzip.com\" "
+"target=\"_blank\"> WinZip  </a> для распаковки файла <code> .tar.gz </code>."
 
-#: data_registry/templates/detail.html:356
+#: data_registry/templates/detail.html:355
 msgid "Have questions, feedback on this dataset or content on this page?"
 msgstr ""
 "Есть ли у вас вопросы, отзывы об этом наборе данных или содержимом этой "
 "страницы?"
 
-#: data_registry/templates/detail.html:361
+#: data_registry/templates/detail.html:360
 msgid "Contact Data Support Team"
 msgstr "Связаться со службой поддержки данных"
-
-#: data_registry/templates/header.html:26
-msgid "Select language"
-msgstr "Выбрать язык "
 
 #: data_registry/templates/includes/check_icon.html:5
 msgid "Available"
 msgstr ""
 
-#: data_registry/templates/includes/check_icon.html:11
+#: data_registry/templates/includes/check_icon.html:10
 msgid "Unavailable"
 msgstr ""
 
@@ -406,6 +361,55 @@ msgstr "Все время"
 #: data_registry/templates/includes/files.html:22
 msgid "Files not yet available."
 msgstr "Файлы пока недоступны."
+
+#: data_registry/templates/includes/footer.html:15
+msgid "What is open contracting"
+msgstr "Что собой являет открытое контрактирование?"
+
+#: data_registry/templates/includes/footer.html:20
+msgid "Impact"
+msgstr "Влияние"
+
+#: data_registry/templates/includes/footer.html:25
+msgid "Implement"
+msgstr "Внедрение"
+
+#: data_registry/templates/includes/footer.html:30
+msgid "About"
+msgstr "Про проект"
+
+#: data_registry/templates/includes/footer.html:35
+msgid "News & Community"
+msgstr "Новости и сообщество"
+
+#: data_registry/templates/includes/footer.html:44
+msgid "Contact"
+msgstr "Контакты"
+
+#: data_registry/templates/includes/footer.html:60
+msgid "Connect with us:"
+msgstr "Связаться с нами:"
+
+#: data_registry/templates/includes/footer.html:126
+msgid ""
+"This work by the Open Contracting Partnership, unless otherwise noted, is "
+"licensed under a Creative Commons Attribution 4.0 International License."
+msgstr ""
+"Эта работа Open Contracting Partnership, если не указано иное, находится под "
+"лицензией Creative Commons Attribution 4.0 International License."
+
+#: data_registry/templates/includes/footer.html:129
+#: data_registry/templates/includes/header.html:12
+msgid "Open Contracting Partnership"
+msgstr "Партнерство за открытое контрактирование"
+
+#: data_registry/templates/includes/footer.html:130
+msgid "Terms"
+msgstr "Условия"
+
+#: data_registry/templates/includes/header.html:26
+msgid "Select language"
+msgstr "Выбрать язык "
 
 #: data_registry/templates/index.html:7
 msgid "OCP Data Registry"
@@ -472,31 +476,23 @@ msgstr ""
 "Вы также можете настроить поля данных, которые вам нужны, для более "
 "управляемого набора данных."
 
-#: data_registry/templates/search.html:46
+#: data_registry/templates/search.html:54
 msgid "BACK TO REGISTRY HOME"
 msgstr "Назад на главную"
 
-#: data_registry/templates/search.html:55
+#: data_registry/templates/search.html:62
 msgid "Filters"
 msgstr "Фильтры"
 
-#: data_registry/templates/search.html:58
-msgid "Toggle filters menu"
-msgstr ""
-
-#: data_registry/templates/search.html:59
-msgid "Menu"
-msgstr ""
-
-#: data_registry/templates/search.html:82
+#: data_registry/templates/search.html:80
 msgid "Clear all filters"
 msgstr "Очистить все фильтры"
 
-#: data_registry/templates/search.html:85
+#: data_registry/templates/search.html:83
 msgid "Country starting with"
 msgstr "Страна, начиная с"
 
-#: data_registry/templates/search.html:90
+#: data_registry/templates/search.html:88
 #, python-format
 msgid "1 dataset"
 msgid_plural "%(counter)s datasets"
@@ -505,19 +501,19 @@ msgstr[1] "%(counter)sнаборов данных"
 msgstr[2] "%(counter)sнаборов данных"
 msgstr[3] "%(counter)sнаборов данных "
 
-#: data_registry/templates/search.html:102
+#: data_registry/templates/search.html:100
 msgid "Data date range"
 msgstr "Диапазон дат данных"
 
-#: data_registry/templates/search.html:103
+#: data_registry/templates/search.html:101
 msgid "Update frequency"
 msgstr "Частота обновления"
 
-#: data_registry/templates/search.html:104
+#: data_registry/templates/search.html:102
 msgid "Data contains"
 msgstr "Данные содержат"
 
-#: data_registry/templates/search.html:111
+#: data_registry/templates/search.html:109
 #, python-format
 msgid "%(counter)s dataset matches the selected filters"
 msgid_plural "%(counter)s datasets match the selected filters"
@@ -526,14 +522,18 @@ msgstr[1] "%(counter)sнаборов данных соответствуют в�
 msgstr[2] "%(counter)sнаборов данных соответствуют выбранным фильтрам"
 msgstr[3] "%(counter)sнаборов данных соответствуют выбранным фильтрам"
 
-#: data_registry/templates/search.html:117
+#: data_registry/templates/search.html:115
 #, python-format
 msgid "Showing all %(counter)s datasets"
 msgstr "Показаны все %(counter)sнаборов данных"
 
-#: data_registry/templates/search.html:165
+#: data_registry/templates/search.html:163
 msgid "See details"
 msgstr "Смотреть детали"
+
+#: data_registry/templates/search.html:176
+msgid "Back to Top"
+msgstr ""
 
 #: data_registry/templatetags/registry.py:76
 #, python-format

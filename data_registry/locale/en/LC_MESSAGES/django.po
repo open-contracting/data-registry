@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-30 20:20+0000\n"
+"POT-Creation-Date: 2022-11-14 18:09+0000\n"
 "PO-Revision-Date: 2021-08-04 17:44+0000\n"
 "Last-Translator: James McKinney, 2022\n"
 "Language-Team: English (https://www.transifex.com/open-contracting-"
@@ -93,56 +93,12 @@ msgstr "Data Registry"
 msgid "Search for and access datasets by country"
 msgstr "Search for and access datasets of public contracts"
 
-#: data_registry/templates/base.html:36
-msgid "What is open contracting"
-msgstr "What is open contracting"
-
-#: data_registry/templates/base.html:39
-msgid "Impact"
-msgstr "Impact"
-
-#: data_registry/templates/base.html:42
-msgid "Implement"
-msgstr "Implement"
-
-#: data_registry/templates/base.html:45
-msgid "About"
-msgstr "About"
-
-#: data_registry/templates/base.html:48
-msgid "News & Community"
-msgstr "News & Community"
-
-#: data_registry/templates/base.html:55
-msgid "Contact"
-msgstr "Contact"
-
-#: data_registry/templates/base.html:71
-msgid "Connect with us:"
-msgstr "Connect with us:"
-
-#: data_registry/templates/base.html:137
-msgid ""
-"This work by the Open Contracting Partnership, unless otherwise noted, is "
-"licensed under a Creative Commons Attribution 4.0 International License."
-msgstr ""
-"This work by the Open Contracting Partnership, unless otherwise noted, is "
-"licensed under a Creative Commons Attribution 4.0 International License."
-
-#: data_registry/templates/base.html:140 data_registry/templates/header.html:12
-msgid "Open Contracting Partnership"
-msgstr "Open Contracting Partnership"
-
-#: data_registry/templates/base.html:141
-msgid "Terms"
-msgstr "Terms"
-
-#: data_registry/templates/detail.html:57
+#: data_registry/templates/detail.html:56
 msgid "BACK TO DATASETS SEARCH"
 msgstr "Back to Datasets Search"
 
-#: data_registry/templates/detail.html:83
-#: data_registry/templates/search.html:151
+#: data_registry/templates/detail.html:84
+#: data_registry/templates/search.html:150
 msgid "Available formats:"
 msgstr "Available formats:"
 
@@ -151,17 +107,17 @@ msgid "ACCESS"
 msgstr "Access"
 
 #: data_registry/templates/detail.html:114
-#: data_registry/templates/search.html:142
+#: data_registry/templates/search.html:140
 msgid "Data date range:"
 msgstr "Data date range:"
 
 #: data_registry/templates/detail.html:116
-#: data_registry/templates/search.html:146
+#: data_registry/templates/search.html:144
 msgid "Last retrieved:"
 msgstr "Last retrieved:"
 
 #: data_registry/templates/detail.html:118
-#: data_registry/templates/search.html:144
+#: data_registry/templates/search.html:142
 msgid "Update frequency:"
 msgstr "Update frequency:"
 
@@ -277,23 +233,23 @@ msgstr "Count of amendments:"
 msgid "This dataset has not yet been retrieved."
 msgstr "This dataset has not yet been retrieved."
 
-#: data_registry/templates/detail.html:255
+#: data_registry/templates/detail.html:253
 msgid "Data quality"
 msgstr "Data quality"
 
-#: data_registry/templates/detail.html:258
+#: data_registry/templates/detail.html:256
 msgid "Summary"
 msgstr "Summary"
 
-#: data_registry/templates/detail.html:265
+#: data_registry/templates/detail.html:263
 msgid "We have not yet prepared a data quality summary for this dataset."
 msgstr "We have not yet prepared a data quality summary for this dataset."
 
-#: data_registry/templates/detail.html:271
+#: data_registry/templates/detail.html:269
 msgid "Last reviewed:"
 msgstr "Last reviewed:"
 
-#: data_registry/templates/detail.html:276
+#: data_registry/templates/detail.html:274
 msgid "Issues found"
 msgstr "Issues found"
 
@@ -311,7 +267,7 @@ msgstr ""
 "You can download the data for contracting processes in a specific year or "
 "for all time."
 
-#: data_registry/templates/detail.html:304
+#: data_registry/templates/detail.html:303
 msgid ""
 "Each contracting process is represented as one line of JSON text in the "
 "<code>.jsonl</code> file."
@@ -319,19 +275,21 @@ msgstr ""
 "Each contracting process is represented as one line of JSON text in the "
 "<code>.jsonl</code> file."
 
-#: data_registry/templates/detail.html:309
+#: data_registry/templates/detail.html:308
 msgid ""
 "The <code>.jsonl</code> file is compressed using Gzip. Windows users need <a "
-"href=\"https://www.7-zip.org\">7-Zip</a>, <a href=\"https://www.win-rar.com"
-"\">WinRAR</a> or <a href=\"https://www.winzip.com\">WinZip</a> to decompress "
+"href=\"https://www.7-zip.org\" target=\"_blank\">7-Zip</a>, <a "
+"href=\"https://www.win-rar.com\" target=\"_blank\">WinRAR</a> or <a "
+"href=\"https://www.winzip.com\" target=\"_blank\">WinZip</a> to decompress "
 "the <code>.gz</code> file."
 msgstr ""
 "The <code>.jsonl</code> file is compressed using Gzip. Windows users need <a "
-"href=\"https://www.7-zip.org\">7-Zip</a>, <a href=\"https://www.win-rar.com"
-"\">WinRAR</a> or <a href=\"https://www.winzip.com\">WinZip</a> to decompress "
+"href=\"https://www.7-zip.org\" target=\"_blank\">7-Zip</a>, <a "
+"href=\"https://www.win-rar.com\" target=\"_blank\">WinRAR</a> or <a "
+"href=\"https://www.winzip.com\" target=\"_blank\">WinZip</a> to decompress "
 "the <code>.gz</code> file."
 
-#: data_registry/templates/detail.html:318
+#: data_registry/templates/detail.html:317
 msgid ""
 "Each contracting process is represented as one row in the <code>main</code> "
 "sheet. Other sheets link to it via the <code>_link_main</code> column."
@@ -339,19 +297,19 @@ msgstr ""
 "Each contracting process is represented as one row in the <code>main</code> "
 "sheet. Other sheets link to it via the <code>_link_main</code> column."
 
-#: data_registry/templates/detail.html:323
+#: data_registry/templates/detail.html:322
 msgid ""
 "Excel files can have at most <a href=\"https://support.microsoft.com/en-us/"
 "office/excel-specifications-and-"
-"limits-1672b34d-7043-467e-8e27-269d656771c3\">1,048,576 rows</a>. If a year "
-"is missing, it had too many rows."
+"limits-1672b34d-7043-467e-8e27-269d656771c3\" target=\"_blank\">1,048,576 "
+"rows</a>. If a year is missing, it had too many rows."
 msgstr ""
 "Excel files can have at most <a href=\"https://support.microsoft.com/en-us/"
 "office/excel-specifications-and-"
-"limits-1672b34d-7043-467e-8e27-269d656771c3\">1,048,576 rows</a>. If a year "
-"is missing, it had too many rows."
+"limits-1672b34d-7043-467e-8e27-269d656771c3\" target=\"_blank\">1,048,576 "
+"rows</a>. If a year is missing, it had too many rows."
 
-#: data_registry/templates/detail.html:332
+#: data_registry/templates/detail.html:331
 msgid ""
 "Each contracting process is represented as one row in the <code>main.csv</"
 "code> file. Other files link to it via the <code>_link_main</code> column."
@@ -359,37 +317,35 @@ msgstr ""
 "Each contracting process is represented as one row in the <code>main.csv</"
 "code> file. Other files link to it via the <code>_link_main</code> column."
 
-#: data_registry/templates/detail.html:337
+#: data_registry/templates/detail.html:336
 msgid ""
 "The <code>.csv</code> files are archived using tar and compressed using "
-"Gzip. Windows users need <a href=\"https://www.7-zip.org\">7-Zip</a>, <a "
-"href=\"https://www.win-rar.com\">WinRAR</a> or <a href=\"https://www.winzip."
-"com\">WinZip</a> to decompress the <code>.tar.gz</code> file."
+"Gzip. Windows users need <a href=\"https://www.7-zip.org\" "
+"target=\"_blank\">7-Zip</a>, <a href=\"https://www.win-rar.com\" "
+"target=\"_blank\">WinRAR</a> or <a href=\"https://www.winzip.com\" "
+"target=\"_blank\">WinZip</a> to decompress the <code>.tar.gz</code> file."
 msgstr ""
 "The <code>.csv</code> files are archived using tar and compressed using "
-"Gzip. Windows users need <a href=\"https://www.7-zip.org\">7-Zip</a>, <a "
-"href=\"https://www.win-rar.com\">WinRAR</a> or <a href=\"https://www.winzip."
-"com\">WinZip</a> to decompress the <code>.tar.gz</code> file."
+"Gzip. Windows users need <a href=\"https://www.7-zip.org\" "
+"target=\"_blank\">7-Zip</a>, <a href=\"https://www.win-rar.com\" "
+"target=\"_blank\">WinRAR</a> or <a href=\"https://www.winzip.com\" "
+"target=\"_blank\">WinZip</a> to decompress the <code>.tar.gz</code> file."
 
-#: data_registry/templates/detail.html:356
+#: data_registry/templates/detail.html:355
 msgid "Have questions, feedback on this dataset or content on this page?"
 msgstr ""
 "Do you have any questions or feedback on this dataset or any other content "
 "on this page?"
 
-#: data_registry/templates/detail.html:361
+#: data_registry/templates/detail.html:360
 msgid "Contact Data Support Team"
 msgstr "Contact Data Support Team"
-
-#: data_registry/templates/header.html:26
-msgid "Select language"
-msgstr "Select language"
 
 #: data_registry/templates/includes/check_icon.html:5
 msgid "Available"
 msgstr "Available"
 
-#: data_registry/templates/includes/check_icon.html:11
+#: data_registry/templates/includes/check_icon.html:10
 msgid "Unavailable"
 msgstr "Unavailable"
 
@@ -400,6 +356,55 @@ msgstr "All time"
 #: data_registry/templates/includes/files.html:22
 msgid "Files not yet available."
 msgstr "Files not yet available."
+
+#: data_registry/templates/includes/footer.html:15
+msgid "What is open contracting"
+msgstr "What is open contracting"
+
+#: data_registry/templates/includes/footer.html:20
+msgid "Impact"
+msgstr "Impact"
+
+#: data_registry/templates/includes/footer.html:25
+msgid "Implement"
+msgstr "Implement"
+
+#: data_registry/templates/includes/footer.html:30
+msgid "About"
+msgstr "About"
+
+#: data_registry/templates/includes/footer.html:35
+msgid "News & Community"
+msgstr "News & Community"
+
+#: data_registry/templates/includes/footer.html:44
+msgid "Contact"
+msgstr "Contact"
+
+#: data_registry/templates/includes/footer.html:60
+msgid "Connect with us:"
+msgstr "Connect with us:"
+
+#: data_registry/templates/includes/footer.html:126
+msgid ""
+"This work by the Open Contracting Partnership, unless otherwise noted, is "
+"licensed under a Creative Commons Attribution 4.0 International License."
+msgstr ""
+"This work by the Open Contracting Partnership, unless otherwise noted, is "
+"licensed under a Creative Commons Attribution 4.0 International License."
+
+#: data_registry/templates/includes/footer.html:129
+#: data_registry/templates/includes/header.html:12
+msgid "Open Contracting Partnership"
+msgstr "Open Contracting Partnership"
+
+#: data_registry/templates/includes/footer.html:130
+msgid "Terms"
+msgstr "Terms"
+
+#: data_registry/templates/includes/header.html:26
+msgid "Select language"
+msgstr "Select language"
 
 #: data_registry/templates/index.html:7
 msgid "OCP Data Registry"
@@ -465,64 +470,60 @@ msgstr ""
 "You can also customize the data fields you need for a more manageable "
 "dataset."
 
-#: data_registry/templates/search.html:46
+#: data_registry/templates/search.html:54
 msgid "BACK TO REGISTRY HOME"
 msgstr "Back to Registry Home"
 
-#: data_registry/templates/search.html:55
+#: data_registry/templates/search.html:62
 msgid "Filters"
 msgstr "Filters"
 
-#: data_registry/templates/search.html:58
-msgid "Toggle filters menu"
-msgstr "Toggle filters menu"
-
-#: data_registry/templates/search.html:59
-msgid "Menu"
-msgstr "Menu"
-
-#: data_registry/templates/search.html:82
+#: data_registry/templates/search.html:80
 msgid "Clear all filters"
 msgstr "Clear all filters"
 
-#: data_registry/templates/search.html:85
+#: data_registry/templates/search.html:83
 msgid "Country starting with"
 msgstr "Country starts with"
 
-#: data_registry/templates/search.html:90
+#: data_registry/templates/search.html:88
 #, python-format
 msgid "1 dataset"
 msgid_plural "%(counter)s datasets"
 msgstr[0] "1 dataset"
 msgstr[1] "%(counter)s datasets"
 
-#: data_registry/templates/search.html:102
+#: data_registry/templates/search.html:100
 msgid "Data date range"
 msgstr "Data date range"
 
-#: data_registry/templates/search.html:103
+#: data_registry/templates/search.html:101
 msgid "Update frequency"
 msgstr "Update frequency"
 
-#: data_registry/templates/search.html:104
+#: data_registry/templates/search.html:102
 msgid "Data contains"
 msgstr "Data contains"
 
-#: data_registry/templates/search.html:111
+#: data_registry/templates/search.html:109
 #, python-format
 msgid "%(counter)s dataset matches the selected filters"
 msgid_plural "%(counter)s datasets match the selected filters"
 msgstr[0] "%(counter)s dataset matches the selected filters"
 msgstr[1] "%(counter)s datasets match the selected filters"
 
-#: data_registry/templates/search.html:117
+#: data_registry/templates/search.html:115
 #, python-format
 msgid "Showing all %(counter)s datasets"
 msgstr "Showing all %(counter)s datasets"
 
-#: data_registry/templates/search.html:165
+#: data_registry/templates/search.html:163
 msgid "See details"
 msgstr "See details"
+
+#: data_registry/templates/search.html:176
+msgid "Back to Top"
+msgstr ""
 
 #: data_registry/templatetags/registry.py:76
 #, python-format
@@ -576,3 +577,9 @@ msgstr "Amendments data"
 #: data_registry/views.py:229
 msgid "OCP Kingfisher Database"
 msgstr "OCP Kingfisher Database"
+
+#~ msgid "Toggle filters menu"
+#~ msgstr "Toggle filters menu"
+
+#~ msgid "Menu"
+#~ msgstr "Menu"
