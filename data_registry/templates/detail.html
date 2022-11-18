@@ -145,13 +145,17 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
         </dl>
     </div>
 </div>
-
 <div class="row py-5 border-top">
     <div class="col-sm fixed-sm-12">
-        <h2 class="h4 mb-3">{% translate "Data avaliable" %}</h2s>
+        <h2 class="h4 mb-3">{% translate "Data avaliable" %}</h2>
     </div>
     <div class="col-sm">
-{% if job %}
+        <div class="mb-5">
+        {% blocktranslate trimmed %}
+            An individual contracting process has several different stages: tendering, awarding, contracting and implementation. You can dive into the details of the contracting stages in this <a href="https://standard.open-contracting.org/latest/en/primer/how/" target="_blank">tutorial</a>.
+        {% endblocktranslate %}
+        </div>
+ {% if job %}
         <div class="row">
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
                 <h3 class="h6">{% include "includes/check_icon.html" with checked=job.parties_count only %}{% translate "Parties" %}</h3>
