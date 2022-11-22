@@ -51,7 +51,7 @@ pika==1.2.0
     # via
     #   -r requirements.in
     #   yapw
-pillow==9.0.1
+pillow==9.3.0
     # via django-markdownx
 psycopg2==2.9.2
     # via -r requirements.in
