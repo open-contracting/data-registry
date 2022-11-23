@@ -6,15 +6,17 @@
     {% if files.full %}
     <li>
         <a href="{% url 'download_export' %}?spider={{ collection.source_id }}&job_id={{ job.id }}&full=true&suffix={{ suffix }}" rel="nofollow" download>
-            {% translate "All time" %} ({{ files.full|filesizeformat }})
+            {% translate "All time" %}
         </a>
+        <span class="text-muted">({{ files.full|filesizeformat }})</span>
     </li>
     {% endif %}
-    {% for file in files.files|dictsortreversed:"year" %}
+    {% for year in files.years.keys|sortreversed %}
     <li>
-        <a href="{% url 'download_export' %}?spider={{ collection.source_id }}&job_id={{ job.id }}&year={{ file.year }}&suffix={{ suffix }}" rel="nofollow" download>
-            {{ file.year }} ({{ file.size|filesizeformat }})
+        <a href="{% url 'download_export' %}?spider={{ collection.source_id }}&job_id={{ job.id }}&year={{ year }}&suffix={{ suffix }}" rel="nofollow" download>
+            {{ year }}
         </a>
+        <span class="text-muted">({{ files.years|get_item:year|filesizeformat }})</span>
     </li>
     {% empty %}
         {% if not hideempty %}
