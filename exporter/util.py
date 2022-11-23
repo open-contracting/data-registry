@@ -94,9 +94,9 @@ class Export:
     @classmethod
     def default_files(cls):
         return {
-            "csv": {"full": False, "years": set()},
-            "jsonl": {"full": False, "years": set()},
-            "xlsx": {"full": False, "years": set()},
+            "csv": {"full": False, "files": []},
+            "jsonl": {"full": False, "files": []},
+            "xlsx": {"full": False, "files": []},
         }
 
     def __init__(self, *components, basename: Optional[str] = None):
@@ -195,8 +195,8 @@ class Export:
                 continue
             prefix = path.name[:4]  # year or "full"
             if prefix.isdigit() and "_" not in path.name:  # don't return month files
-                files[suffix]["years"].add(int(prefix))
+                files[suffix]["files"].append({"year": int(prefix), "size": os.path.getsize(path)})
             elif prefix == "full":
-                files[suffix]["full"] = True
+                files[suffix]["full"] = os.path.getsize(path)
 
         return files
