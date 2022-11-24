@@ -195,8 +195,16 @@ class Export:
                 continue
             prefix = path.name[:4]  # year or "full"
             if prefix.isdigit() and "_" not in path.name:  # don't return month files
-                files[suffix]["years"][int(prefix)] = os.path.getsize(path)
+                files[suffix]["years"][int(prefix)] = self.pretty_file_size(path)
             elif prefix == "full":
-                files[suffix]["full"] = os.path.getsize(path)
+                files[suffix]["full"] = self.pretty_file_size(path)
 
         return files
+
+    def pretty_file_size(self, path):
+        """
+        Returns the size of ``path`` as MB rounded to the nearest integer with 'MB' as suffix.
+        If the file size is less than 1 MB, returns the size rounded to one significant digit.
+        """
+        size = os.path.getsize(path) / 1048576.0
+        return f"{size:.0f} MB" if size > 1 else f"{size:.1f} MB"
