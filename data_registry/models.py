@@ -143,7 +143,7 @@ class Collection(models.Model):
         blank=True,
         null=True,
         verbose_name="data license",
-        help_text="If not set, the Overview section will display " "the license URL within the OCDS package.",
+        help_text="If not set, the Overview section will display the license URL within the OCDS package.",
     )
 
     source_id = models.TextField(
@@ -214,7 +214,7 @@ class License(models.Model):
     name = models.TextField(blank=True, help_text="The official name of the license.")
     description = MarkdownxField(
         blank=True,
-        help_text="A brief description of the permissions, conditions and limitations, as " "Markdown text.",
+        help_text="A brief description of the permissions, conditions and limitations, as Markdown text.",
     )
     url = models.TextField(blank=True, verbose_name="URL", help_text="The canonical URL of the license.")
 
