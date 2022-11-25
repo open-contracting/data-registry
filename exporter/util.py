@@ -94,9 +94,9 @@ class Export:
     @classmethod
     def default_files(cls):
         return {
-            "csv": {"full": False, "years": {}},
-            "jsonl": {"full": False, "years": {}},
-            "xlsx": {"full": False, "years": {}},
+            "csv": {"full": False, "years": []},
+            "jsonl": {"full": False, "years": []},
+            "xlsx": {"full": False, "years": []},
         }
 
     def __init__(self, *components, basename: Optional[str] = None):
@@ -185,7 +185,7 @@ class Export:
     @property
     def files(self) -> Dict:
         """
-        Returns all the available file formats and segments (by year or full).
+        Return all the available file formats and segments (by year or full).
         """
         files = self.default_files()
 
@@ -195,16 +195,16 @@ class Export:
                 continue
             prefix = path.name[:4]  # year or "full"
             if prefix.isdigit() and "_" not in path.name:  # don't return month files
-                files[suffix]["years"][int(prefix)] = self.pretty_file_size(path)
+                files[suffix]["years"].append({"year": int(prefix), "size": self.human_file_size(path)})
             elif prefix == "full":
-                files[suffix]["full"] = self.pretty_file_size(path)
+                files[suffix]["full"] = self.human_file_size(path)
 
         return files
 
-    def pretty_file_size(self, path):
+    def human_file_size(self, path):
         """
-        Returns the size of ``path`` as MB rounded to the nearest integer with 'MB' as suffix.
-        If the file size is less than 1 MB, returns the size rounded to one significant digit.
+        Return the size of ``path`` as MB rounded to the nearest integer with 'MB' as suffix.
+        If the file size is less than 1 MB, round to one significant digit.
         """
-        size = os.path.getsize(path) / 1048576.0
-        return f"{size:.0f} MB" if size > 1 else f"{size:.1f} MB"
+        size = max(0.1, os.path.getsize(path) / 1000000)
+        return f"{size:,.0f} MB" if size >= 0.95 else f"{size:.1f} MB"
