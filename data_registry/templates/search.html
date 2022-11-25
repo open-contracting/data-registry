@@ -149,13 +149,13 @@ observer.observe(document.querySelector('.toppable'))
                     <dl class="mb-n2">
                         <dt class="mb-2">{% translate "Available formats:" %}</dt>
                         <dd class="d-inline-block text-uppercase me-2">
-                            {% include "includes/check_icon.html" with checked=collection.files.jsonl.years only %}JSON
+                            {% include "includes/check_icon.html" with checked=collection.files.jsonl.by_year only %}JSON
                         </dd>
                         <dd class="d-inline-block text-uppercase me-2">
-                            {% include "includes/check_icon.html" with checked=collection.files.xlsx.years only %}Excel
+                            {% include "includes/check_icon.html" with checked=collection.files.xlsx.by_year only %}Excel
                         </dd>
                         <dd class="d-inline-block text-uppercase">
-                            {% include "includes/check_icon.html" with checked=collection.files.csv.years only %}CSV
+                            {% include "includes/check_icon.html" with checked=collection.files.csv.by_year only %}CSV
                         </dd>
                     </dl>
                     <a href="{% url 'detail' collection.id %}" class="hstack justify-content-end link-primary click">

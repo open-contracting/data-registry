@@ -94,9 +94,9 @@ class Export:
     @classmethod
     def default_files(cls):
         return {
-            "csv": {"full": False, "years": []},
-            "jsonl": {"full": False, "years": []},
-            "xlsx": {"full": False, "years": []},
+            "csv": {"full": False, "by_year": []},
+            "jsonl": {"full": False, "by_year": []},
+            "xlsx": {"full": False, "by_year": []},
         }
 
     def __init__(self, *components, basename: Optional[str] = None):
@@ -195,16 +195,8 @@ class Export:
                 continue
             prefix = path.name[:4]  # year or "full"
             if prefix.isdigit() and "_" not in path.name:  # don't return month files
-                files[suffix]["years"].append({"year": int(prefix), "size": self.human_file_size(path)})
+                files[suffix]["by_year"].append({"year": int(prefix), "size": os.path.getsize(path)})
             elif prefix == "full":
-                files[suffix]["full"] = self.human_file_size(path)
+                files[suffix]["full"] = os.path.getsize(path)
 
         return files
-
-    def human_file_size(self, path):
-        """
-        Return the size of ``path`` as MB rounded to the nearest integer with 'MB' as suffix.
-        If the file size is less than 1 MB, round to one significant digit.
-        """
-        size = max(0.1, os.path.getsize(path) / 1000000)
-        return f"{size:,.0f} MB" if size >= 0.95 else f"{size:.1f} MB"
