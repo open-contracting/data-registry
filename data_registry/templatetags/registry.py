@@ -95,3 +95,9 @@ def getlist(query_dict, key):
 @register.filter
 def sortreversed(sequence):
     return sorted(sequence, reverse=True)
+
+
+@register.filter
+def humanfilesize(size):
+    size = max(0.1, size / 1000000)
+    return f"{size:,.0f} MB" if size >= 0.95 else f"{size:.1f} MB"

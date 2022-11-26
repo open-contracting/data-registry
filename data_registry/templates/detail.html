@@ -83,13 +83,13 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
                         <dl class="mb-n2">
                             <dt class="h5">{% translate "Available formats:" %}</dt>
                             <dd class="d-inline-block text-uppercase fs-5 me-3">
-                                {% include "includes/check_icon.html" with checked=files.jsonl.years size="24px" only %}JSON
+                                {% include "includes/check_icon.html" with checked=files.jsonl.by_year size="24px" only %}JSON
                             </dd>
                             <dd class="d-inline-block text-uppercase fs-5 me-3">
-                                {% include "includes/check_icon.html" with checked=files.xlsx.years size="24px" only %}Excel
+                                {% include "includes/check_icon.html" with checked=files.xlsx.by_year size="24px" only %}Excel
                             </dd>
                             <dd class="d-inline-block text-uppercase fs-5">
-                                {% include "includes/check_icon.html" with checked=files.csv.years size="24px" only %}CSV
+                                {% include "includes/check_icon.html" with checked=files.csv.by_year size="24px" only %}CSV
                             </dd>
                         </dl>
                     </div>
@@ -313,7 +313,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
                     The <code>.jsonl</code> file is compressed using Gzip. Windows users need <a href="https://www.7-zip.org" target="_blank">7-Zip</a>, <a href="https://www.win-rar.com" target="_blank">WinRAR</a> or <a href="https://www.winzip.com" target="_blank">WinZip</a> to decompress the <code>.gz</code> file.
                     {% endblocktranslate %}
                 </p>
-                {% include "includes/files.html" with key="jsonl" suffix="jsonl.gz" %}
+                {% include "includes/files.html" with files=files.jsonl suffix="jsonl.gz" %}
             </div>
             <div class="col-sm-4 mb-n3">
                 <h3>Excel</h3>
@@ -327,7 +327,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
                     Excel files can have at most <a href="https://support.microsoft.com/en-us/office/excel-specifications-and-limits-1672b34d-7043-467e-8e27-269d656771c3" target="_blank">1,048,576 rows</a>. If a year is missing, it had too many rows.
                     {% endblocktranslate %}
                 </p>
-                {% include "includes/files.html" with key="xlsx" suffix="xlsx" hideempty=True %}
+                {% include "includes/files.html" with files=files.xlsx suffix="xlsx" hideempty=True %}
             </div>
             <div class="col-sm-4 mb-n3">
                 <h3>CSV</h3>
@@ -341,7 +341,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
                     The <code>.csv</code> files are archived using tar and compressed using Gzip. Windows users need <a href="https://www.7-zip.org" target="_blank">7-Zip</a>, <a href="https://www.win-rar.com" target="_blank">WinRAR</a> or <a href="https://www.winzip.com" target="_blank">WinZip</a> to decompress the <code>.tar.gz</code> file.
                     {% endblocktranslate %}
                 </p>
-                {% include "includes/files.html" with key="csv" suffix="csv.tar.gz" %}
+                {% include "includes/files.html" with files=files.csv suffix="csv.tar.gz" %}
             </div>
         </div>
     </div>

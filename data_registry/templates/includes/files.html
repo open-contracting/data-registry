@@ -2,26 +2,22 @@
 {% load registry %}
 
 <ul>
-{% with files=files|get_item:key %}
-    {% if files.full %}
+{% if files.full %}
     <li>
-        <a href="{% url 'download_export' %}?spider={{ collection.source_id }}&job_id={{ job.id }}&full=true&suffix={{ suffix }}" rel="nofollow" download>
-            {% translate "All time" %}
-        </a>
+        <a href="{% url 'download_export' %}?spider={{ collection.source_id }}&job_id={{ job.id }}&full=true&suffix={{ suffix }}" rel="nofollow" download>{% translate "All time" %}</a>
+        <span class="text-muted small">{{ files.full|humanfilesize }}</span>
+    </li>
+{% endif %}
+{% for file in files.by_year|dictsortreversed:"year" %}
+    <li>
+        <a href="{% url 'download_export' %}?spider={{ collection.source_id }}&job_id={{ job.id }}&year={{ year }}&suffix={{ suffix }}" rel="nofollow" download>{{ file.year }}</a>
+        <span class="text-muted small">{{ file.size|humanfilesize }}</span>
+    </li>
+{% empty %}
+    {% if not hideempty %}
+    <li class="text-muted">
+    {% translate "Files not yet available." %}
     </li>
     {% endif %}
-    {% for year in files.years|sortreversed %}
-    <li>
-        <a href="{% url 'download_export' %}?spider={{ collection.source_id }}&job_id={{ job.id }}&year={{ year }}&suffix={{ suffix }}" rel="nofollow" download>
-            {{ year }}
-        </a>
-    </li>
-    {% empty %}
-        {% if not hideempty %}
-    <li class="text-muted">
-        {% translate "Files not yet available." %}
-    </li>
-        {% endif %}
-    {% endfor %}
-{% endwith %}
+{% endfor %}
 </ul>
