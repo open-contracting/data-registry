@@ -100,4 +100,4 @@ def sortreversed(sequence):
 @register.filter
 def humanfilesize(size):
     size = max(0.1, size / 1000000)
-    return f"{size:,.0f} MB" if size >= 0.95 else f"{size:.1f} MB"
+    return f"{size:,.0f} MB" if size >= 1 else "< 1 MB"
