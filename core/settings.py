@@ -59,6 +59,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    # Add before GZipMiddleware to modify its response.
+    "exporter.middleware.ContentEncodingMiddleware",
     # This site is not affected by BREACH.
     # https://docs.djangoproject.com/en/3.2/ref/middleware/#django.middleware.gzip.GZipMiddleware
     "django.middleware.gzip.GZipMiddleware",
