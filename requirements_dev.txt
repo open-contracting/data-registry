@@ -16,7 +16,7 @@ backports-entry-points-selectable==1.2.0
     # via virtualenv
 black==21.12b0
     # via -r requirements_dev.in
-certifi==2020.12.5
+certifi==2022.12.7
     # via
     #   -r requirements.txt
     #   requests
