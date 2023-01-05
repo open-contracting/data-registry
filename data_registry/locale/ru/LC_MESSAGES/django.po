@@ -2,25 +2,28 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 # Translators:
 # Volodymyr <vtarnay@open-contracting.org>, 2022
 # Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2022
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-18 10:54-0300\n"
+"POT-Creation-Date: 2023-01-05 19:49+0000\n"
 "PO-Revision-Date: 2021-08-04 17:44+0000\n"
 "Last-Translator: Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2022\n"
-"Language-Team: Russian (https://www.transifex.com/open-contracting-partnership-1/teams/123427/ru/)\n"
+"Language-Team: Russian (https://www.transifex.com/open-contracting-"
+"partnership-1/teams/123427/ru/)\n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ru\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
+"(n%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #: data_registry/admin.py:23
 msgid ""
@@ -32,43 +35,43 @@ msgstr ""
 "язык для всех полей. </em>"
 
 #: data_registry/admin.py:99
-msgid "Incomplete content"
-msgstr "Неполный контент"
+msgid "incomplete"
+msgstr "Неполный"
 
-#: data_registry/admin.py:105
+#: data_registry/admin.py:104 data_registry/admin.py:125
 msgid "Yes"
 msgstr "Да"
 
-#: data_registry/admin.py:106
-msgid "No"
-msgstr "Нет"
+#: data_registry/admin.py:120
+msgid "untranslated"
+msgstr "непереведенный"
 
-#: data_registry/admin.py:151
+#: data_registry/admin.py:155
 msgid "Previous year"
 msgstr "Предыдущий год"
 
-#: data_registry/admin.py:158
+#: data_registry/admin.py:162
 msgid "More than a year ago"
 msgstr "Больше года тому назад"
 
-#: data_registry/admin.py:175 data_registry/admin.py:293
+#: data_registry/admin.py:188 data_registry/admin.py:307
 msgid "Management"
 msgstr "Управление"
 
-#: data_registry/admin.py:181
+#: data_registry/admin.py:194
 msgid "Basics"
 msgstr "Основы"
 
-#: data_registry/admin.py:196 data_registry/admin.py:308
+#: data_registry/admin.py:209 data_registry/admin.py:322
 #: data_registry/templates/detail.html:110
 msgid "Overview"
 msgstr "Обзор"
 
-#: data_registry/admin.py:210
+#: data_registry/admin.py:223
 msgid "Details"
 msgstr "Подробности"
 
-#: data_registry/admin.py:319
+#: data_registry/admin.py:333
 msgid "Data availability"
 msgstr "Доступность данных"
 
@@ -144,14 +147,14 @@ msgstr "Доступные данные"
 msgid ""
 "An individual contracting process has several different stages: tendering, "
 "awarding, contracting and implementation. You can dive into the details of "
-"the contracting stages in this <a href=\"https://standard.open-"
-"contracting.org/latest/en/primer/how/\" target=\"_blank\">tutorial</a>."
+"the contracting stages in this <a href=\"https://standard.open-contracting."
+"org/latest/en/primer/how/\" target=\"_blank\">tutorial</a>."
 msgstr ""
 "Процесс заключения контракта состоит из нескольких этапов: проведение "
 "торгов, присуждение контракта, заключение контракта и реализация. Вы можете "
 "узнать об этапах заключения контракта в <a href=\"https://standard.open-"
-"contracting.org/latest/en/primer/how/\" target=\"_blank\">этом "
-"руководстве</a>."
+"contracting.org/latest/en/primer/how/\" target=\"_blank\">этом руководстве</"
+"a>."
 
 #: data_registry/templates/detail.html:161
 msgid "Parties"
@@ -177,100 +180,100 @@ msgstr "Тендеры"
 msgid "Count of tenders:"
 msgstr "Количество тендеров:"
 
-#: data_registry/templates/detail.html:180
+#: data_registry/templates/detail.html:179
 msgid "Count of tenderers:"
 msgstr "Количество участников тендера:"
 
-#: data_registry/templates/detail.html:183
+#: data_registry/templates/detail.html:181
 msgid "Count of tender items:"
 msgstr "Количество айтемов в тендере:"
 
-#: data_registry/templates/detail.html:188
+#: data_registry/templates/detail.html:186
 msgid "Awards"
 msgstr "Присуждение"
 
-#: data_registry/templates/detail.html:190
+#: data_registry/templates/detail.html:188
 msgid "Count of awards:"
 msgstr "Количество присуждений:"
 
-#: data_registry/templates/detail.html:193
+#: data_registry/templates/detail.html:190
 msgid "Count of award suppliers:"
 msgstr "Количество присужденных поставщиков:"
 
-#: data_registry/templates/detail.html:196
+#: data_registry/templates/detail.html:192
 msgid "Count of award items:"
 msgstr "Колиечство айтемов с присуждениями:"
 
-#: data_registry/templates/detail.html:201
+#: data_registry/templates/detail.html:197
 msgid "Contracts"
 msgstr "Контракты"
 
-#: data_registry/templates/detail.html:203
+#: data_registry/templates/detail.html:199
 msgid "Count of contracts:"
 msgstr "Количество контрактов:"
 
-#: data_registry/templates/detail.html:206
+#: data_registry/templates/detail.html:201
 msgid "Count of contract items:"
 msgstr "Количество законтрактированных айтемов:"
 
-#: data_registry/templates/detail.html:209
+#: data_registry/templates/detail.html:203
 msgid "Count of contract transactions:"
 msgstr "Количество транзакций по контракту:"
 
-#: data_registry/templates/detail.html:214
+#: data_registry/templates/detail.html:208
 msgid "Documents"
 msgstr "Документы"
 
-#: data_registry/templates/detail.html:216
+#: data_registry/templates/detail.html:210
 msgid "Count of documents:"
 msgstr "Количество документов:"
 
-#: data_registry/templates/detail.html:221
+#: data_registry/templates/detail.html:215
 msgid "Milestones"
 msgstr "Этапы"
 
-#: data_registry/templates/detail.html:223
+#: data_registry/templates/detail.html:217
 msgid "Count of milestones:"
 msgstr "Количество этапов:"
 
-#: data_registry/templates/detail.html:228
+#: data_registry/templates/detail.html:222
 msgid "Amendments"
 msgstr "Изменения"
 
-#: data_registry/templates/detail.html:230
+#: data_registry/templates/detail.html:224
 msgid "Count of amendments:"
 msgstr "Количество изменений:"
 
-#: data_registry/templates/detail.html:237
+#: data_registry/templates/detail.html:231
 msgid "This dataset has not yet been retrieved."
 msgstr "Этот набор данных еще не загружен."
 
-#: data_registry/templates/detail.html:257
+#: data_registry/templates/detail.html:251
 msgid "Data quality"
 msgstr "Качество данных"
 
-#: data_registry/templates/detail.html:260
+#: data_registry/templates/detail.html:254
 msgid "Summary"
 msgstr "Резюме"
 
-#: data_registry/templates/detail.html:267
+#: data_registry/templates/detail.html:261
 msgid "We have not yet prepared a data quality summary for this dataset."
 msgstr ""
 "Мы еще не подготовили сводку по качеству данных для этого набора данных."
 
-#: data_registry/templates/detail.html:273
+#: data_registry/templates/detail.html:267
 msgid "Last reviewed:"
 msgstr "Последний отзыв:"
 
-#: data_registry/templates/detail.html:278
+#: data_registry/templates/detail.html:272
 msgid "Issues found"
 msgstr "Проблем обнаружено"
 
-#: data_registry/templates/detail.html:300
+#: data_registry/templates/detail.html:294
 msgid "Access data"
 msgstr "Доступ к данным"
 
-#: data_registry/templates/detail.html:302
+#: data_registry/templates/detail.html:296
 msgid ""
 "This OCDS dataset is available for download in JSON, Excel or CSV format. "
 "You can download the data for contracting processes in a specific year or "
@@ -280,7 +283,7 @@ msgstr ""
 "Вы можете загрузить данные о процессах заключения договоров за определенный "
 "год или за все время."
 
-#: data_registry/templates/detail.html:307
+#: data_registry/templates/detail.html:301
 msgid ""
 "Each contracting process is represented as one line of JSON text in the "
 "<code>.jsonl</code> file."
@@ -288,10 +291,10 @@ msgstr ""
 "Каждый процесс заключения контракта представлен в виде одной строки текста "
 "JSON в <code> .jsonl </code> файле."
 
-#: data_registry/templates/detail.html:312
+#: data_registry/templates/detail.html:306
 msgid ""
-"The <code>.jsonl</code> file is compressed using Gzip. Windows users need <a"
-" href=\"https://www.7-zip.org\" target=\"_blank\">7-Zip</a>, <a "
+"The <code>.jsonl</code> file is compressed using Gzip. Windows users need <a "
+"href=\"https://www.7-zip.org\" target=\"_blank\">7-Zip</a>, <a "
 "href=\"https://www.win-rar.com\" target=\"_blank\">WinRAR</a> or <a "
 "href=\"https://www.winzip.com\" target=\"_blank\">WinZip</a> to decompress "
 "the <code>.gz</code> file."
@@ -302,7 +305,7 @@ msgstr ""
 "href=\"https://www.winzip.com\" target=\"_blank\">WinZip</a> для распаковки "
 "файла <code>.gz</code> file."
 
-#: data_registry/templates/detail.html:321
+#: data_registry/templates/detail.html:315
 msgid ""
 "Each contracting process is represented as one row in the <code>main</code> "
 "sheet. Other sheets link to it via the <code>_link_main</code> column."
@@ -311,29 +314,28 @@ msgstr ""
 "основном </code> листе. Другие листы ссылаются на него через столбец <code> "
 "_link_main </code>."
 
-#: data_registry/templates/detail.html:326
+#: data_registry/templates/detail.html:320
 msgid ""
-"Excel files can have at most <a href=\"https://support.microsoft.com/en-"
-"us/office/excel-specifications-and-"
+"Excel files can have at most <a href=\"https://support.microsoft.com/en-us/"
+"office/excel-specifications-and-"
 "limits-1672b34d-7043-467e-8e27-269d656771c3\" target=\"_blank\">1,048,576 "
 "rows</a>. If a year is missing, it had too many rows."
 msgstr ""
-"Файлы Excel могут содержать не более <a "
-"href=\"https://support.microsoft.com/en-us/office/excel-specifications-and-"
+"Файлы Excel могут содержать не более <a href=\"https://support.microsoft.com/"
+"en-us/office/excel-specifications-and-"
 "limits-1672b34d-7043-467e-8e27-269d656771c3\" target=\"_blank\">1,048,576 "
 "строк</a>. Если год отсутствует, в нем было слишком много строк."
 
-#: data_registry/templates/detail.html:335
+#: data_registry/templates/detail.html:329
 msgid ""
-"Each contracting process is represented as one row in the "
-"<code>main.csv</code> file. Other files link to it via the "
-"<code>_link_main</code> column."
+"Each contracting process is represented as one row in the <code>main.csv</"
+"code> file. Other files link to it via the <code>_link_main</code> column."
 msgstr ""
-"Каждый процесс заключения контракта представлен одной строкой в ​​файле "
-"<code> main.csv </code>. Другие файлы ссылаются на него через столбец <code>"
-" _link_main </code>."
+"Каждый процесс заключения контракта представлен одной строкой в ​​файле <code> "
+"main.csv </code>. Другие файлы ссылаются на него через столбец <code> "
+"_link_main </code>."
 
-#: data_registry/templates/detail.html:340
+#: data_registry/templates/detail.html:334
 msgid ""
 "The <code>.csv</code> files are archived using tar and compressed using "
 "Gzip. Windows users need <a href=\"https://www.7-zip.org\" "
@@ -347,13 +349,13 @@ msgstr ""
 "target=\"_blank\">WinRAR</a> или <a href=\"https://www.winzip.com\" "
 "target=\"_blank\">WinZip</a> для распаковки файла <code>.tar.gz</code>."
 
-#: data_registry/templates/detail.html:359
+#: data_registry/templates/detail.html:353
 msgid "Have questions, feedback on this dataset or content on this page?"
 msgstr ""
 "Есть ли у вас вопросы, отзывы об этом наборе данных или содержимом этой "
 "страницы?"
 
-#: data_registry/templates/detail.html:364
+#: data_registry/templates/detail.html:358
 msgid "Contact Data Support Team"
 msgstr "Связаться со службой поддержки данных"
 
@@ -365,11 +367,11 @@ msgstr "Доступный"
 msgid "Unavailable"
 msgstr "Недоступен"
 
-#: data_registry/templates/includes/files.html:9
+#: data_registry/templates/includes/files.html:7
 msgid "All time"
 msgstr "Все время"
 
-#: data_registry/templates/includes/files.html:22
+#: data_registry/templates/includes/files.html:19
 msgid "Files not yet available."
 msgstr "Файлы пока недоступны."
 
@@ -406,8 +408,8 @@ msgid ""
 "This work by the Open Contracting Partnership, unless otherwise noted, is "
 "licensed under a Creative Commons Attribution 4.0 International License."
 msgstr ""
-"Эта работа Open Contracting Partnership, если не указано иное, находится под"
-" лицензией Creative Commons Attribution 4.0 International License."
+"Эта работа Open Contracting Partnership, если не указано иное, находится под "
+"лицензией Creative Commons Attribution 4.0 International License."
 
 #: data_registry/templates/includes/footer.html:129
 #: data_registry/templates/includes/header.html:12
@@ -437,28 +439,28 @@ msgstr "Данные по странам"
 #: data_registry/templates/index.html:29
 msgid ""
 "We've designed the Data Registry to help you find and access public "
-"procurement datasets that are available in the <a "
-"href=\"https://standard.open-contracting.org/latest/en/primer/what/\" "
-"target=\"_blank\">OCDS format</a>."
+"procurement datasets that are available in the <a href=\"https://standard."
+"open-contracting.org/latest/en/primer/what/\" target=\"_blank\">OCDS format</"
+"a>."
 msgstr ""
 "Мы разработали Реестр данных, чтобы помочь вам найти и получить доступ к "
-"наборам данных о государственных закупках, доступных в <a "
-"href=\"https://standard.open-contracting.org/latest/en/primer/what/\" "
+"наборам данных о государственных закупках, доступных в <a href=\"https://"
+"standard.open-contracting.org/latest/en/primer/what/\" "
 "target=\"_blank\">формате OCDS</a>."
 
 #: data_registry/templates/index.html:34
 msgid ""
-"Currently, you can access data from over 50 publishers from around the world"
-" as <b>compiled releases</b> with the latest value of each field. <a "
-"href=\"https://standard.open-"
-"contracting.org/latest/en/primer/releases_and_records/\" "
-"target=\"_blank\">Learn about how OCDS data is published</a>."
+"Currently, you can access data from over 50 publishers from around the world "
+"as <b>compiled releases</b> with the latest value of each field. <a "
+"href=\"https://standard.open-contracting.org/latest/en/primer/"
+"releases_and_records/\" target=\"_blank\">Learn about how OCDS data is "
+"published</a>."
 msgstr ""
 "В настоящее время вы можете получить доступ к данным более чем 50 издателей "
 "со всего мира в виде <b>скомпилированных выпусков</b> с последним значением "
-"каждого поля. <a href=\"https://standard.open-"
-"contracting.org/latest/en/primer/releases_and_records/\" "
-"target=\"_blank\">Узнайте, как публикуются данные OCDS</a>."
+"каждого поля. <a href=\"https://standard.open-contracting.org/latest/en/"
+"primer/releases_and_records/\" target=\"_blank\">Узнайте, как публикуются "
+"данные OCDS</a>."
 
 #: data_registry/templates/index.html:50
 msgid "Learn about the source"
@@ -608,3 +610,6 @@ msgstr "Данные о изменениях"
 #: data_registry/views.py:229
 msgid "OCP Kingfisher Database"
 msgstr "База данных OCP Kingfisher"
+
+#~ msgid "No"
+#~ msgstr "Нет"
