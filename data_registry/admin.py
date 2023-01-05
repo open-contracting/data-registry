@@ -168,7 +168,7 @@ class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
     form = CollectionAdminForm
     list_display = ["__str__", "country", "public", "frozen", "active_job", "last_reviewed"]
     list_editable = ["public", "frozen"]
-    list_filter = ["public", "frozen", ("last_reviewed", CustomDateFieldListFilter), MissingContentFilter]
+    list_filter = ["public", "frozen", MissingContentFilter, ("last_reviewed", CustomDateFieldListFilter), "country"]
 
     fieldsets = (
         (
@@ -285,9 +285,10 @@ class TaskInLine(TabularInline):
 @admin.register(Job)
 class JobAdmin(ModelAdmin):
     list_display = ["__str__", "country", "collection", "status", "last_task", "active", "archived", "keep_all_data"]
-
     # Multiple jobs can be set as active for the same collection, so "active" is set as read-only.
     list_editable = ["status", "keep_all_data"]
+    list_filter = ["collection"]
+
     fieldsets = (
         (
             _("Management"),
