@@ -95,40 +95,46 @@ class CollectionAdminForm(forms.ModelForm):
         }
 
 
-class MissingContentFilter(admin.SimpleListFilter):
-    title = _("Incomplete content")
+class IncompleteFilter(admin.SimpleListFilter):
+    title = _("incomplete")
 
     parameter_name = "incomplete"
 
     def lookups(self, request, model_admin):
-        return (
-            ("1", _("Yes")),
-            ("0", _("No")),
-        )
+        return (("1", _("Yes")),)
 
     def queryset(self, request, queryset):
-        qs = (
-            Q(country_flag="")
-            | Q(country_en="")
-            | Q(country_es="")
-            # title_en is required.
-            | Q(title_es="")
-            | Q(description_en="")
-            | Q(description_es="")
-            | Q(additional_data_en="")
-            | Q(additional_data_es="")
-            | Q(summary_en="")
-            | Q(summary_es="")
-            | Q(update_frequency="")
-            | Q(license_custom=None)
-            | Q(language_en="")
-            | Q(language_es="")
-            | Q(source_url="")
-        )
         if self.value() == "1":
-            return queryset.filter(qs)
-        if self.value() == "0":
-            return queryset.exclude(qs)
+            return queryset.filter(
+                Q(country_en="")
+                | Q(country_flag="")
+                | Q(language_en="")
+                | Q(description_en="")
+                | Q(source_url="")
+                | Q(update_frequency="")
+                | Q(additional_data_en="")
+            )
+
+
+class UntranslatedFilter(admin.SimpleListFilter):
+    title = _("untranslated")
+
+    parameter_name = "untranslated"
+
+    def lookups(self, request, model_admin):
+        return (("1", _("Yes")),)
+
+    def queryset(self, request, queryset):
+        if self.value() == "1":
+            return queryset.filter(
+                (~Q(title_en="") & Q(title_es=""))
+                | (~Q(country_en="") & Q(country_es=""))
+                | (~Q(language_en="") & Q(language_es=""))
+                | (~Q(description_en="") & Q(description_es=""))
+                | (~Q(description_long_en="") & Q(description_long_es=""))
+                | (~Q(summary_en="") & Q(summary_es=""))
+                | (~Q(additional_data_en="") & Q(additional_data_es=""))
+            )
 
 
 class CustomDateFieldListFilter(DateFieldListFilter):
@@ -166,7 +172,16 @@ class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
     form = CollectionAdminForm
     list_display = ["__str__", "country", "public", "frozen", "active_job", "last_reviewed"]
     list_editable = ["public", "frozen"]
-    list_filter = ["public", "frozen", MissingContentFilter, ("last_reviewed", CustomDateFieldListFilter), "country"]
+    list_filter = [
+        "public",
+        "frozen",
+        ("license_custom", admin.EmptyFieldListFilter),
+        ("summary_en", admin.EmptyFieldListFilter),
+        IncompleteFilter,
+        UntranslatedFilter,
+        ("last_reviewed", CustomDateFieldListFilter),
+        "country",
+    ]
 
     fieldsets = (
         (

@@ -23,10 +23,10 @@ Prepare the database:
 ./manage.py createsuperuser
 ```
 
-Run the web server, replacing `PASSWORD`:
+Run the web server, replacing `USERNAME` AND `PASSWORD`:
 
 ```bash
-env SCRAPYD_URL=https://scrape:PASSWORD@collect.kingfisher.open-contracting.org ./manage.py runserver
+env SCRAPYD_URL=https://USERNAME:PASSWORD@collect.kingfisher.open-contracting.org ./manage.py runserver
 ```
 
 Note: If you also want to test the integration with Spoonbill to generate Excel/CSVs files, you need to set env SPOONBILL_API_USERNAME=USERNAME and SPOONBILL_API_PASSWORD=PASSWORD
