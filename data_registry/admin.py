@@ -115,8 +115,6 @@ class MissingContentFilter(admin.SimpleListFilter):
             | Q(title_es="")
             | Q(description_en="")
             | Q(description_es="")
-            | Q(description_long_en="")
-            | Q(description_long_es="")
             | Q(additional_data_en="")
             | Q(additional_data_es="")
             | Q(summary_en="")
