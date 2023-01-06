@@ -129,7 +129,7 @@ msgid "Retrieved from:"
 msgstr ""
 
 #: data_registry/templates/detail.html:150
-msgid "Data avaliable"
+msgid "Data available"
 msgstr ""
 
 #: data_registry/templates/detail.html:154
@@ -414,7 +414,7 @@ msgstr ""
 #: data_registry/templates/index.html:53
 msgid ""
 "Information about each data source is provided to help you to understand "
-"what fields are avaliable or if there are any documents."
+"what fields are available or if there are any documents."
 msgstr ""
 
 #: data_registry/templates/index.html:58

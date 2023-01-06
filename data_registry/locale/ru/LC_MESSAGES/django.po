@@ -140,7 +140,7 @@ msgid "Retrieved from:"
 msgstr "Извлекаются из:"
 
 #: data_registry/templates/detail.html:150
-msgid "Data avaliable"
+msgid "Data available"
 msgstr "Доступные данные"
 
 #: data_registry/templates/detail.html:154
@@ -469,7 +469,7 @@ msgstr "Узнать об источнике данных"
 #: data_registry/templates/index.html:53
 msgid ""
 "Information about each data source is provided to help you to understand "
-"what fields are avaliable or if there are any documents."
+"what fields are available or if there are any documents."
 msgstr ""
 "Информация о каждом источнике данных предоставляется, чтобы помочь вам "
 "понять, какие поля доступны и есть ли какие-либо документы."
