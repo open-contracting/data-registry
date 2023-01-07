@@ -56,11 +56,11 @@ class CollectionAdminForm(forms.ModelForm):
             json = response.json()
 
             if json.get("status") == "ok":
-                self.fields["source_id"].choices += tuple([(n, n) for n in json.get("spiders")])
+                self.fields["source_id"].choices += tuple((n, n) for n in json.get("spiders"))
         except requests.exceptions.ConnectionError as e:
             logger.warning("Couldn't connect to Scrapyd: %s", e)
             sid = self.instance.source_id
-            self.fields["source_id"].choices += tuple([(sid, sid)])
+            self.fields["source_id"].choices += ((sid, sid),)
 
         self.fields["active_job"].queryset = Job.objects.filter(
             collection=kwargs.get("instance"), status=Job.Status.COMPLETED
@@ -71,7 +71,7 @@ class CollectionAdminForm(forms.ModelForm):
         flags_dir = "data_registry/static/img/flags"
         files = [f.name for f in Path(flags_dir).glob("*") if f.is_file()]
         files.sort()
-        self.fields["country_flag"].choices += tuple([(n, n) for n in files])
+        self.fields["country_flag"].choices += tuple((n, n) for n in files)
 
     def save(self, *args, **kwargs):
         jobs = Job.objects.filter(collection=self.instance)
