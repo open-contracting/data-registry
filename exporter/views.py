@@ -8,9 +8,9 @@ def download_export(request):
     """
     Returns an exported file as a FileResponse object.
     """
-    job_id = int(request.GET.get("job_id", 0))  # guard against path traversal
+    job_id = int(request.GET.get("job_id") or 0)  # guard against path traversal
     full = request.GET.get("full")
-    year = int(request.GET.get("year", 0))  # guard against path traversal
+    year = int(request.GET.get("year") or 0)  # guard against path traversal
     suffix = request.GET.get("suffix")
     spider = request.GET.get("spider")
 
