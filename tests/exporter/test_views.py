@@ -13,6 +13,15 @@ class ViewsTests(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.content, b"Suffix not recognized")
 
+    def test_download_export_empty_parameter(self):
+        for parameter in ("job_id", "year"):
+            with self.subTest(parameter=parameter):
+                response = Client().get(f"/api/download_export?suffix=jsonl.gz&{parameter}=")
+
+                self.assertNumQueries(0)
+                self.assertEqual(response.status_code, 404)
+                self.assertEqual(response.content, b"File not found")
+
     def test_download_export_waiting(self):
         response = Client().get("/api/download_export?suffix=jsonl.gz&year=2000&job_id=0")
 
