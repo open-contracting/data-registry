@@ -45,3 +45,18 @@ See how to [update Django translations](https://ocp-software-handbook.readthedoc
 
 - `related_name` is singular, instead of plural.
 - "collection" has a different meaning in the code than in Kingfisher Collect or Kingfisher Process. It should be "publication", used in the UI and documentation.
+
+## Tasks
+
+### Publish a message
+
+To manually start a task, run, for example:
+
+```python
+import os
+
+from exporter.util import publish
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings")
+
+publish({"job_id": 123}, "flattener_init")
+```
