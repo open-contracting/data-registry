@@ -7,33 +7,33 @@ from django.test import Client, TestCase, override_settings
 @override_settings(EXPORTER_DIR=os.path.join("tests", "fixtures"))
 class ViewsTests(TestCase):
     def test_download_export_invalid_suffix(self):
-        response = Client().get("/api/download_export?suffix=invalid")
+        with self.assertNumQueries(0):
+            response = Client().get("/api/download_export?suffix=invalid")
 
-        self.assertNumQueries(0)
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.content, b"Suffix not recognized")
 
     def test_download_export_empty_parameter(self):
         for parameter in ("job_id", "year"):
             with self.subTest(parameter=parameter):
-                response = Client().get(f"/api/download_export?suffix=jsonl.gz&{parameter}=")
+                with self.assertNumQueries(0):
+                    response = Client().get(f"/api/download_export?suffix=jsonl.gz&{parameter}=")
 
-                self.assertNumQueries(0)
                 self.assertEqual(response.status_code, 404)
                 self.assertEqual(response.content, b"File not found")
 
     def test_download_export_waiting(self):
-        response = Client().get("/api/download_export?suffix=jsonl.gz&year=2000&job_id=0")
+        with self.assertNumQueries(0):
+            response = Client().get("/api/download_export?suffix=jsonl.gz&year=2000&job_id=0")
 
-        self.assertNumQueries(0)
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.content, b"File not found")
 
     @patch("exporter.util.Export.lockfile", new_callable=PropertyMock)
     def test_download_export_running(self, exists):
-        response = Client().get("/api/download_export?suffix=jsonl.gz&year=2000&job_id=1")
+        with self.assertNumQueries(0):
+            response = Client().get("/api/download_export?suffix=jsonl.gz&year=2000&job_id=1")
 
-        self.assertNumQueries(0)
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.content, b"File not found")
 
@@ -44,11 +44,12 @@ class ViewsTests(TestCase):
             ("xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"),
         ):
             with self.subTest(suffix=suffix):
-                response = Client().get(
-                    f"/api/download_export?suffix={suffix}&year=2000&job_id=1&spider=abc", HTTP_ACCEPT_ENCODING="gzip"
-                )
+                with self.assertNumQueries(0):
+                    response = Client().get(
+                        f"/api/download_export?suffix={suffix}&year=2000&job_id=1&spider=abc",
+                        HTTP_ACCEPT_ENCODING="gzip",
+                    )
 
-                self.assertNumQueries(0)
                 self.assertEqual(response.status_code, 200)
                 self.assertDictEqual(
                     dict(response.headers),
