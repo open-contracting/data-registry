@@ -4,6 +4,7 @@ import shutil
 import signal
 from pathlib import Path
 from typing import Dict, Literal, Optional
+from urllib.parse import parse_qs, urlencode, urlsplit
 
 import pika.exceptions
 from django.conf import settings
@@ -25,8 +26,15 @@ class Publisher(clients.Durable, clients.Blocking, clients.Base):
     pass
 
 
-def get_client(klass):
-    return klass(url=settings.RABBIT_URL, exchange=settings.RABBIT_EXCHANGE_NAME)
+def get_client(klass, rabbit_params=None):
+    if rabbit_params:
+        parsed = urlsplit(settings.RABBIT_URL)
+        query = parse_qs(parsed.query)
+        query.update(rabbit_params)
+        rabbit_url = parsed._replace(query=urlencode(query, doseq=True)).geturl()
+    else:
+        rabbit_url = settings.RABBIT_URL
+    return klass(url=rabbit_url, exchange=settings.RABBIT_EXCHANGE_NAME)
 
 
 def publish(*args, **kwargs):
@@ -38,10 +46,11 @@ def publish(*args, **kwargs):
 
 
 # https://github.com/pika/pika/blob/master/examples/blocking_consume_recover_multiple_hosts.py
-def consume(*args, **kwargs):
+def consume(*args, rabbit_params=None, **kwargs):
     while True:
         try:
-            client = get_client(Consumer)
+            print(rabbit_params)
+            client = get_client(Consumer, rabbit_params)
             client.consume(*args, **kwargs)
             break
         # Do not recover if the connection was closed by the broker.
