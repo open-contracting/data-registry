@@ -6,8 +6,6 @@ import requests
 from django import forms
 from django.conf import settings
 from django.contrib import admin
-from django.contrib.admin import DateFieldListFilter
-from django.contrib.admin.options import ModelAdmin, TabularInline
 from django.db.models import BooleanField, Case, Q, When
 from django.forms.widgets import TextInput
 from django.utils import timezone
@@ -137,7 +135,7 @@ class UntranslatedFilter(admin.SimpleListFilter):
             )
 
 
-class CustomDateFieldListFilter(DateFieldListFilter):
+class CustomDateFieldListFilter(admin.DateFieldListFilter):
     def __init__(self, *args, **kwargs):
         super(CustomDateFieldListFilter, self).__init__(*args, **kwargs)
 
@@ -281,7 +279,7 @@ class IssueAdminForm(forms.ModelForm):
         widgets = {"description": AdminMarkdownxWidget(attrs={"cols": 100, "rows": 3})}
 
 
-class TaskInLine(TabularInline):
+class TaskInLine(admin.TabularInline):
     model = Task
     extra = 0
     fields = ["type", "status", "start", "end", "result", "note"]
@@ -296,7 +294,7 @@ class TaskInLine(TabularInline):
 
 
 @admin.register(Job)
-class JobAdmin(ModelAdmin):
+class JobAdmin(admin.ModelAdmin):
     search_fields = ["collection__title_en", "collection__country_en"]
     list_display = ["__str__", "country", "collection", "status", "last_task", "active", "archived", "keep_all_data"]
     # Multiple jobs can be set as active for the same collection, so "active" is set as read-only.
