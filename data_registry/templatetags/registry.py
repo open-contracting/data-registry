@@ -1,67 +1,49 @@
-import functools
-from inspect import getfullargspec, unwrap
+import json
+import os.path
 from urllib.parse import quote, urlencode
 
 from django import template
-from django.template.library import InclusionNode, parse_bits
+from django.apps import apps
 from django.utils.safestring import mark_safe
+from django.utils.translation import get_language
 from django.utils.translation import gettext_lazy as _
+from django.utils.translation.trans_real import DjangoTranslation
+from django.views.i18n import JavaScriptCatalog
 
 from data_registry.util import markdownify as render
 
 register = template.Library()
 
 
-class BlockInclusionNode(InclusionNode):
-    def __init__(self, func, takes_context, args, kwargs, filename, nodelist):
-        super().__init__(func, takes_context, args, kwargs, filename)
+class CaptureNode(template.Node):
+    def __init__(self, nodelist, varname):
         self.nodelist = nodelist
+        self.varname = varname
 
     def render(self, context):
-        context["content"] = self.nodelist.render(context)
-        return super().render(context)
+        context[self.varname] = self.nodelist.render(context)
+        return ""
 
 
-# https://docs.djangoproject.com/en/3.2/howto/custom-template-tags/#parsing-until-another-block-tag-and-saving-contents
-# https://github.com/django/django/blob/stable/3.2.x/django/template/library.py#L136
-# https://github.com/jameelhamdan/django-block-inclusion-tag/blob/master/tags.py
-def block_inclusion_tag(filename, func=None, takes_context=None, name=None):
-    def dec(func):
-        params, varargs, varkw, defaults, kwonly, kwonly_defaults, _ = getfullargspec(unwrap(func))
-        function_name = name or getattr(func, "_decorated_function", func).__name__
+@register.tag(name="capture")
+def do_capture(parser, token):
+    _, varname = token.split_contents()
+    nodelist = parser.parse(("endcapture",))
+    parser.delete_first_token()
+    return CaptureNode(nodelist, varname)
 
-        @functools.wraps(func)
-        def compile_func(parser, token):
-            bits = token.split_contents()[1:]
-            args, kwargs = parse_bits(
-                parser,
-                bits,
-                params,
-                varargs,
-                varkw,
-                defaults,
-                kwonly,
-                kwonly_defaults,
-                takes_context,
-                function_name,
-            )
 
-            nodelist = parser.parse((f"end{function_name}",))
-            parser.delete_first_token()
-
-            return BlockInclusionNode(
-                func,
-                takes_context,
-                args,
-                kwargs,
-                filename,
-                nodelist,
-            )
-
-        register.tag(function_name, compile_func)
-        return func
-
-    return dec
+@register.simple_tag()
+def catalog_str():
+    catalog = JavaScriptCatalog()
+    catalog.translation = DjangoTranslation(
+        get_language(),
+        domain="djangojs",
+        localedirs=[
+            os.path.join(apps.get_app_config("data_registry").path, "locale"),
+        ],
+    )
+    return mark_safe(json.dumps(catalog.get_catalog()))
 
 
 @register.simple_tag(takes_context=True)
@@ -95,39 +77,6 @@ def feedback_query_string_parameters(context):
     return urlencode({"subject": subject}, quote_via=quote)
 
 
-@register.inclusion_tag("includes/icon_chevron.html")
-def icon_chevron(direction, classes=""):
-    return {"direction": direction, "classes": classes}
-
-
-@register.inclusion_tag("includes/icon_check.html")
-def icon_check(checked, size="1em"):
-    return {"checked": checked, "size": size}
-
-
-@register.inclusion_tag("includes/facet_checkboxes.html", takes_context=True)
-def checkboxes(context, title, key, items, facet_counts):
-    return {
-        "title": title,
-        "key": key,
-        "items": items,
-        "facet_counts": facet_counts,
-        "request": context["request"],
-    }
-
-
-@block_inclusion_tag("includes/facet_radiobuttons.html", takes_context=True)
-def radiobuttons(context, title, key, items, facet_counts):
-    return {
-        "title": title,
-        "key": key,
-        "items": items,
-        "facet_counts": facet_counts,
-        "request": context["request"],
-        "content": context["content"],  # passing the content via the context is simpler than via an arg
-    }
-
-
 @register.filter
 def markdownify(value):
     return mark_safe(render(value))
@@ -141,3 +90,14 @@ def get_item(dictionary, key):
 @register.filter
 def getlist(query_dict, key):
     return query_dict.getlist(key, [""])  # Use "" as a default value for radio buttons, etc.
+
+
+@register.filter
+def sortreversed(sequence):
+    return sorted(sequence, reverse=True)
+
+
+@register.filter
+def humanfilesize(size):
+    size = max(0.1, size / 1000000)
+    return f"{size:,.0f} MB" if size >= 1 else "< 1 MB"

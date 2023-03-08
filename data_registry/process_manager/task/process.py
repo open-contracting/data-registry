@@ -4,13 +4,12 @@ from urllib.parse import urljoin
 from django.conf import settings
 
 from data_registry.models import Task
-from data_registry.process_manager.task.task import BaseTask
 from data_registry.process_manager.util import request
 
 logger = logging.getLogger(__name__)
 
 
-class Process(BaseTask):
+class Process:
     job = None
     process_id = None
 

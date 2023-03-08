@@ -1,57 +1,248 @@
+// GT Eesti Pro Display has (plus Italic for each):
+// https://www.grillitype.com/typeface/gt-eesti
+// - UltraLight
+// - Thin *
+// - Light
+// - Regular
+// - Medium
+// - Bold *
+// - UltraBold
+
+@font-face {
+    src: url("../fonts/GTEestiProText-Regular.woff2") format("woff2"), url("../fonts/GTEestiProText-Regular.otf") format("opentype");
+    font-family: "GT Eesti Pro";
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    src: url("../fonts/GTEestiProDisplay-Bold.woff2") format("woff2"), url("../fonts/GTEestiProDisplay-Bold.otf") format("opentype");
+    font-family: "GT Eesti Pro";
+    font-weight: 500; // $headings-font-weight
+    font-display: swap;
+}
+
+@font-face {
+    src: url("../fonts/GTEestiProDisplay-Thin.woff2") format("woff2"), url("../fonts/GTEestiProDisplay-Thin.otf") format("opentype");
+    font-family: "GT Eesti Pro";
+    font-weight: 300;
+    font-display: swap;
+}
+
+// https://getbootstrap.com/docs/5.2/customize/sass/
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
 @import '~bootstrap/scss/functions';
 
-@font-face {
-    font-family: "GTEestiProDisplay-Bold";
-    src: url("../fonts/GTEestiProDisplay-Bold.otf") format("opentype");
-}
+// 2. Include any default variable overrides here
+// https://github.com/twbs/bootstrap/blob/v5.2.1/scss/_variables.scss
 
-@font-face {
-    font-family: "GTEestiProText-Regular";
-    src: url("../fonts/GTEestiProText-Regular.otf") format("opentype");
-}
+$enable-negative-margins: true;
+// Adding the following has <0.1 KiB effect:
+// $enable-caret: false;
+// $enable-validation-icons: false;
+// $enable-deprecation-messages: false;
 
-@font-face {
-    font-family: "GTEestiProDisplay-Thin";
-    src: url("../fonts/GTEestiProDisplay-Thin.otf") format("opentype");
-}
-
-// https://getbootstrap.com/docs/4.6/getting-started/theming/
-// https://github.com/twbs/bootstrap/blob/v4.6.2/scss/_variables.scss
-
-$primary: #6d78da; // blue
-$secondary: #b4b4b6; // gray
+// https://docs.google.com/presentation/d/1RpN-JhsNiHHITX5xZ-8NOC6HTOKcywaUy_oG2X2DeN8/edit
+$primary: #6c75e1; // blue
+$secondary: #808080; // 50%
 $success: #72a735; // green
 $info: #d6e100; // yellow
-$light: #eeeeee;
-$dark: #323232;
+$warning: #fb6045; // red
+$light: #eeeeee; // gray
+$dark: #323232; // same as OCP footer
 
-$body-color: #2f3a26 !default;
+$font-family-sans-serif: "GT Eesti Pro", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+$font-family-monospace: "Roboto Mono", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
-$font-family-sans-serif: "GTEestiProText-Regular", "Helvetica Neue", Arial, sans-serif !default;
-$monospace-font-family: "Roboto Mono", monospace;
+$dt-font-weight: 300; // 700
+$list-inline-padding: 1.5rem; // .5rem
 
-$headings-font-family: "GTEestiProDisplay-Bold", "Helvetica Neue", Arial, sans-serif !default;
+$btn-padding-y: 1rem; // .375rem
+$btn-padding-x: 1.3125rem; // .75rem
 
-$dt-font-weight: 400 !default;
+$btn-padding-y-sm: .6875rem; // .25rem
+$btn-padding-x-sm: 1rem; // .5rem
 
-$btn-padding-y: 1rem !default;
-$btn-padding-x: 1.3rem !default;
+$btn-padding-y-lg: 1.375rem; // .5rem
+$btn-padding-x-lg: 2rem; // 1rem
 
-$btn-padding-y-sm: .7rem !default;
-$btn-padding-x-sm: 1rem !default;
+$btn-border-radius-lg: 0; // .5rem
 
-$btn-padding-y-lg: 22px !default;
-$btn-padding-x-lg: 32px !default;
+$card-spacer-y: 1.25rem; // 1rem
+$card-spacer-x: 1.25rem; // 1rem
+$card-border-width: 0; // 1px
+$card-height: 100%; // null
+$card-bg: $light; // $white
 
-$btn-font-family: $font-family-sans-serif;
-$btn-font-weight: 400 !default;
+// Bootstrap-Vue variables.
+// https://github.com/bootstrap-vue/bootstrap-vue/blob/dev/src/_variables.scss
 
-$btn-border-radius-lg: 0px;
+$b-icon-vertical-offset: -.15em;
+$b-icon-animation-cylon-duration: .75s;
+$b-icon-animation-cylon-vertical-duration: $b-icon-animation-cylon-duration;
+$b-icon-animation-fade-duration: .75s;
+$b-icon-animation-spin-duration: 2s;
+$b-icon-animation-spin-reverse-duration: $b-icon-animation-spin-duration;
+$b-icon-animation-spin-pulse-duration: 1s;
+$b-icon-animation-spin-reverse-pulse-duration: $b-icon-animation-spin-pulse-duration;
+$b-icon-animation-throb-duration: .75s;
 
-$card-border-width: 0 !default;
-$card-height: 100% !default;
-$card-bg: $light !default;
+// 3. Include remainder of required Bootstrap stylesheets
+@import '~bootstrap/scss/variables';
 
-// Non-Bootstrap
+// 4. Include any default map overrides here
+// $grays and $colors are "not used to generate any utilities", but are used in _root.scss.
+// https://getbootstrap.com/docs/5.2/utilities/colors/#sass
+$grays: (); // 0.2 KiB
+$colors: (); // 0.3 KiB
+$theme-colors: map-merge(map-remove($theme-colors, "danger", "warning"), ("white": $white)); // 2 KiB
+$grid-breakpoints: map-remove($grid-breakpoints, "xxl"); // 13 KiB
+$container-max-widths: map-remove($container-max-widths, "xxl"); // 0.1 KiB
+$display-font-sizes: (); // 0.7 KiB
 
-$font-family-thin: "GTEestiProDisplay-Thin", "Helvetica Neue", Arial, sans-serif !default;
+// Adding the following has 0.4 KiB effect, but makes it hard to know which classes are available.
+// $border-widths: (3: 3px);
+// $font-sizes: (2: $h2-font-size, 5: $h5-font-size);
+
+// The following are not used in imported files:
+// - $position-values
+// - $aspect-ratios
+// - $table-variants
+// - $form-validation-states
+
+// The following are not used in any files:
+// - $blues ...
+// - $escaped-characters
+
+// All $spacers values are used.
+
+// 5. Include remainder of required parts
+@import '~bootstrap/scss/maps';
+@import '~bootstrap/scss/mixins';
+@import '~bootstrap/scss/root';
+
+// 6. Optionally include any other parts as needed
+@import '~bootstrap/scss/utilities';
+
+// We remove unused directions for border, margin and padding. If confusing, restore them.
+$utilities: map-merge(
+    $utilities,
+    (
+        // https://getbootstrap.com/docs/5.2/utilities/background/
+        // background-color bg-opacity
+        // https://getbootstrap.com/docs/5.2/utilities/borders/
+        // border border-top border-start
+        "border-end": null,
+        "border-bottom": null,
+        // border-color border-width
+        "border-opacity": null,
+        // rounded
+        "rounded-top": null,
+        "rounded-end": null,
+        "rounded-bottom": null,
+        "rounded-start": null,
+        // https://getbootstrap.com/docs/5.2/utilities/colors/
+        // color
+        "text-opacity": null,
+        // https://getbootstrap.com/docs/5.2/utilities/display/
+        "display": map-merge( // 2 KiB
+            map-get($utilities, "display"),
+            (values: inline-block block flex none)
+        ),
+        // https://getbootstrap.com/docs/5.2/utilities/flex/
+        // justify-content
+        "flex": null,
+        "flex-direction": null,
+        "flex-grow": null,
+        "flex-shrink": null,
+        "flex-wrap": null,
+        "align-items": null,
+        "align-content": null,
+        "align-self": null,
+        "order": null,
+        // https://getbootstrap.com/docs/5.2/utilities/float/
+        "float": null,
+        // https://getbootstrap.com/docs/5.2/utilities/interactions/
+        // pointer-events
+        "user-select": null,
+        // https://getbootstrap.com/docs/5.2/utilities/opacity/
+        "opacity": null,
+        // https://getbootstrap.com/docs/5.2/utilities/overflow/
+        "overflow": null,
+        // https://getbootstrap.com/docs/5.2/utilities/position/
+        // position
+        "top": null,
+        "bottom": null,
+        "start": null,
+        "end": null,
+        "translate-middle": null,
+        // https://getbootstrap.com/docs/5.2/utilities/sizing/
+        // height
+        "width": null,
+        "max-width": null,
+        "viewport-width": null,
+        "min-viewport-width": null,
+        "max-height": null,
+        "viewport-height": null,
+        "min-viewport-height": null,
+        // https://getbootstrap.com/docs/5.2/utilities/spacing/
+        // margin-top margin-end margin-bottom margin-start
+        "margin": null,
+        "margin-x": null,
+        "margin-y": null,
+        // padding padding-x padding-y padding-start
+        "padding-top": null,
+        "padding-end": null,
+        "padding-bottom": null,
+        // negative-margin-bottom
+        "negative-margin": null,
+        "negative-margin-x": null,
+        "negative-margin-y": null,
+        "negative-margin-top": null,
+        "negative-margin-end": null,
+        "negative-margin-start": null,
+        "gap": null,
+        // https://getbootstrap.com/docs/5.2/utilities/text/
+        // font-size font-style font-weight text-align text-decoration text-transform white-space word-wrap
+        "font-family": null,
+        "line-height": null,
+        // https://getbootstrap.com/docs/5.2/utilities/vertical-align/
+        "align": null,
+        // https://getbootstrap.com/docs/5.2/utilities/visibility/
+        "visibility": null
+    )
+);
+
+// Content
+@import '~bootstrap/scss/reboot';
+@import '~bootstrap/scss/type';
+
+// Layout
+@import '~bootstrap/scss/containers';
+@import '~bootstrap/scss/grid';
+
+// Forms
+@import '~bootstrap/scss/forms/form-select';
+@import '~bootstrap/scss/forms/form-check';
+
+// Components
+@import '~bootstrap/scss/buttons';
+@import '~bootstrap/scss/card';
+@import '~bootstrap/scss/badge';
+@import '~bootstrap/scss/offcanvas';
+
+// Helpers
+@import '~bootstrap/scss/helpers/clearfix';
+@import '~bootstrap/scss/helpers/color-bg';
+@import '~bootstrap/scss/helpers/colored-links';
+@import '~bootstrap/scss/helpers/position';
+@import '~bootstrap/scss/helpers/stacks';
+@import '~bootstrap/scss/helpers/visually-hidden';
+
+// 7. Optionally include utilities API last to generate classes based on the Sass map in `_utilities.scss`
+@import '~bootstrap/scss/utilities/api';
+
+// 8. Add additional custom code here
+// https://github.com/bootstrap-vue/bootstrap-vue/blob/dev/src/icons/README.md#usage
+// Import "icons/index" instead of "icons". "icons" loads "variables", which requires Bootstrap 4.
+@import '~bootstrap-vue/src/icons/index';

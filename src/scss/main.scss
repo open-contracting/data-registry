@@ -1,42 +1,6 @@
-@import "custom";
-// https://getbootstrap.com/docs/4.6/getting-started/theming/
-// https://github.com/twbs/bootstrap/blob/v4.6.2/scss/bootstrap.scss
-@import '~bootstrap/scss/variables';
-@import '~bootstrap/scss/mixins';
-@import "~bootstrap/scss/root";
-// Content
-@import "~bootstrap/scss/reboot";
-@import "~bootstrap/scss/type";
-@import "~bootstrap/scss/images";
-// Layout
-@import "~bootstrap/scss/grid";
-// Components
-@import '~bootstrap/scss/forms';
-@import "~bootstrap/scss/buttons";
-@import '~bootstrap/scss/custom-forms';
-@import '~bootstrap/scss/card';
-@import '~bootstrap/scss/badge';
-// Utilities
-@import "~bootstrap/scss/utilities";
-// https://github.com/bootstrap-vue/bootstrap-vue/blob/dev/src/icons/README.md#usage
-@import '~bootstrap-vue/src/icons';
+@import 'custom';
 
-// Anchor
-
-.text-primary {
-    a {
-        text-decoration: underline;
-        &:hover {
-            text-decoration: none;
-        }
-    }
-}
-
-// Description list
-
-dt {
-    font-family: $font-family-thin;
-}
+// Grid description list
 
 .list-desc-grid {
     display: grid;
@@ -46,10 +10,17 @@ dt {
 
 .list-desc-grid dt {
     grid-column-start: 1;
+    margin-bottom: 0.5rem;
 }
 
 .list-desc-grid dd {
     grid-column-start: 2;
+}
+
+// Inline description list
+
+.list-desc-inline {
+    @include clearfix;
 }
 
 .list-desc-inline dt,
@@ -62,63 +33,28 @@ dt {
     padding-right: $spacer * 0.25;
 }
 
-// Border
+// Single corner radius
 
-.border-wide {
-    border-width: 3px;
-}
-
-.rounded-xl {
-    border-radius: 10px;
-}
-
-.rounded-top-left-md {
-    border-top-left-radius: $spacer * 1.25 !important;
-}
-.rounded-bottom-right-md {
+.rounded-bottom-end-md {
     border-bottom-right-radius: $spacer * 1.25 !important;
 }
 
-.rounded-top-left-lg {
+.rounded-top-start-md {
+    border-top-left-radius: $spacer * 1.25 !important;
+}
+
+.rounded-top-start-lg {
     border-top-left-radius: $spacer * 2 !important;
 }
 
-.rounded-top-left-xl {
+.rounded-top-start-xl {
     border-top-left-radius: $spacer * 2.5 !important;
-}
-
-// Background
-
-@for $i from 1 through 9 {
-    .bg-primary-#{ $i }0 {
-        background-color: rgba($primary, calc($i / 10));
-    }
 }
 
 // Text
 
 .extra-small {
-    font-size: 0.75em;
-}
-
-.text-lg {
-    font-size: 1.25rem !important;
-}
-
-.text-xl {
-    font-size: 2rem !important;
-}
-
-.text-sans-serif {
-    font-family: $font-family-sans-serif;
-}
-
-.text-thin {
-    font-family: $font-family-thin;
-}
-
-.text-decoration-underline {
-    text-decoration: underline;
+    @include font-size($sub-sup-font-size);
 }
 
 // Fixed-width columns
@@ -148,8 +84,6 @@ dt {
 // Chevron button
 
 .chevron-btn {
-    font-size: 24px;
-
     .circle {
         color: $secondary;
     }
@@ -167,7 +101,7 @@ dt {
     }
 }
 
-.bg-info .chevron-btn,
+.text-bg-info .chevron-btn,
 .btn-info .chevron-btn {
     .circle {
         color: inherit;
@@ -177,7 +111,7 @@ dt {
     }
 }
 
-.bg-light .chevron-btn,
+.text-bg-light .chevron-btn,
 .btn-light .chevron-btn {
     .circle {
         color: $primary;
@@ -204,23 +138,39 @@ $letter-size: $spacer * 2;
     }
 }
 
-// Results
+// Components
 
 // https://github.com/twbs/bootstrap/blob/v4.6.2/scss/_variables.scss#L178
 .clickable {
     cursor: pointer;
-    background-color: #eeeeee;
+    background-color: $light;
     &:hover {
-        background-color: darken(#eeeeee, 15%) !important;
+        background-color: shade-color($light, $link-shade-percentage) !important;
         h2 {
             text-decoration: $link-hover-decoration;
         }
         .click {
-            color: darken($link-color, 15%) !important;
+            color: shade-color($link-color, $link-shade-percentage) !important;
             text-decoration: $link-hover-decoration;
         }
         .circle {
-            color: darken($link-color, 15%) !important;
+            color: shade-color($link-color, $link-shade-percentage) !important;
         }
+    }
+}
+
+// https://moderncss.dev/pure-css-smooth-scroll-back-to-top/
+// https://www.nngroup.com/articles/back-to-top/
+.toppable {
+    // "1. Use a Back to Top button for pages that are longer than 4 screens"
+    // "7. Consider delaying the appearance of a Back to Top option until after users scroll a few pages"
+    // Can't "AND indicate that they want to scroll up" due to performance impact of onScroll event.
+    top: 300vh;
+    // Can't "2. Place a persistent Back to Top button in the lower right side of the page" due to overlap.
+    left: .75rem;
+    bottom: 3rem;
+
+    a {
+        top: calc(100vh - 5rem);
     }
 }

@@ -6,8 +6,6 @@ import requests
 from django import forms
 from django.conf import settings
 from django.contrib import admin
-from django.contrib.admin import DateFieldListFilter
-from django.contrib.admin.options import ModelAdmin, TabularInline
 from django.db.models import BooleanField, Case, Q, When
 from django.forms.widgets import TextInput
 from django.utils import timezone
@@ -56,11 +54,11 @@ class CollectionAdminForm(forms.ModelForm):
             json = response.json()
 
             if json.get("status") == "ok":
-                self.fields["source_id"].choices += tuple([(n, n) for n in json.get("spiders")])
+                self.fields["source_id"].choices += tuple((n, n) for n in json.get("spiders"))
         except requests.exceptions.ConnectionError as e:
             logger.warning("Couldn't connect to Scrapyd: %s", e)
             sid = self.instance.source_id
-            self.fields["source_id"].choices += tuple([(sid, sid)])
+            self.fields["source_id"].choices += ((sid, sid),)
 
         self.fields["active_job"].queryset = Job.objects.filter(
             collection=kwargs.get("instance"), status=Job.Status.COMPLETED
@@ -71,7 +69,7 @@ class CollectionAdminForm(forms.ModelForm):
         flags_dir = "data_registry/static/img/flags"
         files = [f.name for f in Path(flags_dir).glob("*") if f.is_file()]
         files.sort()
-        self.fields["country_flag"].choices += tuple([(n, n) for n in files])
+        self.fields["country_flag"].choices += tuple((n, n) for n in files)
 
     def save(self, *args, **kwargs):
         jobs = Job.objects.filter(collection=self.instance)
@@ -95,45 +93,49 @@ class CollectionAdminForm(forms.ModelForm):
         }
 
 
-class MissingContentFilter(admin.SimpleListFilter):
-    title = _("Incomplete content")
+class IncompleteFilter(admin.SimpleListFilter):
+    title = _("incomplete")
 
     parameter_name = "incomplete"
 
     def lookups(self, request, model_admin):
-        return (
-            ("1", _("Yes")),
-            ("0", _("No")),
-        )
+        return (("1", _("Yes")),)
 
     def queryset(self, request, queryset):
-        qs = (
-            Q(country_flag="")
-            | Q(country_en="")
-            | Q(country_es="")
-            # title_en is required.
-            | Q(title_es="")
-            | Q(description_en="")
-            | Q(description_es="")
-            | Q(description_long_en="")
-            | Q(description_long_es="")
-            | Q(additional_data_en="")
-            | Q(additional_data_es="")
-            | Q(summary_en="")
-            | Q(summary_es="")
-            | Q(update_frequency="")
-            | Q(license_custom=None)
-            | Q(language_en="")
-            | Q(language_es="")
-            | Q(source_url="")
-        )
         if self.value() == "1":
-            return queryset.filter(qs)
-        if self.value() == "0":
-            return queryset.exclude(qs)
+            return queryset.filter(
+                Q(country_en="")
+                | Q(country_flag="")
+                | Q(language_en="")
+                | Q(description_en="")
+                | Q(source_url="")
+                | Q(update_frequency="")
+                | Q(additional_data_en="")
+            )
 
 
-class CustomDateFieldListFilter(DateFieldListFilter):
+class UntranslatedFilter(admin.SimpleListFilter):
+    title = _("untranslated")
+
+    parameter_name = "untranslated"
+
+    def lookups(self, request, model_admin):
+        return (("1", _("Yes")),)
+
+    def queryset(self, request, queryset):
+        if self.value() == "1":
+            return queryset.filter(
+                (~Q(title_en="") & Q(title_es=""))
+                | (~Q(country_en="") & Q(country_es=""))
+                | (~Q(language_en="") & Q(language_es=""))
+                | (~Q(description_en="") & Q(description_es=""))
+                | (~Q(description_long_en="") & Q(description_long_es=""))
+                | (~Q(summary_en="") & Q(summary_es=""))
+                | (~Q(additional_data_en="") & Q(additional_data_es=""))
+            )
+
+
+class CustomDateFieldListFilter(admin.DateFieldListFilter):
     def __init__(self, *args, **kwargs):
         super(CustomDateFieldListFilter, self).__init__(*args, **kwargs)
 
@@ -166,9 +168,18 @@ class CustomDateFieldListFilter(DateFieldListFilter):
 @admin.register(Collection)
 class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
     form = CollectionAdminForm
+    search_fields = ["title_en", "country_en"]
     list_display = ["__str__", "country", "public", "frozen", "active_job", "last_reviewed"]
     list_editable = ["public", "frozen"]
-    list_filter = ["public", "frozen", ("last_reviewed", CustomDateFieldListFilter), MissingContentFilter]
+    list_filter = [
+        "public",
+        "frozen",
+        ("license_custom", admin.EmptyFieldListFilter),
+        ("summary_en", admin.EmptyFieldListFilter),
+        IncompleteFilter,
+        UntranslatedFilter,
+        ("last_reviewed", CustomDateFieldListFilter),
+    ]
 
     fieldsets = (
         (
@@ -268,7 +279,7 @@ class IssueAdminForm(forms.ModelForm):
         widgets = {"description": AdminMarkdownxWidget(attrs={"cols": 100, "rows": 3})}
 
 
-class TaskInLine(TabularInline):
+class TaskInLine(admin.TabularInline):
     model = Task
     extra = 0
     fields = ["type", "status", "start", "end", "result", "note"]
@@ -283,11 +294,12 @@ class TaskInLine(TabularInline):
 
 
 @admin.register(Job)
-class JobAdmin(ModelAdmin):
+class JobAdmin(admin.ModelAdmin):
+    search_fields = ["collection__title_en", "collection__country_en"]
     list_display = ["__str__", "country", "collection", "status", "last_task", "active", "archived", "keep_all_data"]
-
     # Multiple jobs can be set as active for the same collection, so "active" is set as read-only.
     list_editable = ["status", "keep_all_data"]
+
     fieldsets = (
         (
             _("Management"),
@@ -380,6 +392,6 @@ class JobAdmin(ModelAdmin):
         )
 
         if last_completed_task:
-            return f"{last_completed_task.get('type')} ({last_completed_task.get('order')}/4)"
+            return f"{last_completed_task['type']} ({last_completed_task['order']}/{len(settings.JOB_TASKS_PLAN)})"
 
         return None

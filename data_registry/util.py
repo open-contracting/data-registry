@@ -4,9 +4,10 @@ from data_registry.models import Collection
 
 
 def collection_queryset(request):
-    if request.user.is_authenticated:
-        return Collection.objects
-    return Collection.visible
+    queryset = Collection.objects
+    if not request.user.is_authenticated:
+        return queryset.visible()
+    return queryset
 
 
 # https://markdown-it-py.readthedocs.io/en/latest/using.html#renderers

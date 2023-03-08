@@ -3,63 +3,108 @@
 {% load static %}
 {% load registry %}
 
+{% block script %}
+<script>
+document.querySelectorAll('.clickable').forEach(div => {
+    div.addEventListener('click', event => {
+        window.location.href = div.querySelector('.click').href
+    })
+})
+
+document.querySelectorAll('.filterable').forEach(filter => {
+    const key = filter.dataset.key
+    const method = filter.dataset.method
+    filter.querySelectorAll('input').forEach(input => {
+        input.addEventListener('change', event => {
+            let url = new URL(window.location.href)
+            let params = new URLSearchParams(url.search)
+            let values = params.getAll(key)
+            if (values.includes(input.value)) {
+                {# URLSearchParams has no method to delete a key-value pair, and set() yields "x=a,b" not "x=a&x=b". #}
+                params.delete(key)
+                values.forEach(value => {
+                    if (value != input.value) {
+                        params.append(key, value)
+                    }
+                })
+            } else {
+                params[method](key, input.value)
+            }
+            url.search = params.toString()
+            window.location.href = url.toString()
+        })
+    })
+})
+
+{# "8. Make the button stationary." https://www.nngroup.com/articles/back-to-top/ #}
+const observer = new IntersectionObserver(entries => {
+    entries[0].target.querySelector('a').toggleAttribute('hidden', !entries[0].isIntersecting)
+}, {
+    rootMargin: "0px 0px -80px 0px" {# 5rem #}
+})
+
+observer.observe(document.querySelector('.toppable'))
+</script>
+{% endblock %}
+
+{% block nav %}
+<nav class="ms-2 py-4">
+    <a href="{% url 'index' %}" class="hstack ms-1 text-uppercase link-dark small">
+        {% include "includes/chevron_icon.html" with direction="left" classes="me-2" size="24" only %}
+        {% translate "BACK TO REGISTRY HOME" %}
+    </a>
+</nav>
+{% endblock %}
+
 {% block content %}
 <div class="row">
-    <div class="col">
-        <a href="{% url 'index' %}" class="d-flex align-items-center text-body text-uppercase small">
-            {% icon_chevron "left" "mr-2" %}
-            {% translate "BACK TO REGISTRY HOME" %}
-        </a>
-    </div>
-</div>
+    <div class="col-md-3 col-xl-2 mb-5">
+        <h2 class="h4 mb-4">{% translate "Filters" %}</h2>
 
-<div class="row mt-5">
-    <div class="col-md-3 col-xl-2 d-none d-md-block mb-5">
-        <h2 class="h4">{% translate "Filters" %}</h2>
-
-        <a rel="nofollow" href="?" class="{% if request.GET %}d-block{% else %}d-none{% endif %} mt-4">
-            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi b-iconstack b-icon" viewBox="0 0 16 16">
-                <g>
-                    {# https://icons.getbootstrap.com/icons/slash/ #}
-                    <svg fill="currentColor" class="bi bi-slash b-icon slash" viewBox="0 0 16 16">
-                        <g><g transform="translate(8 8) scale(1.6 1.6) rotate(90) translate(-8 -8)">
-                            <path d="M11.354 4.646a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708l6-6a.5.5 0 0 1 .708 0z"/>
-                        </g></g>
-                    </svg>
-                    {# https://icons.getbootstrap.com/icons/funnel/ #}
-                    <svg fill="currentColor" class="bi bi-funnel b-icon funnel" viewBox="0 0 16 16">
-                        <g><g transform="translate(8 8) scale(0.8 0.8) translate(-8 -8)">
+        <div class="d-none d-md-block" id="filters">
+            <a rel="nofollow" href="?" class="{% if request.GET %}d-block{% else %}d-none{% endif %} mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="bi b-iconstack b-icon" width="1em" height="1em" viewBox="0 0 16 16" role="img" focusable="false" aria-hidden="true" fill="currentColor">
+                    <g>
+                        {# https://icons.getbootstrap.com/icons/slash/ #}
+                        <svg class="bi bi-slash b-icon slash" viewBox="0 0 16 16" role="img" focusable="false" aria-hidden="true" fill="currentColor">
+                            <g transform="translate(8 8) scale(1.6 1.6) rotate(90) translate(-8 -8)">
+                                <path d="M11.354 4.646a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                            </g>
+                        </svg>
+                        {# https://icons.getbootstrap.com/icons/funnel/ #}
+                        <svg class="bi bi-funnel b-icon funnel" viewBox="0 0 16 16" role="img" focusable="false" aria-hidden="true" fill="currentColor">
                             <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z"/>
-                        </g></g>
-                    </svg>
-                </g>
-            </svg>
-            {% translate "Clear all filters" %}
-        </a>
+                        </svg>
+                    </g>
+                </svg>
+                {% translate "Clear all filters" %}
+            </a>
 
-        <h3 class="h5 mt-4">{% translate "Country starting with" %}</h3>
-        <ul class="list-inline letters">
+            <h3 class="h5">{% translate "Country starting with" %}</h3>
+            <ul class="mb-4 list-inline letters">
 {% for letter in facets.letters %}
-            <li class="list-inline-item mb-1 mr-0 text-center">
+                <li class="list-inline-item mb-1 me-0 text-center">
     {% if facets.letters|get_item:letter %}
-                <a rel="nofollow" href="?{% if letter == request.GET|get_item:"letter" %}{% remove_query_string_parameter 'letter' %}{% else %}{% replace_query_string_parameter 'letter' letter %}{% endif %}" title="{% blocktranslate count counter=facets.letters|get_item:letter %}1 dataset{% plural %}{{ counter }} datasets{% endblocktranslate %}" class="d-inline-block text-decoration-underline{% if letter == request.GET|get_item:"letter" %} bg-primary-20 font-weight-bold{% elif facets.letters|get_item:letter %} border border-secondary{% endif %}">
-                    {{ letter }}
-                </a>
+                    <a rel="nofollow" href="?{% if letter == request.GET|get_item:'letter' %}{% remove_query_string_parameter 'letter' %}{% else %}{% replace_query_string_parameter 'letter' letter %}{% endif %}" title="{% blocktranslate count counter=facets.letters|get_item:letter %}1 dataset{% plural %}{{ counter }} datasets{% endblocktranslate %}" class="d-inline-block text-decoration-underline{% if letter == request.GET|get_item:'letter' %} bg-primary bg-opacity-25 fw-bold{% elif facets.letters|get_item:letter %} border border-secondary{% endif %}">
+                        {{ letter }}
+                    </a>
     {% else %}
-                <span class="d-inline-block">{{ letter }}</span>
+                    <span class="d-inline-block">{{ letter }}</span>
     {% endif %}
-            </li>
+                </li>
 {% endfor %}
-        </ul>
+            </ul>
 
-        {% radiobuttons _("Data date range") "date_range" date_ranges.items facets.date_ranges %}
-        {% endradiobuttons %}
-        {% checkboxes _("Update frequency") "update_frequency" frequencies facets.frequencies %}
-        {% checkboxes _("Data contains") "counts" counts.items facets.counts %}
+            {% capture content %}
+            {% endcapture %}
+            {% include "includes/radiobuttons.html" with title=_("Data date range") key="date_range" items=date_ranges.items facet_counts=facets.date_ranges content=content %}
+            {% include "includes/checkboxes.html" with title=_("Update frequency") key="update_frequency" items=frequencies facet_counts=facets.frequencies %}
+            {% include "includes/checkboxes.html" with title=_("Data contains") key="counts" items=counts.items facet_counts=facets.counts %}
+        </div>
     </div>
 
     <div class="col-md-9 col-xl-10">
-        <h1 class="h4">
+        <h1 class="h4 mb-4">
 {% if request.GET %}
             {% blocktranslate count counter=collections|length trimmed %}
             {{ counter }} dataset matches the selected filters
@@ -76,13 +121,13 @@
 {% endif %}
         </h1>
 
-        {% for collection in collections %}
-        <div class="mt-4 px-3 px-md-5 py-3 rounded-lg rounded-top-left-md rounded-bottom-right-md bg-light clickable">
+{% for collection in collections %}
+        <article class="mb-4 p-3 px-md-5 rounded-2 rounded-top-start-md rounded-bottom-end-md text-bg-light clickable">
             <div class="row">
-                <div class="col-md mb-3 pt-md-2 fixed-9">
-{% if collection.country_flag %}
-                    <img src="{% static 'img/flags/' %}{{ collection.country_flag }}" alt="" class="img-fluid">
-{% endif %}
+                <div class="col-md mt-md-2 mb-3 fixed-9">
+    {% if collection.country_flag %}
+                    <img src="{% static 'img/flags/' %}{{ collection.country_flag }}" width="114" height="76" alt="" loading="lazy">
+    {% endif %}
                 </div>
                 <div class="col-md">
                     <h2>{{ collection.country }}: {{ collection.title }}</h2>
@@ -101,26 +146,34 @@
                     </dl>
                 </div>
                 <div class="col-md-auto col-lg">
-                    <p class="mb-2 text-thin">{% translate "Available formats:" %}</p>
-                    <ul class="mb-2 list-inline">
-                        <li class="list-inline-item text-uppercase">
-                            {% icon_check collection.json_format %}JSON
-                        </li>
-                        <li class="list-inline-item text-uppercase">
-                            {% icon_check collection.excel_format %}Excel
-                        </li>
-                        <li class="list-inline-item text-uppercase">
-                            {% icon_check collection.csv_format %}CSV
-                        </li>
-                    </ul>
-                    <a href="{% url 'detail' collection.id %}" class="d-flex align-items-center justify-content-end text-primary click">
-                        {% icon_chevron "right" "mr-2" %}
+                    <dl class="mb-n2">
+                        <dt class="mb-2">{% translate "Available formats:" %}</dt>
+                        <dd class="d-inline-block text-uppercase me-2">
+                            {% include "includes/check_icon.html" with checked=collection.files.jsonl.by_year only %}JSON
+                        </dd>
+                        <dd class="d-inline-block text-uppercase me-2">
+                            {% include "includes/check_icon.html" with checked=collection.files.xlsx.by_year only %}Excel
+                        </dd>
+                        <dd class="d-inline-block text-uppercase">
+                            {% include "includes/check_icon.html" with checked=collection.files.csv.by_year only %}CSV
+                        </dd>
+                    </dl>
+                    <a href="{% url 'detail' collection.id %}" class="hstack justify-content-end link-primary click">
+                        {% include "includes/chevron_icon.html" with direction="right" classes="me-2" size="24" only %}
                         {% translate "See details" %}
                     </a>
                 </div>
             </div>
-        </div>
-        {% endfor %}
+        </article>
+{% endfor %}
     </div>
+</div>
+
+{# https://moderncss.dev/pure-css-smooth-scroll-back-to-top/ #}
+{# https://www.nngroup.com/articles/back-to-top/ #}
+<div class="d-none d-md-block position-absolute toppable">{# "4. Have one sticky Back to Top link per page" #}
+    <a href="#top" class="position-sticky btn btn-sm btn-dark" hidden>{# "5. Keep the button small" "6. Make the button stand out visually" #}
+        {% translate "Back to Top" %}{# "3. Label the button Back to Top" #}
+    </a>
 </div>
 {% endblock %}

@@ -23,10 +23,10 @@ Prepare the database:
 ./manage.py createsuperuser
 ```
 
-Run the web server, replacing `PASSWORD`:
+Run the web server, replacing `USERNAME` AND `PASSWORD`:
 
 ```bash
-env SCRAPYD_URL=https://scrape:PASSWORD@collect.kingfisher.open-contracting.org ./manage.py runserver
+env SCRAPYD_URL=https://USERNAME:PASSWORD@collect.kingfisher.open-contracting.org ./manage.py runserver
 ```
 
 Note: If you also want to test the integration with Spoonbill to generate Excel/CSVs files, you need to set env SPOONBILL_API_USERNAME=USERNAME and SPOONBILL_API_PASSWORD=PASSWORD
@@ -53,7 +53,22 @@ rm -rf country-flags-main/ main.zip
 
 See how to [update Django translations](https://ocp-software-handbook.readthedocs.io/en/latest/python/i18n.html) and use [Transifex](https://www.transifex.com/open-contracting-partnership-1/data-registry/).
 
-### Idiosyncracies
+### Idiosyncrasies
 
 - `related_name` is singular, instead of plural.
 - "collection" has a different meaning in the code than in Kingfisher Collect or Kingfisher Process. It should be "publication", used in the UI and documentation.
+
+## Tasks
+
+### Publish a message
+
+To manually start a task, run, for example:
+
+```python
+import os
+
+from exporter.util import publish
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings")
+
+publish({"job_id": 123}, "flattener_init")
+```

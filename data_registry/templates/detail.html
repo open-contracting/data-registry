@@ -1,23 +1,68 @@
 {% extends 'base.html' %}
-{% load i18n %}
+{% load cache %}
 {% load humanize %}
+{% load i18n %}
 {% load static %}
 {% load registry %}
 
-{% block content %}
-<div class="row">
-    <div class="col">
-        <a href="{% url 'search' %}" class="d-flex align-items-center text-body text-uppercase small">
-            {% icon_chevron "left" "mr-2" %}
-            {% translate "BACK TO DATASETS SEARCH" %}
-        </a>
-    </div>
-</div>
+{% block script %}
+{% get_current_language as LANGUAGE_CODE %}
+<script>
+{# https://github.com/django/django/blob/stable/3.2.x/django/views/i18n.py #}
+const catalog = {% cache None catalog LANGUAGE_CODE %}{% catalog_str %}{% endcache %}
 
-<div class="row mt-5">
-    <div class="col-sm mb-3 pt-sm-2 fixed-12">
+function gettext(msgid) {
+    const value = catalog[msgid]
+    if (typeof value === 'undefined') {
+        return msgid
+    }
+    if (typeof value === 'string') {
+        return value
+    }
+    return value[0]
+}
+
+document.querySelectorAll('.toggleable').forEach(toggleable => {
+    const toggle = document.createElement('a')
+
+    toggle.textContent = gettext('Show more')
+    toggle.setAttribute("aria-controls", toggleable.id)
+    toggle.ariaExpanded = false
+    toggle.href = '#'
+
+    toggle.addEventListener('click', event => {
+        event.preventDefault()
+        const collapsed = toggleable.toggleAttribute('hidden')
+        toggle.textContent = collapsed ? gettext('Show more') : gettext('Show less')
+        toggle.ariaExpanded = collapsed ? false : true
+    })
+
+    let insert = toggle;
+    if (toggleable.previousElementSibling.tagName == "P") {
+        insert = document.createElement('p')
+        insert.append(toggle)
+    }
+
+    toggleable.insertAdjacentElement('beforebegin', insert)
+    toggleable.setAttribute('hidden', '')
+})
+</script>
+{% endblock %}
+
+{% block nav %}
+<nav class="ms-2 py-4">
+    <a href="{% url 'search' %}" class="hstack ms-1 text-uppercase link-dark small">
+        {% include "includes/chevron_icon.html" with direction="left" classes="me-2" size="24" only %}
+        {% translate "BACK TO DATASETS SEARCH" %}
+    </a>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="row mb-5">
+    <div class="col-sm mt-sm-2 mb-3 fixed-12">
 {% if collection.country_flag %}
-        <img src="{% static 'img/flags/' %}{{ collection.country_flag }}" alt="" class="img-fluid">
+        <img src="{% static 'img/flags/' %}{{ collection.country_flag }}" width="162" height="108" alt="">
 {% endif %}
     </div>
     <div class="col-sm">
@@ -27,7 +72,7 @@
                 {{ collection.description|markdownify }}
 
 {% if collection.description_long %}
-                <div class="toggleable">
+                <div class="toggleable" id="description">
                     {{ collection.description_long|markdownify }}
                 </div>
 {% endif %}
@@ -35,25 +80,22 @@
             <div class="col-xl-auto">{# Collapse under description under 1200px #}
                 <div class="row">
                     <div class="col-auto mb-3">{# No stretch #}
-                        <p class="h5">{% translate "Available formats:" %}</p>
-                        <div class="row">
-                            <div class="col text-uppercase text-nowrap text-lg">
-                                {% icon_check collection.json_format "24px" %}
-                                JSON
-                            </div>
-                            <div class="col text-uppercase text-nowrap text-lg">
-                                {% icon_check collection.excel_format "24px" %}
-                                Excel
-                            </div>
-                            <div class="col text-uppercase text-nowrap text-lg">
-                                {% icon_check collection.excel_format "24px" %}
-                                CSV
-                            </div>
-                        </div>
+                        <dl class="mb-n2">
+                            <dt class="h5">{% translate "Available formats:" %}</dt>
+                            <dd class="d-inline-block text-uppercase fs-5 me-3">
+                                {% include "includes/check_icon.html" with checked=files.jsonl.by_year size="24px" only %}JSON
+                            </dd>
+                            <dd class="d-inline-block text-uppercase fs-5 me-3">
+                                {% include "includes/check_icon.html" with checked=files.xlsx.by_year size="24px" only %}Excel
+                            </dd>
+                            <dd class="d-inline-block text-uppercase fs-5">
+                                {% include "includes/check_icon.html" with checked=files.csv.by_year size="24px" only %}CSV
+                            </dd>
+                        </dl>
                     </div>
                     <div class="col-auto mb-3">{# No stretch #}
-                        <a class="d-flex align-items-center px-4 btn btn-info btn-md text-lg text-uppercase" href="#access">
-                            {% icon_chevron "right" "mr-3 text-xl" %}
+                        <a class="hstack px-4 btn btn-info text-uppercase fs-5" href="#access">
+                            {% include "includes/chevron_icon.html" with direction="right" classes="me-3 fs-2" only %}
                             {% translate "ACCESS" %}
                         </a>
                     </div>
@@ -63,7 +105,7 @@
     </div>
 </div>
 
-<div class="row mt-5 py-5 border-top">
+<div class="row py-5 border-top">
     <div class="col-sm fixed-sm-12">
         <h2 class="h4 mb-3">{% translate "Overview" %}</h2>
     </div>
@@ -84,16 +126,16 @@
 {% endif %}
             </dd>
             <dt>{% translate "OCID prefix:" %}</dt>
-            <dd>{{ job.ocid_prefix }}</dd>
+            <dd>{{ job.ocid_prefix|default:"-" }}</dd>
             <dt>{% translate "License:" %}</dt>
             <dd class="text-break">
 {% if collection.license_custom %}
                 <a href="{{ collection.license_custom.url }}" target="_blank" class="d-block">{{ collection.license_custom.name }}</a>
-                <div class="mt-2 mb-n3 pl-3 border-left small toggleable">
+                <div class="mt-2 mb-n3 ps-3 border-start small toggleable" id="license">
                     {{ collection.license_custom.description|markdownify }}
                 </div>
 {% else %}
-                {{ job.license }}
+                {{ job.license|default:"-" }}
 {% endif %}
             </dd>
             <dt>{% translate "Language:" %}</dt>
@@ -103,100 +145,100 @@
         </dl>
     </div>
 </div>
-
 <div class="row py-5 border-top">
     <div class="col-sm fixed-sm-12">
-        <h2 class="h4 mb-3">{% translate "Data avaliable" %}</h2s>
+        <h2 class="h4 mb-3">{% translate "Data available" %}</h2>
     </div>
     <div class="col-sm">
+        <div class="mb-5">
+        {% blocktranslate trimmed %}
+            An individual contracting process has several different stages: tendering, awarding, contracting and implementation. You can dive into the details of the contracting stages in this <a href="https://standard.open-contracting.org/latest/en/primer/how/" target="_blank">tutorial</a>.
+        {% endblocktranslate %}
+        </div>
+ {% if job %}
         <div class="row">
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
-                <h3 class="h6">{% icon_check job.parties_count %}{% translate "Parties" %}</h3>
-                <dl class="pl-4 list-desc-inline">
+                <h3 class="h6">{% include "includes/check_icon.html" with checked=job.parties_count only %}{% translate "Parties" %}</h3>
+                <dl class="ms-4 mb-0 list-desc-inline">
                     <dt>{% translate "Count of parties:" %}</dt>
                     <dd>{{ job.parties_count|intcomma }}</dd>
                 </dl>
             </div>
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
-                <h3 class="h6">{% icon_check job.plannings_count %}{% translate "Plannings" %}</h3>
-                <dl class="pl-4 list-desc-inline">
+                <h3 class="h6">{% include "includes/check_icon.html" with checked=job.plannings_count only %}{% translate "Plannings" %}</h3>
+                <dl class="ms-4 mb-0 list-desc-inline">
                     <dt>{% translate "Count of planning activities:" %}</dt>
                     <dd>{{ job.plannings_count|intcomma }}</dd>
                 </dl>
             </div>
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
-                <h3 class="h6">{% icon_check job.tenders_count %}{% translate "Tenders" %}</h3>
-                <dl class="pl-4 list-desc-inline">
+                <h3 class="h6">{% include "includes/check_icon.html" with checked=job.tenders_count only %}{% translate "Tenders" %}</h3>
+                <dl class="ms-4 mb-0 list-desc-inline">
                     <dt>{% translate "Count of tenders:" %}</dt>
                     <dd>{{ job.tenders_count|intcomma }}
-                    </li>
                     <dt>{% translate "Count of tenderers:" %}</dt>
                     <dd>{{ job.tenderers_count|intcomma }}
-                    </li>
                     <dt>{% translate "Count of tender items:" %}</dt>
                     <dd>{{ job.tenders_items_count|intcomma }}</dd>
                 </dl>
             </div>
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
-                <h3 class="h6">{% icon_check job.awards_count %}{% translate "Awards" %}</h3>
-                <dl class="pl-4 list-desc-inline">
+                <h3 class="h6">{% include "includes/check_icon.html" with checked=job.awards_count only %}{% translate "Awards" %}</h3>
+                <dl class="ms-4 mb-0 list-desc-inline">
                     <dt>{% translate "Count of awards:" %}</dt>
                     <dd>{{ job.awards_count|intcomma }}
-                    </li>
                     <dt>{% translate "Count of award suppliers:" %}</dt>
                     <dd>{{ job.awards_suppliers_count|intcomma }}
-                    </li>
                     <dt>{% translate "Count of award items:" %}</dt>
                     <dd>{{ job.awards_items_count|intcomma }}</dd>
                 </dl>
             </div>
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
-                <h3 class="h6">{% icon_check job.contracts_count %}{% translate "Contracts" %}</h3>
-                <dl class="pl-4 list-desc-inline">
+                <h3 class="h6">{% include "includes/check_icon.html" with checked=job.contracts_count only %}{% translate "Contracts" %}</h3>
+                <dl class="ms-4 mb-0 list-desc-inline">
                     <dt>{% translate "Count of contracts:" %}</dt>
                     <dd>{{ job.contracts_count|intcomma }}
-                    </li>
                     <dt>{% translate "Count of contract items:" %}</dt>
                     <dd>{{ job.contracts_items_count|intcomma }}
-                    </li>
                     <dt>{% translate "Count of contract transactions:" %}</dt>
                     <dd>{{ job.contracts_transactions_count|intcomma }}</dd>
                 </dl>
             </div>
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
-                <h3 class="h6">{% icon_check job.documents_count %}{% translate "Documents" %}</h3>
-                <dl class="pl-4 list-desc-inline">
+                <h3 class="h6">{% include "includes/check_icon.html" with checked=job.documents_count only %}{% translate "Documents" %}</h3>
+                <dl class="ms-4 mb-0 list-desc-inline">
                     <dt>{% translate "Count of documents:" %}</dt>
                     <dd>{{ job.documents_count|intcomma }}</dd>
                 </dl>
             </div>
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
-                <h3 class="h6">{% icon_check job.milestones_count %}{% translate "Milestones" %}</h3>
-                <dl class="pl-4 list-desc-inline">
+                <h3 class="h6">{% include "includes/check_icon.html" with checked=job.milestones_count only %}{% translate "Milestones" %}</h3>
+                <dl class="ms-4 mb-0 list-desc-inline">
                     <dt>{% translate "Count of milestones:" %}</dt>
                     <dd>{{ job.milestones_count|intcomma }}</dd>
                 </dl>
             </div>
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
-                <h3 class="h6">{% icon_check job.amendments_count %}{% translate "Amendments" %}</h3>
-                <dl class="pl-4 list-desc-inline">
+                <h3 class="h6">{% include "includes/check_icon.html" with checked=job.amendments_count only %}{% translate "Amendments" %}</h3>
+                <dl class="ms-4 mb-0 list-desc-inline">
                     <dt>{% translate "Count of amendments:" %}</dt>
                     <dd>{{ job.amendments_count|intcomma }}</dd>
                 </dl>
             </div>
         </div>
+{% else %}
+        <p class="p-4 rounded-3 text-bg-light">
+            {% translate "This dataset has not yet been retrieved." %}
+        </p>
+{% endif %}
 
 {% if collection.additional_data %}
-        <div class="d-flex p-4 rounded-xl bg-primary-20 text-primary">
-            <div class="flex-fill mt-1 mr-3">
-                {# https://icons.getbootstrap.com/icons/gem/ #}
-                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-gem b-icon" viewBox="0 0 16 16">
-                    <g transform="translate(8 8) scale(1.5 1.5) translate(-8 -8)">
-                        <path d="M3.1.7a.5.5 0 0 1 .4-.2h9a.5.5 0 0 1 .4.2l2.976 3.974c.149.185.156.45.01.644L8.4 15.3a.5.5 0 0 1-.8 0L.1 5.3a.5.5 0 0 1 0-.6l3-4zm11.386 3.785-1.806-2.41-.776 2.413 2.582-.003zm-3.633.004.961-2.989H4.186l.963 2.995 5.704-.006zM5.47 5.495 8 13.366l2.532-7.876-5.062.005zm-1.371-.999-.78-2.422-1.818 2.425 2.598-.003zM1.499 5.5l5.113 6.817-2.192-6.82L1.5 5.5zm7.889 6.817 5.123-6.83-2.928.002-2.195 6.828z"/>
-                    </g>
-                </svg>
-            </div>
-            <div class="flex-fill mb-n3">
+        <div class="d-flex p-4 rounded-3 bg-primary bg-opacity-10 text-primary">
+            {# https://icons.getbootstrap.com/icons/gem/ #}
+            <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-gem b-icon mt-1 me-2" width="1.5em" height="1.5em" viewBox="0 0 16 16" role="img" focusable="false" aria-hidden="true" fill="currentColor">
+                <path d="M3.1.7a.5.5 0 0 1 .4-.2h9a.5.5 0 0 1 .4.2l2.976 3.974c.149.185.156.45.01.644L8.4 15.3a.5.5 0 0 1-.8 0L.1 5.3a.5.5 0 0 1 0-.6l3-4zm11.386 3.785-1.806-2.41-.776 2.413 2.582-.003zm-3.633.004.961-2.989H4.186l.963 2.995 5.704-.006zM5.47 5.495 8 13.366l2.532-7.876-5.062.005zm-1.371-.999-.78-2.422-1.818 2.425 2.598-.003zM1.499 5.5l5.113 6.817-2.192-6.82L1.5 5.5zm7.889 6.817 5.123-6.83-2.928.002-2.195 6.828z"/>
+            </svg>
+            <div class="mb-n3">
                 {{ collection.additional_data|markdownify }}
             </div>
         </div>
@@ -210,7 +252,7 @@
     </div>
     <div class="col-sm">
         <h3 class="h5 mb-3">{% translate "Summary" %}</h3>
-        <div class="p-4 rounded-xl bg-light">
+        <div class="p-4 rounded-3 text-bg-light">
 {% if collection.summary %}
             <div class="mb-n3">
                 {{ collection.summary|markdownify }}
@@ -221,7 +263,7 @@
         </div>
 
 {% if collection.last_reviewed %}
-        <p class="mt-3 mb-0 font-italic small">
+        <p class="mt-3 mb-0 fst-italic small">
             {% translate "Last reviewed:" %} {{ collection.last_reviewed|date:"M Y" }}
         </p>
 {% endif %}
@@ -233,7 +275,7 @@
 {% for issue in collection.issues %}
             <li class="d-flex mb-n3">
                 {# https://icons.getbootstrap.com/icons/exclamation-circle/ #}
-                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-exclamation-circle b-icon mt-1 mr-2" viewBox="0 0 16 16">
+                <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-exclamation-circle b-icon mt-1 me-2" width="1em" height="1em" viewBox="0 0 16 16" role="img" focusable="false" aria-hidden="true" fill="currentColor">
                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                     <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
                 </svg>
@@ -246,13 +288,14 @@
 </div>
 
 <div class="py-5 border-top" id="access">
-    <div class="p-5 rounded-xl rounded-top-left-xl bg-info">
-        <h2>{% translate "Access data" %}</h2>
+    <div class="p-5 rounded-3 rounded-top-start-xl text-bg-info">
+        <div class="row gy-4">
+            <div class="col-12">
+                <h2>{% translate "Access data" %}</h2>
 
-        <p>{% translate "This OCDS dataset is available for download in JSON, Excel or CSV format. You can download the data for contracting processes in a specific year or for all time." %}</p>
-
-        <div class="row mb-n3">
-            <div class="col-sm-4 mt-3 mt-sm-0">
+                <p class="mb-0">{% translate "This OCDS dataset is available for download in JSON, Excel or CSV format. You can download the data for contracting processes in a specific year or for all time." %}</p>
+            </div>
+            <div class="col-sm-4 mb-n3">
                 <h3>JSON</h3>
                 <p>
                     {% blocktranslate trimmed %}
@@ -261,25 +304,12 @@
                 </p>
                 <p>
                     {% blocktranslate trimmed %}
-                    The <code>.jsonl</code> file is compressed using Gzip. Windows users need <a href="https://www.7-zip.org">7-Zip</a>, <a href="https://www.win-rar.com">WinRAR</a> or <a href="https://www.winzip.com">WinZip</a> to decompress the <code>.gz</code> file.
+                    The <code>.jsonl</code> file is compressed using Gzip. Windows users need <a href="https://www.7-zip.org" target="_blank">7-Zip</a>, <a href="https://www.win-rar.com" target="_blank">WinRAR</a> or <a href="https://www.winzip.com" target="_blank">WinZip</a> to decompress the <code>.gz</code> file.
                     {% endblocktranslate %}
                 </p>
-                <ul>
-                    <li>
-                        <a href="{% url 'download_export' %}?spider={{ collection.source_id }}&job_id={{ job.id }}&full=true" rel="nofollow" download>
-                        {% translate "All time" %}
-                    </a>
-                </li>
-{% for year in years %}
-                    <li>
-                        <a href="{% url 'download_export' %}?spider={{ collection.source_id }}&job_id={{ job.id }}&year={{ year }}" rel="nofollow" download>
-                        {{ year }}
-                    </a>
-                </li>
-{% endfor %}
-                </ul>
+                {% include "includes/files.html" with files=files.jsonl suffix="jsonl.gz" %}
             </div>
-            <div class="col-sm-4 mt-3 mt-sm-0">
+            <div class="col-sm-4 mb-n3">
                 <h3>Excel</h3>
                 <p>
                     {% blocktranslate trimmed %}
@@ -288,11 +318,12 @@
                 </p>
                 <p>
                     {% blocktranslate trimmed %}
-                    Excel files can have at most <a href="https://support.microsoft.com/en-us/office/excel-specifications-and-limits-1672b34d-7043-467e-8e27-269d656771c3">1,048,576 rows</a>. If a year is missing, it had too many rows.
+                    Excel files can have at most <a href="https://support.microsoft.com/en-us/office/excel-specifications-and-limits-1672b34d-7043-467e-8e27-269d656771c3" target="_blank">1,048,576 rows</a>. If a year is missing, it had too many rows.
                     {% endblocktranslate %}
                 </p>
+                {% include "includes/files.html" with files=files.xlsx suffix="xlsx" hideempty=True %}
             </div>
-            <div class="col-sm-4 mt-3 mt-sm-0">
+            <div class="col-sm-4 mb-n3">
                 <h3>CSV</h3>
                 <p>
                     {% blocktranslate trimmed %}
@@ -301,29 +332,30 @@
                 </p>
                 <p>
                     {% blocktranslate trimmed %}
-                    The <code>.csv</code> files are archived using tar and compressed using Gzip. Windows users need <a href="https://www.7-zip.org">7-Zip</a>, <a href="https://www.win-rar.com">WinRAR</a> or <a href="https://www.winzip.com">WinZip</a> to decompress the <code>.tar.gz</code> file.
+                    The <code>.csv</code> files are archived using tar and compressed using Gzip. Windows users need <a href="https://www.7-zip.org" target="_blank">7-Zip</a>, <a href="https://www.win-rar.com" target="_blank">WinRAR</a> or <a href="https://www.winzip.com" target="_blank">WinZip</a> to decompress the <code>.tar.gz</code> file.
                     {% endblocktranslate %}
                 </p>
+                {% include "includes/files.html" with files=files.csv suffix="csv.tar.gz" %}
             </div>
         </div>
     </div>
 </div>
 
-<div class="mb-4 p-5 rounded-xl rounded-top-left-xl bg-primary text-white">
-    <div class="row">
-        <div class="col-md d-flex align-items-center mb-3 mb-md-0">
-            {# https://icons.getbootstrap.com/icons/question-circle/ #}
-            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-question-circle b-icon mr-3" viewBox="0 0 16 16">
-                <g transform="translate(8 8) scale(1.5 1.5) translate(-8 -8)">
+<div class="mb-4 p-5 rounded-3 rounded-top-start-xl bg-primary text-white">
+    <div class="row gy-3">
+        <div class="col-md">
+            <div class="hstack">
+                {# https://icons.getbootstrap.com/icons/question-circle/ #}
+                <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-question-circle b-icon me-2" width="1.5em" height="1.5em" viewBox="0 0 16 16" role="img" focusable="false" aria-hidden="true" fill="currentColor">
                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                     <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
-                </g>
-            </svg>
-            {% translate "Have questions, feedback on this dataset or content on this page?" %}
+                </svg>
+                {% translate "Have questions, feedback on this dataset or content on this page?" %}
+            </div>
         </div>
-        <div class="col-md-auto d-flex align-items-center">
-            <a href="mailto:data@open-contracting.org?{% feedback_query_string_parameters %}" class="text-white">
-                {% icon_chevron "right" "mr-2" %} {% translate "Contact Data Support Team" %}
+        <div class="col-md-auto">
+            <a href="mailto:data@open-contracting.org?{% feedback_query_string_parameters %}" target="_blank" class="hstack link-white">
+                {% include "includes/chevron_icon.html" with direction="right" classes="me-2" size="24" only %}{% translate "Contact Data Support Team" %}
             </a>
         </div>
     </div>

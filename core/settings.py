@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.humanize",
-    "statici18n",
     "data_registry",
     "markdownx",
     "exporter",
@@ -60,6 +59,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    # Add before GZipMiddleware to modify its response.
+    "exporter.middleware.ContentEncodingMiddleware",
     # This site is not affected by BREACH.
     # https://docs.djangoproject.com/en/3.2/ref/middleware/#django.middleware.gzip.GZipMiddleware
     "django.middleware.gzip.GZipMiddleware",
@@ -159,7 +160,6 @@ STATIC_ROOT = BASE_DIR / "static"
 
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
-# https://django-statici18n.readthedocs.io/en/v2.3.1/faq.html#using-a-placeholder-directory
 STATICFILES_DIRS = [BASE_DIR / "core" / "static"]  # webpack.config.js
 
 # https://docs.djangoproject.com/en/3.2/topics/logging/#django-security
@@ -199,12 +199,19 @@ LOGGING = {
             "handlers": ["null"],
             "propagate": False,
         },
+        "django.template": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
         "django.utils.autoreload": {
-            "handlers": ["null"],
+            "handlers": ["console"],
+            "level": "INFO",
             "propagate": False,
         },
         "markdown_it.rules_block": {
-            "handlers": ["null"],
+            "handlers": ["console"],
+            "level": "INFO",
             "propagate": False,
         },
     },
@@ -251,9 +258,7 @@ if "SENTRY_DSN" in os.environ:
 MODELTRANSLATION_DEFAULT_LANGUAGE = "en"
 
 # https://neutronx.github.io/django-markdownx/customization/#markdownx_markdownify_function
-MARKDOWNX_MARKDOWNIFY_FUNCTION = "data_registry.utils.markdownify"
-
-STATICI18N_ROOT = BASE_DIR / "core" / "static"
+MARKDOWNX_MARKDOWNIFY_FUNCTION = "data_registry.util.markdownify"
 
 
 # Project configuration
@@ -269,7 +274,7 @@ RABBIT_URL = os.getenv("RABBIT_URL", "amqp://localhost")
 RABBIT_EXCHANGE_NAME = os.getenv("RABBIT_EXCHANGE_NAME", "data_registry_development")
 
 # The job tasks to run.
-JOB_TASKS_PLAN = ["collect", "process", "pelican", "exporter"]
+JOB_TASKS_PLAN = ["collect", "process", "pelican", "exporter", "flattener"]
 
 SCRAPYD = {
     # The base URL of Scrapyd.
@@ -294,6 +299,9 @@ PELICAN_FRONTEND_URL = os.getenv("PELICAN_FRONTEND_URL")
 EXPORTER_DIR = os.getenv("EXPORTER_DIR", "/data/exporter" if production else BASE_DIR / "data" / "exporter")
 # The batch size of compiled releases to extract from Kingfisher Process.
 EXPORTER_PAGE_SIZE = 10000
+
+# The maximum size (in bytes) allowed to convert JSON files to Excel.
+EXPORTER_MAX_JSON_BYTES_TO_EXCEL = 1073741824  # 1 GB
 
 # The base URL of Spoonbill.
 SPOONBILL_URL = os.getenv("SPOONBILL_URL", "https://flatten.open-contracting.org")

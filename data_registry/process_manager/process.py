@@ -7,8 +7,8 @@ from django.db import transaction
 from django.db.models import BooleanField, Case, Q, When
 from django.utils import timezone
 
+from data_registry.exceptions import RecoverableException
 from data_registry.models import Job, Task
-from data_registry.process_manager.task.exceptions import RecoverableException
 from data_registry.process_manager.task.factory import TaskFactory
 from data_registry.process_manager.util import request
 
@@ -213,5 +213,7 @@ def parse_date(datetime_str):
     if not datetime_str:
         return None
 
-    datetime_obj = datetime.strptime(datetime_str, "%Y-%m-%d %H.%M.%S")
-    return datetime_obj.date()
+    try:
+        return datetime.strptime(datetime_str, "%Y-%m-%d %H.%M.%S").date()
+    except ValueError as e:
+        logger.exception(e)

@@ -1,13 +1,8 @@
-import logging
-
 from data_registry.models import Task
-from data_registry.process_manager.task.task import BaseTask
-from exporter.util import Export, publish
-
-logger = logging.getLogger(__name__)
+from exporter.util import Export, TaskStatus, publish
 
 
-class Exporter(BaseTask):
+class Exporter:
     def __init__(self, job):
         self.job = job
         self.collection_id = self.job.context.get("process_id_pelican")
@@ -16,12 +11,12 @@ class Exporter(BaseTask):
         publish({"collection_id": self.collection_id, "job_id": self.job.id}, "exporter_init")
 
     def get_status(self):
-        status = Export(self.job.id).status
-        if status == "WAITING":
+        status = Export(self.job.id, basename="full.jsonl.gz").status
+        if status == TaskStatus.WAITING:
             return Task.Status.WAITING
-        if status == "RUNNING":
+        if status == TaskStatus.RUNNING:
             return Task.Status.RUNNING
-        if status == "COMPLETED":
+        if status == TaskStatus.COMPLETED:
             return Task.Status.COMPLETED
 
     def wipe(self):

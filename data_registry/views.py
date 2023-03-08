@@ -32,9 +32,7 @@ alphabets["ru"] = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬ�
 
 
 def index(request):
-    response = render(request, "index.html")
-
-    return response
+    return render(request, "index.html")
 
 
 def search(request):
@@ -56,6 +54,7 @@ def search(request):
         return without_filter(qs, key).values(key).annotate(n=Count("pk")).values_list(key, "n")
 
     now = date.today()
+    language_code = get_language_from_request(request, check_path=True)
 
     date_ranges = {
         "": _("All"),
@@ -82,11 +81,12 @@ def search(request):
     # https://docs.djangoproject.com/en/3.2/ref/models/expressions/#subquery-expressions
     active_job = Job.objects.filter(collection=OuterRef("pk"), active=True)[:1]
     qs = collection_queryset(request).annotate(
+        job_id=Subquery(active_job.values("pk")),
         # Display
         date_from=Subquery(active_job.values("date_from")),
         date_to=Subquery(active_job.values("date_to")),
         # Filter
-        letter=Substr("country", 1, 1),
+        letter=Substr(f"country_{language_code}", 1, 1),
         **{count: Subquery(active_job.values(count)) for count in counts},
     )
 
@@ -106,7 +106,7 @@ def search(request):
             exclude[count] = 0
 
     facets = {
-        "letters": {value: 0 for value in alphabets[get_language_from_request(request, check_path=True)]},
+        "letters": {value: 0 for value in alphabets[language_code]},
         "date_ranges": {value: 0 for value in date_ranges},
         "frequencies": {value: 0 for value in Collection.Frequency.values},
         "counts": {value: 0 for value in counts},
@@ -126,6 +126,7 @@ def search(request):
     qs = qs.filter(*filter_args, **filter_kwargs).order_by("country", "title")
 
     for collection in qs:
+        collection.files = Export.get_files(collection.job_id)
         for value in counts:
             if getattr(collection, value):
                 facets["counts"][value] += 1
@@ -136,7 +137,6 @@ def search(request):
         "date_ranges": date_ranges,
         "frequencies": Collection.Frequency.choices,
         "counts": counts,
-        "now": now.strftime("%Y-%m-%d"),
     }
     return render(request, "search.html", context)
 
@@ -150,10 +150,9 @@ def detail(request, id):
     )
 
     job = collection.job.filter(active=True).first()
+    files = Export.get_files(job and job.id)
 
-    years = Export(job.id).years_available()
-
-    return render(request, "detail.html", {"collection": collection, "job": job, "years": years})
+    return render(request, "detail.html", {"collection": collection, "job": job, "files": files})
 
 
 @login_required
@@ -221,6 +220,8 @@ def excel_data(request, job_id, job_range=None):
 
             start_date = start_date + relativedelta(months=+1)
 
+    language = get_language()
+
     body = {
         "urls": urls,
         "country": f"{job.collection.country} {job.collection.title}",
@@ -228,7 +229,7 @@ def excel_data(request, job_id, job_range=None):
         "source": _("OCP Kingfisher Database"),
     }
 
-    headers = {"Accept-Language": f"{get_language()}"}
+    headers = {"Accept-Language": f"{language}"}
     response = requests.post(
         urljoin(settings.SPOONBILL_URL, "/api/urls/"),
         body,
@@ -247,5 +248,5 @@ def excel_data(request, job_id, job_range=None):
         logger.error("Invalid response from spoonbill %s.", response.text)
         return HttpResponse(status=500)
 
-    params = urlencode({"lang": get_language(), "url": response.json()["id"]})
+    params = urlencode({"lang": language, "url": response.json()["id"]})
     return redirect(urljoin(settings.SPOONBILL_URL, f"/#/upload-file?{params}"))

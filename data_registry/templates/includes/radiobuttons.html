@@ -1,0 +1,17 @@
+{% load registry %}
+
+<h3 class="h5">{{ title }}</h3>
+<div class="mb-4 filterable" data-key="{{ key }}" data-method="set">
+{% for value, label in items %}
+    <div class="form-check">
+        <input type="radio" value="{{ value }}" class="form-check-input" name="{{ key }}" id="f-{{ value }}"{% if value in request.GET|getlist:key %} checked{% endif %}{% if not facet_counts|get_item:value %} disabled{% endif %}>
+        <label class="form-check-label" for="f-{{ value }}">
+            {{ label }}
+    {% if facet_counts|get_item:value %}
+            <span class="badge rounded-pill text-bg-info">{{ facet_counts|get_item:value }}</span>
+    {% endif %}
+        </label>
+    </div>
+{% endfor %}
+</div>
+{{ content }}

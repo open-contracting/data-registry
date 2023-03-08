@@ -7,7 +7,6 @@ urlpatterns = [
     path("", include("exporter.urls"), name="exporter"),
     path("admin/", admin.site.urls),
     path("markdownx/", include("markdownx.urls")),
-    path("i18n/", include("django.conf.urls.i18n")),
 ]
 
 urlpatterns += i18n_patterns(path("", include("data_registry.urls"), name="data_registry"))

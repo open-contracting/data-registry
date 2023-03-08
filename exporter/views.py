@@ -1,28 +1,34 @@
 from django.http import FileResponse
-from django.http.response import HttpResponseNotFound
+from django.http.response import HttpResponseBadRequest, HttpResponseNotFound
 
-from exporter.util import Export
+from exporter.util import Export, TaskStatus
 
 
 def download_export(request):
     """
     Returns an exported file as a FileResponse object.
     """
-    spider = request.GET.get("spider")
-    job_id = request.GET.get("job_id")
+    job_id = int(request.GET.get("job_id") or 0)  # guard against path traversal
     full = request.GET.get("full")
-    year = request.GET.get("year")
+    year = int(request.GET.get("year") or 0)  # guard against path traversal
+    suffix = request.GET.get("suffix")
+    spider = request.GET.get("spider")
 
-    export = Export(job_id)
+    # Guard against path traversal.
+    if suffix not in ("jsonl.gz", "csv.tar.gz", "xlsx"):
+        return HttpResponseBadRequest("Suffix not recognized")
 
-    if full:
-        dump_file = export.directory / "full.jsonl.gz"
-        filename = f"{spider}_full.jsonl.gz"
-    else:
-        dump_file = export.directory / f"{year}.jsonl.gz"
-        filename = f"{spider}_{year}.jsonl.gz"
+    stem = "full" if full else year
+    export = Export(job_id, basename=f"{stem}.{suffix}")
 
-    if export.running or not dump_file.exists():
-        return HttpResponseNotFound("Unable to find export file")
+    if export.status != TaskStatus.COMPLETED:
+        return HttpResponseNotFound("File not found")
 
-    return FileResponse(dump_file.open("rb"), as_attachment=True, filename=filename)
+    return FileResponse(
+        export.path.open("rb"),
+        as_attachment=True,
+        filename=f"{spider}_{stem}.{suffix}",
+        # Set Content-Encoding to skip GZipMiddleware. (ContentEncodingMiddleware removes the empty header.)
+        # https://docs.djangoproject.com/en/3.2/ref/middleware/#module-django.middleware.gzip
+        headers={"Content-Encoding": ""},
+    )

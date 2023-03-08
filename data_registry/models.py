@@ -89,12 +89,17 @@ class Job(models.Model):
     def format_datetime(self, dt):
         return dt.strftime("%d-%b-%y") if dt else ""
 
+    def get_max_rows_lower_bound(self):
+        return max(
+            getattr(self, field.attname) or 0 for field in Job._meta.get_fields() if field.name.endswith("_count")
+        )
 
-class PublicCollectionManager(models.Manager):
-    def get_queryset(self):
+
+class CollectionQuerySet(models.QuerySet):
+    def visible(self):
         # https://docs.djangoproject.com/en/3.2/ref/models/expressions/#some-examples
         active_jobs = Job.objects.filter(collection=models.OuterRef("pk"), active=True)
-        return super().get_queryset().filter(models.Exists(active_jobs), public=True)
+        return self.filter(models.Exists(active_jobs), public=True)
 
 
 class Collection(models.Model):
@@ -138,7 +143,7 @@ class Collection(models.Model):
         blank=True,
         null=True,
         verbose_name="data license",
-        help_text="If not set, the Overview section will display " "the license URL within the OCDS package.",
+        help_text="If not set, the Overview section will display the license URL within the OCDS package.",
     )
 
     source_id = models.TextField(
@@ -183,10 +188,6 @@ class Collection(models.Model):
         "used or additional fields, as Markdown text.",
     )
 
-    json_format = models.BooleanField(default=True)
-    excel_format = models.BooleanField(default=True)
-    csv_format = models.BooleanField(default=True)
-
     public = models.BooleanField(
         default=False,
         help_text="If the active job's tasks completed without errors and all the fields below in "
@@ -200,8 +201,7 @@ class Collection(models.Model):
     created = models.DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)
     modified = models.DateTimeField(auto_now=True, blank=True, null=True, db_index=True)
 
-    objects = models.Manager()
-    visible = PublicCollectionManager()
+    objects = CollectionQuerySet.as_manager()
 
     def __str__(self):
         return f"{self.title} ({self.id})"
@@ -214,7 +214,7 @@ class License(models.Model):
     name = models.TextField(blank=True, help_text="The official name of the license.")
     description = MarkdownxField(
         blank=True,
-        help_text="A brief description of the permissions, conditions and limitations, as " "Markdown text.",
+        help_text="A brief description of the permissions, conditions and limitations, as Markdown text.",
     )
     url = models.TextField(blank=True, verbose_name="URL", help_text="The canonical URL of the license.")
 
