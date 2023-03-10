@@ -138,6 +138,15 @@ $letter-size: $spacer * 2;
     }
 }
 
+// Flags
+
+.flag-search {
+    max-height: 120px;
+}
+.flag-detail {
+    max-height: 168px;
+}
+
 // Components
 
 // https://github.com/twbs/bootstrap/blob/v4.6.2/scss/_variables.scss#L178

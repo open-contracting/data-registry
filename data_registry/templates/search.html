@@ -124,9 +124,9 @@ observer.observe(document.querySelector('.toppable'))
 {% for collection in collections %}
         <article class="mb-4 p-3 px-md-5 rounded-2 rounded-top-start-md rounded-bottom-end-md text-bg-light clickable">
             <div class="row">
-                <div class="col-md mb-3 fixed-9">
+                <div class="col-md mt-sm-1 mb-3 fixed-9">
     {% if collection.country_flag %}
-                    <img src="{% static 'img/flags/' %}{{ collection.country_flag }}" width="114" alt="" loading="lazy">
+                    <img src="{% static 'img/flags/' %}{{ collection.country_flag }}" width="120" alt="" loading="lazy" class="flag-search">
     {% endif %}
                 </div>
                 <div class="col-md">
