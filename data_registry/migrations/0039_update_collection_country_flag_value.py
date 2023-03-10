@@ -71,7 +71,7 @@ def update_country_flag_name(apps, schema_editor):
     }
     Collection = apps.get_model('data_registry', 'Collection')
     for collection in Collection.objects.all():
-        if collection.country_flag in mapping:
+        if collection.country_flag:
             collection.country_flag = mapping[collection.country_flag]
             collection.save()
 
