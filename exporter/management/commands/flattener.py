@@ -26,7 +26,13 @@ class Command(BaseCommand):
     """
 
     def handle(self, *args, **options):
-        consume(callback, "flattener_init", ["flattener_init", "flattener_file"], decorator=decorator)
+        consume(
+            callback,
+            "flattener_init",
+            ["flattener_init", "flattener_file"],
+            rabbit_params={"heartbeat": 0},
+            decorator=decorator,
+        )
 
 
 def callback(state, channel, method, properties, input_message):
@@ -105,7 +111,7 @@ def flatterer_flatten(export, infile, outdir, csv, xlsx):
     -  Otherwise (``csv=True``), re-raise the error.
     """
     try:
-        return flatterer.flatten(infile, outdir, csv=csv, xlsx=xlsx, json_stream=True, force=True)
+        return flatterer.flatten(infile, outdir, csv=csv, xlsx=xlsx, json_stream=True, force=True, threads=0)
     except RuntimeError:
         if xlsx:
             if csv:
