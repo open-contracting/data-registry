@@ -49,7 +49,6 @@ def publish(*args, **kwargs):
 def consume(*args, rabbit_params=None, **kwargs):
     while True:
         try:
-            print(rabbit_params)
             client = get_client(Consumer, rabbit_params)
             client.consume(*args, **kwargs)
             break
