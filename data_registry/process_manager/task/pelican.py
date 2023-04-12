@@ -23,7 +23,7 @@ class Pelican:
 
         request(
             "POST",
-            urljoin(settings.PELICAN_FRONTEND_URL, "/datasets/"),
+            urljoin(settings.PELICAN_FRONTEND_URL, "/api/datasets/"),
             json={"name": name, "collection_id": self.collection_id},
             error_msg=f"Publication {self.job.collection}: Pelican: Unable to create dataset with name {name!r} and "
             f"collection ID {self.collection_id}",
@@ -36,7 +36,7 @@ class Pelican:
 
         response = request(
             "GET",
-            urljoin(settings.PELICAN_FRONTEND_URL, f"/datasets/{pelican_id}/status/"),
+            urljoin(settings.PELICAN_FRONTEND_URL, f"/api/datasets/{pelican_id}/status/"),
             error_msg=f"Publication {self.job.collection}: Pelican: Unable get status of dataset {pelican_id}",
         )
 
@@ -54,7 +54,7 @@ class Pelican:
 
             response = request(
                 "GET",
-                urljoin(settings.PELICAN_FRONTEND_URL, "/datasets/find_by_name/"),
+                urljoin(settings.PELICAN_FRONTEND_URL, "/api/datasets/find_by_name/"),
                 params={"name": name},
                 error_msg=f"Publication {self.job.collection}: Pelican: Unable to get ID for name {name!r}",
             )
@@ -93,7 +93,7 @@ class Pelican:
 
         request(
             "DELETE",
-            urljoin(settings.PELICAN_FRONTEND_URL, f"/datasets/{pelican_id}/"),
+            urljoin(settings.PELICAN_FRONTEND_URL, f"/api/datasets/{pelican_id}/"),
             error_msg=f"Publication {self.job.collection}: Pelican: Unable to wipe dataset with ID {pelican_id}",
             consume_exception=True,
         )
