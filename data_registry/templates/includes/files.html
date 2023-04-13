@@ -4,13 +4,13 @@
 <ul>
 {% if files.full %}
     <li>
-        <a href="{% url 'download_export' %}?spider={{ collection.source_id }}&job_id={{ job.id }}&full=true&suffix={{ suffix }}" rel="nofollow" download>{% translate "All time" %}</a>
+        <a href="{% url 'download-export' %}?spider={{ collection.source_id }}&job_id={{ job.id }}&full=true&suffix={{ suffix }}" rel="nofollow" download>{% translate "All time" %}</a>
         <span class="text-muted small">{{ files.full|humanfilesize }}</span>
     </li>
 {% endif %}
 {% for file in files.by_year|dictsortreversed:"year" %}
     <li>
-        <a href="{% url 'download_export' %}?spider={{ collection.source_id }}&job_id={{ job.id }}&year={{ file.year }}&suffix={{ suffix }}" rel="nofollow" download>{{ file.year }}</a>
+        <a href="{% url 'download-export' %}?spider={{ collection.source_id }}&job_id={{ job.id }}&year={{ file.year }}&suffix={{ suffix }}" rel="nofollow" download>{{ file.year }}</a>
         <span class="text-muted small">{{ file.size|humanfilesize }}</span>
     </li>
 {% empty %}
