@@ -3,7 +3,6 @@
 
 {% get_current_language as LANGUAGE_CODE %}
 {% get_available_languages as LANGUAGES %}
-{% get_language_info_list for LANGUAGES as languages %}
 
 <header class="container-fluid py-4">
     <div class="row">
@@ -24,9 +23,9 @@
             <form action="{% url 'set-language' %}" method="post" class="form-inline">
                 <input type="hidden" name="next" value="{% redirect_to %}">
                 <select name="language" aria-label="{% translate 'Select language' %}" onchange="this.form.submit()" class="form-select form-select-lg">
-{% for language in languages %}
-                    <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}>
-                        {{ language.name_local }}
+{% for language_code, _ in LANGUAGES %}
+                    <option value="{{ language_code }}"{% if language_code == LANGUAGE_CODE %} selected{% endif %}>
+                        {{ language_code|language_name_local }}
                     </option>
 {% endfor %}
                 </select>
