@@ -1,6 +1,14 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
+{% get_current_language as LANGUAGE_CODE %}
+
+{% block head %}
+    {% if LANGUAGE_CODE == "en" %}
+    <link rel="canonical" href="/">
+    {% endif %}
+{% endblock %}
+
 {% block content %}
 <div class="row mb-5">
     <div class="col-sm-8">
