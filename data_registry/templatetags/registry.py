@@ -2,7 +2,7 @@ import json
 import os.path
 from urllib.parse import quote, urlencode
 
-from django import template
+from django import template, urls
 from django.apps import apps
 from django.utils.safestring import mark_safe
 from django.utils.translation import get_language
@@ -44,6 +44,21 @@ def catalog_str():
         ],
     )
     return mark_safe(json.dumps(catalog.get_catalog()))
+
+
+@register.simple_tag(takes_context=True)
+def translate_url(context, language):
+    request = context["request"]
+    name = urls.resolve(request.path).url_name
+    if name == "index" and language == "en":
+        # / is the canonical of /en/.
+        return "/"
+    if name == "search":
+        # Avoid duplicate content, since there's no pagination.
+        url = urls.reverse("search")
+    else:
+        url = request.build_absolute_uri()
+    return urls.translate_url(url, language)
 
 
 @register.simple_tag(takes_context=True)
