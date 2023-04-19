@@ -3,6 +3,10 @@
 {% load static %}
 {% load registry %}
 
+{% block head %}
+    <link rel="canonical" href="{{ request.path }}">
+{% endblock %}
+
 {% block script %}
 <script>
 document.querySelectorAll('.clickable').forEach(div => {
