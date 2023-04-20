@@ -3,6 +3,10 @@
 
 {% get_current_language as LANGUAGE_CODE %}
 
+{% block og_title %}{% block title %}{% translate "Data Registry" %} | {% translate "Open Contracting Partnership" %}{% endblock %}{% endblock %}
+{% block og_description %}{% block description %}{% translate "Search for and access datasets by country" %}{% endblock %}{% endblock %}
+{% block og_type %}website{% endblock %}
+
 {% block head %}
     {% if LANGUAGE_CODE == "en" %}
     <link rel="canonical" href="/">

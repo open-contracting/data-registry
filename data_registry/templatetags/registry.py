@@ -47,17 +47,30 @@ def catalog_str():
 
 
 @register.simple_tag(takes_context=True)
+def canonical_url(context):
+    request = context["request"]
+    name = urls.resolve(request.path).url_name
+
+    if name == "index" and get_language() == "en":
+        # / is the canonical of /en/.
+        args = ["/"]
+    if name == "search":
+        # Avoid duplicate content across different filters. Okay since there's no pagination.
+        args = [urls.reverse("search")]
+    else:
+        args = []
+    return request.build_absolute_uri(*args)
+
+
+@register.simple_tag(takes_context=True)
 def translate_url(context, language):
     request = context["request"]
     name = urls.resolve(request.path).url_name
+
+    url = canonical_url(context)
     if name == "index" and language == "en":
-        # / is the canonical of /en/.
-        return "/"
-    if name == "search":
-        # Avoid duplicate content, since there's no pagination.
-        url = urls.reverse("search")
-    else:
-        url = request.build_absolute_uri()
+        # Translating "/es/" to "en" would return "/en/", which is not canonical.
+        return url
     return urls.translate_url(url, language)
 
 

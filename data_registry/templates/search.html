@@ -3,6 +3,9 @@
 {% load static %}
 {% load registry %}
 
+{% block og_title %}{% block title %}{% translate "Search for and download OCDS data" %} | {% translate "OCP Data Registry" %}{% endblock %}{% endblock %}
+{% block og_description %}{% block description %}{% translate "Find and filter OCDS datasets to download as JSON, Excel or CSV." %}{% endblock %}{% endblock %}
+
 {% block head %}
     <link rel="canonical" href="{{ request.path }}">
 {% endblock %}

@@ -7,8 +7,8 @@
 <html lang="{{ LANGUAGE_CODE }}">
 <head>
     <meta charset="utf-8">
-    <title>{% translate "Data Registry" %}</title>
-    <meta name="description" content="{% translate 'Search for and access datasets by country' %}">
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="description" content="{% block description %}{% endblock %}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon-16x16.png' %}">
@@ -17,6 +17,12 @@
     <link rel="alternate" hreflang="{{ language_code }}" href="{% translate_url language_code %}">
 {% endfor %}
     {% include "includes/fathom.html" %}
+    <meta property="og:title" content="{% block og_title %}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{% endblock %}">
+    <meta property="og:type" content="{% block og_type %}article{% endblock %}">
+    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% block og_image %}{% static 'img/logo.svg' %}{% endblock %}">
+    <meta property="og:url" content="{% canonical_url %}">
+    <meta name="twitter:card" content="summary">
 {% block head %}
 {% endblock %}
 </head>
