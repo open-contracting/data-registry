@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-20 22:27+0000\n"
+"POT-Creation-Date: 2023-04-20 22:39+0000\n"
 "PO-Revision-Date: 2021-08-04 17:44+0000\n"
 "Last-Translator: Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2022\n"
 "Language-Team: English (https://www.transifex.com/open-contracting-"
@@ -91,10 +91,7 @@ msgid "OCP Data Registry"
 msgstr "OCP Data Registry"
 
 #: data_registry/templates/detail.html:9
-#, fuzzy, python-format
-#| msgid ""
-#| "Learn about and download the OCDS data for %(collection.country)s: "
-#| "%(collection.title)s."
+#, python-format
 msgid "Learn about and download the OCDS data for %(country)s: %(title)s."
 msgstr ""
 "Learn about and download the OCDS data for %(collection.country)s: "
