@@ -10,6 +10,8 @@
 {% block head %}
     {% if LANGUAGE_CODE == "en" %}
     <link rel="canonical" href="/">
+    {% else %}
+    <link rel="canonical" href="{{ request.path }}">
     {% endif %}
 {% endblock %}
 
