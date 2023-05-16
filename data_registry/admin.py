@@ -299,6 +299,7 @@ class JobAdmin(admin.ModelAdmin):
     list_display = ["__str__", "country", "collection", "status", "last_task", "active", "archived", "keep_all_data"]
     # Multiple jobs can be set as active for the same collection, so "active" is set as read-only.
     list_editable = ["status", "keep_all_data"]
+    list_filter = ["status", "active", "archived"]
 
     fieldsets = (
         (
