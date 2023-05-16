@@ -214,6 +214,9 @@ def parse_date(datetime_str):
         return None
 
     try:
-        return datetime.strptime(datetime_str, "%Y-%m-%d %H.%M.%S").date()
+        try:
+            return datetime.strptime(datetime_str, "%Y-%m-%d %H.%M.%S").date()
+        except ValueError:  # e.g. nigeria_plateau_state
+            return datetime.strptime(datetime_str, "%y-%m-%d %H.%M.%S").date()
     except ValueError as e:
         logger.exception(e)
