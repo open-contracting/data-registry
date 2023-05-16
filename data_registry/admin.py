@@ -295,6 +295,9 @@ class TaskInLine(admin.TabularInline):
 
 @admin.register(Job)
 class JobAdmin(admin.ModelAdmin):
+    class Media:
+        css = {"all": ["admin.css"]}
+
     search_fields = ["collection__title_en", "collection__country_en"]
     list_display = ["__str__", "country", "collection", "status", "last_task", "active", "archived", "keep_all_data"]
     # Multiple jobs can be set as active for the same collection, so "active" is set as read-only.
