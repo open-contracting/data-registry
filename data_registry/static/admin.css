@@ -1,0 +1,7 @@
+.nowrap {
+    /*
+    Django intentionally uses nowrap for foreign keys on change_list.html. This makes the tables wider than the screen.
+    https://code.djangoproject.com/ticket/11447
+    */
+     white-space: normal;
+}
