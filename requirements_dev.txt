@@ -44,7 +44,7 @@ django==3.2.19
     #   -r requirements.txt
     #   django-markdownx
     #   django-modeltranslation
-django-markdownx==3.0.1
+django-markdownx==4.0.2
     # via -r requirements.txt
 django-modeltranslation==0.18.4
     # via -r requirements.txt

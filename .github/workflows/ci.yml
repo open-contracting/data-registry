@@ -17,8 +17,7 @@ jobs:
       - run: pip install -r requirements_dev.txt
       - name: Run checks and tests
         env:
-          # django-markdownx>3.0.1 https://github.com/neutronX/django-markdownx/pull/206
-          PYTHONWARNINGS: error,ignore:::markdownx.urls
+          PYTHONWARNINGS: error
           DATABASE_URL: postgresql://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres
         run: |
           ./manage.py migrate
