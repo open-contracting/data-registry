@@ -21,6 +21,7 @@ jobs:
       - run: python manage.py makemessages -a
       - run: python manage.py makemessages -a -d djangojs -i node_modules -i static
       - name: Count incomplete translations
+        shell: bash
         run: |
           output=$(find . -name LC_MESSAGES -not -path "*/en_US/*" -exec pocount --incomplete --short "{}" +)
           echo $output
