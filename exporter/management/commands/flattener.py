@@ -111,7 +111,7 @@ def flatterer_flatten(export, infile, outdir, csv, xlsx):
     -  Otherwise (``csv=True``), re-raise the error.
     """
     try:
-        return flatterer.flatten(infile, outdir, csv=csv, xlsx=xlsx, json_stream=True, force=True, threads=0)
+        return flatterer.flatten(infile, outdir, csv=csv, xlsx=xlsx, ndjson=True, force=True, threads=0)
     except RuntimeError:
         if xlsx:
             if csv:
