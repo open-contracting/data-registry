@@ -1,5 +1,6 @@
 import gzip
 import logging
+import multiprocessing
 import os
 import shutil
 import tarfile
@@ -82,9 +83,19 @@ def process_file(job_id, file_path):
                 with infile.open("wb") as o:
                     shutil.copyfileobj(i, o)
 
+            # Count JSON lines up to the number of CPUs.
+            # https://github.com/kindly/flatterer/issues/46
+            threads = 0
+            max_threads = multiprocessing.cpu_count()
+            with infile.open() as f:
+                for _ in f:
+                    threads += 1
+                    if threads >= max_threads:
+                        break
+
             csv = not csv_exists
             xlsx = not xlsx_exists and infile.stat().st_size < settings.EXPORTER_MAX_JSON_BYTES_TO_EXCEL
-            output = flatterer_flatten(export, str(infile), str(outdir), csv=csv, xlsx=xlsx)
+            output = flatterer_flatten(export, str(infile), str(outdir), csv=csv, xlsx=xlsx, threads=threads)
 
             if csv:
                 with tarfile.open(csv_path, "w:gz") as tar:
@@ -100,7 +111,7 @@ def process_file(job_id, file_path):
         export.unlock()
 
 
-def flatterer_flatten(export, infile, outdir, csv, xlsx):
+def flatterer_flatten(export, infile, outdir, csv=False, xlsx=False, threads=0):
     """
     Convert the file from JSON to CSV and Excel.
 
@@ -111,12 +122,12 @@ def flatterer_flatten(export, infile, outdir, csv, xlsx):
     -  Otherwise (``csv=True``), re-raise the error.
     """
     try:
-        return flatterer.flatten(infile, outdir, csv=csv, xlsx=xlsx, ndjson=True, force=True, threads=2)
+        return flatterer.flatten(infile, outdir, csv=csv, xlsx=xlsx, ndjson=True, force=True, threads=threads)
     except RuntimeError:
         if xlsx:
             if csv:
                 logger.exception("Attempting CSV-only conversion in %s", export)
-                return flatterer_flatten(export, infile, outdir, csv=csv, xlsx=False)
+                return flatterer_flatten(export, infile, outdir, csv=csv, xlsx=False, threads=threads)
             else:
                 logger.exception("Failed Excel-only conversion in %s", export)
                 return {}
