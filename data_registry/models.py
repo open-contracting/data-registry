@@ -159,7 +159,7 @@ class Collection(models.Model):
         HALF_YEARLY = "HALF_YEARLY", _("Every 6 months")
         ANNUALLY = "ANNUALLY", _("Annually")
 
-    update_frequency = models.TextField(
+    retrieval_frequency = models.TextField(
         choices=Frequency.choices,
         blank=True,
         help_text="The frequency at which the registry updates the publication, based on the "

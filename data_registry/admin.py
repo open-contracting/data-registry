@@ -109,7 +109,7 @@ class IncompleteFilter(admin.SimpleListFilter):
                 | Q(language_en="")
                 | Q(description_en="")
                 | Q(source_url="")
-                | Q(update_frequency="")
+                | Q(retrieval_frequency="")
                 | Q(additional_data_en="")
             )
 
@@ -208,7 +208,7 @@ class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
             {
                 "description": translation_reminder,
                 "fields": (
-                    "update_frequency",
+                    "retrieval_frequency",
                     "license_custom",
                     "source_url",
                     "language_en",

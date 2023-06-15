@@ -121,13 +121,13 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
             <dd>{{ job.date_from|date:"M Y" }} - {{ job.date_to|date:"M Y" }}</dd>
             <dt>{% translate "Last retrieved:" %}</dt>
             <dd>{{ collection.last_update|date:"j M Y" }}</dd>
-            <dt>{% translate "Update frequency:" %}</dt>
+            <dt>{% translate "Retrieval frequency:" %}</dt>
             <dd>
-{% if collection.update_frequency == "MONTHLY" %}
+{% if collection.retrieval_frequency == "MONTHLY" %}
                 {% translate "Monthly" %}
-{% elif collection.update_frequency == "HALF_YEARLY" %}
+{% elif collection.retrieval_frequency == "HALF_YEARLY" %}
                 {% translate "Every 6 months" %}
-{% elif collection.update_frequency == "ANNUALLY" %}
+{% elif collection.retrieval_frequency == "ANNUALLY" %}
                 {% translate "Annually" %}
 {% endif %}
             </dd>

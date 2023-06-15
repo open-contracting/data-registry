@@ -99,8 +99,8 @@ def search(request):
         date_limit = date_limits.get(request.GET["date_range"])
         if date_limit:
             filter_args.append(Q(date_from__gte=date_limit) | Q(date_to__gte=date_limit))
-    if "update_frequency" in request.GET:
-        filter_kwargs["update_frequency__in"] = request.GET.getlist("update_frequency")
+    if "retrieval_frequency" in request.GET:
+        filter_kwargs["retrieval_frequency__in"] = request.GET.getlist("retrieval_frequency")
     if "counts" in request.GET:
         for count in request.GET.getlist("counts"):
             exclude[count] = 0
@@ -113,7 +113,7 @@ def search(request):
     }
     for value, n in facet_counts(qs, "letter"):
         facets["letters"][value] = n
-    for value, n in facet_counts(qs, "update_frequency"):
+    for value, n in facet_counts(qs, "retrieval_frequency"):
         facets["frequencies"][value] = n
     for row in without_filter(qs, args=False).values("date_from", "date_to"):
         facets["date_ranges"][""] += 1
