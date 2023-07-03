@@ -6,4 +6,5 @@ __pycache__
 /htmlcov
 node_modules
 /static
-/core/static
+/core/static/*
+!/core/static/.gitkeep
