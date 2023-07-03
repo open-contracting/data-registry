@@ -34,7 +34,7 @@ idna==2.10
     # via requests
 ijson==3.1.4
     # via flatterer
-markdown==3.3.4
+markdown==3.4.3
     # via django-markdownx
 markdown-it-py==2.2.0
     # via -r requirements.in

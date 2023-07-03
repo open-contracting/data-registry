@@ -51,12 +51,14 @@ class ViewsTests(TestCase):
                     )
 
                 self.assertEqual(response.status_code, 200)
+                response.headers.pop("Content-Length")
                 self.assertDictEqual(
                     dict(response.headers),
                     {
                         "Content-Disposition": f'attachment; filename="abc_2000.{suffix}"',
                         "Content-Language": "en",
                         "Content-Type": content_type,
+                        "Cross-Origin-Opener-Policy": "same-origin",
                         "Referrer-Policy": "same-origin",
                         "Vary": "Accept-Language",
                         "X-Content-Type-Options": "nosniff",

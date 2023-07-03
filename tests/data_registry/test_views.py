@@ -5,7 +5,7 @@ from django.test import Client, TestCase, override_settings
 from data_registry.models import Collection, Job
 
 
-@override_settings(STATICFILES_STORAGE="django.contrib.staticfiles.storage.StaticFilesStorage")
+@override_settings(STORAGES={"staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"}})
 class ViewsTests(TestCase):
     @classmethod
     def setUpTestData(cls):
