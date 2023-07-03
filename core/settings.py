@@ -156,7 +156,14 @@ LOCALE_PATHS = glob(str(BASE_DIR / "**" / "locale"))
 
 STATIC_ROOT = BASE_DIR / "static"
 
-STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage",
+    },
+}
 
 STATICFILES_DIRS = [BASE_DIR / "core" / "static"]  # webpack.config.js
 
