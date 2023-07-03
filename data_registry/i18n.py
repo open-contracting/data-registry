@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 # Copy Django function to make CSRF exempt and to not set cookie or session.
 # https://github.com/django/django/blob/stable/3.2.x/django/views/i18n.py
-# https://docs.djangoproject.com/en/3.2/topics/i18n/translation/#how-django-discovers-language-preference
+# https://docs.djangoproject.com/en/4.2/topics/i18n/translation/#how-django-discovers-language-preference
 @csrf_exempt
 def set_language(request):
     next_url = request.POST.get("next", request.GET.get("next"))

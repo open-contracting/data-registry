@@ -29,6 +29,6 @@ def download_export(request):
         as_attachment=True,
         filename=f"{spider}_{stem}.{suffix}",
         # Set Content-Encoding to skip GZipMiddleware. (ContentEncodingMiddleware removes the empty header.)
-        # https://docs.djangoproject.com/en/3.2/ref/middleware/#module-django.middleware.gzip
+        # https://docs.djangoproject.com/en/4.2/ref/middleware/#module-django.middleware.gzip
         headers={"Content-Encoding": ""},
     )

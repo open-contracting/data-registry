@@ -97,7 +97,7 @@ class Job(models.Model):
 
 class CollectionQuerySet(models.QuerySet):
     def visible(self):
-        # https://docs.djangoproject.com/en/3.2/ref/models/expressions/#some-examples
+        # https://docs.djangoproject.com/en/4.2/ref/models/expressions/#some-examples
         active_jobs = Job.objects.filter(collection=models.OuterRef("pk"), active=True)
         return self.filter(models.Exists(active_jobs), public=True)
 

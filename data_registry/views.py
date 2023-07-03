@@ -78,7 +78,7 @@ def search(request):
         "amendments_count": _("Amendments data"),
     }
 
-    # https://docs.djangoproject.com/en/3.2/ref/models/expressions/#subquery-expressions
+    # https://docs.djangoproject.com/en/4.2/ref/models/expressions/#subquery-expressions
     active_job = Job.objects.filter(collection=OuterRef("pk"), active=True)[:1]
     qs = collection_queryset(request).annotate(
         job_id=Subquery(active_job.values("pk")),
