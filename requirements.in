@@ -1,5 +1,5 @@
 dj-database-url
-django<4
+django<5
 django-markdownx
 django-modeltranslation
 flatterer
