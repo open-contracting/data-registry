@@ -3,7 +3,7 @@ import os
 import shutil
 import signal
 from pathlib import Path
-from typing import Dict, Literal, Optional
+from typing import Literal
 from urllib.parse import parse_qs, urlencode, urlsplit
 
 import pika.exceptions
@@ -107,7 +107,7 @@ class Export:
             "xlsx": {"full": False, "by_year": []},
         }
 
-    def __init__(self, *components, basename: Optional[str] = None):
+    def __init__(self, *components, basename: str | None = None):
         """
         ``basename`` is required to use ``lock()``, ``unlock()``, ``running``, ``completed`` and ``status``.
 
@@ -191,7 +191,7 @@ class Export:
         return TaskStatus.WAITING
 
     @property
-    def files(self) -> Dict:
+    def files(self) -> dict:
         """
         Return all the available file formats and segments (by year or full).
         """

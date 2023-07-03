@@ -44,7 +44,7 @@ class CollectionAdminForm(forms.ModelForm):
     country_flag = forms.ChoiceField(choices=[(None, "---------")], required=False)
 
     def __init__(self, *args, **kwargs):
-        super(CollectionAdminForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         try:
             url = urljoin(settings.SCRAPYD["url"], "listspiders.json")
@@ -81,7 +81,7 @@ class CollectionAdminForm(forms.ModelForm):
         else:
             jobs.update(active=False)
 
-        return super(CollectionAdminForm, self).save(*args, **kwargs)
+        return super().save(*args, **kwargs)
 
     class Meta:
         widgets = {
@@ -137,7 +137,7 @@ class UntranslatedFilter(admin.SimpleListFilter):
 
 class CustomDateFieldListFilter(admin.DateFieldListFilter):
     def __init__(self, *args, **kwargs):
-        super(CustomDateFieldListFilter, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         # https://github.com/django/django/blob/3.2/django/contrib/admin/filters.py#L312-L316
         now = timezone.now()
