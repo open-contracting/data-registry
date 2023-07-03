@@ -1,4 +1,4 @@
-FROM nikolaik/python-nodejs:python3.8-nodejs18 as build-stage
+FROM nikolaik/python-nodejs:python3.11-nodejs18 as build-stage
 
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
@@ -15,7 +15,7 @@ ENV DJANGO_ENV=production
 RUN npx webpack --mode production
 RUN python manage.py collectstatic --noinput -v2
 
-FROM python:3.8
+FROM python:3.11
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
       gettext \
