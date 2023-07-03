@@ -10,7 +10,7 @@ from pathlib import Path
 import flatterer
 from django.conf import settings
 from django.core.management.base import BaseCommand
-from yapw.methods.blocking import ack
+from yapw.methods import ack
 
 from exporter.util import Export, consume, decorator, publish
 
@@ -28,9 +28,9 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         consume(
-            callback,
-            "flattener_init",
-            ["flattener_init", "flattener_file"],
+            on_message_callback=callback,
+            queue="flattener_init",
+            routing_keys=["flattener_init", "flattener_file"],
             rabbit_params={"heartbeat": 0},
             decorator=decorator,
         )

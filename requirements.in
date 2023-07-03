@@ -5,7 +5,6 @@ django-modeltranslation
 flatterer
 gunicorn[setproctitle]
 markdown-it-py
-pika
 psycopg2
 python-dateutil
 requests

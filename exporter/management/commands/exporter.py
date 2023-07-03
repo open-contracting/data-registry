@@ -6,7 +6,7 @@ from datetime import datetime
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.db import connections
-from yapw.methods.blocking import ack
+from yapw.methods import ack
 
 from exporter.util import Export, consume, decorator
 
@@ -23,7 +23,7 @@ class Command(BaseCommand):
     """
 
     def handle(self, *args, **options):
-        consume(callback, "exporter_init", decorator=decorator)
+        consume(on_message_callback=callback, queue="exporter_init", decorator=decorator)
 
 
 def callback(state, channel, method, properties, input_message):

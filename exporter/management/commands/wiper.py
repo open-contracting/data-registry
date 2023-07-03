@@ -1,7 +1,7 @@
 import logging
 
 from django.core.management.base import BaseCommand
-from yapw.methods.blocking import ack
+from yapw.methods import ack
 
 from exporter.util import Export, consume
 
@@ -16,7 +16,7 @@ class Command(BaseCommand):
     """
 
     def handle(self, *args, **options):
-        consume(callback, "wiper_init")
+        consume(on_message_callback=callback, queue="wiper_init")
 
 
 def callback(state, channel, method, properties, input_message):

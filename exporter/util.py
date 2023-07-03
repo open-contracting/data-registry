@@ -1,32 +1,22 @@
 import logging
 import os
 import shutil
-import signal
 from pathlib import Path
 from typing import Literal
 from urllib.parse import parse_qs, urlencode, urlsplit
 
-import pika.exceptions
 from django.conf import settings
 from django.db import connections
-from yapw import clients
+from yapw.clients import AsyncConsumer, Blocking
 from yapw.decorators import decorate
-from yapw.methods.blocking import nack
+from yapw.methods import add_callback_threadsafe, nack
 
 from data_registry.exceptions import LockFileError
 
 logger = logging.getLogger(__name__)
 
 
-class Consumer(clients.Threaded, clients.Durable, clients.Blocking, clients.Base):
-    pass
-
-
-class Publisher(clients.Durable, clients.Blocking, clients.Base):
-    pass
-
-
-def get_client(klass, rabbit_params=None):
+def get_client_kwargs(rabbit_params=None):
     if rabbit_params:
         parsed = urlsplit(settings.RABBIT_URL)
         query = parse_qs(parsed.query)
@@ -34,39 +24,27 @@ def get_client(klass, rabbit_params=None):
         rabbit_url = parsed._replace(query=urlencode(query, doseq=True)).geturl()
     else:
         rabbit_url = settings.RABBIT_URL
-    return klass(url=rabbit_url, exchange=settings.RABBIT_EXCHANGE_NAME)
+    return {"url": rabbit_url, "exchange": settings.RABBIT_EXCHANGE_NAME}
 
 
 def publish(*args, **kwargs):
-    client = get_client(Publisher)
+    client = Blocking(**get_client_kwargs())
     try:
         client.publish(*args, **kwargs)
     finally:
         client.close()
 
 
-# https://github.com/pika/pika/blob/master/examples/blocking_consume_recover_multiple_hosts.py
 def consume(*args, rabbit_params=None, **kwargs):
-    while True:
-        try:
-            client = get_client(Consumer, rabbit_params)
-            client.consume(*args, **kwargs)
-            break
-        # Do not recover if the connection was closed by the broker.
-        except pika.exceptions.ConnectionClosedByBroker as e:  # subclass of AMQPConnectionError
-            logger.warning(e)
-            break
-        # Recover from "Connection reset by peer".
-        except pika.exceptions.StreamLostError as e:  # subclass of AMQPConnectionError
-            logger.warning(e)
-            continue
+    client = AsyncConsumer(*args, **kwargs, **get_client_kwargs(rabbit_params))
+    client.start()
 
 
 def decorator(decode, callback, state, channel, method, properties, body):
     """
     Close the database connections opened by the callback, before returning.
 
-    If the callback raises an exception, send the SIGUSR1 signal to the main thread, without acknowledgment. For some
+    If the callback raises an exception, shut down the client in the main thread, without acknowledgment. For some
     exceptions, assume that the same message was delivered twice, log an error, and nack the message.
     """
 
@@ -75,8 +53,8 @@ def decorator(decode, callback, state, channel, method, properties, body):
             logger.exception("Locked since %s, maybe caused by duplicate message %r, skipping", exception, body)
             nack(state, channel, method.delivery_tag, requeue=False)
         else:
-            logger.exception("Unhandled exception when consuming %r, sending SIGUSR1", body)
-            os.kill(os.getpid(), signal.SIGUSR1)
+            logger.exception("Unhandled exception when consuming %r, shutting down gracefully", body)
+            add_callback_threadsafe(state.connection, state.interrupt)
 
     def finalback():
         for conn in connections.all():
