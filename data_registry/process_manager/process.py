@@ -113,7 +113,7 @@ def process(collection):
                     job.end = timezone.now()
                     job.save()
 
-                    job.collection.last_retrieved = job.task.get(type="collect").end
+                    job.collection.last_retrieved = job.task.get(type__in=("collect", "test")).end
                     job.collection.save()
 
                     # set active job
