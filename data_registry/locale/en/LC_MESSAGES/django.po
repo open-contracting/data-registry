@@ -2,26 +2,25 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 # Translators:
 # Georg <gneumann@open-contracting.org>, 2021
 # James McKinney, 2022
-# Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2022
-#
+# Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2023
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-16 02:25+0000\n"
+"POT-Creation-Date: 2023-08-16 19:23-0400\n"
 "PO-Revision-Date: 2021-08-04 17:44+0000\n"
-"Last-Translator: Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2022\n"
-"Language-Team: English (https://www.transifex.com/open-contracting-"
-"partnership-1/teams/123427/en/)\n"
-"Language: en\n"
+"Last-Translator: Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2023\n"
+"Language-Team: English (https://app.transifex.com/open-contracting-partnership-1/teams/123427/en/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data_registry/admin.py:21
@@ -173,8 +172,8 @@ msgstr "Data available"
 msgid ""
 "An individual contracting process has several different stages: tendering, "
 "awarding, contracting and implementation. You can dive into the details of "
-"the contracting stages in this <a href=\"https://standard.open-contracting."
-"org/latest/en/primer/how/\" target=\"_blank\">tutorial</a>."
+"the contracting stages in this <a href=\"https://standard.open-"
+"contracting.org/latest/en/primer/how/\" target=\"_blank\">tutorial</a>."
 msgstr ""
 "A contracting process has several stages: tendering, awarding, contracting "
 "and implementation. You can learn about the contracting stages in <a "
@@ -317,14 +316,14 @@ msgstr ""
 
 #: data_registry/templates/detail.html:307
 msgid ""
-"The <code>.jsonl</code> file is compressed using Gzip. Windows users need <a "
-"href=\"https://www.7-zip.org\" target=\"_blank\">7-Zip</a>, <a "
+"The <code>.jsonl</code> file is compressed using Gzip. Windows users need <a"
+" href=\"https://www.7-zip.org\" target=\"_blank\">7-Zip</a>, <a "
 "href=\"https://www.win-rar.com\" target=\"_blank\">WinRAR</a> or <a "
 "href=\"https://www.winzip.com\" target=\"_blank\">WinZip</a> to decompress "
 "the <code>.gz</code> file."
 msgstr ""
-"The <code>.jsonl</code> file is compressed using Gzip. Windows users need <a "
-"href=\"https://www.7-zip.org\" target=\"_blank\">7-Zip</a>, <a "
+"The <code>.jsonl</code> file is compressed using Gzip. Windows users need <a"
+" href=\"https://www.7-zip.org\" target=\"_blank\">7-Zip</a>, <a "
 "href=\"https://www.win-rar.com\" target=\"_blank\">WinRAR</a> or <a "
 "href=\"https://www.winzip.com\" target=\"_blank\">WinZip</a> to decompress "
 "the <code>.gz</code> file."
@@ -339,23 +338,25 @@ msgstr ""
 
 #: data_registry/templates/detail.html:321
 msgid ""
-"Excel files can have at most <a href=\"https://support.microsoft.com/en-us/"
-"office/excel-specifications-and-"
+"Excel files can have at most <a href=\"https://support.microsoft.com/en-"
+"us/office/excel-specifications-and-"
 "limits-1672b34d-7043-467e-8e27-269d656771c3\" target=\"_blank\">1,048,576 "
 "rows</a>. If a year is missing, it had too many rows."
 msgstr ""
-"Excel files can have at most <a href=\"https://support.microsoft.com/en-us/"
-"office/excel-specifications-and-"
+"Excel files can have at most <a href=\"https://support.microsoft.com/en-"
+"us/office/excel-specifications-and-"
 "limits-1672b34d-7043-467e-8e27-269d656771c3\" target=\"_blank\">1,048,576 "
 "rows</a>. If a year is missing, it had too many rows."
 
 #: data_registry/templates/detail.html:330
 msgid ""
-"Each contracting process is represented as one row in the <code>main.csv</"
-"code> file. Other files link to it via the <code>_link_main</code> column."
+"Each contracting process is represented as one row in the "
+"<code>main.csv</code> file. Other files link to it via the "
+"<code>_link_main</code> column."
 msgstr ""
-"Each contracting process is represented as one row in the <code>main.csv</"
-"code> file. Other files link to it via the <code>_link_main</code> column."
+"Each contracting process is represented as one row in the "
+"<code>main.csv</code> file. Other files link to it via the "
+"<code>_link_main</code> column."
 
 #: data_registry/templates/detail.html:335
 msgid ""
@@ -453,7 +454,7 @@ msgstr "Data Registry"
 
 #: data_registry/templates/index.html:7 data_registry/templates/index.html:22
 msgid "Search for and access datasets by country"
-msgstr "Search for and download public contracts data in OCDS format"
+msgstr "Search for and access datasets of public contracts"
 
 #: data_registry/templates/index.html:25
 msgid "START YOUR SEARCH"
@@ -466,28 +467,28 @@ msgstr "Data by country"
 #: data_registry/templates/index.html:43
 msgid ""
 "We've designed the Data Registry to help you find and access public "
-"procurement datasets that are available in the <a href=\"https://standard."
-"open-contracting.org/latest/en/primer/what/\" target=\"_blank\">OCDS format</"
-"a>."
+"procurement datasets that are available in the <a "
+"href=\"https://standard.open-contracting.org/latest/en/primer/what/\" "
+"target=\"_blank\">OCDS format</a>."
 msgstr ""
 "We've designed the Data Registry to help you find and access public "
-"procurement datasets that are available in the <a href=\"https://standard."
-"open-contracting.org/latest/en/primer/what/\" target=\"_blank\">OCDS format</"
-"a>."
+"procurement datasets that are available in the <a "
+"href=\"https://standard.open-contracting.org/latest/en/primer/what/\" "
+"target=\"_blank\">OCDS format</a>."
 
 #: data_registry/templates/index.html:48
 msgid ""
-"Currently, you can access data from over 50 publishers from around the world "
-"as <b>compiled releases</b> with the latest value of each field. <a "
-"href=\"https://standard.open-contracting.org/latest/en/primer/"
-"releases_and_records/\" target=\"_blank\">Learn about how OCDS data is "
-"published</a>."
+"Currently, you can access data from over 50 publishers from around the world"
+" as <b>compiled releases</b> with the latest value of each field. <a "
+"href=\"https://standard.open-"
+"contracting.org/latest/en/primer/releases_and_records/\" "
+"target=\"_blank\">Learn about how OCDS data is published</a>."
 msgstr ""
-"Currently, you can access data from over 50 publishers from around the world "
-"as <b>compiled releases</b> with the latest value of each field. <a "
-"href=\"https://standard.open-contracting.org/latest/en/primer/"
-"releases_and_records/\" target=\"_blank\">Learn about how OCDS data is "
-"published</a>."
+"Currently, you can access data from over 50 publishers from around the world"
+" as <b>compiled releases</b> with the latest value of each field. <a "
+"href=\"https://standard.open-"
+"contracting.org/latest/en/primer/releases_and_records/\" "
+"target=\"_blank\">Learn about how OCDS data is published</a>."
 
 #: data_registry/templates/index.html:64
 msgid "Learn about the source"
@@ -498,8 +499,8 @@ msgid ""
 "Information about each data source is provided to help you to understand "
 "what fields are available or if there are any documents."
 msgstr ""
-"Each source comes with information to help you understand what data fields "
-"are part of the datasets and if it includes documents."
+"Information about each data source is provided to help you to understand "
+"what fields are available or if there are any documents."
 
 #: data_registry/templates/index.html:72
 msgid ""
