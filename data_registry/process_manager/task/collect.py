@@ -2,7 +2,6 @@ import logging
 import os
 import re
 import shutil
-from datetime import date
 from urllib.parse import urljoin
 
 from django.conf import settings
@@ -55,9 +54,6 @@ class Collect:
         self.job.context["spider"] = self.spider
         self.job.context["scrapy_log"] = urljoin(self.host, f"logs/{self.project}/{self.spider}/{job_id}.log")
         self.job.save()
-
-        self.collection.last_update = date.today()
-        self.collection.save()
 
     def get_status(self):
         job_id = self.job.context.get("job_id")

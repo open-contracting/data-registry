@@ -113,6 +113,9 @@ def process(collection):
                     job.end = timezone.now()
                     job.save()
 
+                    job.collection.last_retrieved = job.task.get(type__in=("collect", "test")).end
+                    job.collection.save()
+
                     # set active job
                     Job.objects.filter(collection=job.collection).update(
                         active=Case(When(id=job.id, then=True), default=False, output_field=BooleanField())
@@ -129,7 +132,7 @@ def should_be_planned(collection):
     jobs = Job.objects.filter(~Q(status=Job.Status.COMPLETED), collection=collection)
     if not jobs:
         # update frequency is not set, plan next job
-        if not collection.update_frequency:
+        if not collection.retrieval_frequency:
             return True
 
         # plan next job depending on update frequency
@@ -138,9 +141,9 @@ def should_be_planned(collection):
             return True
 
         delta = timedelta(days=30)  # MONTHLY
-        if collection.update_frequency == "HALF_YEARLY":
+        if collection.retrieval_frequency == "HALF_YEARLY":
             delta = timedelta(days=180)
-        elif collection.update_frequency == "ANNUALLY":
+        elif collection.retrieval_frequency == "ANNUALLY":
             delta = timedelta(days=365)
 
         return date.today() >= (last_job.start + delta).date()

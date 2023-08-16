@@ -129,10 +129,9 @@ class Collection(models.Model):
         help_text="The remaining paragraphs of the description of the publication, as "
         'Markdown text, which will appear under "Show more".',
     )
-    last_update = models.DateField(
+    last_retrieved = models.DateField(
         blank=True,
         null=True,
-        verbose_name="last retrieved",
         help_text="The date on which the most recent 'collect' job task completed.",
     )
 
@@ -154,16 +153,30 @@ class Collection(models.Model):
 
     source_url = models.TextField(blank=True, verbose_name="source URL", help_text="The URL of the publication.")
 
-    class Frequency(models.TextChoices):
+    class RetrievalFrequency(models.TextChoices):
         MONTHLY = "MONTHLY", _("Monthly")
         HALF_YEARLY = "HALF_YEARLY", _("Every 6 months")
         ANNUALLY = "ANNUALLY", _("Annually")
+        NEVER = "NEVER", _("This dataset is no longer updated by the publisher")
 
-    update_frequency = models.TextField(
-        choices=Frequency.choices,
+    class UpdateFrequency(models.TextChoices):
+        REAL_TIME = "REAL_TIME", _("Real time")
+        HOURLY = "HOURLY", _("Hourly")
+        DAILY = "DAILY", _("Daily")
+        QUARTERLY = "QUARTERLY", _("Every 3 months")
+        ANNUALLY = "ANNUALLY", _("Annually")
+
+    retrieval_frequency = models.TextField(
+        choices=RetrievalFrequency.choices,
         blank=True,
         help_text="The frequency at which the registry updates the publication, based on the "
         "frequency at which the publication is updated.",
+    )
+
+    update_frequency = models.TextField(
+        choices=UpdateFrequency.choices,
+        blank=True,
+        help_text="The frequency at which the source updates the publication.",
     )
 
     summary = MarkdownxField(

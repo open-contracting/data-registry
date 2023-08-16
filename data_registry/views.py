@@ -108,7 +108,7 @@ def search(request):
     facets = {
         "letters": {value: 0 for value in alphabets[language_code]},
         "date_ranges": {value: 0 for value in date_ranges},
-        "frequencies": {value: 0 for value in Collection.Frequency.values},
+        "frequencies": {value: 0 for value in Collection.UpdateFrequency.values},
         "counts": {value: 0 for value in counts},
     }
     for value, n in facet_counts(qs, "letter"):
@@ -135,7 +135,7 @@ def search(request):
         "collections": qs,
         "facets": facets,
         "date_ranges": date_ranges,
-        "frequencies": Collection.Frequency.choices,
+        "frequencies": Collection.UpdateFrequency.choices,
         "counts": counts,
     }
     return render(request, "search.html", context)
