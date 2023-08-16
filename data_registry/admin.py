@@ -185,7 +185,7 @@ class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
         (
             _("Management"),
             {
-                "fields": ("source_id", "active_job", "public", "frozen", "last_update"),
+                "fields": ("source_id", "active_job", "public", "frozen", "last_retrieved"),
             },
         ),
         (
@@ -209,6 +209,7 @@ class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
                 "description": translation_reminder,
                 "fields": (
                     "retrieval_frequency",
+                    "update_frequency",
                     "license_custom",
                     "source_url",
                     "language_en",
@@ -240,7 +241,7 @@ class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
         ),
     )
 
-    readonly_fields = ["last_update"]
+    readonly_fields = ["last_retrieved"]
 
     inlines = [IssueInLine]
 

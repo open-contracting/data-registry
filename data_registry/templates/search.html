@@ -105,7 +105,7 @@ observer.observe(document.querySelector('.toppable'))
             {% capture content %}
             {% endcapture %}
             {% include "includes/radiobuttons.html" with title=_("Data date range") key="date_range" items=date_ranges.items facet_counts=facets.date_ranges content=content %}
-            {% include "includes/checkboxes.html" with title=_("Retrieval frequency") key="retrieval_frequency" items=frequencies facet_counts=facets.frequencies %}
+            {% include "includes/checkboxes.html" with title=_("Update frequency") key="update_frequency" items=frequencies facet_counts=facets.frequencies %}
             {% include "includes/checkboxes.html" with title=_("Data contains") key="counts" items=counts.items facet_counts=facets.counts %}
         </div>
     </div>
@@ -146,10 +146,13 @@ observer.observe(document.querySelector('.toppable'))
                     <dl class="mb-0 mb-md-n2 list-desc-inline">
                         <dt>{% translate "Data date range:" %}</dt>
                         <dd>{{ collection.date_from|date:"M Y" }} - {{ collection.date_to|date:"M Y" }}</dd>
-                        <dt>{% translate "Retrieval frequency:" %}</dt>
-                        <dd>{{ collection.get_retrieval_frequency_display }}</dd>
+                        <dt>{% translate "Update frequency:" %}</dt>
+                        <dd>{{ collection.get_update_frequency_display }}</dd>
                         <dt>{% translate "Last retrieved:" %}</dt>
-                        <dd>{{ collection.last_update|date:"M Y" }}</dd>
+                        <dd>
+                            {{ collection.last_retrieved|date:"M Y" }}
+                            ({% blocktranslate with retrieval_frequency=collection.get_retrieval_frequency_display %}retrieved {{ retrieval_frequency }}{% endblocktranslate %})
+                        </dd>
                     </dl>
                 </div>
                 <div class="col-md-auto col-lg">
