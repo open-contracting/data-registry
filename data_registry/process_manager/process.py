@@ -113,6 +113,9 @@ def process(collection):
                     job.end = timezone.now()
                     job.save()
 
+                    job.collection.last_retrieved = job.task.get(type="collect").end
+                    job.collection.save()
+
                     # set active job
                     Job.objects.filter(collection=job.collection).update(
                         active=Case(When(id=job.id, then=True), default=False, output_field=BooleanField())
