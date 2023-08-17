@@ -146,7 +146,7 @@ msgstr "Obtenido por última vez:"
 #: data_registry/templates/search.html:154
 #, python-format
 msgid "retrieved %(retrieval_frequency)s"
-msgstr "descargado %(retrieval_frequency)s"
+msgstr "descarga %(retrieval_frequency)s"
 
 #: data_registry/templates/detail.html:129
 msgid "OCID prefix:"
