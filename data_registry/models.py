@@ -163,6 +163,7 @@ class Collection(models.Model):
         REAL_TIME = "REAL_TIME", _("Real time")
         HOURLY = "HOURLY", _("Hourly")
         DAILY = "DAILY", _("Daily")
+        MONTHLY = "MONTHLY", _("Monthly")
         QUARTERLY = "QUARTERLY", _("Every 3 months")
         ANNUALLY = "ANNUALLY", _("Annually")
 
