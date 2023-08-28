@@ -208,7 +208,7 @@ def update_collection_metadata(job):
         job.date_from = parse_date(meta.get("published_from"))
         job.date_to = parse_date(meta.get("published_to"))
         job.license = meta.get("data_license") or ""
-        job.ocid_prefix = meta.get("ocid_prefix")
+        job.ocid_prefix = meta.get("ocid_prefix") or ""
         job.save()
 
 
