@@ -18,39 +18,39 @@ Learn about and download the OCDS data for {{ country }}: {{ title }}.
 const catalog = JSON.parse('{% cache None catalog LANGUAGE_CODE %}{% catalog_str %}{% endcache %}')
 
 function gettext (msgid) {
-    const value = catalog[msgid]
-    if (typeof value === 'undefined') {
-        return msgid
-    }
-    if (typeof value === 'string') {
-        return value
-    }
-    return value[0]
+  const value = catalog[msgid]
+  if (typeof value === 'undefined') {
+    return msgid
+  }
+  if (typeof value === 'string') {
+    return value
+  }
+  return value[0]
 }
 
 document.querySelectorAll('.toggleable').forEach(toggleable => {
-    const toggle = document.createElement('a')
+  const toggle = document.createElement('a')
 
-    toggle.textContent = gettext('Show more')
-    toggle.setAttribute('aria-controls', toggleable.id)
-    toggle.ariaExpanded = false
-    toggle.href = '#'
+  toggle.textContent = gettext('Show more')
+  toggle.setAttribute('aria-controls', toggleable.id)
+  toggle.ariaExpanded = false
+  toggle.href = '#'
 
-    toggle.addEventListener('click', event => {
-        event.preventDefault()
-        const collapsed = toggleable.toggleAttribute('hidden')
-        toggle.textContent = collapsed ? gettext('Show more') : gettext('Show less')
-        toggle.ariaExpanded = !collapsed
-    })
+  toggle.addEventListener('click', event => {
+    event.preventDefault()
+    const collapsed = toggleable.toggleAttribute('hidden')
+    toggle.textContent = collapsed ? gettext('Show more') : gettext('Show less')
+    toggle.ariaExpanded = !collapsed
+  })
 
-    let insert = toggle
-    if (toggleable.previousElementSibling.tagName === 'P') {
-        insert = document.createElement('p')
-        insert.append(toggle)
-    }
+  let insert = toggle
+  if (toggleable.previousElementSibling.tagName === 'P') {
+    insert = document.createElement('p')
+    insert.append(toggle)
+  }
 
-    toggleable.insertAdjacentElement('beforebegin', insert)
-    toggleable.setAttribute('hidden', '')
+  toggleable.insertAdjacentElement('beforebegin', insert)
+  toggleable.setAttribute('hidden', '')
 })
 </script>
 {% endblock %}
