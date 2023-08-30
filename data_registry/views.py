@@ -137,6 +137,7 @@ def search(request):
         "date_ranges": date_ranges,
         "frequencies": Collection.UpdateFrequency.choices,
         "counts": counts,
+        "never": Collection.RetrievalFrequency.NEVER,
     }
     return render(request, "search.html", context)
 
@@ -152,7 +153,11 @@ def detail(request, id):
     job = collection.job.filter(active=True).first()
     files = Export.get_files(job and job.id)
 
-    return render(request, "detail.html", {"collection": collection, "job": job, "files": files})
+    return render(
+        request,
+        "detail.html",
+        {"collection": collection, "job": job, "files": files, "never": Collection.RetrievalFrequency.NEVER},
+    )
 
 
 @login_required

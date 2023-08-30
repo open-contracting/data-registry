@@ -119,7 +119,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
         <dl class="mb-n2 list-desc-grid">
             <dt>{% translate "Data date range:" %}</dt>
             <dd>{{ job.date_from|date:"M Y" }} - {{ job.date_to|date:"M Y" }}
-                {% if collection.retrieval_frequency == "NEVER" %}
+                {% if collection.retrieval_frequency == never %}
                     ({{ collection.get_retrieval_frequency_display }})
                 {% endif %}
             </dd>
@@ -128,7 +128,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
             <dt>{% translate "Last retrieved:" %}</dt>
             <dd>
                 {{ collection.last_retrieved|date:"M Y" }}
-                {% if collection.retrieval_frequency != "NEVER" %}
+                {% if collection.retrieval_frequency != never %}
                     ({% blocktranslate with retrieval_frequency=collection.get_retrieval_frequency_display.lower %}retrieved {{ retrieval_frequency }}{% endblocktranslate %})
                 {% endif %}
             </dd>

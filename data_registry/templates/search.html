@@ -147,7 +147,7 @@ observer.observe(document.querySelector('.toppable'))
                         <dt>{% translate "Data date range:" %}</dt>
                         <dd>
                             {{ collection.date_from|date:"M Y" }} - {{ collection.date_to|date:"M Y" }}
-                            {% if collection.retrieval_frequency == "NEVER" %}
+                            {% if collection.retrieval_frequency == never %}
                                 ({{ collection.get_retrieval_frequency_display }})
                             {% endif %}
                         </dd>
@@ -156,7 +156,7 @@ observer.observe(document.querySelector('.toppable'))
                         <dt>{% translate "Last retrieved:" %}</dt>
                         <dd>
                             {{ collection.last_retrieved|date:"M Y" }}
-                            {% if collection.retrieval_frequency != "NEVER" %}
+                            {% if collection.retrieval_frequency != never %}
                                 ({% blocktranslate with retrieval_frequency=collection.get_retrieval_frequency_display.lower %}retrieved {{ retrieval_frequency }}{% endblocktranslate %})
                             {% endif %}
                         </dd>
