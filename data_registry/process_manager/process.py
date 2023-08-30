@@ -110,11 +110,11 @@ def process(collection):
                     job.end = timezone.now()
                     job.save()
 
-                    job.collection.last_retrieved = job.task.get(type__in=("collect", "test")).end
-                    job.collection.save()
+                    collection.last_retrieved = job.task.get(type__in=("collect", "test")).end
+                    collection.save()
 
                     # set active job
-                    job.collection.job.update(
+                    collection.job.update(
                         active=Case(When(id=job.id, then=True), default=False, output_field=BooleanField())
                     )
 
