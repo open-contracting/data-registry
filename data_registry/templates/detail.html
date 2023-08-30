@@ -14,10 +14,10 @@ Learn about and download the OCDS data for {{ country }}: {{ title }}.
 {% block script %}
 {% get_current_language as LANGUAGE_CODE %}
 <script>
-{# https://github.com/django/django/blob/stable/3.2.x/django/views/i18n.py #}
-const catalog = {% cache None catalog LANGUAGE_CODE %}{% catalog_str %}{% endcache %}
+// {# https://github.com/django/django/blob/stable/3.2.x/django/views/i18n.py #}
+const catalog = JSON.parse('{% cache None catalog LANGUAGE_CODE %}{% catalog_str %}{% endcache %}')
 
-function gettext(msgid) {
+function gettext (msgid) {
     const value = catalog[msgid]
     if (typeof value === 'undefined') {
         return msgid
@@ -32,7 +32,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
     const toggle = document.createElement('a')
 
     toggle.textContent = gettext('Show more')
-    toggle.setAttribute("aria-controls", toggleable.id)
+    toggle.setAttribute('aria-controls', toggleable.id)
     toggle.ariaExpanded = false
     toggle.href = '#'
 
@@ -40,11 +40,11 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
         event.preventDefault()
         const collapsed = toggleable.toggleAttribute('hidden')
         toggle.textContent = collapsed ? gettext('Show more') : gettext('Show less')
-        toggle.ariaExpanded = collapsed ? false : true
+        toggle.ariaExpanded = !collapsed
     })
 
-    let insert = toggle;
-    if (toggleable.previousElementSibling.tagName == "P") {
+    let insert = toggle
+    if (toggleable.previousElementSibling.tagName === 'P') {
         insert = document.createElement('p')
         insert.append(toggle)
     }
