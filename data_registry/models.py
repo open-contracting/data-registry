@@ -278,7 +278,14 @@ class Task(models.Model):
     note = models.TextField(blank=True, help_text="Metadata about any failure.")
     context = models.JSONField(blank=True, default=dict)
 
-    type = models.TextField(blank=True)
+    class Type(models.TextChoices):
+        COLLECT = "collect"
+        PROCESS = "process"
+        PELICAN = "pelican"
+        EXPORTER = "exporter"
+        FLATTENER = "flattener"
+
+    type = models.TextField(choices=Type.choices, blank=True)
     order = models.IntegerField(blank=True, null=True)
 
     created = models.DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)

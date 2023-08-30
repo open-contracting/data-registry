@@ -1,3 +1,4 @@
+from data_registry.models import Task
 from data_registry.process_manager.task.collect import Collect
 from data_registry.process_manager.task.exporter import Exporter
 from data_registry.process_manager.task.flattener import Flattener
@@ -17,15 +18,15 @@ class TaskFactory:
         """
 
         match task.type:
-            case "collect":
+            case Task.Type.COLLECT:
                 return Collect(collection, job)
-            case "process":
+            case Task.Type.PROCESS:
                 return Process(job)
-            case "pelican":
+            case Task.Type.PELICAN:
                 return Pelican(job)
-            case "exporter":
+            case Task.Type.EXPORTER:
                 return Exporter(job)
-            case "flattener":
+            case Task.Type.FLATTENER:
                 return Flattener(job)
             case _:
                 raise Exception("Unsupported task type")
