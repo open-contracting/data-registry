@@ -90,7 +90,7 @@ msgstr "This dataset is no longer updated by the publisher"
 
 #: data_registry/models.py:163
 msgid "Unknown"
-msgstr ""
+msgstr "Unknown"
 
 #: data_registry/models.py:164
 msgid "Real time"
@@ -106,7 +106,7 @@ msgstr "Daily"
 
 #: data_registry/models.py:167
 msgid "Weekly"
-msgstr ""
+msgstr "Weekly"
 
 #: data_registry/models.py:169
 msgid "Every 3 months"
