@@ -145,13 +145,20 @@ observer.observe(document.querySelector('.toppable'))
                 <div class="col-md">
                     <dl class="mb-0 mb-md-n2 list-desc-inline">
                         <dt>{% translate "Data date range:" %}</dt>
-                        <dd>{{ collection.date_from|date:"M Y" }} - {{ collection.date_to|date:"M Y" }}</dd>
+                        <dd>
+                            {{ collection.date_from|date:"M Y" }} - {{ collection.date_to|date:"M Y" }}
+                            {% if collection.retrieval_frequency == "NEVER" %}
+                                ({{ collection.get_retrieval_frequency_display }})
+                            {% endif %}
+                        </dd>
                         <dt>{% translate "Update frequency:" %}</dt>
                         <dd>{{ collection.get_update_frequency_display }}</dd>
                         <dt>{% translate "Last retrieved:" %}</dt>
                         <dd>
                             {{ collection.last_retrieved|date:"M Y" }}
-                            ({% blocktranslate with retrieval_frequency=collection.get_retrieval_frequency_display.lower %}retrieved {{ retrieval_frequency }}{% endblocktranslate %})
+                            {% if collection.retrieval_frequency != "NEVER" %}
+                                ({% blocktranslate with retrieval_frequency=collection.get_retrieval_frequency_display.lower %}retrieved {{ retrieval_frequency }}{% endblocktranslate %})
+                            {% endif %}
                         </dd>
                     </dl>
                 </div>

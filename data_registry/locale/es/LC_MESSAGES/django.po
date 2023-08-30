@@ -86,7 +86,7 @@ msgstr "Anual"
 
 #: data_registry/models.py:160
 msgid "This dataset is no longer updated by the publisher"
-msgstr "Este conjunto de datos ya no es actualizado por el publicador"
+msgstr "Los datos ya no son actualizados por el publicador"
 
 #: data_registry/models.py:163
 msgid "Unknown"
