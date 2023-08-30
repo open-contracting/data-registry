@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-16 19:23-0400\n"
+"POT-Creation-Date: 2023-08-30 14:05-0400\n"
 "PO-Revision-Date: 2021-08-04 17:44+0000\n"
 "Last-Translator: Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2023\n"
 "Language-Team: Spanish (https://app.transifex.com/open-contracting-partnership-1/teams/123427/es/)\n"
@@ -72,15 +72,15 @@ msgstr "Detalles"
 msgid "Data availability"
 msgstr "Disponibilidad de datos"
 
-#: data_registry/models.py:157
+#: data_registry/models.py:157 data_registry/models.py:168
 msgid "Monthly"
 msgstr "Mensual"
 
-#: data_registry/models.py:158
+#: data_registry/models.py:158 data_registry/models.py:170
 msgid "Every 6 months"
 msgstr "Cada 6 meses"
 
-#: data_registry/models.py:159 data_registry/models.py:167
+#: data_registry/models.py:159 data_registry/models.py:171
 msgid "Annually"
 msgstr "Anual"
 
@@ -89,18 +89,26 @@ msgid "This dataset is no longer updated by the publisher"
 msgstr "Este conjunto de datos ya no es actualizado por el publicador"
 
 #: data_registry/models.py:163
+msgid "Unknown"
+msgstr "Desconocida"
+
+#: data_registry/models.py:164
 msgid "Real time"
 msgstr "En tiempo real"
 
-#: data_registry/models.py:164
+#: data_registry/models.py:165
 msgid "Hourly"
 msgstr "Cada hora"
 
-#: data_registry/models.py:165
-msgid "Daily"
-msgstr "Diariamente"
-
 #: data_registry/models.py:166
+msgid "Daily"
+msgstr "Diaria"
+
+#: data_registry/models.py:167
+msgid "Weekly"
+msgstr "Semanal"
+
+#: data_registry/models.py:169
 msgid "Every 3 months"
 msgstr "Cada 3 meses"
 

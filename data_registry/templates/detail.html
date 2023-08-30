@@ -124,7 +124,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
             <dt>{% translate "Last retrieved:" %}</dt>
             <dd>
                 {{ collection.last_retrieved|date:"M Y" }}
-                ({% blocktranslate with retrieval_frequency=collection.get_retrieval_frequency_display %}retrieved {{ retrieval_frequency }}{% endblocktranslate %})
+                ({% blocktranslate with retrieval_frequency=collection.get_retrieval_frequency_display.lower %}retrieved {{ retrieval_frequency }}{% endblocktranslate %})
             </dd>
             <dt>{% translate "OCID prefix:" %}</dt>
             <dd>{{ job.ocid_prefix|default:"-" }}</dd>

@@ -151,7 +151,7 @@ observer.observe(document.querySelector('.toppable'))
                         <dt>{% translate "Last retrieved:" %}</dt>
                         <dd>
                             {{ collection.last_retrieved|date:"M Y" }}
-                            ({% blocktranslate with retrieval_frequency=collection.get_retrieval_frequency_display %}retrieved {{ retrieval_frequency }}{% endblocktranslate %})
+                            ({% blocktranslate with retrieval_frequency=collection.get_retrieval_frequency_display.lower %}retrieved {{ retrieval_frequency }}{% endblocktranslate %})
                         </dd>
                     </dl>
                 </div>
