@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='collection',
             name='update_frequency',
-            field=models.TextField(blank=True, choices=[('UNKNOWN', 'Unknown'), ('REAL_TIME', 'Real time'), ('HOURLY', 'Hourly'), ('DAILY', 'Daily'), ('WEEKLY', 'Weekly'), ('MONTHLY', 'Monthly'), ('QUARTERLY', 'Every 3 months'), ('EVERY_SIX_MONTHS', 'Every 6 months'), ('ANNUALLY', 'Annually')], default='UNKNOWN', help_text='The frequency at which the source updates the publication.'),
+            field=models.TextField(blank=True, choices=[('UNKNOWN', 'Unknown'), ('REAL_TIME', 'Real time'), ('HOURLY', 'Hourly'), ('DAILY', 'Daily'), ('WEEKLY', 'Weekly'), ('MONTHLY', 'Monthly'), ('QUARTERLY', 'Every 3 months'), ('HALF_YEARLY', 'Every 6 months'), ('ANNUALLY', 'Annually')], default='UNKNOWN', help_text='The frequency at which the source updates the publication.'),
         ),
     ]

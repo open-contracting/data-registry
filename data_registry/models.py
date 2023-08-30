@@ -167,7 +167,7 @@ class Collection(models.Model):
         WEEKLY = "WEEKLY", _("Weekly")
         MONTHLY = "MONTHLY", _("Monthly")
         QUARTERLY = "QUARTERLY", _("Every 3 months")
-        SIX_MONTHS = "EVERY_SIX_MONTHS", _("Every 6 months")
+        HALF_YEARLY = "HALF_YEARLY", _("Every 6 months")
         ANNUALLY = "ANNUALLY", _("Annually")
 
     retrieval_frequency = models.TextField(
