@@ -17,10 +17,6 @@ from django.utils.translation import get_language, get_language_from_request
 from django.utils.translation import gettext as _
 
 from data_registry.models import Collection, Job
-from data_registry.process_manager.task.collect import Collect
-from data_registry.process_manager.task.exporter import Exporter
-from data_registry.process_manager.task.pelican import Pelican
-from data_registry.process_manager.task.process import Process
 from data_registry.util import collection_queryset
 from exporter.util import Export
 
@@ -170,18 +166,6 @@ def spiders(request):
         raise JsonResponse(json, status=503, safe=False)
 
     return JsonResponse(json.get("spiders"), safe=False)
-
-
-@login_required
-def wipe_job(request, job_id):
-    job = get_object_or_404(Job, pk=job_id)
-
-    Collect(job.collection, job).wipe()
-    Process(job).wipe()
-    Pelican(job).wipe()
-    Exporter(job).wipe()
-
-    return JsonResponse(True, safe=False)
 
 
 def excel_data(request, job_id, job_range=None):

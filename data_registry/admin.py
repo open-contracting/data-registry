@@ -14,6 +14,7 @@ from markdownx.widgets import AdminMarkdownxWidget
 from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, TranslationTabularInline
 
 from data_registry.models import Collection, Issue, Job, License, Task
+from data_registry.process_manager.util import get_runner
 
 logger = logging.getLogger(__name__)
 
@@ -400,3 +401,9 @@ class JobAdmin(admin.ModelAdmin):
             return f"{last_completed_task['type']} ({last_completed_task['order']}/{len(settings.JOB_TASKS_PLAN)})"
 
         return None
+
+    def delete_model(self, request, obj):
+        for task in obj.task:
+            get_runner(obj, task).wipe()
+
+        super().delete_model(request, obj)
