@@ -9,5 +9,5 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - run: npm install eslint-plugin-django standard
-      - run: npx standard --plugin django '**/*.html'
+      - run: npm install eslint-plugin-html standard
+      - run: npx standard --plugin html '**/*.html'
