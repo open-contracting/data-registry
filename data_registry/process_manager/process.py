@@ -8,7 +8,7 @@ from django.db.models import BooleanField, Case, Q, When
 from django.utils import timezone
 
 from data_registry.exceptions import RecoverableException
-from data_registry.models import Job, Task
+from data_registry.models import Collection, Job, Task
 from data_registry.process_manager.task.factory import TaskFactory
 from data_registry.process_manager.util import request
 
@@ -141,9 +141,9 @@ def should_be_planned(collection):
             return True
 
         delta = timedelta(days=30)  # MONTHLY
-        if collection.retrieval_frequency == "HALF_YEARLY":
+        if collection.retrieval_frequency == Collection.RetrievalFrequency.HALF_YEARLY:
             delta = timedelta(days=180)
-        elif collection.retrieval_frequency == "ANNUALLY":
+        elif collection.retrieval_frequency == Collection.RetrievalFrequency.ANNUALLY:
             delta = timedelta(days=365)
 
         return date.today() >= (last_job.start + delta).date()

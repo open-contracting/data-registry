@@ -160,11 +160,14 @@ class Collection(models.Model):
         NEVER = "NEVER", _("This dataset is no longer updated by the publisher")
 
     class UpdateFrequency(models.TextChoices):
+        UNKNOWN = "UNKNOWN", _("Unknown")
         REAL_TIME = "REAL_TIME", _("Real time")
         HOURLY = "HOURLY", _("Hourly")
         DAILY = "DAILY", _("Daily")
+        WEEKLY = "WEEKLY", _("Weekly")
         MONTHLY = "MONTHLY", _("Monthly")
         QUARTERLY = "QUARTERLY", _("Every 3 months")
+        HALF_YEARLY = "HALF_YEARLY", _("Every 6 months")
         ANNUALLY = "ANNUALLY", _("Annually")
 
     retrieval_frequency = models.TextField(
@@ -175,6 +178,7 @@ class Collection(models.Model):
     )
 
     update_frequency = models.TextField(
+        default=UpdateFrequency.UNKNOWN,
         choices=UpdateFrequency.choices,
         blank=True,
         help_text="The frequency at which the source updates the publication.",

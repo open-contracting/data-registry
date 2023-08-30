@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-16 20:26-0400\n"
+"POT-Creation-Date: 2023-08-30 14:05-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -64,15 +64,15 @@ msgstr ""
 msgid "Data availability"
 msgstr ""
 
-#: data_registry/models.py:157 data_registry/models.py:166
+#: data_registry/models.py:157 data_registry/models.py:168
 msgid "Monthly"
 msgstr ""
 
-#: data_registry/models.py:158
+#: data_registry/models.py:158 data_registry/models.py:170
 msgid "Every 6 months"
 msgstr ""
 
-#: data_registry/models.py:159 data_registry/models.py:168
+#: data_registry/models.py:159 data_registry/models.py:171
 msgid "Annually"
 msgstr ""
 
@@ -81,18 +81,26 @@ msgid "This dataset is no longer updated by the publisher"
 msgstr ""
 
 #: data_registry/models.py:163
-msgid "Real time"
+msgid "Unknown"
 msgstr ""
 
 #: data_registry/models.py:164
-msgid "Hourly"
+msgid "Real time"
 msgstr ""
 
 #: data_registry/models.py:165
+msgid "Hourly"
+msgstr ""
+
+#: data_registry/models.py:166
 msgid "Daily"
 msgstr ""
 
 #: data_registry/models.py:167
+msgid "Weekly"
+msgstr ""
+
+#: data_registry/models.py:169
 msgid "Every 3 months"
 msgstr ""
 
