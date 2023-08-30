@@ -9,8 +9,7 @@ from django.utils import timezone
 
 from data_registry.exceptions import RecoverableException
 from data_registry.models import Collection, Job, Task
-from data_registry.process_manager.task.factory import TaskFactory
-from data_registry.process_manager.util import request
+from data_registry.process_manager.util import get_runner, request
 
 logger = logging.getLogger(__name__)
 
@@ -30,7 +29,7 @@ def process(collection):
                 if task.status == Task.Status.COMPLETED:
                     continue
 
-                runner = TaskFactory.get_task(collection, job, task)
+                runner = get_runner(job, task)
 
                 try:
                     if task.status in [Task.Status.WAITING, Task.Status.RUNNING]:
