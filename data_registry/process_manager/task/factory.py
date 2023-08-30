@@ -16,17 +16,16 @@ class TaskFactory:
         -  ``wipe()`` deletes any side-effects of ``run()``
         """
 
-        type = task.type
-
-        if type == "collect":
-            return Collect(collection, job)
-        elif type == "process":
-            return Process(job)
-        elif type == "pelican":
-            return Pelican(job)
-        elif type == "exporter":
-            return Exporter(job)
-        elif type == "flattener":
-            return Flattener(job)
-        else:
-            raise Exception("Unsupported task type")
+        match task.type:
+            case "collect":
+                return Collect(collection, job)
+            case "process":
+                return Process(job)
+            case "pelican":
+                return Pelican(job)
+            case "exporter":
+                return Exporter(job)
+            case "flattener":
+                return Flattener(job)
+            case _:
+                raise Exception("Unsupported task type")

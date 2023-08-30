@@ -11,13 +11,13 @@ class Exporter:
         publish({"collection_id": self.collection_id, "job_id": self.job.id}, "exporter_init")
 
     def get_status(self):
-        status = Export(self.job.id, basename="full.jsonl.gz").status
-        if status == TaskStatus.WAITING:
-            return Task.Status.WAITING
-        if status == TaskStatus.RUNNING:
-            return Task.Status.RUNNING
-        if status == TaskStatus.COMPLETED:
-            return Task.Status.COMPLETED
+        match Export(self.job.id, basename="full.jsonl.gz").status:
+            case TaskStatus.WAITING:
+                return Task.Status.WAITING
+            case TaskStatus.RUNNING:
+                return Task.Status.RUNNING
+            case TaskStatus.COMPLETED:
+                return Task.Status.COMPLETED
 
     def wipe(self):
         publish({"job_id": self.job.id}, "wiper_init")
