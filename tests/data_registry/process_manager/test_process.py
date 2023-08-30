@@ -24,7 +24,7 @@ class ProcessTests(TransactionTestCase):
     def test(self):
         collection = Collection.objects.get(pk=1)
 
-        with patch("data_registry.process_manager.util.get_runner") as mock_get_runner, patch(
+        with patch("data_registry.process_manager.process.get_runner") as mock_get_runner, patch(
             "data_registry.process_manager.process.update_collection_availability"
         ) as mock_update_collection_availability, patch(
             "data_registry.process_manager.process.update_collection_metadata"

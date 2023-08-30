@@ -14,7 +14,7 @@ from markdownx.widgets import AdminMarkdownxWidget
 from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, TranslationTabularInline
 
 from data_registry.models import Collection, Issue, Job, License, Task
-from data_registry.process_manager.util import get_runner
+from data_registry.process_manager.process import get_runner
 
 logger = logging.getLogger(__name__)
 
