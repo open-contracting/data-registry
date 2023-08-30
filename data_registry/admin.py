@@ -72,7 +72,7 @@ class CollectionAdminForm(forms.ModelForm):
         self.fields["country_flag"].choices += tuple((n, n) for n in files)
 
     def save(self, *args, **kwargs):
-        jobs = Job.objects.filter(collection=self.instance)
+        jobs = self.instance.job
 
         active_job = self.cleaned_data["active_job"]
         if active_job:
@@ -246,7 +246,7 @@ class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
     inlines = [IssueInLine]
 
     def active_job(self, obj):
-        return Job.objects.filter(collection=obj, active=True).first()
+        return obj.job.filter(active=True).first()
 
 
 class LicenseAdminForm(forms.ModelForm):

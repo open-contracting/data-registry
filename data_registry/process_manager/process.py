@@ -4,7 +4,7 @@ from urllib.parse import urljoin
 
 from django.conf import settings
 from django.db import transaction
-from django.db.models import BooleanField, Case, Q, When
+from django.db.models import BooleanField, Case, When
 from django.utils import timezone
 
 from data_registry.exceptions import RecoverableException
@@ -19,24 +19,22 @@ def process(collection):
     if should_be_planned(collection):
         plan(collection)
 
-    jobs = Job.objects.filter(~Q(status=Job.Status.COMPLETED), collection=collection)
+    jobs = collection.job.exclude(status=Job.Status.COMPLETED)
 
     for job in jobs:
         with transaction.atomic():
-            # list of job tasks sorted by priority
-            tasks = Task.objects.filter(job=job).order_by("order")
             job_complete = True
 
-            for task in tasks:
+            for task in job.task.order_by("order"):
                 # finished task -> no action needed
                 if task.status == Task.Status.COMPLETED:
                     continue
 
-                _task = TaskFactory.get_task(collection, job, task)
+                runner = TaskFactory.get_task(collection, job, task)
 
                 try:
                     if task.status in [Task.Status.WAITING, Task.Status.RUNNING]:
-                        status = _task.get_status()
+                        status = runner.get_status()
                         logger.debug("Task %s is %s (%s: %s)", task, status, collection.country, collection)
                         if status in [Task.Status.WAITING, Task.Status.RUNNING]:
                             # Reset the task, in case it has recovered.
@@ -59,8 +57,7 @@ def process(collection):
 
                             logger.debug("Job %s is starting (%s: %s)", job, collection.country, collection)
 
-                        # run the task
-                        _task.run()
+                        runner.run()
 
                         task.start = timezone.now()
                         task.status = Task.Status.RUNNING
@@ -117,7 +114,7 @@ def process(collection):
                     job.collection.save()
 
                     # set active job
-                    Job.objects.filter(collection=job.collection).update(
+                    job.collection.job.update(
                         active=Case(When(id=job.id, then=True), default=False, output_field=BooleanField())
                     )
 
@@ -129,14 +126,14 @@ def should_be_planned(collection):
     if collection.frozen:
         return False
 
-    jobs = Job.objects.filter(~Q(status=Job.Status.COMPLETED), collection=collection)
+    jobs = collection.job.exclude(status=Job.Status.COMPLETED)
     if not jobs:
         # update frequency is not set, plan next job
         if not collection.retrieval_frequency:
             return True
 
         # plan next job depending on update frequency
-        last_job = Job.objects.filter(collection=collection, status=Job.Status.COMPLETED).order_by("-start").first()
+        last_job = collection.job.filter(status=Job.Status.COMPLETED).order_by("-start").first()
         if not last_job:
             return True
 
@@ -157,10 +154,8 @@ def plan(collection):
 
     job = collection.job.create(start=timezone.now(), status=Job.Status.PLANNED)
 
-    tasks = settings.JOB_TASKS_PLAN
-
-    for i, t in enumerate(tasks, start=1):
-        job.task.create(status=Task.Status.PLANNED, type=t, order=i)
+    for order, task_type in enumerate(settings.JOB_TASKS_PLAN, start=1):
+        job.task.create(status=Task.Status.PLANNED, type=task_type, order=order)
 
     logger.debug("New job %s planned", job)
 

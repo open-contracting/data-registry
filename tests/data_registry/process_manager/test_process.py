@@ -41,7 +41,7 @@ class ProcessTests(TransactionTestCase):
             # first call initializes job and runs first task
             process(collection)
 
-            job = Job.objects.filter(collection=collection).first()
+            job = collection.job.first()
 
             # skip wipe
             job.keep_all_data = True
@@ -50,7 +50,7 @@ class ProcessTests(TransactionTestCase):
             self.assertIsNotNone(job)
             self.assertIsNotNone(job.start)
 
-            task = Task.objects.filter(job=job).order_by("order").first()
+            task = job.task.order_by("order").first()
 
             self.assertEqual(Task.Status.RUNNING, task.status)
             self.assertIsNotNone(task.start)
@@ -59,7 +59,7 @@ class ProcessTests(TransactionTestCase):
             # next call updates running task state
             process(collection)
 
-            task = Task.objects.filter(job=job).order_by("order").first()
+            task = job.task.order_by("order").first()
 
             self.assertEqual(Task.Status.COMPLETED, task.status)
             self.assertIsNotNone(task.end)
@@ -67,6 +67,6 @@ class ProcessTests(TransactionTestCase):
 
             # the job plan contains only one task, therefore the job should be completed
             # after completion of that task
-            job = Job.objects.filter(collection=collection).first()
+            job = collection.job.first()
             self.assertIsNotNone(job.end)
             self.assertEqual(Job.Status.COMPLETED, job.status)
