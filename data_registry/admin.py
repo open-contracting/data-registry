@@ -403,7 +403,7 @@ class JobAdmin(admin.ModelAdmin):
         return None
 
     def delete_model(self, request, obj):
-        for task in obj.task:
+        for task in obj.task.all():
             get_runner(obj, task).wipe()
 
         super().delete_model(request, obj)
