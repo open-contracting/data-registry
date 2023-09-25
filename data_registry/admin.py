@@ -68,7 +68,7 @@ class CollectionAdminForm(forms.ModelForm):
 
         # collect all years from annual dump files names
         flags_dir = "data_registry/static/img/flags"
-        files = [f.name for f in Path(flags_dir).glob("*") if f.is_file()]
+        files = [f.name for f in Path(flags_dir).iterdir() if f.is_file()]
         files.sort()
         self.fields["country_flag"].choices += tuple((n, n) for n in files)
 
