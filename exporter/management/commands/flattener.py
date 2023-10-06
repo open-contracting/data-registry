@@ -1,6 +1,5 @@
 import gzip
 import logging
-import multiprocessing
 import os
 import shutil
 import tarfile
@@ -92,15 +91,19 @@ def process_file(job_id, file_path):
             if not csv and not xlsx:
                 return
 
+            # flatterer is broken when multithreading.
+            # https://github.com/kindly/flatterer/issues/53
+            threads = 1
+
             # Count JSON lines up to the number of CPUs.
             # https://github.com/kindly/flatterer/issues/46
-            threads = 0
-            max_threads = multiprocessing.cpu_count()
-            with infile.open() as f:
-                for _ in f:
-                    threads += 1
-                    if threads >= max_threads:
-                        break
+            # threads = 0
+            # max_threads = multiprocessing.cpu_count()
+            # with infile.open() as f:
+            #     for _ in f:
+            #         threads += 1
+            #         if threads >= max_threads:
+            #             break
 
             output = flatterer_flatten(export, str(infile), str(outdir), csv=csv, xlsx=xlsx, threads=threads)
 
