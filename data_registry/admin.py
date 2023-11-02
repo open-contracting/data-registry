@@ -198,6 +198,7 @@ class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
                     "country_en",
                     "country_es",
                     "country_ru",
+                    "region",
                     "title_en",
                     "title_es",
                     "title_ru",
