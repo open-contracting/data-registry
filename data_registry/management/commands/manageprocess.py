@@ -18,18 +18,12 @@ class Command(BaseCommand):
         for collection in Collection.objects.all():
             process(collection)
 
-        wiped_jobs = Job.objects.filter(status=Job.Status.COMPLETED, keep_all_data=False, archived=False)
-        for job in wiped_jobs:
-            self.wipe_job(job)
+        for job in Job.objects.filter(status=Job.Status.COMPLETED, keep_all_data=False, archived=False):
+            Collect(job.collection, job).wipe()
+            Process(job).wipe()
+            Pelican(job).wipe()
+
             job.archived = True
             job.save()
 
             logger.info("Job #%s wiped", job.id)
-
-    def wipe_job(self, job):
-        if not job:
-            return
-
-        Collect(job.collection, job).wipe()
-        Process(job).wipe()
-        Pelican(job).wipe()

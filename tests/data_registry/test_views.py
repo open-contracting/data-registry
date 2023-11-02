@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 from django.test import Client, TestCase, override_settings
 
-from data_registry.models import Collection, Job
+from data_registry.models import Collection
 
 
 @override_settings(STORAGES={"staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"}})
@@ -14,8 +14,7 @@ class ViewsTests(TestCase):
             source_id="paraguay_dncp_records",
             public=True,
         )
-        cls.job = Job.objects.create(
-            collection=cls.collection,
+        cls.job = cls.collection.job.create(
             active=True,
         )
 

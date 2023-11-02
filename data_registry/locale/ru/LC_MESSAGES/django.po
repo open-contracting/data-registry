@@ -121,6 +121,14 @@ msgid "Daily"
 msgstr "Ежедневно"
 
 #: data_registry/models.py:180
+msgid "Unknown"
+msgstr "Неизвестный"
+
+#: data_registry/models.py:167
+msgid "Weekly"
+msgstr "Еженедельно"
+
+#: data_registry/models.py:169
 msgid "Every 3 months"
 msgstr "каждые 3 месяца"
 

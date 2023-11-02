@@ -54,7 +54,7 @@ def callback(state, channel, method, properties, input_message):
 def publish_file(job_id):
     export = Export(job_id)
     for entry in os.scandir(export.directory):
-        if not entry.name.endswith(".jsonl.gz") or "_" in entry.name:  # don't process months files
+        if not entry.name.endswith(".jsonl.gz") or "_" in entry.name:  # don't process YYYY_MM files
             continue
         publish({"job_id": job_id, "file_path": entry.path}, "flattener_file")
 
@@ -81,9 +81,16 @@ def process_file(job_id, file_path):
             infile = tmpdir / file_name[:-3]  # remove .gz
             outdir = tmpdir / "flatten"  # force=True deletes this directory
 
-            with gzip.open(file_path) as i:
-                with infile.open("wb") as o:
-                    shutil.copyfileobj(i, o)
+            # flatterer has a gzip_input option. To skip decompression here, we would need to change the
+            # `EXPORTER_MAX_JSON_BYTES_TO_EXCEL` line below.
+            with gzip.open(file_path) as i, infile.open("wb") as o:
+                shutil.copyfileobj(i, o)
+
+            csv = not csv_exists
+            xlsx = not xlsx_exists and infile.stat().st_size < settings.EXPORTER_MAX_JSON_BYTES_TO_EXCEL
+
+            if not csv and not xlsx:
+                return
 
             # Count JSON lines up to the number of CPUs.
             # https://github.com/kindly/flatterer/issues/46
@@ -95,8 +102,6 @@ def process_file(job_id, file_path):
                     if threads >= max_threads:
                         break
 
-            csv = not csv_exists
-            xlsx = not xlsx_exists and infile.stat().st_size < settings.EXPORTER_MAX_JSON_BYTES_TO_EXCEL
             output = flatterer_flatten(export, str(infile), str(outdir), csv=csv, xlsx=xlsx, threads=threads)
 
             if csv:
@@ -104,6 +109,7 @@ def process_file(job_id, file_path):
                     tar.add(outdir / "csv", arcname=infile.stem)  # remove .jsonl
             if xlsx and "xlsx" in output:
                 shutil.move(output["xlsx"], xlsx_path)
+    # https://github.com/open-contracting/data-registry/issues/254
     except FileNotFoundError:
         # Only delete any files whose creation was attempted.
         for path, exists in ((csv_path, csv_exists), (xlsx_path, xlsx_exists)):
@@ -126,11 +132,10 @@ def flatterer_flatten(export, infile, outdir, csv=False, xlsx=False, threads=0):
     try:
         return flatterer.flatten(infile, outdir, csv=csv, xlsx=xlsx, ndjson=True, force=True, threads=threads)
     except RuntimeError:
-        if xlsx:
-            if csv:
-                logger.exception("Attempting CSV-only conversion in %s", export)
-                return flatterer_flatten(export, infile, outdir, csv=csv, xlsx=False, threads=threads)
-            else:
-                logger.exception("Failed Excel-only conversion in %s", export)
-                return {}
-        raise
+        if not xlsx:  # CSV-only should succeed.
+            raise
+        if not csv:  # Excel-only may fail.
+            logger.exception("Failed Excel-only conversion in %s", export)
+            return {}
+        logger.exception("Attempting CSV-only conversion in %s", export)
+        return flatterer_flatten(export, infile, outdir, csv=csv, xlsx=False, threads=threads)

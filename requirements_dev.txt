@@ -57,7 +57,7 @@ filelock==3.3.2
     # via virtualenv
 flake8==3.8.4
     # via -r requirements_dev.in
-flatterer==0.17.1
+flatterer==0.19.10
     # via -r requirements.txt
 gunicorn[setproctitle]==20.1.0
     # via -r requirements.txt
@@ -110,7 +110,7 @@ pika==1.3.2
     # via
     #   -r requirements.txt
     #   yapw
-pillow==9.3.0
+pillow==10.0.1
     # via
     #   -r requirements.txt
     #   django-markdownx
@@ -171,7 +171,7 @@ typing-extensions==4.7.1
     #   black
     #   dj-database-url
     #   django-modeltranslation
-urllib3==1.26.15
+urllib3==2.0.7
     # via
     #   -r requirements.txt
     #   requests

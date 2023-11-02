@@ -113,6 +113,14 @@ msgid "Daily"
 msgstr ""
 
 #: data_registry/models.py:180
+msgid "Unknown"
+msgstr ""
+
+#: data_registry/models.py:167
+msgid "Weekly"
+msgstr ""
+
+#: data_registry/models.py:169
 msgid "Every 3 months"
 msgstr ""
 

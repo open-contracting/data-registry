@@ -4,39 +4,65 @@ from urllib.parse import urljoin
 
 from django.conf import settings
 from django.db import transaction
-from django.db.models import BooleanField, Case, Q, When
+from django.db.models import BooleanField, Case, When
 from django.utils import timezone
 
 from data_registry.exceptions import RecoverableException
-from data_registry.models import Job, Task
-from data_registry.process_manager.task.factory import TaskFactory
+from data_registry.models import Collection, Job, Task
+from data_registry.process_manager.task.collect import Collect
+from data_registry.process_manager.task.exporter import Exporter
+from data_registry.process_manager.task.flattener import Flattener
+from data_registry.process_manager.task.pelican import Pelican
+from data_registry.process_manager.task.process import Process
 from data_registry.process_manager.util import request
 
 logger = logging.getLogger(__name__)
+
+
+def get_runner(job, task):
+    """
+    Task classes must implement three methods:
+
+    -  ``run()`` starts the task
+    -  ``get_status()`` returns a choice from ``Task.Status``
+    -  ``wipe()`` deletes any side-effects of ``run()``
+    """
+
+    match task.type:
+        case Task.Type.COLLECT:
+            return Collect(job.collection, job)
+        case Task.Type.PROCESS:
+            return Process(job)
+        case Task.Type.PELICAN:
+            return Pelican(job)
+        case Task.Type.EXPORTER:
+            return Exporter(job)
+        case Task.Type.FLATTENER:
+            return Flattener(job)
+        case _:
+            raise Exception("Unsupported task type")
 
 
 def process(collection):
     if should_be_planned(collection):
         plan(collection)
 
-    jobs = Job.objects.filter(~Q(status=Job.Status.COMPLETED), collection=collection)
+    jobs = collection.job.exclude(status=Job.Status.COMPLETED)
 
     for job in jobs:
         with transaction.atomic():
-            # list of job tasks sorted by priority
-            tasks = Task.objects.filter(job=job).order_by("order")
             job_complete = True
 
-            for task in tasks:
+            for task in job.task.order_by("order"):
                 # finished task -> no action needed
                 if task.status == Task.Status.COMPLETED:
                     continue
 
-                _task = TaskFactory.get_task(collection, job, task)
+                runner = get_runner(job, task)
 
                 try:
                     if task.status in [Task.Status.WAITING, Task.Status.RUNNING]:
-                        status = _task.get_status()
+                        status = runner.get_status()
                         logger.debug("Task %s is %s (%s: %s)", task, status, collection.country, collection)
                         if status in [Task.Status.WAITING, Task.Status.RUNNING]:
                             # Reset the task, in case it has recovered.
@@ -59,8 +85,7 @@ def process(collection):
 
                             logger.debug("Job %s is starting (%s: %s)", job, collection.country, collection)
 
-                        # run the task
-                        _task.run()
+                        runner.run()
 
                         task.start = timezone.now()
                         task.status = Task.Status.RUNNING
@@ -113,11 +138,11 @@ def process(collection):
                     job.end = timezone.now()
                     job.save()
 
-                    job.collection.last_retrieved = job.task.get(type__in=("collect", "test")).end
-                    job.collection.save()
+                    collection.last_retrieved = job.task.get(type__in=("collect", "test")).end
+                    collection.save()
 
                     # set active job
-                    Job.objects.filter(collection=job.collection).update(
+                    collection.job.update(
                         active=Case(When(id=job.id, then=True), default=False, output_field=BooleanField())
                     )
 
@@ -129,21 +154,21 @@ def should_be_planned(collection):
     if collection.frozen:
         return False
 
-    jobs = Job.objects.filter(~Q(status=Job.Status.COMPLETED), collection=collection)
+    jobs = collection.job.exclude(status=Job.Status.COMPLETED)
     if not jobs:
         # update frequency is not set, plan next job
         if not collection.retrieval_frequency:
             return True
 
         # plan next job depending on update frequency
-        last_job = Job.objects.filter(collection=collection, status=Job.Status.COMPLETED).order_by("-start").first()
+        last_job = collection.job.filter(status=Job.Status.COMPLETED).order_by("-start").first()
         if not last_job:
             return True
 
         delta = timedelta(days=30)  # MONTHLY
-        if collection.retrieval_frequency == "HALF_YEARLY":
+        if collection.retrieval_frequency == Collection.RetrievalFrequency.HALF_YEARLY:
             delta = timedelta(days=180)
-        elif collection.retrieval_frequency == "ANNUALLY":
+        elif collection.retrieval_frequency == Collection.RetrievalFrequency.ANNUALLY:
             delta = timedelta(days=365)
 
         return date.today() >= (last_job.start + delta).date()
@@ -157,10 +182,8 @@ def plan(collection):
 
     job = collection.job.create(start=timezone.now(), status=Job.Status.PLANNED)
 
-    tasks = settings.JOB_TASKS_PLAN
-
-    for i, t in enumerate(tasks, start=1):
-        job.task.create(status=Task.Status.PLANNED, type=t, order=i)
+    for order, task_type in enumerate(settings.JOB_TASKS_PLAN, start=1):
+        job.task.create(status=Task.Status.PLANNED, type=task_type, order=order)
 
     logger.debug("New job %s planned", job)
 

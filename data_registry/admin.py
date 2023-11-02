@@ -14,6 +14,7 @@ from markdownx.widgets import AdminMarkdownxWidget
 from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, TranslationTabularInline
 
 from data_registry.models import Collection, Issue, Job, License, Task
+from data_registry.process_manager.process import get_runner
 
 logger = logging.getLogger(__name__)
 
@@ -67,12 +68,12 @@ class CollectionAdminForm(forms.ModelForm):
 
         # collect all years from annual dump files names
         flags_dir = "data_registry/static/img/flags"
-        files = [f.name for f in Path(flags_dir).glob("*") if f.is_file()]
+        files = [f.name for f in Path(flags_dir).iterdir() if f.is_file()]
         files.sort()
         self.fields["country_flag"].choices += tuple((n, n) for n in files)
 
     def save(self, *args, **kwargs):
-        jobs = Job.objects.filter(collection=self.instance)
+        jobs = self.instance.job
 
         active_job = self.cleaned_data["active_job"]
         if active_job:
@@ -247,7 +248,7 @@ class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
     inlines = [IssueInLine]
 
     def active_job(self, obj):
-        return Job.objects.filter(collection=obj, active=True).first()
+        return obj.job.filter(active=True).first()
 
 
 class LicenseAdminForm(forms.ModelForm):
@@ -401,3 +402,9 @@ class JobAdmin(admin.ModelAdmin):
             return f"{last_completed_task['type']} ({last_completed_task['order']}/{len(settings.JOB_TASKS_PLAN)})"
 
         return None
+
+    def delete_model(self, request, obj):
+        for task in obj.task.all():
+            get_runner(obj, task).wipe()
+
+        super().delete_model(request, obj)

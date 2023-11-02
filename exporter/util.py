@@ -175,7 +175,7 @@ class Export:
         """
         files = self.default_files()
 
-        for path in self.directory.glob("*"):
+        for path in self.directory.iterdir():
             suffix = path.name.split(".", 2)[1]  # works for .xlsx .jsonl.gz .csv.tar.gz
             if suffix not in files:
                 continue
