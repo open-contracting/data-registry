@@ -101,6 +101,8 @@ def search(request):
             filter_args.append(Q(date_from__gte=date_limit) | Q(date_to__gte=date_limit))
     if "update_frequency" in request.GET:
         filter_kwargs["update_frequency__in"] = request.GET.getlist("update_frequency")
+    if "region" in request.GET:
+        filter_kwargs["region__in"] = request.GET.getlist("region")
     if "counts" in request.GET:
         for count in request.GET.getlist("counts"):
             exclude[count] = 0
@@ -109,12 +111,15 @@ def search(request):
         "letters": {value: 0 for value in alphabets[language_code]},
         "date_ranges": {value: 0 for value in date_ranges},
         "frequencies": {value: 0 for value in Collection.UpdateFrequency.values},
+        "regions": {value: 0 for value in Collection.Region.values},
         "counts": {value: 0 for value in counts},
     }
     for value, n in facet_counts(qs, "letter"):
         facets["letters"][value] = n
     for value, n in facet_counts(qs, "update_frequency"):
         facets["frequencies"][value] = n
+    for value, n in facet_counts(qs, "region"):
+        facets["regions"][value] = n
     for row in without_filter(qs, args=False).values("date_from", "date_to"):
         facets["date_ranges"][""] += 1
         for value, limit in date_limits.items():
@@ -136,6 +141,7 @@ def search(request):
         "facets": facets,
         "date_ranges": date_ranges,
         "frequencies": Collection.UpdateFrequency.choices,
+        "regions": Collection.Region.choices,
         "counts": counts,
     }
     return render(request, "search.html", context)

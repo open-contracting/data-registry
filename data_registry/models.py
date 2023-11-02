@@ -117,6 +117,19 @@ class Collection(models.Model):
     )
     country_flag = models.TextField(blank=True)
 
+    class Region(models.TextChoices):
+        MEA = "MEA", _("Africa and Middle East")
+        AS = "AS", _("Asia")
+        EU = "EU", _("Europe")
+        LA = "LA", _("Latin America")
+        NA = "NA", _("North America")
+
+    region = models.TextField(
+        choices=Region.choices,
+        blank=True,
+        help_text="The name of the region to which the country belongs",
+    )
+
     language = models.TextField(blank=True, help_text='The languages used within data fields: for example, "Spanish".')
     description = MarkdownxField(
         blank=True,

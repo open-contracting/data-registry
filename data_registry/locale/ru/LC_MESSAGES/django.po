@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-16 19:23-0400\n"
+"POT-Creation-Date: 2023-11-02 09:33-0300\n"
 "PO-Revision-Date: 2021-08-04 17:44+0000\n"
 "Last-Translator: Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2023\n"
 "Language-Team: Russian (https://app.transifex.com/open-contracting-partnership-1/teams/123427/ru/)\n"
@@ -51,7 +51,7 @@ msgstr "Предыдущий год"
 msgid "More than a year ago"
 msgstr "Больше года тому назад"
 
-#: data_registry/admin.py:186 data_registry/admin.py:310
+#: data_registry/admin.py:186 data_registry/admin.py:311
 msgid "Management"
 msgstr "Управление"
 
@@ -59,48 +59,68 @@ msgstr "Управление"
 msgid "Basics"
 msgstr "Основы"
 
-#: data_registry/admin.py:207 data_registry/admin.py:325
+#: data_registry/admin.py:208 data_registry/admin.py:326
 #: data_registry/templates/detail.html:116
 msgid "Overview"
 msgstr "Обзор"
 
-#: data_registry/admin.py:222
+#: data_registry/admin.py:223
 msgid "Details"
 msgstr "Подробности"
 
-#: data_registry/admin.py:336
+#: data_registry/admin.py:337
 msgid "Data availability"
 msgstr "Доступность данных"
 
-#: data_registry/models.py:157
+#: data_registry/models.py:121
+msgid "Africa and Middle East"
+msgstr "Африка и Средний Восток"
+
+#: data_registry/models.py:122
+msgid "Asia"
+msgstr "Азия"
+
+#: data_registry/models.py:123
+msgid "Europe"
+msgstr "Европа"
+
+#: data_registry/models.py:124
+msgid "Latin America"
+msgstr "Латинская Америка"
+
+#: data_registry/models.py:125
+msgid "North America"
+msgstr "Северная Америка"
+
+#: data_registry/models.py:170 data_registry/models.py:179
 msgid "Monthly"
 msgstr "Ежемесячно"
 
-#: data_registry/models.py:158
+#: data_registry/models.py:171
 msgid "Every 6 months"
 msgstr "Каждые 6 месяцев"
 
-#: data_registry/models.py:159 data_registry/models.py:167
+#: data_registry/models.py:172 data_registry/models.py:181
 msgid "Annually"
 msgstr "Раз в год"
 
-#: data_registry/models.py:160
+#: data_registry/models.py:173
 msgid "This dataset is no longer updated by the publisher"
 msgstr "Этот набор данных больше не обновляется издателем."
 
-#: data_registry/models.py:163
+#: data_registry/models.py:176
 msgid "Real time"
 msgstr "Реальное время"
 
-#: data_registry/models.py:164
+#: data_registry/models.py:177
 msgid "Hourly"
 msgstr "Ежечасно"
 
-#: data_registry/models.py:165
+#: data_registry/models.py:178
 msgid "Daily"
 msgstr "Ежедневно"
 
-#: data_registry/models.py:166
+#: data_registry/models.py:180
 msgid "Every 3 months"
 msgstr "каждые 3 месяца"
 
@@ -119,7 +139,7 @@ msgid "BACK TO DATASETS SEARCH"
 msgstr "Назад к поиску датасетов"
 
 #: data_registry/templates/detail.html:90
-#: data_registry/templates/search.html:160
+#: data_registry/templates/search.html:161
 msgid "Available formats:"
 msgstr "Доступные форматы"
 
@@ -128,22 +148,22 @@ msgid "ACCESS"
 msgstr "Доступ"
 
 #: data_registry/templates/detail.html:120
-#: data_registry/templates/search.html:147
+#: data_registry/templates/search.html:148
 msgid "Data date range:"
 msgstr "Диапазон дат"
 
 #: data_registry/templates/detail.html:122
-#: data_registry/templates/search.html:149
+#: data_registry/templates/search.html:150
 msgid "Update frequency:"
 msgstr "Периодичность обновлений"
 
 #: data_registry/templates/detail.html:124
-#: data_registry/templates/search.html:151
+#: data_registry/templates/search.html:152
 msgid "Last retrieved:"
 msgstr "Последнее получено:"
 
 #: data_registry/templates/detail.html:127
-#: data_registry/templates/search.html:154
+#: data_registry/templates/search.html:155
 #, python-format
 msgid "retrieved %(retrieval_frequency)s"
 msgstr "загружен %(retrieval_frequency)s"
@@ -566,18 +586,22 @@ msgstr[2] "%(counter)sнаборов данных"
 msgstr[3] "%(counter)sнаборов данных "
 
 #: data_registry/templates/search.html:107
+msgid "Region"
+msgstr "Регион"
+
+#: data_registry/templates/search.html:108
 msgid "Data date range"
 msgstr "Диапазон дат данных"
 
-#: data_registry/templates/search.html:108
+#: data_registry/templates/search.html:109
 msgid "Update frequency"
 msgstr "Частота обновления"
 
-#: data_registry/templates/search.html:109
+#: data_registry/templates/search.html:110
 msgid "Data contains"
 msgstr "Данные содержат"
 
-#: data_registry/templates/search.html:116
+#: data_registry/templates/search.html:117
 #, python-format
 msgid "%(counter)s dataset matches the selected filters"
 msgid_plural "%(counter)s datasets match the selected filters"
@@ -586,16 +610,16 @@ msgstr[1] "%(counter)sнаборов данных соответствуют в�
 msgstr[2] "%(counter)sнаборов данных соответствуют выбранным фильтрам"
 msgstr[3] "%(counter)sнаборов данных соответствуют выбранным фильтрам"
 
-#: data_registry/templates/search.html:122
+#: data_registry/templates/search.html:123
 #, python-format
 msgid "Showing all %(counter)s datasets"
 msgstr "Показаны все %(counter)sнаборов данных"
 
-#: data_registry/templates/search.html:173
+#: data_registry/templates/search.html:174
 msgid "See details"
 msgstr "Смотреть детали"
 
-#: data_registry/templates/search.html:186
+#: data_registry/templates/search.html:187
 msgid "Back to Top"
 msgstr "вернуться наверх"
 
@@ -604,7 +628,7 @@ msgstr "вернуться наверх"
 msgid "[data-registry] Re: %(collection)s"
 msgstr "[Реестр данных]: %(collection)s"
 
-#: data_registry/views.py:60 data_registry/views.py:189
+#: data_registry/views.py:60 data_registry/views.py:195
 msgid "All"
 msgstr "Все"
 
@@ -648,6 +672,6 @@ msgstr "Данные о этапах"
 msgid "Amendments data"
 msgstr "Данные о изменениях"
 
-#: data_registry/views.py:229
+#: data_registry/views.py:235
 msgid "OCP Kingfisher Database"
 msgstr "База данных OCP Kingfisher"

@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-16 19:23-0400\n"
+"POT-Creation-Date: 2023-11-02 09:33-0300\n"
 "PO-Revision-Date: 2021-08-04 17:44+0000\n"
 "Last-Translator: Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2023\n"
 "Language-Team: English (https://app.transifex.com/open-contracting-partnership-1/teams/123427/en/)\n"
@@ -51,7 +51,7 @@ msgstr "Past year"
 msgid "More than a year ago"
 msgstr "More than a year ago"
 
-#: data_registry/admin.py:186 data_registry/admin.py:310
+#: data_registry/admin.py:186 data_registry/admin.py:311
 msgid "Management"
 msgstr "Management"
 
@@ -59,48 +59,68 @@ msgstr "Management"
 msgid "Basics"
 msgstr "Basics"
 
-#: data_registry/admin.py:207 data_registry/admin.py:325
+#: data_registry/admin.py:208 data_registry/admin.py:326
 #: data_registry/templates/detail.html:116
 msgid "Overview"
 msgstr "Overview"
 
-#: data_registry/admin.py:222
+#: data_registry/admin.py:223
 msgid "Details"
 msgstr "Details"
 
-#: data_registry/admin.py:336
+#: data_registry/admin.py:337
 msgid "Data availability"
 msgstr "Data availability"
 
-#: data_registry/models.py:157
+#: data_registry/models.py:121
+msgid "Africa and Middle East"
+msgstr "Africa and Middle East"
+
+#: data_registry/models.py:122
+msgid "Asia"
+msgstr "Asia"
+
+#: data_registry/models.py:123
+msgid "Europe"
+msgstr "Europe"
+
+#: data_registry/models.py:124
+msgid "Latin America"
+msgstr "Latin America"
+
+#: data_registry/models.py:125
+msgid "North America"
+msgstr "North America"
+
+#: data_registry/models.py:170 data_registry/models.py:179
 msgid "Monthly"
 msgstr "Monthly"
 
-#: data_registry/models.py:158
+#: data_registry/models.py:171
 msgid "Every 6 months"
 msgstr "Every 6 months"
 
-#: data_registry/models.py:159 data_registry/models.py:167
+#: data_registry/models.py:172 data_registry/models.py:181
 msgid "Annually"
 msgstr "Annually"
 
-#: data_registry/models.py:160
+#: data_registry/models.py:173
 msgid "This dataset is no longer updated by the publisher"
 msgstr "This dataset is no longer updated by the publisher"
 
-#: data_registry/models.py:163
+#: data_registry/models.py:176
 msgid "Real time"
 msgstr "Real time"
 
-#: data_registry/models.py:164
+#: data_registry/models.py:177
 msgid "Hourly"
 msgstr "Hourly"
 
-#: data_registry/models.py:165
+#: data_registry/models.py:178
 msgid "Daily"
 msgstr "Daily"
 
-#: data_registry/models.py:166
+#: data_registry/models.py:180
 msgid "Every 3 months"
 msgstr "Every 3 months"
 
@@ -119,7 +139,7 @@ msgid "BACK TO DATASETS SEARCH"
 msgstr "Back to Datasets Search"
 
 #: data_registry/templates/detail.html:90
-#: data_registry/templates/search.html:160
+#: data_registry/templates/search.html:161
 msgid "Available formats:"
 msgstr "Available formats:"
 
@@ -128,22 +148,22 @@ msgid "ACCESS"
 msgstr "Access"
 
 #: data_registry/templates/detail.html:120
-#: data_registry/templates/search.html:147
+#: data_registry/templates/search.html:148
 msgid "Data date range:"
 msgstr "Data date range:"
 
 #: data_registry/templates/detail.html:122
-#: data_registry/templates/search.html:149
+#: data_registry/templates/search.html:150
 msgid "Update frequency:"
 msgstr "Update frequency:"
 
 #: data_registry/templates/detail.html:124
-#: data_registry/templates/search.html:151
+#: data_registry/templates/search.html:152
 msgid "Last retrieved:"
 msgstr "Last retrieved:"
 
 #: data_registry/templates/detail.html:127
-#: data_registry/templates/search.html:154
+#: data_registry/templates/search.html:155
 #, python-format
 msgid "retrieved %(retrieval_frequency)s"
 msgstr "retrieved %(retrieval_frequency)s"
@@ -559,34 +579,38 @@ msgstr[0] "1 dataset"
 msgstr[1] "%(counter)s datasets"
 
 #: data_registry/templates/search.html:107
+msgid "Region"
+msgstr "Region"
+
+#: data_registry/templates/search.html:108
 msgid "Data date range"
 msgstr "Data date range"
 
-#: data_registry/templates/search.html:108
+#: data_registry/templates/search.html:109
 msgid "Update frequency"
 msgstr "Update frequency"
 
-#: data_registry/templates/search.html:109
+#: data_registry/templates/search.html:110
 msgid "Data contains"
 msgstr "Data contains"
 
-#: data_registry/templates/search.html:116
+#: data_registry/templates/search.html:117
 #, python-format
 msgid "%(counter)s dataset matches the selected filters"
 msgid_plural "%(counter)s datasets match the selected filters"
 msgstr[0] "%(counter)s dataset matches the selected filters"
 msgstr[1] "%(counter)s datasets match the selected filters"
 
-#: data_registry/templates/search.html:122
+#: data_registry/templates/search.html:123
 #, python-format
 msgid "Showing all %(counter)s datasets"
 msgstr "Showing all %(counter)s datasets"
 
-#: data_registry/templates/search.html:173
+#: data_registry/templates/search.html:174
 msgid "See details"
 msgstr "See details"
 
-#: data_registry/templates/search.html:186
+#: data_registry/templates/search.html:187
 msgid "Back to Top"
 msgstr "Back to Top"
 
@@ -595,7 +619,7 @@ msgstr "Back to Top"
 msgid "[data-registry] Re: %(collection)s"
 msgstr "[data-registry] Re: %(collection)s"
 
-#: data_registry/views.py:60 data_registry/views.py:189
+#: data_registry/views.py:60 data_registry/views.py:195
 msgid "All"
 msgstr "All"
 
@@ -639,6 +663,6 @@ msgstr "Milestones data"
 msgid "Amendments data"
 msgstr "Amendments data"
 
-#: data_registry/views.py:229
+#: data_registry/views.py:235
 msgid "OCP Kingfisher Database"
 msgstr "OCP Kingfisher Database"
