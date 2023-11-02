@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='collection',
             name='region',
-            field=models.TextField(blank=True, choices=[('MEA', 'Africa and Middle East'), ('AS', 'Asia'), ('EU', 'Europe'), ('LA', 'Latin America'), ('NA', 'North America')], help_text='The name of the region to which the country belongs'),
+            field=models.TextField(blank=True, choices=[('MEA', 'Africa and Middle East'), ('AS', 'Asia'), ('EECA', 'Eastern Europe & Central Asia'), ('EU', 'Europe'), ('LAC', 'Latin America & Caribbean'), ('NA', 'North America'), ('OC', 'Oceania')], help_text='The name of the region to which the country belongs.'),
         ),
     ]
