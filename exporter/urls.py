@@ -3,5 +3,5 @@ from django.urls import path
 from exporter import views
 
 urlpatterns = [
-    path("api/download_export", views.download_export, name="download-export"),
+    path("publication/<int:id>/download", views.download_export, name="download"),
 ]
