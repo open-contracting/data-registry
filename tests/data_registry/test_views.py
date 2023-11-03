@@ -21,7 +21,7 @@ class ViewsTests(TestCase):
     @patch("exporter.util.Export.get_files")
     def test_detail(self, get_files):
         get_files.return_value = {"jsonl": {"by_year": [{"year": 2022, "size": 1}]}}
-        url = f"/api/download_export?spider=paraguay_dncp_records&job_id={self.job.id}&year=2022&suffix=jsonl.gz"
+        url = f"/publication/{self.collection.id}/download?name=2022.jsonl.gz"
 
         with self.assertNumQueries(2):
             response = Client().get(f"/en/publication/{self.collection.id}")

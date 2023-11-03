@@ -2,7 +2,7 @@ from django.http import FileResponse
 from django.http.response import HttpResponseBadRequest, HttpResponseNotFound
 from django.shortcuts import get_object_or_404
 
-from data_registry.models import Collection
+from data_registry.util import collection_queryset
 from exporter.util import Export, TaskStatus
 
 
@@ -16,14 +16,13 @@ def download_export(request, id):
     if not name.endswith(("jsonl.gz", "csv.tar.gz", "xlsx")):
         return HttpResponseBadRequest("Suffix not recognized")
 
-    collection = get_object_or_404(Collection, id=id, public=True)
+    collection = get_object_or_404(collection_queryset(request), id=id)
 
     active_job = collection.job.filter(active=True).first()
     if not active_job:
         return HttpResponseNotFound("No active job was found for this collection")
 
     export = Export(active_job.id, basename=f"{name}")
-
     if export.status != TaskStatus.COMPLETED:
         return HttpResponseNotFound("File not found")
 
