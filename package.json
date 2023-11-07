@@ -5,7 +5,7 @@
         "build": "webpack"
     },
     "devDependencies": {
-        "autoprefixer": "^9.8.8",
+        "autoprefixer": "^10.4.16",
         "bootstrap": "^5.2.1",
         "bootstrap-vue": "^2.21.2",
         "css-loader": "^6.7.1",
