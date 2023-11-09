@@ -4,7 +4,6 @@ from django.urls import include, path
 
 urlpatterns = [
     path("", include("data_registry.urls"), name="data-registry"),
-    path("", include("exporter.urls"), name="exporter"),
     path("admin/", admin.site.urls),
     path("markdownx/", include("markdownx.urls")),
 ]

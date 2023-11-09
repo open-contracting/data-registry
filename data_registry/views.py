@@ -1,4 +1,5 @@
 import logging
+import re
 import string
 from collections import defaultdict
 from datetime import date, datetime, timedelta
@@ -11,20 +12,21 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.postgres.aggregates import ArrayAgg
 from django.db.models import Count, OuterRef, Q, Subquery
 from django.db.models.functions import Substr
-from django.http.response import HttpResponse, JsonResponse
+from django.http.response import FileResponse, HttpResponse, HttpResponseBadRequest, HttpResponseNotFound, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import get_language, get_language_from_request
 from django.utils.translation import gettext as _
 
 from data_registry.models import Collection, Job
 from data_registry.util import collection_queryset
-from exporter.util import Export
+from exporter.util import Export, TaskStatus
 
 logger = logging.getLogger(__name__)
 
 alphabets = defaultdict(lambda: string.ascii_uppercase)
 # https://en.wikipedia.org/wiki/Cyrillic_script_in_Unicode#Basic_Cyrillic_alphabet
 alphabets["ru"] = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
+EXPORT_PATTERN = re.compile(r"\A(full|\d{4})\.(jsonl\.gz|csv\.tar\.gz|xlsx)\Z")
 
 
 def index(request):
@@ -172,6 +174,36 @@ def spiders(request):
         raise JsonResponse(json, status=503, safe=False)
 
     return JsonResponse(json.get("spiders"), safe=False)
+
+
+def download_export(request, id):
+    """
+    Returns an exported file as a FileResponse object.
+    """
+    name = request.GET.get("name")
+
+    # Guard against path traversal.
+    if not EXPORT_PATTERN.match(name):
+        return HttpResponseBadRequest("The name query string parameter is invalid")
+
+    collection = get_object_or_404(collection_queryset(request), id=id)
+
+    active_job = collection.job.filter(active=True).first()
+    if not active_job:
+        return HttpResponseNotFound("This OCDS dataset is not available for download")
+
+    export = Export(active_job.id, basename=name)
+    if export.status != TaskStatus.COMPLETED:
+        return HttpResponseNotFound("File not found")
+
+    return FileResponse(
+        export.path.open("rb"),
+        as_attachment=True,
+        filename=f"{collection.source_id}_{name}",
+        # Set Content-Encoding to skip GZipMiddleware. (ContentEncodingMiddleware removes the empty header.)
+        # https://docs.djangoproject.com/en/4.2/ref/middleware/#module-django.middleware.gzip
+        headers={"Content-Encoding": ""},
+    )
 
 
 def excel_data(request, job_id, job_range=None):

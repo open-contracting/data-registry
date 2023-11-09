@@ -18,32 +18,49 @@ class ViewsTests(TestCase):
         )
         cls.job = cls.collection.job.create(
             active=True,
+            id=2,
         )
+        cls.collection_no_job = Collection.objects.create(
+            id=3,
+            title="Test",
+            source_id="abc",
+            public=True,
+        )
+        cls.collection_no_job.job.create(
+            active=True,
+            id=4,
+        )
+
+    def test_collection_not_found(self):
+        with self.assertNumQueries(1):
+            response = Client().get("/en/publication/10/download?name=2000.jsonl.gz")
+
+        self.assertEqual(response.status_code, 404)
 
     def test_download_export_invalid_suffix(self):
         with self.assertNumQueries(0):
-            response = Client().get("/publication/2/download?name=invalid")
+            response = Client().get(f"/en/publication/{self.collection.id}/download?name=invalid")
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.content, b"The name query string parameter is invalid")
 
     def test_download_export_empty_parameter(self):
         with self.assertNumQueries(0):
-            response = Client().get("/publication/2/download?name=")
+            response = Client().get(f"/en/publication/{self.collection.id}/download?name=")
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.content, b"The name query string parameter is invalid")
 
     def test_download_export_waiting(self):
-        with self.assertNumQueries(1):
-            response = Client().get("/publication/1/download?name=2000.jsonl.gz")
-
+        with self.assertNumQueries(2):
+            response = Client().get(f"/en/publication/{self.collection_no_job.id}/download?name=2000.jsonl.gz")
         self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.content, b"File not found")
 
     @patch("exporter.util.Export.lockfile", new_callable=PropertyMock)
     def test_download_export_running(self, exists):
         with self.assertNumQueries(2):
-            response = Client().get("/publication/2/download?name=2000.jsonl.gz")
+            response = Client().get(f"/en/publication/{self.collection.id}/download?name=2000.jsonl.gz")
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.content, b"File not found")
@@ -57,7 +74,7 @@ class ViewsTests(TestCase):
             with self.subTest(suffix=suffix):
                 with self.assertNumQueries(2):
                     response = Client().get(
-                        f"/publication/2/download?name=2000.{suffix}",
+                        f"/en/publication/{self.collection.id}/download?name=2000.{suffix}",
                         HTTP_ACCEPT_ENCODING="gzip",
                     )
                 self.assertEqual(response.status_code, 200)
@@ -70,7 +87,7 @@ class ViewsTests(TestCase):
                         "Content-Type": content_type,
                         "Cross-Origin-Opener-Policy": "same-origin",
                         "Referrer-Policy": "same-origin",
-                        "Vary": "Accept-Language, Cookie",
+                        "Vary": "Cookie",
                         "X-Content-Type-Options": "nosniff",
                         "X-Frame-Options": "DENY",
                     },
