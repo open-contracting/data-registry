@@ -20,9 +20,9 @@ def download_export(request, id):
 
     active_job = collection.job.filter(active=True).first()
     if not active_job:
-        return HttpResponseNotFound("No active job was found for this collection")
+        return HttpResponseNotFound("This OCDS dataset is not available for download")
 
-    export = Export(active_job.id, basename=f"{name}")
+    export = Export(active_job.id, basename=name)
     if export.status != TaskStatus.COMPLETED:
         return HttpResponseNotFound("File not found")
 

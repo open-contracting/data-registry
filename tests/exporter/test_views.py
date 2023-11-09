@@ -25,14 +25,14 @@ class ViewsTests(TestCase):
             response = Client().get("/publication/2/download?name=invalid")
 
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.content, b"Suffix not recognized")
+        self.assertEqual(response.content, b"The name query string parameter is invalid")
 
     def test_download_export_empty_parameter(self):
         with self.assertNumQueries(0):
             response = Client().get("/publication/2/download?name=")
 
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.content, b"Suffix not recognized")
+        self.assertEqual(response.content, b"The name query string parameter is invalid")
 
     def test_download_export_waiting(self):
         with self.assertNumQueries(1):
