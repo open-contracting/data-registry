@@ -1,9 +1,13 @@
+import re
+
 from django.http import FileResponse
 from django.http.response import HttpResponseBadRequest, HttpResponseNotFound
 from django.shortcuts import get_object_or_404
 
 from data_registry.util import collection_queryset
 from exporter.util import Export, TaskStatus
+
+EXPORT_PATTERN = re.compile(r"\A(full|\d{4})\.(jsonl\.gz|csv\.tar\.gz|xlsx)\Z")
 
 
 def download_export(request, id):
@@ -13,8 +17,8 @@ def download_export(request, id):
     name = request.GET.get("name")
 
     # Guard against path traversal.
-    if not name.endswith(("jsonl.gz", "csv.tar.gz", "xlsx")):
-        return HttpResponseBadRequest("Suffix not recognized")
+    if not EXPORT_PATTERN.match(name):
+        return HttpResponseBadRequest("The name query string parameter is invalid")
 
     collection = get_object_or_404(collection_queryset(request), id=id)
 
