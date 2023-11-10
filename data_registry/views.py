@@ -177,9 +177,6 @@ def spiders(request):
 
 
 def download_export(request, id):
-    """
-    Returns an exported file as a FileResponse object.
-    """
     name = request.GET.get("name")
 
     # Guard against path traversal.
@@ -187,10 +184,7 @@ def download_export(request, id):
         return HttpResponseBadRequest("The name query string parameter is invalid")
 
     collection = get_object_or_404(collection_queryset(request), id=id)
-
-    active_job = collection.job.filter(active=True).first()
-    if not active_job:
-        return HttpResponseNotFound("This OCDS dataset is not available for download")
+    active_job = get_object_or_404(collection.job, active=True)
 
     export = Export(active_job.id, basename=name)
     if export.status != TaskStatus.COMPLETED:
