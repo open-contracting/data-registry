@@ -177,7 +177,7 @@ def spiders(request):
 
 
 def download_export(request, id):
-    name = request.GET.get("name")
+    name = request.GET.get("name", "")
 
     # Guard against path traversal.
     if not EXPORT_PATTERN.match(name):
