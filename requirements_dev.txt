@@ -57,12 +57,10 @@ filelock==3.3.2
     # via virtualenv
 flake8==3.8.4
     # via -r requirements_dev.in
-flatterer==0.19.10
+flatterer==0.19.12
     # via -r requirements.txt
 gunicorn[setproctitle]==20.1.0
-    # via
-    #   -r requirements.txt
-    #   gunicorn
+    # via -r requirements.txt
 identify==2.3.5
     # via pre-commit
 idna==2.10
@@ -183,9 +181,7 @@ virtualenv==20.10.0
 wheel==0.38.4
     # via pip-tools
 yapw[perf]==0.1.3
-    # via
-    #   -r requirements.txt
-    #   yapw
+    # via -r requirements.txt
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip
