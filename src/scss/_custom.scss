@@ -43,7 +43,8 @@ $enable-negative-margins: true;
 // $enable-deprecation-messages: false;
 
 // https://docs.google.com/presentation/d/1RpN-JhsNiHHITX5xZ-8NOC6HTOKcywaUy_oG2X2DeN8/edit
-$primary: #6c75e1; // blue
+// Darken OCP's blue to achieve 4.5:1 contrast ratio on yellow (#d6e100) background.
+$primary: #4952be; // blue #6c75e1
 $secondary: #808080; // 50%
 $success: #72a735; // green
 $info: #d6e100; // yellow
@@ -54,6 +55,7 @@ $dark: #323232; // same as OCP footer
 $font-family-sans-serif: "GT Eesti Pro", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 $font-family-monospace: "Roboto Mono", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
+$text-muted: #565f67; // $gray-600 #6c757d
 $dt-font-weight: 300; // 700
 $list-inline-padding: 1.5rem; // .5rem
 
@@ -73,6 +75,8 @@ $card-spacer-x: 1.25rem; // 1rem
 $card-border-width: 0; // 1px
 $card-height: 100%; // null
 $card-bg: $light; // $white
+
+$code-color: #b0235e; // $pink #d63384
 
 // Bootstrap-Vue variables.
 // https://github.com/bootstrap-vue/bootstrap-vue/blob/dev/src/_variables.scss
