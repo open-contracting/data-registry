@@ -19,7 +19,8 @@ jobs:
           cache-dependency-path: '**/requirements*.txt'
       - run: npm install
       - run: pip install -r requirements.txt
-      - env:
+      - name: Build
+        env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres
         shell: bash
         run: |
@@ -27,7 +28,8 @@ jobs:
           env DJANGO_ENV=production python manage.py collectstatic --noinput -v2
           python manage.py migrate
           python manage.py loaddata tests/fixtures/a11y.json
-      - env:
+      - name: Serve
+        env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres
         run: |
           python manage.py runserver &
