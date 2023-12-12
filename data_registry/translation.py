@@ -1,3 +1,4 @@
+from django.conf import settings
 from modeltranslation.translator import TranslationOptions, register
 
 from data_registry.models import Collection, Issue, License
@@ -12,12 +13,14 @@ from data_registry.models import Collection, Issue, License
 @register(Collection)
 class CollectionTranslation(TranslationOptions):
     fields = ["title", "description", "description_long", "summary", "additional_data", "country", "language"]
+    required_languages = {language: ("title",) for language, _ in settings.LANGUAGES}
     fallback_undefined = ""
 
 
 @register(Issue)
 class IssueTranslation(TranslationOptions):
     fields = ["description"]
+    required_languages = {language: ("description",) for language, _ in settings.LANGUAGES}
     fallback_undefined = ""
 
 
