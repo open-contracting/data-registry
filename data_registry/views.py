@@ -49,7 +49,7 @@ def search(request):
         return qs.filter(**{k: v for k, v in filter_kwargs.items() if not k.startswith(key)})
 
     def facet_counts(qs, key):
-        return without_filter(qs, key).values(key).annotate(n=Count("pk")).values_list(key, "n")
+        return without_filter(qs, key).exclude(**{key: ""}).values(key).annotate(n=Count("pk")).values_list(key, "n")
 
     now = date.today()
     language_code = get_language_from_request(request, check_path=True)
