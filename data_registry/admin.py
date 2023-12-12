@@ -56,7 +56,7 @@ class CollectionAdminForm(forms.ModelForm):
 
             if json.get("status") == "ok":
                 self.fields["source_id"].choices += tuple((n, n) for n in json.get("spiders"))
-        except requests.exceptions.ConnectionError as e:
+        except (requests.exceptions.MissingSchema, requests.exceptions.ConnectionError) as e:
             logger.warning("Couldn't connect to Scrapyd: %s", e)
             sid = self.instance.source_id
             self.fields["source_id"].choices += ((sid, sid),)
@@ -79,7 +79,7 @@ class CollectionAdminForm(forms.ModelForm):
         if active_job:
             if not active_job.active:
                 jobs.update(active=Case(When(id=active_job.id, then=True), default=False, output_field=BooleanField()))
-        else:
+        elif self.instance.pk:
             jobs.update(active=False)
 
         return super().save(*args, **kwargs)

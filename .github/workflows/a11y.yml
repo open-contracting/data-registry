@@ -1,0 +1,47 @@
+name: Accessibility
+on: [push, pull_request]
+jobs:
+  build:
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: "**/package-lock.json"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: '**/requirements*.txt'
+      - run: npm install
+      - run: pip install -r requirements.txt
+      - env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres
+        shell: bash
+        run: |
+          npx webpack --mode production
+          env DJANGO_ENV=production python manage.py collectstatic --noinput -v2
+          python manage.py migrate
+          python manage.py loaddata tests/fixtures/a11y.json
+      - env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres
+        run: |
+          python manage.py runserver &
+          sleep 5
+      - run: npx pa11y-ci -c pa11y.default.json -s http://127.0.0.1:8000/sitemap.xml
+      - run: npx pa11y-ci -c pa11y.mobile.json -s http://127.0.0.1:8000/sitemap.xml
+    services:
+      postgres:
+        image: postgres:12
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432/tcp

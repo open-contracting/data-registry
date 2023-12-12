@@ -1,0 +1,21 @@
+[
+    {
+        "model": "data_registry.collection",
+        "pk": 1,
+        "fields": {
+            "title": "portugal",
+            "source_id": "portugal_records",
+            "source_url": "https://example.com",
+            "country": "PT",
+            "public": true
+        }
+    },
+    {
+        "model": "data_registry.job",
+        "pk": 1,
+        "fields": {
+            "collection_id": 1,
+            "active": true
+        }
+    }
+]
