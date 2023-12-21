@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "django.contrib.humanize",
     "data_registry",
     "markdownx",
+    "exporter",
 ]
 
 MIDDLEWARE = [
