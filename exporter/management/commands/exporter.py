@@ -81,7 +81,7 @@ def callback(state, channel, method, properties, input_message):
 
                 date = r[2]
                 if date is None:
-                    logger.exception("No compiled release date: '%s'", date)
+                    logger.exception("No compiled release date")
                     continue
 
                 try:
