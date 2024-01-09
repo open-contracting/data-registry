@@ -41,7 +41,7 @@ class Collect:
                 "spider": self.spider,
                 "steps": "compile",  # no "check"
             },
-            error_msg=f"Unable to schedule scraping for project {self.project} and spider {self.spider}",
+            error_msg=f"Unable to schedule crawl for project {self.project} and spider {self.spider}",
         )
 
         json = response.json()
@@ -79,17 +79,17 @@ class Collect:
             log = self.job.context.get("scrapy_log")
 
             try:
-                response = request("get", log, error_msg=f"Unable to read scrapy log {log}")
+                response = request("get", log, error_msg=f"Unable to read Scrapy log {log}")
             except RecoverableException as e:
                 ex_cause = e.__cause__
                 # If the request on the log file returns the error 404, something went wrong with the scrapy.
                 # The file was probably lost, and the job will never be able to continue
                 if isinstance(ex_cause, HTTPError) and ex_cause.response.status_code == 404:
-                    raise Exception("Scrapy log file doesn't exist")
+                    raise Exception("Scrapy log doesn't exist")
                 raise e
 
             # Must match
-            # https://github.com/open-contracting/kingfisher-collect/blob/7b386e8e7a198a96b733e2d8437a814632db4def/kingfisher_scrapy/extensions.py#L541
+            # https://github.com/open-contracting/kingfisher-collect/blob/3258ff401899e342be3459fe975254ac14db7497/kingfisher_scrapy/extensions/kingfisher_process_api2.py#L101
             m = re.search("Created collection (.+) in Kingfisher Process", response.text)
             process_id = m.group(1) if m else None
 
@@ -101,11 +101,11 @@ class Collect:
 
         if any(n["id"] == job_id for n in json.get("finished", [])):
             if not process_id:
-                raise Exception("Process id is not set")
+                raise Exception("process_id is not set")
 
             return Task.Status.COMPLETED
 
-        raise RecoverableException("Collect job is in undefined state")
+        raise RecoverableException("Kingfisher Collect job is in undefined state")
 
     def wipe(self):
         version = self.job.context.get("process_data_version")
@@ -113,7 +113,7 @@ class Collect:
             logger.warning("Unable to wipe COLLECT - process_data_version is not set")
             return
 
-        logger.info("Wiping collect data for version %s.", version)
+        logger.info("Wiping Kingfisher Collect data for data version %s.", version)
 
         version = version.replace("-", "").replace(":", "").replace("T", "_")
 
