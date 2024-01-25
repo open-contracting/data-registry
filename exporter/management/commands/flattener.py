@@ -102,7 +102,7 @@ def process_file(job_id, file_path):
                     if threads >= max_threads:
                         break
 
-            output = flatterer_flatten(export, str(infile), str(outdir), csv=csv, xlsx=xlsx, threads=threads)
+            output = flatterer_flatten(file_path, str(infile), str(outdir), csv=csv, xlsx=xlsx, threads=threads)
 
             if csv:
                 with tarfile.open(csv_path, "w:gz") as tar:
@@ -119,7 +119,7 @@ def process_file(job_id, file_path):
         export.unlock()
 
 
-def flatterer_flatten(export, infile, outdir, csv=False, xlsx=False, threads=0):
+def flatterer_flatten(file_path, infile, outdir, csv=False, xlsx=False, threads=0):
     """
     Convert the file from JSON to CSV and Excel.
 
@@ -135,7 +135,7 @@ def flatterer_flatten(export, infile, outdir, csv=False, xlsx=False, threads=0):
         if not xlsx:  # CSV-only should succeed.
             raise
         if not csv:  # Excel-only may fail.
-            logger.exception("Failed Excel-only conversion in %s", export)
+            logger.exception("Failed Excel-only conversion of %s", file_path)
             return {}
-        logger.exception("Failed full conversion in %s (will attempt CSV-only conversion)", export)
-        return flatterer_flatten(export, infile, outdir, csv=csv, xlsx=False, threads=threads)
+        logger.exception("Failed full conversion of %s (will attempt CSV-only conversion)", file_path)
+        return flatterer_flatten(file_path, infile, outdir, csv=csv, xlsx=False, threads=threads)
