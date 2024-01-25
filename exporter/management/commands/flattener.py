@@ -137,5 +137,5 @@ def flatterer_flatten(export, infile, outdir, csv=False, xlsx=False, threads=0):
         if not csv:  # Excel-only may fail.
             logger.exception("Failed Excel-only conversion in %s", export)
             return {}
-        logger.exception("Attempting CSV-only conversion in %s", export)
+        logger.exception("Failed full conversion in %s (will attempt CSV-only conversion)", export)
         return flatterer_flatten(export, infile, outdir, csv=csv, xlsx=False, threads=threads)
