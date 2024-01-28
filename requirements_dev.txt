@@ -57,7 +57,7 @@ filelock==3.3.2
     # via virtualenv
 flake8==3.8.4
     # via -r requirements_dev.in
-flatterer==0.19.12
+flatterer==0.19.13
     # via -r requirements.txt
 gunicorn[setproctitle]==20.1.0
     # via -r requirements.txt
