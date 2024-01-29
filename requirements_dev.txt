@@ -114,7 +114,7 @@ pillow==10.2.0
     # via
     #   -r requirements.txt
     #   django-markdownx
-pip-tools==6.13.0
+pip-tools==7.3.0
     # via -r requirements_dev.in
 platformdirs==2.4.0
     # via
