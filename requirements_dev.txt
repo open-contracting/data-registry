@@ -41,7 +41,7 @@ distlib==0.3.3
     # via virtualenv
 dj-database-url==2.0.0
     # via -r requirements.txt
-django==4.2.7
+django==4.2.10
     # via
     #   -r requirements.txt
     #   dj-database-url
@@ -60,7 +60,9 @@ flake8==3.8.4
 flatterer==0.19.13
     # via -r requirements.txt
 gunicorn[setproctitle]==20.1.0
-    # via -r requirements.txt
+    # via
+    #   -r requirements.txt
+    #   gunicorn
 identify==2.3.5
     # via pre-commit
 idna==2.10
@@ -179,7 +181,9 @@ virtualenv==20.10.0
 wheel==0.38.4
     # via pip-tools
 yapw[perf]==0.1.4
-    # via -r requirements.txt
+    # via
+    #   -r requirements.txt
+    #   yapw
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip
