@@ -84,7 +84,7 @@ class Pelican:
         try:
             pelican_id = self.get_pelican_id()
         except RecoverableException:
-            logger.warning("Unable to wipe PELICAN - pelican_id is not set")
+            logger.error("Unable to wipe PELICAN - pelican_id is not retrievable")
             return
 
         if not pelican_id:

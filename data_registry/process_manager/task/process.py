@@ -41,6 +41,10 @@ class Process:
         return Task.Status.COMPLETED if is_last_completed else Task.Status.RUNNING
 
     def wipe(self):
+        if not self.process_id:
+            logger.warning("Unable to wipe PROCESS - process_id is not set (because log file was not retrievable)")
+            return
+
         logger.info("Wiping Kingfisher Process data for collection id %s.", self.process_id)
         request(
             "POST",

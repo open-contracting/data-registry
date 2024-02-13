@@ -116,8 +116,6 @@ class Collect:
         logger.info("Wiping Kingfisher Collect data for data version %s.", version)
 
         version = version.replace("-", "").replace(":", "").replace("T", "_")
-
         path = f"{settings.KINGFISHER_COLLECT_FILES_STORE}/{self.spider}/{version}"
-
         if os.path.exists(path):
             shutil.rmtree(path)
