@@ -10,7 +10,7 @@ from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.postgres.aggregates import ArrayAgg
-from django.db.models import Count, OuterRef, Q, Subquery
+from django.db.models import Count, F, OuterRef, Q, Subquery
 from django.db.models.functions import Substr
 from django.http.response import FileResponse, HttpResponse, HttpResponseBadRequest, HttpResponseNotFound, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -197,6 +197,29 @@ def download_export(request, id):
         # Set Content-Encoding to skip GZipMiddleware. (ContentEncodingMiddleware removes the empty header.)
         # https://docs.djangoproject.com/en/4.2/ref/middleware/#module-django.middleware.gzip
         headers={"Content-Encoding": ""},
+    )
+
+
+def datasets_metadata(request):
+    return JsonResponse(
+        list(
+            Collection.objects.filter(public=True, job__active=True)
+            .values(
+                "id",
+                "title",
+                "country",
+                "last_retrieved",
+                "retrieval_frequency",
+                "source_id",
+                "frozen",
+                "language",
+                "source_url",
+                "update_frequency",
+                "region",
+            )
+            .annotate(data_from=F("job__date_from"), data_to=F("job__date_to"))
+        ),
+        safe=False,
     )
 
 
