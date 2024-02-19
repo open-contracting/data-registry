@@ -200,22 +200,26 @@ def download_export(request, id):
     )
 
 
-def datasets_metadata(request):
+def publications_api(request):
     return JsonResponse(
         list(
-            Collection.objects.filter(public=True, job__active=True)
+            Collection.objects.visible()
             .values(
+                # Identification
                 "id",
                 "title",
                 "country",
+                # Accrual periodicity
                 "last_retrieved",
                 "retrieval_frequency",
-                "source_id",
-                "frozen",
-                "language",
-                "source_url",
                 "update_frequency",
+                "frozen",
+                # Provenance
+                "source_id",
+                "source_url",
+                # Other details
                 "region",
+                "language",
             )
             .annotate(data_from=F("job__date_from"), data_to=F("job__date_to"))
         ),

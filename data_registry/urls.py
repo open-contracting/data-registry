@@ -13,7 +13,7 @@ urlpatterns = [
     path("search/", views.search, name="search"),
     path("publication/<int:id>", views.detail, name="detail"),
     path("publication/<int:id>/download", views.download_export, name="download"),
-    path("datasets-metadata", views.datasets_metadata, name="datasets_metadata"),
+    path("publications.json", views.publications_api, name="publications_api"),
     # Uncomment after re-integrating Spoonbill.
     # path("excel-data/<int:job_id>/<str:job_range>", views.excel_data, name="excel-data"),
     # path("excel-data/<int:job_id>", views.excel_data, name="all-excel-data"),
