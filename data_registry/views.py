@@ -200,6 +200,35 @@ def download_export(request, id):
     )
 
 
+def publications_api(request):
+    active_job = Job.objects.filter(collection=OuterRef("pk"), active=True)[:1]
+    publications = (
+        collection_queryset(request)
+        .values(
+            # Identification
+            "id",
+            "title",
+            "country",
+            # Accrual periodicity
+            "last_retrieved",
+            "retrieval_frequency",
+            "update_frequency",
+            "frozen",
+            # Provenance
+            "source_id",
+            "source_url",
+            # Other details
+            "region",
+            "language",
+        )
+        .annotate(
+            date_from=Subquery(active_job.values("date_from")),
+            date_to=Subquery(active_job.values("date_to")),
+        )
+    )
+    return JsonResponse(list(publications), safe=False)
+
+
 def excel_data(request, job_id, job_range=None):
     job = Job.objects.get(id=job_id)
     export = Export(job_id)
