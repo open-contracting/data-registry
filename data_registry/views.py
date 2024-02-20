@@ -201,10 +201,15 @@ def download_export(request, id):
 
 
 def publications_api(request):
+    active_job = Job.objects.filter(collection=OuterRef("pk"), active=True)[:1]
+    qs = collection_queryset(request).annotate(
+        job_id=Subquery(active_job.values("pk")),
+        date_from=Subquery(active_job.values("date_from")),
+        date_to=Subquery(active_job.values("date_to")),
+    )
     return JsonResponse(
         list(
-            Collection.objects.visible()
-            .values(
+            qs.values(
                 # Identification
                 "id",
                 "title",
@@ -220,8 +225,7 @@ def publications_api(request):
                 # Other details
                 "region",
                 "language",
-            )
-            .annotate(data_from=F("job__date_from"), data_to=F("job__date_to"))
+            ).annotate(data_from=F("job__date_from"), data_to=F("job__date_to"))
         ),
         safe=False,
     )
