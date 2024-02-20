@@ -10,7 +10,7 @@ asgiref==3.7.2
     #   django
 backports-entry-points-selectable==1.2.0
     # via virtualenv
-black==21.12b0
+black==24.2.0
     # via -r requirements_dev.in
 build==0.10.0
     # via pip-tools
@@ -60,9 +60,7 @@ flake8==3.8.4
 flatterer==0.19.15
     # via -r requirements.txt
 gunicorn[setproctitle]==20.1.0
-    # via
-    #   -r requirements.txt
-    #   gunicorn
+    # via -r requirements.txt
 identify==2.3.5
     # via pre-commit
 idna==2.10
@@ -101,7 +99,9 @@ orjson==3.9.1
     #   flatterer
     #   yapw
 packaging==23.1
-    # via build
+    # via
+    #   black
+    #   build
 pandas==1.5.0
     # via
     #   -r requirements.txt
@@ -163,12 +163,9 @@ sqlparse==0.4.4
     # via
     #   -r requirements.txt
     #   django
-tomli==1.2.2
-    # via black
 typing-extensions==4.7.1
     # via
     #   -r requirements.txt
-    #   black
     #   dj-database-url
     #   django-modeltranslation
 urllib3==2.0.7
@@ -181,9 +178,7 @@ virtualenv==20.10.0
 wheel==0.38.4
     # via pip-tools
 yapw[perf]==0.1.4
-    # via
-    #   -r requirements.txt
-    #   yapw
+    # via -r requirements.txt
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip
