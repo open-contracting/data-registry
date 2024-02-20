@@ -33,19 +33,23 @@ class ViewsTests(TestCase):
 
     def test_publications_api(self):
         expected_response = {
+            # Identification
             "id": self.collection.id,
             "title": self.collection.title_en,
-            "source_id": self.collection.source_id,
-            "update_frequency": Collection.UpdateFrequency.UNKNOWN.name,
             "country": "",
-            "data_to": None,
-            "data_from": None,
-            "frozen": False,
-            "language": "",
+            # Accrual periodicity
             "last_retrieved": None,
             "retrieval_frequency": "",
+            "update_frequency": Collection.UpdateFrequency.UNKNOWN.name,
+            "frozen": False,
+            # Provenance
+            "source_id": self.collection.source_id,
             "source_url": "",
+            # Other details
             "region": "",
+            "language": "",
+            "date_to": None,
+            "date_from": None,
         }
         response = Client().get("/en/publications.json")
         self.assertEqual(response.status_code, 200)
