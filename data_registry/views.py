@@ -10,7 +10,7 @@ from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.postgres.aggregates import ArrayAgg
-from django.db.models import Count, F, OuterRef, Q, Subquery
+from django.db.models import Count, OuterRef, Q, Subquery
 from django.db.models.functions import Substr
 from django.http.response import FileResponse, HttpResponse, HttpResponseBadRequest, HttpResponseNotFound, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -202,33 +202,31 @@ def download_export(request, id):
 
 def publications_api(request):
     active_job = Job.objects.filter(collection=OuterRef("pk"), active=True)[:1]
-    qs = collection_queryset(request).annotate(
-        job_id=Subquery(active_job.values("pk")),
-        date_from=Subquery(active_job.values("date_from")),
-        date_to=Subquery(active_job.values("date_to")),
+    publications = (
+        collection_queryset(request)
+        .values(
+            # Identification
+            "id",
+            "title",
+            "country",
+            # Accrual periodicity
+            "last_retrieved",
+            "retrieval_frequency",
+            "update_frequency",
+            "frozen",
+            # Provenance
+            "source_id",
+            "source_url",
+            # Other details
+            "region",
+            "language",
+        )
+        .annotate(
+            date_from=Subquery(active_job.values("date_from")),
+            date_to=Subquery(active_job.values("date_to")),
+        )
     )
-    return JsonResponse(
-        list(
-            qs.values(
-                # Identification
-                "id",
-                "title",
-                "country",
-                # Accrual periodicity
-                "last_retrieved",
-                "retrieval_frequency",
-                "update_frequency",
-                "frozen",
-                # Provenance
-                "source_id",
-                "source_url",
-                # Other details
-                "region",
-                "language",
-            ).annotate(data_from=F("job__date_from"), data_to=F("job__date_to"))
-        ),
-        safe=False,
-    )
+    return JsonResponse(list(publications), safe=False)
 
 
 def excel_data(request, job_id, job_range=None):
