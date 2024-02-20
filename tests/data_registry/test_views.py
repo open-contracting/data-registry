@@ -13,10 +13,10 @@ class ViewsTests(TestCase):
         cls.collection = models.Collection.objects.create(
             public=True,
             # Identification
-            title="Dirección Nacional de Contrataciones Públicas (DNCP)",
+            title="Ignore",
             title_en="National Directorate of Public Procurement (DNCP)",
             title_es="Dirección Nacional de Contrataciones Públicas (DNCP)",
-            country="Paraguay",
+            country="Ignore",
             country_en="Paraguay (EN)",
             country_es="Paraguay (ES)",
             # Accrual periodicity
@@ -27,7 +27,7 @@ class ViewsTests(TestCase):
             source_url="https://contrataciones.gov.py/datos/api/v3/doc/",
             # Other details
             region=models.Collection.Region.LAC,
-            language="Untranslated",
+            language="Ignore",
             language_en="Spanish",
             language_es="Español",
         )
