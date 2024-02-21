@@ -226,7 +226,9 @@ def publications_api(request):
             date_to=Subquery(active_job.values("date_to")),
         )
     )
-    return JsonResponse(list(publications), safe=False)
+    return JsonResponse(
+        list(publications), safe=False, json_dumps_params={"ensure_ascii": False, "separators": (",", ":")}
+    )
 
 
 def excel_data(request, job_id, job_range=None):

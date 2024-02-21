@@ -78,6 +78,7 @@ class ViewsTests(TestCase):
 
         self.assertEqual(en_response.status_code, 200)
         self.assertEqual(en_response.json(), [expected])
+        self.assertNotIn(b": ", en_response.content)  # separators
 
         expected["title"] = "Dirección Nacional de Contrataciones Públicas (DNCP)"
         expected["country"] = "Paraguay (ES)"
@@ -85,6 +86,7 @@ class ViewsTests(TestCase):
 
         self.assertEqual(es_response.status_code, 200)
         self.assertEqual(es_response.json(), [expected])
+        self.assertNotIn(b"\\u", es_response.content)  # ensure_ascii
 
         for public, active_job in ((False, True), (True, False), (False, False)):
             with self.subTest(public=public, active_job=active_job):
