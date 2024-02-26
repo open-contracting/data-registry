@@ -42,7 +42,7 @@ mdurl==0.1.2
     # via markdown-it-py
 numpy==1.25.0
     # via pandas
-orjson==3.9.1
+orjson==3.9.15
     # via
     #   flatterer
     #   yapw
