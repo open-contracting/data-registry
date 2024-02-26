@@ -60,7 +60,9 @@ flake8==3.8.4
 flatterer==0.19.15
     # via -r requirements.txt
 gunicorn[setproctitle]==20.1.0
-    # via -r requirements.txt
+    # via
+    #   -r requirements.txt
+    #   gunicorn
 identify==2.3.5
     # via pre-commit
 idna==2.10
@@ -93,7 +95,7 @@ numpy==1.25.0
     # via
     #   -r requirements.txt
     #   pandas
-orjson==3.9.1
+orjson==3.9.15
     # via
     #   -r requirements.txt
     #   flatterer
@@ -178,7 +180,9 @@ virtualenv==20.10.0
 wheel==0.38.4
     # via pip-tools
 yapw[perf]==0.1.4
-    # via -r requirements.txt
+    # via
+    #   -r requirements.txt
+    #   yapw
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip
