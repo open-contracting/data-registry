@@ -68,7 +68,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
 <div class="row mb-5">
     <div class="col-sm mt-sm-1 mb-3 fixed-12">
 {% if collection.country_flag %}
-        <img src="{% static 'img/flags/' %}{{ collection.country_flag }}" width="168" alt="" class="flag-detail">
+        <img src="{% static 'img/flags/' %}{{ collection.country_flag }}" width="168" alt="" role="presentation" class="flag-detail">
 {% endif %}
     </div>
     <div class="col-sm">
