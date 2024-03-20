@@ -10,7 +10,7 @@ asgiref==3.7.2
     #   django
 backports-entry-points-selectable==1.2.0
     # via virtualenv
-black==24.2.0
+black==24.3.0
     # via -r requirements_dev.in
 build==0.10.0
     # via pip-tools
