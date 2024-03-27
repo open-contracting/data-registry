@@ -47,7 +47,7 @@ django==4.2.11
     #   dj-database-url
     #   django-markdownx
     #   django-modeltranslation
-django-markdownx==4.0.2
+django-markdownx==4.0.7
     # via -r requirements.txt
 django-modeltranslation==0.18.10
     # via -r requirements.txt
