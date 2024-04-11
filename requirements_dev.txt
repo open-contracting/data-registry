@@ -63,7 +63,7 @@ gunicorn[setproctitle]==20.1.0
     # via -r requirements.txt
 identify==2.3.5
     # via pre-commit
-idna==2.10
+idna==3.7
     # via
     #   -r requirements.txt
     #   requests

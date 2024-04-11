@@ -30,7 +30,7 @@ flatterer==0.19.15
     # via -r requirements.in
 gunicorn[setproctitle]==20.1.0
     # via -r requirements.in
-idna==2.10
+idna==3.7
     # via requests
 ijson==3.1.4
     # via flatterer
