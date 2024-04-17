@@ -2,7 +2,7 @@
 
 ## Development
 
-Create a Python 3.8 virtual environment.
+Create a Python 3.11 virtual environment.
 
 Install requirements:
 
