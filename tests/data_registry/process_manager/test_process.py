@@ -26,15 +26,12 @@ class ProcessTests(TransactionTestCase):
 
         with patch("data_registry.process_manager.process.get_runner") as mock_get_runner, patch(
             "data_registry.process_manager.process.update_collection_availability"
-        ) as mock_update_collection_availability, patch(
-            "data_registry.process_manager.process.update_collection_metadata"
-        ) as mock_update_collection_metadata:
+        ) as mock_update_collection_availability:
             # get_runner returns only TestTask
             mock_get_runner.return_value = TestTask()
             # skip update_collection_availability (does nothing, counts are not set!)
             mock_update_collection_availability.return_value = None
             # skip update_collection_metadaat (does nothing, metadata are not set!)
-            mock_update_collection_metadata.return_value = None
 
             settings.JOB_TASKS_PLAN = ["test"]
 

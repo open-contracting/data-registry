@@ -1,5 +1,5 @@
 import logging
-from datetime import date, datetime, timedelta
+from datetime import date, timedelta
 from urllib.parse import urljoin
 
 from django.conf import settings
@@ -129,8 +129,6 @@ def process(collection):
                 # completed job postprocessing
                 try:
                     update_collection_availability(job)
-
-                    update_collection_metadata(job)
                 except Exception as e:
                     logger.exception(e)
                 else:
@@ -214,35 +212,3 @@ def update_collection_availability(job):
     job.milestones_count = counts.get("milestones")
     job.amendments_count = counts.get("amendments")
     job.save()
-
-
-def update_collection_metadata(job):
-    try:
-        pelican_id = job.context.get("pelican_id")
-        response = request("GET", urljoin(settings.PELICAN_FRONTEND_URL, f"/api/datasets/{pelican_id}/metadata/"))
-    except Exception as e:
-        raise Exception(
-            f"Publication {job.collection}: Pelican: Unable to get metadata of dataset {pelican_id}"
-        ) from e
-
-    meta = response.json()
-
-    if meta:
-        job.date_from = parse_date(meta.get("published_from"))
-        job.date_to = parse_date(meta.get("published_to"))
-        job.license = meta.get("data_license") or ""
-        job.ocid_prefix = meta.get("ocid_prefix") or ""
-        job.save()
-
-
-def parse_date(datetime_str):
-    if not datetime_str:
-        return None
-
-    try:
-        try:
-            return datetime.strptime(datetime_str, "%Y-%m-%d %H.%M.%S").date()
-        except ValueError:  # e.g. nigeria_plateau_state
-            return datetime.strptime(datetime_str, "%y-%m-%d %H.%M.%S").date()
-    except ValueError as e:
-        logger.exception(e)

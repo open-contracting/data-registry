@@ -8,6 +8,8 @@ from data_registry.process_manager.util import request
 
 logger = logging.getLogger(__name__)
 
+base_url = "/api/collections"
+
 
 class Process:
     job = None
@@ -24,7 +26,7 @@ class Process:
     def get_status(self):
         response = request(
             "GET",
-            urljoin(settings.KINGFISHER_PROCESS_URL, f"/api/v1/tree/{self.process_id}/"),
+            urljoin(settings.KINGFISHER_PROCESS_URL, f"{base_url}/{self.process_id}/tree/"),
             error_msg=f"Unable to get status of process #{self.process_id}",
         )
 
@@ -38,6 +40,20 @@ class Process:
             self.job.context["process_data_version"] = compile_releases.get("data_version")
             self.job.save()
 
+        if is_last_completed:
+            response = request(
+                "GET",
+                urljoin(settings.KINGFISHER_PROCESS_URL, f"{base_url}/{self.process_id}/metadata/"),
+                error_msg=f"Unable to get the metadata of process #{self.process_id}",
+            )
+            meta = response.json()
+            if meta:
+                self.job.date_from = meta.get("published_from")
+                self.job.date_to = meta.get("published_to")
+                self.job.license = meta.get("data_license") or ""
+                self.job.ocid_prefix = meta.get("ocid_prefix") or ""
+                self.job.save()
+
         return Task.Status.COMPLETED if is_last_completed else Task.Status.RUNNING
 
     def wipe(self):
@@ -47,9 +63,7 @@ class Process:
 
         logger.info("Wiping Kingfisher Process data for collection id %s.", self.process_id)
         request(
-            "POST",
-            urljoin(settings.KINGFISHER_PROCESS_URL, "/api/v1/wipe_collection"),
-            json={"collection_id": self.process_id},
+            "DELETE",
+            urljoin(settings.KINGFISHER_PROCESS_URL, f"{base_url}/{self.process_id}/"),
             error_msg="Unable to wipe PROCESS",
-            consume_exception=True,
         )
