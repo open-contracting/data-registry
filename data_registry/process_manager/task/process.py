@@ -9,8 +9,8 @@ from data_registry.process_manager.util import TaskManager
 logger = logging.getLogger(__name__)
 
 
-def _url(path):
-    return urljoin(settings.KINGFISHER_PROCESS_URL, f"/api/collections/{path}/")
+def url_for_collection(*parts):
+    return urljoin(settings.KINGFISHER_PROCESS_URL, f"/api/collections/{'/'.join(map(str, parts))}/")
 
 
 class Process(TaskManager):
@@ -25,25 +25,25 @@ class Process(TaskManager):
     def get_status(self):
         response = self.request(
             "GET",
-            _url(f"{self.process_id}/tree"),
-            error_msg=f"Unable to get status of process #{self.process_id}",
+            url_for_collection(self.process_id, "tree"),
+            error_msg=f"Unable to get status of collection #{self.process_id}",
         )
 
-        json = response.json()
+        tree = response.json()
 
-        compile_releases = next(n for n in json if n.get("transform_type") == "compile-releases")
-        is_last_completed = compile_releases.get("completed_at") is not None
+        compiled_collection = next(c for c in tree if c["transform_type"] == "compile-releases")
+        compiled_collection_completed = compiled_collection["completed_at"] is not None
 
         if "process_id_pelican" not in self.job.context:
-            self.job.context["process_id_pelican"] = compile_releases.get("id")
-            self.job.context["process_data_version"] = compile_releases.get("data_version")
+            self.job.context["process_id_pelican"] = compiled_collection["id"]
+            self.job.context["process_data_version"] = compiled_collection["data_version"]
             self.job.save()
 
-        if is_last_completed:
+        if compiled_collection_completed:
             response = self.request(
                 "GET",
-                _url(f"{compile_releases.get('id')}/metadata"),
-                error_msg=f"Unable to get the metadata of process #{compile_releases.get('id')}",
+                url_for_collection(compiled_collection["id"], "metadata"),
+                error_msg=f"Unable to get metadata of collection #{compiled_collection['id']}",
             )
             meta = response.json()
             if meta:
@@ -53,16 +53,16 @@ class Process(TaskManager):
                 self.job.ocid_prefix = meta.get("ocid_prefix") or ""
                 self.job.save()
 
-        return Task.Status.COMPLETED if is_last_completed else Task.Status.RUNNING
+        return Task.Status.COMPLETED if compiled_collection_completed else Task.Status.RUNNING
 
     def wipe(self):
         if not self.process_id:
-            logger.warning("Unable to wipe PROCESS - process_id is not set (because log file was not retrievable)")
+            logger.warning("%s: Unable to wipe collection (collection ID is empty)", self)
             return
 
-        logger.info("Wiping Kingfisher Process data for collection id %s.", self.process_id)
+        logger.info("Wiping data for collection %s", self.process_id)
         self.request(
             "DELETE",
-            _url(self.process_id),
-            error_msg="Unable to wipe PROCESS",
+            url_for_collection(self.process_id),
+            error_msg=f"Unable to wipe collection {self.process_id}",
         )

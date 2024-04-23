@@ -14,7 +14,7 @@ class TaskManager:
 
     def request(self, method, url, **kwargs):
         error_msg = kwargs.pop("error_msg", f"Request on {url} failed")
-        error_msg = f"Publication {self.job.collection}: {self.__class__.__name__}: {error_msg}"
+        error_msg = f"{self}: {error_msg}"
         consume_exception = kwargs.pop("consume_exception", False)
 
         try:
@@ -26,3 +26,6 @@ class TaskManager:
                 logger.exception(error_msg)
             else:
                 raise RecoverableException(error_msg) from e
+
+    def __str__(self):
+        return f"Publication {self.job.collection}: {self.__class__.__name__}"
