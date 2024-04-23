@@ -16,7 +16,7 @@ def url_for_collection(*parts):
 class Process(TaskManager):
     def __init__(self, job):
         self.job = job
-        self.process_id = job.context["process_id"]
+        self.process_id = job.context.get("process_id", None)
 
     def run(self):
         # The Process task is started by Kingfisher Collect's Kingfisher Process API extension.

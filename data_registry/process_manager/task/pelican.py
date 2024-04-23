@@ -41,6 +41,7 @@ class Pelican(TaskManager):
         if not data:
             return Task.Status.WAITING
         if data["phase"] == "CHECKED" and data["state"] == "OK":
+            self.update_collection_availability()
             return Task.Status.COMPLETED
         return Task.Status.RUNNING
 
@@ -64,6 +65,8 @@ class Pelican(TaskManager):
         return self.job.context.get("pelican_id")
 
     def get_pelican_dataset_name(self):
+        if "process_data_version" not in self.job.context:
+            raise RecoverableException("Process data version is not set")
         if "pelican_dataset_name" not in self.job.context:
             spider = self.job.context["spider"]
             process_data_version = self.job.context["process_data_version"]
@@ -90,3 +93,32 @@ class Pelican(TaskManager):
             error_msg=f"Unable to wipe dataset {pelican_id}",
             consume_exception=True,
         )
+
+    def update_collection_availability(self):
+        pelican_id = self.job.context.get("pelican_id")
+        try:
+            response = self.request(
+                "GET", urljoin(settings.PELICAN_FRONTEND_URL, f"/api/datasets/{pelican_id}/coverage/")
+            )
+        except Exception as e:
+            raise Exception(
+                f"Publication {self.job.collection}: Pelican: Unable to get coverage of dataset {pelican_id}"
+            ) from e
+
+        counts = response.json()
+
+        self.job.tenders_count = counts.get("tenders")
+        self.job.tenderers_count = counts.get("tenderers")
+        self.job.tenders_items_count = counts.get("tenders_items")
+        self.job.parties_count = counts.get("parties")
+        self.job.awards_count = counts.get("awards")
+        self.job.awards_items_count = counts.get("awards_items")
+        self.job.awards_suppliers_count = counts.get("awards_suppliers")
+        self.job.contracts_count = counts.get("contracts")
+        self.job.contracts_items_count = counts.get("contracts_items")
+        self.job.contracts_transactions_count = counts.get("contracts_transactions")
+        self.job.documents_count = counts.get("documents")
+        self.job.plannings_count = counts.get("plannings")
+        self.job.milestones_count = counts.get("milestones")
+        self.job.amendments_count = counts.get("amendments")
+        self.job.save()

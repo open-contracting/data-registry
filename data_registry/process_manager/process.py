@@ -1,6 +1,5 @@
 import logging
 from datetime import date, timedelta
-from urllib.parse import urljoin
 
 from django.conf import settings
 from django.db import transaction
@@ -14,7 +13,6 @@ from data_registry.process_manager.task.exporter import Exporter
 from data_registry.process_manager.task.flattener import Flattener
 from data_registry.process_manager.task.pelican import Pelican
 from data_registry.process_manager.task.process import Process
-from data_registry.process_manager.util import request
 
 logger = logging.getLogger(__name__)
 
@@ -118,25 +116,19 @@ def process(collection):
 
             # complete the job if all of its tasks are completed
             if job_complete:
-                # completed job postprocessing
-                try:
-                    update_collection_availability(job)
-                except Exception as e:
-                    logger.exception(e)
-                else:
-                    job.status = Job.Status.COMPLETED
-                    job.end = timezone.now()
-                    job.save()
+                job.status = Job.Status.COMPLETED
+                job.end = timezone.now()
+                job.save()
 
-                    collection.last_retrieved = job.task.get(type__in=("collect", "test")).end
-                    collection.save()
+                collection.last_retrieved = job.task.get(type__in=("collect", "test")).end
+                collection.save()
 
-                    # set active job
-                    collection.job.update(
-                        active=Case(When(id=job.id, then=True), default=False, output_field=BooleanField())
-                    )
+                # set active job
+                collection.job.update(
+                    active=Case(When(id=job.id, then=True), default=False, output_field=BooleanField())
+                )
 
-                    logger.debug("Job %s has completed (%s: %s)", job, collection.country, collection)
+                logger.debug("Job %s has completed (%s: %s)", job, collection.country, collection)
 
 
 def should_be_planned(collection):
@@ -176,31 +168,3 @@ def plan(collection):
         job.task.create(status=Task.Status.PLANNED, type=task_type, order=order)
 
     logger.debug("New job %s planned", job)
-
-
-def update_collection_availability(job):
-    try:
-        pelican_id = job.context.get("pelican_id")
-        response = request("GET", urljoin(settings.PELICAN_FRONTEND_URL, f"/api/datasets/{pelican_id}/coverage/"))
-    except Exception as e:
-        raise Exception(
-            f"Publication {job.collection}: Pelican: Unable to get coverage of dataset {pelican_id}"
-        ) from e
-
-    counts = response.json()
-
-    job.tenders_count = counts.get("tenders")
-    job.tenderers_count = counts.get("tenderers")
-    job.tenders_items_count = counts.get("tenders_items")
-    job.parties_count = counts.get("parties")
-    job.awards_count = counts.get("awards")
-    job.awards_items_count = counts.get("awards_items")
-    job.awards_suppliers_count = counts.get("awards_suppliers")
-    job.contracts_count = counts.get("contracts")
-    job.contracts_items_count = counts.get("contracts_items")
-    job.contracts_transactions_count = counts.get("contracts_transactions")
-    job.documents_count = counts.get("documents")
-    job.plannings_count = counts.get("plannings")
-    job.milestones_count = counts.get("milestones")
-    job.amendments_count = counts.get("amendments")
-    job.save()
