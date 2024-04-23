@@ -36,16 +36,16 @@ class Pelican(TaskManager):
             error_msg=f"Unable to get status of dataset {pelican_id}",
         )
 
-        json = response.json()
-        if not json:
+        data = response.json()
+
+        if not data:
             return Task.Status.WAITING
-        if json["phase"] == "CHECKED" and json["state"] == "OK":
+        if data["phase"] == "CHECKED" and data["state"] == "OK":
             return Task.Status.COMPLETED
         return Task.Status.RUNNING
 
     def get_pelican_id(self):
-        pelican_id = self.job.context.get("pelican_id")
-        if not pelican_id:
+        if "pelican_id" not in self.job.context:
             name = self.get_pelican_dataset_name()
 
             response = self.request(
@@ -55,25 +55,22 @@ class Pelican(TaskManager):
                 error_msg=f"Unable to get ID for name {name!r}",
             )
 
-            pelican_id = response.json().get("id")
-            if pelican_id:
-                self.job.context["pelican_id"] = pelican_id
+            data = response.json()
+
+            if "id" in data:
+                self.job.context["pelican_id"] = data["id"]
                 self.job.save()
 
-        return pelican_id
+        return self.job.context.get("pelican_id")
 
     def get_pelican_dataset_name(self):
-        dataset_name = self.job.context.get("pelican_dataset_name")
-        if not dataset_name:
-            spider = self.job.context.get("spider")
-            process_data_version = self.job.context.get("process_data_version")
-
-            dataset_name = f"{spider}_{process_data_version}_{self.job.id}"
-
-            self.job.context["pelican_dataset_name"] = dataset_name
+        if "pelican_dataset_name" not in self.job.context:
+            spider = self.job.context["spider"]
+            process_data_version = self.job.context["process_data_version"]
+            self.job.context["pelican_dataset_name"] = f"{spider}_{process_data_version}_{self.job.id}"
             self.job.save()
 
-        return dataset_name
+        return self.job.context["pelican_dataset_name"]
 
     def wipe(self):
         try:

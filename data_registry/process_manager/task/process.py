@@ -16,10 +16,10 @@ def url_for_collection(*parts):
 class Process(TaskManager):
     def __init__(self, job):
         self.job = job
-        self.process_id = job.context.get("process_id")
+        self.process_id = job.context["process_id"]
 
     def run(self):
-        # process is started through collect-process integration
+        # The Process task is started by Kingfisher Collect's Kingfisher Process API extension.
         pass
 
     def get_status(self):
@@ -45,8 +45,10 @@ class Process(TaskManager):
                 url_for_collection(compiled_collection["id"], "metadata"),
                 error_msg=f"Unable to get metadata of collection #{compiled_collection['id']}",
             )
+
             meta = response.json()
-            if meta:
+
+            if meta:  # can be empty (or partial) if the collection contained no data
                 self.job.date_from = meta.get("published_from")
                 self.job.date_to = meta.get("published_to")
                 self.job.license = meta.get("data_license") or ""
