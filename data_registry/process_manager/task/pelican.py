@@ -33,7 +33,7 @@ class Pelican(TaskManager):
         response = self.request(
             "GET",
             urljoin(settings.PELICAN_FRONTEND_URL, f"/api/datasets/{pelican_id}/status/"),
-            error_msg=f"Unable get status of dataset {pelican_id}",
+            error_msg=f"Unable to get status of dataset {pelican_id}",
         )
 
         json = response.json()
@@ -76,20 +76,20 @@ class Pelican(TaskManager):
         return dataset_name
 
     def wipe(self):
-        logger.info("%s: Wiping data for collection %s", self, self.compiled_collection_id)
         try:
             pelican_id = self.get_pelican_id()
         except RecoverableException:
-            logger.error("Unable to wipe PELICAN - pelican_id is not retrievable")
+            logger.error("%s: Unable to wipe dataset (dataset ID is irretrievable)", self)
             return
 
         if not pelican_id:
-            logger.warning("Unable to wipe PELICAN - pelican_id is not set")
+            logger.warning("%s: Unable to wipe dataset (dataset ID is empty)", self)
             return
 
+        logger.info("%s: Wiping data for collection %s", self, self.compiled_collection_id)
         self.request(
             "DELETE",
             urljoin(settings.PELICAN_FRONTEND_URL, f"/api/datasets/{pelican_id}/"),
-            error_msg=f"Unable to wipe dataset with ID {pelican_id}",
+            error_msg=f"Unable to wipe dataset {pelican_id}",
             consume_exception=True,
         )

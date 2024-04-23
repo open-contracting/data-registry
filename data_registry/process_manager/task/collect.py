@@ -58,7 +58,7 @@ class Collect(TaskManager):
             "GET",
             urljoin(self.host, "listjobs.json"),
             params={"project": self.project},
-            error_msg=f"Unable to get status of collect job #{job_id}",
+            error_msg=f"Unable to get status of Scrapyd job #{job_id}",
         )
 
         json = response.json()
@@ -105,10 +105,10 @@ class Collect(TaskManager):
     def wipe(self):
         version = self.job.context.get("process_data_version")
         if not version:
-            logger.warning("Unable to wipe COLLECT - process_data_version is not set")
+            logger.warning("%s: Unable to wipe crawl (data version is not set)", self)
             return
 
-        logger.info("Wiping Kingfisher Collect data for data version %s.", version)
+        logger.info("%s: Wiping data for crawl %s", self, version)
 
         version = version.replace("-", "").replace(":", "").replace("T", "_")
         path = f"{settings.KINGFISHER_COLLECT_FILES_STORE}/{self.spider}/{version}"

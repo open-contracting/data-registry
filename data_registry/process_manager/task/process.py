@@ -57,10 +57,10 @@ class Process(TaskManager):
 
     def wipe(self):
         if not self.process_id:
-            logger.warning("%s: Unable to wipe collection (collection ID is empty)", self)
+            logger.warning("%s: Unable to wipe collection (collection ID is not set)", self)
             return
 
-        logger.info("Wiping data for collection %s", self.process_id)
+        logger.info("%s: Wiping data for collection %s", self, self.process_id)
         self.request(
             "DELETE",
             url_for_collection(self.process_id),
