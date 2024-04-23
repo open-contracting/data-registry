@@ -15,11 +15,6 @@ logger = logging.getLogger(__name__)
 
 
 class Collect:
-    host = None
-    job = None
-    project = None
-    collection = None
-
     def __init__(self, collection, job):
         if not settings.SCRAPYD["url"]:
             raise Exception("SCRAPYD_URL is not set")

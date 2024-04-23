@@ -11,9 +11,6 @@ logger = logging.getLogger(__name__)
 
 
 class Pelican:
-    job = None
-    collection_id = None
-
     def __init__(self, job):
         self.job = job
         self.collection_id = self.job.context.get("process_id_pelican")

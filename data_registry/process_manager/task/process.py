@@ -14,9 +14,6 @@ def _url(path):
 
 
 class Process:
-    job = None
-    process_id = None
-
     def __init__(self, job):
         self.job = job
         self.process_id = job.context.get("process_id")
