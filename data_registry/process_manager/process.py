@@ -20,14 +20,6 @@ logger = logging.getLogger(__name__)
 
 
 def get_runner(job, task):
-    """
-    Task classes must implement three methods:
-
-    -  ``run()`` starts the task
-    -  ``get_status()`` returns a choice from ``Task.Status``
-    -  ``wipe()`` deletes any side-effects of ``run()``
-    """
-
     match task.type:
         case Task.Type.COLLECT:
             return Collect(job.collection, job)

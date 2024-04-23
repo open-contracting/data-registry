@@ -1,14 +1,16 @@
 import logging
+from abc import ABC, abstractmethod
 
 import requests
 from requests.exceptions import RequestException
 
 from data_registry.exceptions import RecoverableException
+from data_registry.models import Task
 
 logger = logging.getLogger(__name__)
 
 
-class TaskManager:
+class TaskManager(ABC):
     def __init__(self, job):
         self.job = job
 
@@ -26,6 +28,29 @@ class TaskManager:
                 logger.exception(error_msg)
             else:
                 raise RecoverableException(error_msg) from e
+
+    @abstractmethod
+    def run(self) -> None:
+        """
+        Start the task.
+        """
+        pass
+
+    @abstractmethod
+    def get_status(self) -> Task.Status:
+        """
+        Return the status of the task.
+
+        This method can also write metadata about the task to the job.
+        """
+        pass
+
+    @abstractmethod
+    def wipe(self) -> None:
+        """
+        Delete any side effects of (for example, data written by) the task.
+        """
+        pass
 
     def __str__(self):
         return f"Publication {self.job.collection}: {self.__class__.__name__}"
