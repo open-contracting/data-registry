@@ -8,7 +8,9 @@ from data_registry.process_manager.util import request
 
 logger = logging.getLogger(__name__)
 
-base_url = "/api/collections"
+
+def _url(path):
+    return urljoin(settings.KINGFISHER_PROCESS_URL, f"/api/collections/{path}/")
 
 
 class Process:
@@ -26,7 +28,7 @@ class Process:
     def get_status(self):
         response = request(
             "GET",
-            urljoin(settings.KINGFISHER_PROCESS_URL, f"{base_url}/{self.process_id}/tree/"),
+            _url(f"{self.process_id}/tree"),
             error_msg=f"Unable to get status of process #{self.process_id}",
         )
 
@@ -43,8 +45,8 @@ class Process:
         if is_last_completed:
             response = request(
                 "GET",
-                urljoin(settings.KINGFISHER_PROCESS_URL, f"{base_url}/{self.process_id}/metadata/"),
-                error_msg=f"Unable to get the metadata of process #{self.process_id}",
+                _url(f"{compile_releases.get('id')}/metadata"),
+                error_msg=f"Unable to get the metadata of process #{compile_releases.get('id')}",
             )
             meta = response.json()
             if meta:
@@ -64,6 +66,6 @@ class Process:
         logger.info("Wiping Kingfisher Process data for collection id %s.", self.process_id)
         request(
             "DELETE",
-            urljoin(settings.KINGFISHER_PROCESS_URL, f"{base_url}/{self.process_id}/"),
+            _url(self.process_id),
             error_msg="Unable to wipe PROCESS",
         )
