@@ -32,14 +32,14 @@ class Process(TaskManager):
         tree = response.json()
 
         compiled_collection = next(c for c in tree if c["transform_type"] == "compile-releases")
-        compiled_collection_completed = compiled_collection["completed_at"] is not None
 
-        if "process_id_pelican" not in self.job.context:
+        # Write "process_data_version" early, since the Collect task uses it to wipe, even if the Process task fails.
+        if "process_data_version" not in self.job.context:
             self.job.context["process_id_pelican"] = compiled_collection["id"]
             self.job.context["process_data_version"] = compiled_collection["data_version"]
             self.job.save()
 
-        if compiled_collection_completed:
+        if compiled_collection["completed_at"]:
             response = self.request(
                 "GET",
                 url_for_collection(compiled_collection["id"], "metadata"),
@@ -55,7 +55,9 @@ class Process(TaskManager):
                 self.job.ocid_prefix = meta.get("ocid_prefix") or ""
                 self.job.save()
 
-        return Task.Status.COMPLETED if compiled_collection_completed else Task.Status.RUNNING
+            return Task.Status.COMPLETED
+
+        return Task.Status.RUNNING
 
     def wipe(self):
         if not self.process_id:

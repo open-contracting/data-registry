@@ -41,7 +41,8 @@ class TaskManager(ABC):
         """
         Return the status of the task.
 
-        This method can also write metadata about the task to the job.
+        This method can also write metadata about the task to the job. Since this method can be called multiple times,
+        write metadata only when the metadata is missing or when the task is completed.
         """
         pass
 
