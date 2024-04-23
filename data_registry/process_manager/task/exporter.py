@@ -6,10 +6,10 @@ from exporter.util import Export, TaskStatus, publish
 class Exporter(TaskManager):
     def __init__(self, job):
         self.job = job
-        self.collection_id = self.job.context.get("process_id_pelican")
+        self.compiled_collection_id = self.job.context.get("process_id_pelican")
 
     def run(self):
-        publish({"collection_id": self.collection_id, "job_id": self.job.id}, "exporter_init")
+        publish({"collection_id": self.compiled_collection_id, "job_id": self.job.id}, "exporter_init")
 
     def get_status(self):
         match Export(self.job.id, basename="full.jsonl.gz").status:

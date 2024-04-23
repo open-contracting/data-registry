@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 class Pelican(TaskManager):
     def __init__(self, job):
         self.job = job
-        self.collection_id = self.job.context.get("process_id_pelican")
+        self.compiled_collection_id = self.job.context.get("process_id_pelican")
 
     def run(self):
         name = self.get_pelican_dataset_name()
@@ -21,8 +21,8 @@ class Pelican(TaskManager):
         self.request(
             "POST",
             urljoin(settings.PELICAN_FRONTEND_URL, "/api/datasets/"),
-            json={"name": name, "collection_id": self.collection_id},
-            error_msg=f"Unable to create dataset with name {name!r} and collection ID {self.collection_id}",
+            json={"name": name, "collection_id": self.compiled_collection_id},
+            error_msg=f"Unable to create dataset with name {name!r} and collection ID {self.compiled_collection_id}",
         )
 
     def get_status(self):
@@ -76,7 +76,7 @@ class Pelican(TaskManager):
         return dataset_name
 
     def wipe(self):
-        logger.info("Wiping Pelican data for collection id %s.", self.collection_id)
+        logger.info("%s: Wiping data for collection %s", self, self.compiled_collection_id)
         try:
             pelican_id = self.get_pelican_id()
         except RecoverableException:
