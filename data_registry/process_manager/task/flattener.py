@@ -1,11 +1,9 @@
 from data_registry.models import Task
+from data_registry.process_manager.util import TaskManager
 from exporter.util import Export, TaskStatus, publish
 
 
-class Flattener:
-    def __init__(self, job):
-        self.job = job
-
+class Flattener(TaskManager):
     def run(self):
         publish({"job_id": self.job.id}, "flattener_init")
 

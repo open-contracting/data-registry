@@ -5,12 +5,12 @@ from django.conf import settings
 
 from data_registry.exceptions import RecoverableException
 from data_registry.models import Task
-from data_registry.process_manager.util import request
+from data_registry.process_manager.util import TaskManager
 
 logger = logging.getLogger(__name__)
 
 
-class Pelican:
+class Pelican(TaskManager):
     def __init__(self, job):
         self.job = job
         self.collection_id = self.job.context.get("process_id_pelican")
@@ -18,12 +18,11 @@ class Pelican:
     def run(self):
         name = self.get_pelican_dataset_name()
 
-        request(
+        self.request(
             "POST",
             urljoin(settings.PELICAN_FRONTEND_URL, "/api/datasets/"),
             json={"name": name, "collection_id": self.collection_id},
-            error_msg=f"Publication {self.job.collection}: Pelican: Unable to create dataset with name {name!r} and "
-            f"collection ID {self.collection_id}",
+            error_msg=f"Unable to create dataset with name {name!r} and collection ID {self.collection_id}",
         )
 
     def get_status(self):
@@ -31,10 +30,10 @@ class Pelican:
         if not pelican_id:
             return Task.Status.WAITING
 
-        response = request(
+        response = self.request(
             "GET",
             urljoin(settings.PELICAN_FRONTEND_URL, f"/api/datasets/{pelican_id}/status/"),
-            error_msg=f"Publication {self.job.collection}: Pelican: Unable get status of dataset {pelican_id}",
+            error_msg=f"Unable get status of dataset {pelican_id}",
         )
 
         json = response.json()
@@ -49,11 +48,11 @@ class Pelican:
         if not pelican_id:
             name = self.get_pelican_dataset_name()
 
-            response = request(
+            response = self.request(
                 "GET",
                 urljoin(settings.PELICAN_FRONTEND_URL, "/api/datasets/find_by_name/"),
                 params={"name": name},
-                error_msg=f"Publication {self.job.collection}: Pelican: Unable to get ID for name {name!r}",
+                error_msg=f"Unable to get ID for name {name!r}",
             )
 
             pelican_id = response.json().get("id")
@@ -88,9 +87,9 @@ class Pelican:
             logger.warning("Unable to wipe PELICAN - pelican_id is not set")
             return
 
-        request(
+        self.request(
             "DELETE",
             urljoin(settings.PELICAN_FRONTEND_URL, f"/api/datasets/{pelican_id}/"),
-            error_msg=f"Publication {self.job.collection}: Pelican: Unable to wipe dataset with ID {pelican_id}",
+            error_msg=f"Unable to wipe dataset with ID {pelican_id}",
             consume_exception=True,
         )

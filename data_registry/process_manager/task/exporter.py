@@ -1,8 +1,9 @@
 from data_registry.models import Task
+from data_registry.process_manager.util import TaskManager
 from exporter.util import Export, TaskStatus, publish
 
 
-class Exporter:
+class Exporter(TaskManager):
     def __init__(self, job):
         self.job = job
         self.collection_id = self.job.context.get("process_id_pelican")

@@ -9,12 +9,12 @@ from requests.exceptions import HTTPError
 
 from data_registry.exceptions import RecoverableException
 from data_registry.models import Task
-from data_registry.process_manager.util import request
+from data_registry.process_manager.util import TaskManager
 
 logger = logging.getLogger(__name__)
 
 
-class Collect:
+class Collect(TaskManager):
     def __init__(self, collection, job):
         if not settings.SCRAPYD["url"]:
             raise Exception("SCRAPYD_URL is not set")
@@ -28,7 +28,7 @@ class Collect:
         self.collection = collection
 
     def run(self):
-        response = request(
+        response = self.request(
             "POST",
             urljoin(self.host, "schedule.json"),
             data={
@@ -54,7 +54,7 @@ class Collect:
         job_id = self.job.context.get("job_id")
         process_id = self.job.context.get("process_id")
 
-        response = request(
+        response = self.request(
             "GET",
             urljoin(self.host, "listjobs.json"),
             params={"project": self.project},
@@ -74,7 +74,7 @@ class Collect:
             log = self.job.context.get("scrapy_log")
 
             try:
-                response = request("get", log, error_msg=f"Unable to read Scrapy log {log}")
+                response = self.request("get", log, error_msg=f"Unable to read Scrapy log {log}")
             except RecoverableException as e:
                 ex_cause = e.__cause__
                 # If the request on the log file returns the error 404, something went wrong with the scrapy.

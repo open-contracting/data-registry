@@ -4,7 +4,7 @@ from urllib.parse import urljoin
 from django.conf import settings
 
 from data_registry.models import Task
-from data_registry.process_manager.util import request
+from data_registry.process_manager.util import TaskManager
 
 logger = logging.getLogger(__name__)
 
@@ -13,7 +13,7 @@ def _url(path):
     return urljoin(settings.KINGFISHER_PROCESS_URL, f"/api/collections/{path}/")
 
 
-class Process:
+class Process(TaskManager):
     def __init__(self, job):
         self.job = job
         self.process_id = job.context.get("process_id")
@@ -23,7 +23,7 @@ class Process:
         pass
 
     def get_status(self):
-        response = request(
+        response = self.request(
             "GET",
             _url(f"{self.process_id}/tree"),
             error_msg=f"Unable to get status of process #{self.process_id}",
@@ -40,7 +40,7 @@ class Process:
             self.job.save()
 
         if is_last_completed:
-            response = request(
+            response = self.request(
                 "GET",
                 _url(f"{compile_releases.get('id')}/metadata"),
                 error_msg=f"Unable to get the metadata of process #{compile_releases.get('id')}",
@@ -61,7 +61,7 @@ class Process:
             return
 
         logger.info("Wiping Kingfisher Process data for collection id %s.", self.process_id)
-        request(
+        self.request(
             "DELETE",
             _url(self.process_id),
             error_msg="Unable to wipe PROCESS",
