@@ -37,9 +37,9 @@ def process(collection):
     if should_be_planned(collection):
         plan(collection)
 
-    jobs = collection.job.exclude(status=Job.Status.COMPLETED)
+    country = collection.country
 
-    for job in jobs:
+    for job in collection.job.exclude(status=Job.Status.COMPLETED):
         with transaction.atomic():
             for task in job.task.exclude(status=Task.Status.COMPLETED).order_by("order"):
                 task_manager = get_task_manager(task)
@@ -50,17 +50,17 @@ def process(collection):
                             # If this is the first task...
                             if job.status == Job.Status.PLANNED:
                                 job.initiate()
-                                logger.debug("Job %s is starting (%s: %s)", job, collection.country, collection)
+                                logger.debug("Job %s is starting (%s: %s)", job, country, collection)
 
                             task_manager.run()
 
                             task.initiate()
-                            logger.debug("Task %s is starting (%s: %s)", task, collection.country, collection)
+                            logger.debug("Task %s is starting (%s: %s)", task, country, collection)
 
                             break
                         case Task.Status.WAITING | Task.Status.RUNNING:
                             status = task_manager.get_status()
-                            logger.debug("Task %s is %s (%s: %s)", task, status, collection.country, collection)
+                            logger.debug("Task %s is %s (%s: %s)", task, status, country, collection)
 
                             match status:
                                 case Task.Status.WAITING | Task.Status.RUNNING:
@@ -72,16 +72,16 @@ def process(collection):
 
                                     # Do not break! Go onto the next task.
                 except RecoverableException as e:
-                    logger.exception(e)
+                    logger.exception("Recoverable exception during task %s (%s: %s)", task, country, collection)
                     task.progress(result=Task.Result.FAILED, note=str(e))  # The service is not responding.
 
                     break
                 except Exception as e:
-                    logger.exception(e)
+                    logger.exception("Unhandled exception during task %s (%s: %s)", task, country, collection)
                     task.complete(result=Task.Result.FAILED, note=str(e))
 
                     job.complete()
-                    logger.warning("Job %s has failed (%s: %s)", job, collection.country, collection)
+                    logger.warning("Job %s has failed (%s: %s)", job, country, collection)
 
                     break
             # All tasks completed successfully.
@@ -95,7 +95,7 @@ def process(collection):
                     active=Case(When(id=job.id, then=True), default=False, output_field=BooleanField())
                 )
 
-                logger.debug("Job %s has completed (%s: %s)", job, collection.country, collection)
+                logger.debug("Job %s has completed (%s: %s)", job, country, collection)
 
 
 def should_be_planned(collection):
@@ -103,8 +103,7 @@ def should_be_planned(collection):
     if collection.frozen:
         return False
 
-    jobs = collection.job.exclude(status=Job.Status.COMPLETED)
-    if not jobs:
+    if not collection.job.exclude(status=Job.Status.COMPLETED):
         # update frequency is not set, plan next job
         if not collection.retrieval_frequency:
             return True

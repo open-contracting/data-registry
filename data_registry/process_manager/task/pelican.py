@@ -3,7 +3,6 @@ from urllib.parse import urljoin
 
 from django.conf import settings
 
-from data_registry.exceptions import RecoverableException
 from data_registry.models import Task
 from data_registry.process_manager.util import TaskManager
 
@@ -30,7 +29,7 @@ class Pelican(TaskManager):
             "POST",
             pelican_url("/api/datasets/"),
             json={"name": name, "collection_id": compiled_collection_id},
-            error_msg=f"Unable to create dataset with name {name!r} and collection ID {compiled_collection_id}",
+            error_message=f"Unable to create dataset with name {name!r} and collection ID {compiled_collection_id}",
         )
 
         self.job.context["pelican_dataset_name"] = name
@@ -50,7 +49,7 @@ class Pelican(TaskManager):
         response = self.request(
             "GET",
             pelican_url(f"/api/datasets/{pelican_id}/status/"),
-            error_msg=f"Unable to get status of dataset {pelican_id}",
+            error_message=f"Unable to get status of dataset {pelican_id}",
         )
 
         data = response.json()
@@ -62,7 +61,7 @@ class Pelican(TaskManager):
             response = self.request(
                 "GET",
                 pelican_url(f"/api/datasets/{pelican_id}/coverage/"),
-                error_msg=f"Unable to get coverage of dataset {pelican_id}",
+                error_message=f"Unable to get coverage of dataset {pelican_id}",
             )
 
             counts = response.json()
@@ -94,7 +93,7 @@ class Pelican(TaskManager):
             "GET",
             pelican_url("/api/datasets/find_by_name/"),
             params={"name": name},
-            error_msg=f"Unable to get ID for name {name!r}",
+            error_message=f"Unable to get ID for name {name!r}",
         )
 
         data = response.json()
@@ -109,11 +108,7 @@ class Pelican(TaskManager):
         pelican_id = self.job.context.get("pelican_id")  # set in get_status()
 
         if not pelican_id:  # for example, if a previous task failed, or if wiped after run() but before get_status()
-            try:
-                pelican_id = self.get_pelican_id()
-            except RecoverableException:
-                logger.error("%s: Unable to wipe dataset (dataset ID is irretrievable)", self)
-                return
+            pelican_id = self.get_pelican_id()
             if not pelican_id:
                 logger.warning("%s: Unable to wipe dataset (dataset ID is not set)", self)
                 return
@@ -122,6 +117,5 @@ class Pelican(TaskManager):
         self.request(
             "DELETE",
             pelican_url(f"/api/datasets/{pelican_id}/"),
-            error_msg=f"Unable to wipe dataset {pelican_id}",
-            consume_exception=True,
+            error_message=f"Unable to wipe dataset {pelican_id}",
         )

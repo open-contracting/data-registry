@@ -28,7 +28,7 @@ class Process(TaskManager):
         response = self.request(
             "GET",
             url_for_collection(process_id, "tree"),
-            error_msg=f"Unable to get status of collection #{process_id}",
+            error_message=f"Unable to get status of collection #{process_id}",
         )
 
         tree = response.json()
@@ -45,7 +45,7 @@ class Process(TaskManager):
             response = self.request(
                 "GET",
                 url_for_collection(compiled_collection["id"], "metadata"),
-                error_msg=f"Unable to get metadata of collection #{compiled_collection['id']}",
+                error_message=f"Unable to get metadata of collection #{compiled_collection['id']}",
             )
 
             meta = response.json()
@@ -72,5 +72,5 @@ class Process(TaskManager):
         self.request(
             "DELETE",
             url_for_collection(process_id),
-            error_msg=f"Unable to wipe collection {process_id}",
+            error_message=f"Unable to wipe collection {process_id}",
         )

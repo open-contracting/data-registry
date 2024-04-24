@@ -42,25 +42,28 @@ class TaskManager(ABC):
         the job is complete and isn't configured to preserve temporary data.
         """
 
-    def request(self, method, url, **kwargs):
-        message = kwargs.pop("error_msg", "Request failed")
-        message = f"{self}: {message} ({url})"
-        consume_exception = kwargs.pop("consume_exception", False)
+    def request(self, method, url, *, error_message, **kwargs):
+        """
+        Send a request to the service. If the service returns an error response or is temporarily unavailable, raise
+        :class:`~data_registry.exceptions.RecoverableException`.
 
+        :raises RecoverableException:
+        """
         try:
             response = requests.request(method, url, **kwargs)
             response.raise_for_status()
             return response
         except RequestException as e:
-            if consume_exception:
-                logger.exception(message)
-            else:
-                raise RecoverableException(message) from e
+            raise RecoverableException(f"{self}: {error_message} ({url})") from e
 
     @abstractmethod
     def run(self) -> None:
         """
         Start the task.
+
+        This method is called once.
+
+        :raises RecoverableException:
         """
 
     @abstractmethod
@@ -72,12 +75,18 @@ class TaskManager(ABC):
         write metadata only when the metadata is missing or when the task is completed.
 
         This method must be called only after :meth:`~data_registry.process_manager.util.TaskManager.run` is called.
+
+        :raises RecoverableException:
         """
 
     @abstractmethod
     def wipe(self) -> None:
         """
         Delete any side effects of (for example, data written by) the task.
+
+        This method must be idempotent. It is retried if any task failed to be wiped.
+
+        :raises RecoverableException:
         """
 
     def __str__(self):

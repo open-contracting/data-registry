@@ -43,7 +43,7 @@ class Collect(TaskManager):
                 "spider": self.spider,
                 "steps": "compile",  # no "check"
             },
-            error_msg=f"Unable to schedule crawl for project {project} and spider {self.spider}",
+            error_message=f"Unable to schedule crawl for project {project} and spider {self.spider}",
         )
 
         data = response.json()
@@ -64,7 +64,7 @@ class Collect(TaskManager):
             "GET",
             scrapyd_url("listjobs.json"),
             params={"project": settings.SCRAPYD["project"]},
-            error_msg=f"Unable to get status of Scrapyd job #{scrapyd_job_id}",
+            error_message=f"Unable to get status of Scrapyd job #{scrapyd_job_id}",
         )
 
         data = response.json()
@@ -77,9 +77,9 @@ class Collect(TaskManager):
         # The log file does not exist if the job is pending.
         if "process_id" not in self.job.context:
             try:
-                response = self.request("get", scrapy_log_url, error_msg="Unable to read Scrapy log")
+                response = self.request("get", scrapy_log_url, error_message="Unable to read Scrapy log")
             except RecoverableException as e:
-                # If the log file doesn't exist, the job can't continue onto other tasks.
+                # If the log file doesn't exist (e.g. the crawl never started), the job can't continue.
                 if isinstance(e.__cause__, HTTPError) and e.__cause__.response.status_code == 404:
                     raise Exception("Scrapy log doesn't exist") from e
                 raise
