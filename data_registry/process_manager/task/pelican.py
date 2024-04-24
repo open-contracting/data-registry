@@ -11,24 +11,33 @@ logger = logging.getLogger(__name__)
 
 
 class Pelican(TaskManager):
-    def __init__(self, job):
-        self.job = job
-        self.compiled_collection_id = self.job.context.get("process_id_pelican")
-
     def run(self):
-        name = self.get_pelican_dataset_name()
+        spider = self.job.context["spider"]  # set in Collect.run()
+        process_data_version = self.job.context["process_data_version"]  # set in Process.get_status()
+        compiled_collection_id = self.job.context["process_id_pelican"]  # set in Process.get_status()
+
+        name = f"{spider}_{process_data_version}_{self.job.id}"
 
         self.request(
             "POST",
             urljoin(settings.PELICAN_FRONTEND_URL, "/api/datasets/"),
-            json={"name": name, "collection_id": self.compiled_collection_id},
-            error_msg=f"Unable to create dataset with name {name!r} and collection ID {self.compiled_collection_id}",
+            json={"name": name, "collection_id": compiled_collection_id},
+            error_msg=f"Unable to create dataset with name {name!r} and collection ID {compiled_collection_id}",
         )
 
+        self.job.context["pelican_dataset_name"] = name
+        self.job.save()
+
     def get_status(self):
-        pelican_id = self.get_pelican_id()
+        pelican_id = self.job.context.get("pelican_id")
+
         if not pelican_id:
-            return Task.Status.WAITING
+            pelican_id = self.get_pelican_id()
+            if not pelican_id:
+                return Task.Status.WAITING
+
+            self.job.context["pelican_id"] = pelican_id
+            self.job.save()
 
         response = self.request(
             "GET",
@@ -46,45 +55,35 @@ class Pelican(TaskManager):
         return Task.Status.RUNNING
 
     def get_pelican_id(self):
-        if "pelican_id" not in self.job.context:
-            name = self.get_pelican_dataset_name()
+        name = self.job.context["pelican_dataset_name"]  # set in run()
 
-            response = self.request(
-                "GET",
-                urljoin(settings.PELICAN_FRONTEND_URL, "/api/datasets/find_by_name/"),
-                params={"name": name},
-                error_msg=f"Unable to get ID for name {name!r}",
-            )
+        response = self.request(
+            "GET",
+            urljoin(settings.PELICAN_FRONTEND_URL, "/api/datasets/find_by_name/"),
+            params={"name": name},
+            error_msg=f"Unable to get ID for name {name!r}",
+        )
 
-            data = response.json()
+        data = response.json()
 
-            if "id" in data:
-                self.job.context["pelican_id"] = data["id"]
-                self.job.save()
-
-        return self.job.context.get("pelican_id")
-
-    def get_pelican_dataset_name(self):
-        if "process_data_version" not in self.job.context:
-            raise RecoverableException("Process data version is not set")
-        if "pelican_dataset_name" not in self.job.context:
-            spider = self.job.context["spider"]
-            process_data_version = self.job.context["process_data_version"]
-            self.job.context["pelican_dataset_name"] = f"{spider}_{process_data_version}_{self.job.id}"
-            self.job.save()
-
-        return self.job.context["pelican_dataset_name"]
+        return data.get("id")
 
     def wipe(self):
-        try:
-            pelican_id = self.get_pelican_id()
-        except RecoverableException:
-            logger.error("%s: Unable to wipe dataset (dataset ID is irretrievable)", self)
+        if "pelican_dataset_name" not in self.job.context:  # for example, if this task never started
+            logger.warning("%s: Unable to wipe dataset (dataset name is not set)", self)
             return
 
-        if not pelican_id:
-            logger.warning("%s: Unable to wipe dataset (dataset ID is empty)", self)
-            return
+        pelican_id = self.job.context.get("pelican_id")  # set in get_status()
+
+        if not pelican_id:  # for example, if a previous task failed, or if wiped after run() but before get_status()
+            try:
+                pelican_id = self.get_pelican_id()
+            except RecoverableException:
+                logger.error("%s: Unable to wipe dataset (dataset ID is irretrievable)", self)
+                return
+            if not pelican_id:
+                logger.warning("%s: Unable to wipe dataset (dataset ID is not set)", self)
+                return
 
         logger.info("%s: Wiping data for collection %s", self, self.compiled_collection_id)
         self.request(
@@ -95,7 +94,7 @@ class Pelican(TaskManager):
         )
 
     def update_collection_availability(self):
-        pelican_id = self.job.context.get("pelican_id")
+        pelican_id = self.job.context["pelican_id"]  # set in get_status()
         try:
             response = self.request(
                 "GET", urljoin(settings.PELICAN_FRONTEND_URL, f"/api/datasets/{pelican_id}/coverage/")
