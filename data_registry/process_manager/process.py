@@ -41,88 +41,56 @@ def process(collection):
 
     for job in jobs:
         with transaction.atomic():
-            job_complete = True
-
-            for task in job.task.order_by("order"):
-                # finished task -> no action needed
-                if task.status == Task.Status.COMPLETED:
-                    continue
-
+            for task in job.task.exclude(status=Task.Status.COMPLETED).order_by("order"):
                 task_manager = get_task_manager(task)
 
                 try:
-                    if task.status in (Task.Status.WAITING, Task.Status.RUNNING):
-                        status = task_manager.get_status()
-                        logger.debug("Task %s is %s (%s: %s)", task, status, collection.country, collection)
-                        if status in (Task.Status.WAITING, Task.Status.RUNNING):
-                            # Reset the task, in case it has recovered.
-                            job_complete = False
-                            task.result = ""
-                            task.note = ""
-                            task.save()
+                    match task.status:
+                        case Task.Status.PLANNED:
+                            # If this is the first task...
+                            if job.status == Job.Status.PLANNED:
+                                job.initiate()
+                                logger.debug("Job %s is starting (%s: %s)", job, collection.country, collection)
+
+                            task_manager.run()
+
+                            task.initiate()
+                            logger.debug("Task %s is starting (%s: %s)", task, collection.country, collection)
+
                             break
-                        elif status == Task.Status.COMPLETED:
-                            task.end = Now()
-                            task.status = Task.Status.COMPLETED
-                            task.result = Task.Result.OK
-                            task.save()
-                    elif task.status == Task.Status.PLANNED:
-                        if job.status == Job.Status.PLANNED:
-                            job.start = Now()
-                            job.status = Job.Status.RUNNING
-                            job.save()
+                        case Task.Status.WAITING | Task.Status.RUNNING:
+                            status = task_manager.get_status()
+                            logger.debug("Task %s is %s (%s: %s)", task, status, collection.country, collection)
 
-                            logger.debug("Job %s is starting (%s: %s)", job, collection.country, collection)
+                            match status:
+                                case Task.Status.WAITING | Task.Status.RUNNING:
+                                    task.progress()  # The service is responding (again). Reset any progress.
 
-                        task_manager.run()
+                                    break
+                                case Task.Status.COMPLETED:
+                                    task.complete(result=Task.Result.OK)
 
-                        task.start = Now()
-                        task.status = Task.Status.RUNNING
-                        task.save()
-
-                        job_complete = False
-
-                        logger.debug("Task %s is starting (%s: %s)", task, collection.country, collection)
-
-                        break
+                                    # Do not break! Go onto the next task.
                 except RecoverableException as e:
-                    job_complete = False
-                    task.result = Task.Result.FAILED
-                    task.note = str(e)
-                    task.save()
-
                     logger.exception(e)
+                    task.progress(result=Task.Result.FAILED, note=str(e))  # The service is not responding.
+
                     break
                 except Exception as e:
-                    job_complete = False
-
                     logger.exception(e)
+                    task.complete(result=Task.Result.FAILED, note=str(e))
 
-                    # close task as failed
-                    task.end = Now()
-                    task.status = Task.Status.COMPLETED
-                    task.result = Task.Result.FAILED
-                    task.note = str(e)
-                    task.save()
-
-                    # close job
-                    job.end = Now()
-                    job.status = Job.Status.COMPLETED
-                    job.save()
-
+                    job.complete()
                     logger.warning("Job %s has failed (%s: %s)", job, collection.country, collection)
-                    break
 
-            # complete the job if all of its tasks are completed
-            if job_complete:
-                job.status = Job.Status.COMPLETED
-                job.end = Now()
-                job.save()
+                    break
+            # All tasks completed successfully.
+            else:
+                job.complete()
 
                 collection.last_retrieved = job.task.get(type=settings.JOB_TASKS_PLAN[0]).end
                 collection.save()
 
-                # set active job
                 collection.job.update(
                     active=Case(When(id=job.id, then=True), default=False, output_field=BooleanField())
                 )
