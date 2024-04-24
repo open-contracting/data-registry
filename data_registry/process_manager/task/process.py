@@ -62,7 +62,7 @@ class Process(TaskManager):
             logger.warning("%s: Unable to wipe collection (collection ID is not set)", self)
             return
 
-        process_id = self.job.context["process_id"]
+        process_id = self.job.context["process_id"]  # set in Collect.get_status()
 
         logger.info("%s: Wiping data for collection %s", self, process_id)
         self.request(
