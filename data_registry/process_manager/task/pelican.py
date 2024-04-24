@@ -10,6 +10,10 @@ from data_registry.process_manager.util import TaskManager
 logger = logging.getLogger(__name__)
 
 
+def pelican_url(path):
+    return urljoin(settings.PELICAN_FRONTEND_URL, path)
+
+
 class Pelican(TaskManager):
     def run(self):
         spider = self.job.context["spider"]  # set in Collect.run()
@@ -20,7 +24,7 @@ class Pelican(TaskManager):
 
         self.request(
             "POST",
-            urljoin(settings.PELICAN_FRONTEND_URL, "/api/datasets/"),
+            pelican_url("/api/datasets/"),
             json={"name": name, "collection_id": compiled_collection_id},
             error_msg=f"Unable to create dataset with name {name!r} and collection ID {compiled_collection_id}",
         )
@@ -41,7 +45,7 @@ class Pelican(TaskManager):
 
         response = self.request(
             "GET",
-            urljoin(settings.PELICAN_FRONTEND_URL, f"/api/datasets/{pelican_id}/status/"),
+            pelican_url(f"/api/datasets/{pelican_id}/status/"),
             error_msg=f"Unable to get status of dataset {pelican_id}",
         )
 
@@ -49,9 +53,34 @@ class Pelican(TaskManager):
 
         if not data:
             return Task.Status.WAITING
+
         if data["phase"] == "CHECKED" and data["state"] == "OK":
-            self.update_collection_availability()
+            response = self.request(
+                "GET",
+                pelican_url(f"/api/datasets/{pelican_id}/coverage/"),
+                error_msg=f"Unable to get coverage of dataset {pelican_id}",
+            )
+
+            counts = response.json()
+
+            self.job.tenders_count = counts.get("tenders")
+            self.job.tenderers_count = counts.get("tenderers")
+            self.job.tenders_items_count = counts.get("tenders_items")
+            self.job.parties_count = counts.get("parties")
+            self.job.awards_count = counts.get("awards")
+            self.job.awards_items_count = counts.get("awards_items")
+            self.job.awards_suppliers_count = counts.get("awards_suppliers")
+            self.job.contracts_count = counts.get("contracts")
+            self.job.contracts_items_count = counts.get("contracts_items")
+            self.job.contracts_transactions_count = counts.get("contracts_transactions")
+            self.job.documents_count = counts.get("documents")
+            self.job.plannings_count = counts.get("plannings")
+            self.job.milestones_count = counts.get("milestones")
+            self.job.amendments_count = counts.get("amendments")
+            self.job.save()
+
             return Task.Status.COMPLETED
+
         return Task.Status.RUNNING
 
     def get_pelican_id(self):
@@ -59,7 +88,7 @@ class Pelican(TaskManager):
 
         response = self.request(
             "GET",
-            urljoin(settings.PELICAN_FRONTEND_URL, "/api/datasets/find_by_name/"),
+            pelican_url("/api/datasets/find_by_name/"),
             params={"name": name},
             error_msg=f"Unable to get ID for name {name!r}",
         )
@@ -88,36 +117,7 @@ class Pelican(TaskManager):
         logger.info("%s: Wiping data for collection %s", self, self.compiled_collection_id)
         self.request(
             "DELETE",
-            urljoin(settings.PELICAN_FRONTEND_URL, f"/api/datasets/{pelican_id}/"),
+            pelican_url(f"/api/datasets/{pelican_id}/"),
             error_msg=f"Unable to wipe dataset {pelican_id}",
             consume_exception=True,
         )
-
-    def update_collection_availability(self):
-        pelican_id = self.job.context["pelican_id"]  # set in get_status()
-        try:
-            response = self.request(
-                "GET", urljoin(settings.PELICAN_FRONTEND_URL, f"/api/datasets/{pelican_id}/coverage/")
-            )
-        except Exception as e:
-            raise Exception(
-                f"Publication {self.job.collection}: Pelican: Unable to get coverage of dataset {pelican_id}"
-            ) from e
-
-        counts = response.json()
-
-        self.job.tenders_count = counts.get("tenders")
-        self.job.tenderers_count = counts.get("tenderers")
-        self.job.tenders_items_count = counts.get("tenders_items")
-        self.job.parties_count = counts.get("parties")
-        self.job.awards_count = counts.get("awards")
-        self.job.awards_items_count = counts.get("awards_items")
-        self.job.awards_suppliers_count = counts.get("awards_suppliers")
-        self.job.contracts_count = counts.get("contracts")
-        self.job.contracts_items_count = counts.get("contracts_items")
-        self.job.contracts_transactions_count = counts.get("contracts_transactions")
-        self.job.documents_count = counts.get("documents")
-        self.job.plannings_count = counts.get("plannings")
-        self.job.milestones_count = counts.get("milestones")
-        self.job.amendments_count = counts.get("amendments")
-        self.job.save()
