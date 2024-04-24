@@ -19,7 +19,7 @@ class Command(BaseCommand):
             process(collection)
 
         for job in Job.objects.filter(status=Job.Status.COMPLETED, keep_all_data=False, archived=False):
-            Collect(job.collection, job).wipe()
+            Collect(job).wipe()
             Process(job).wipe()
             Pelican(job).wipe()
 

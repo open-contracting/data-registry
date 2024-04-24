@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 def get_runner(job, task):
     match task.type:
         case Task.Type.COLLECT:
-            return Collect(job.collection, job)
+            return Collect(job)
         case Task.Type.PROCESS:
             return Process(job)
         case Task.Type.PELICAN:
