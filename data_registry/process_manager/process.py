@@ -119,7 +119,7 @@ def process(collection):
                 job.end = Now()
                 job.save()
 
-                collection.last_retrieved = job.task.get(type__in=("collect", "test")).end
+                collection.last_retrieved = job.task.get(type=settings.JOB_TASKS_PLAN[0]).end
                 collection.save()
 
                 # set active job
