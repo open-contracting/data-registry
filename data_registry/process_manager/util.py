@@ -15,8 +15,8 @@ class TaskManager(ABC):
         self.job = job
 
     def request(self, method, url, **kwargs):
-        error_msg = kwargs.pop("error_msg", f"Request on {url} failed")
-        error_msg = f"{self}: {error_msg}"
+        error_msg = kwargs.pop("error_msg", "Request failed")
+        error_msg = f"{self}: {error_msg} ({url})"
         consume_exception = kwargs.pop("consume_exception", False)
 
         try:
