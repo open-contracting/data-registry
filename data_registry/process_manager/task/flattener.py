@@ -20,5 +20,5 @@ class Flattener(TaskManager):
             case TaskStatus.COMPLETED:
                 return Task.Status.COMPLETED
 
-    def wipe(self):
+    def do_wipe(self):
         publish({"job_id": self.job.id}, "wiper_init")

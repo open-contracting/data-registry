@@ -62,11 +62,7 @@ class Process(TaskManager):
 
         return Task.Status.COMPLETED
 
-    def wipe(self):
-        if "process_id" not in self.job.context:  # for example, if Collect task failed
-            logger.warning("%s: Unable to wipe collection (collection ID is not set)", self)
-            return
-
+    def do_wipe(self):
         process_id = self.job.context["process_id"]  # set in Collect.get_status()
 
         logger.info("%s: Wiping data for collection %s", self, process_id)

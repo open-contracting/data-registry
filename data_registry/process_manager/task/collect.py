@@ -100,7 +100,7 @@ class Collect(TaskManager):
         if any(j["id"] == scrapyd_job_id for j in data.get("finished", [])):
             # If the collection ID was irretrievable, the job can't continue.
             if "process_id" not in self.job.context:
-                raise Exception("Unablel to retrieve collection ID from Scrapy log")
+                raise Exception("Unable to retrieve collection ID from Scrapy log")
 
             return Task.Status.COMPLETED
 

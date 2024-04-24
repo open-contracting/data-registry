@@ -92,7 +92,7 @@ class Job(models.Model):
         self.status = Job.Status.RUNNING
         self.save()
 
-    def complete(self, result):
+    def complete(self):
         self.end = Now()
         self.status = Job.Status.COMPLETED
         self.save()

@@ -4,8 +4,8 @@ from abc import ABC, abstractmethod
 import requests
 from requests.exceptions import RequestException
 
+from data_registry import models
 from data_registry.exceptions import RecoverableException
-from data_registry.models import Task
 
 logger = logging.getLogger(__name__)
 
@@ -21,14 +21,14 @@ class TaskManager(ABC):
         self.task = task
 
     @property
-    def job(self):
+    def job(self) -> models.Job:
         """
         The job of which the task is a part.
         """
         return self.task.job
 
     @property
-    def collection(self):
+    def collection(self) -> models.Collection:
         """
         The publication on which the task is performed.
         """
@@ -36,7 +36,7 @@ class TaskManager(ABC):
 
     @property
     @abstractmethod
-    def final_output(self):
+    def final_output(self) -> bool:
         """
         Whether the task produces a final output, like a bulk download. If not, its intermediate outputs are wiped if
         the job is complete and isn't configured to preserve temporary data.
@@ -67,7 +67,7 @@ class TaskManager(ABC):
         """
 
     @abstractmethod
-    def get_status(self) -> Task.Status:
+    def get_status(self) -> models.Task.Status:
         """
         Return the status of the task.
 
@@ -79,12 +79,28 @@ class TaskManager(ABC):
         :raises RecoverableException:
         """
 
-    @abstractmethod
     def wipe(self) -> None:
         """
         Delete any side effects of (for example, data written by) the task.
 
         This method must be idempotent. It is retried if any task failed to be wiped.
+
+        Implement :meth:`~data_registry.process_manager.util.TaskManager.do_wipe` in subclasses.
+
+        :raises RecoverableException:
+        """
+        if not self.task.start:
+            logger.debug("%s has nothing to wipe (task didn't start)", self)
+            return
+
+        self.do_wipe()
+
+    @abstractmethod
+    def do_wipe(self) -> None:
+        """
+        Delete any side effects of the task.
+
+        This method can assume that the task had started.
 
         :raises RecoverableException:
         """

@@ -102,14 +102,11 @@ class Pelican(TaskManager):
 
         return data.get("id")
 
-    def wipe(self):
-        if "pelican_dataset_name" not in self.job.context:  # for example, if this task never started
-            logger.warning("%s: Unable to wipe dataset (dataset name is not set)", self)
-            return
-
+    def do_wipe(self):
         pelican_id = self.job.context.get("pelican_id")  # set in get_status()
 
-        if not pelican_id:  # for example, if a previous task failed, or if wiped after run() but before get_status()
+        # If wiped after run() but before get_status(), or before processed by Pelican...
+        if not pelican_id:
             pelican_id = self.get_pelican_id()
             if not pelican_id:
                 logger.warning("%s: Unable to wipe dataset (dataset ID is not set)", self)

@@ -14,7 +14,7 @@ class TestTask:
     def get_status(self):
         return Task.Status.COMPLETED
 
-    def wipe(self):
+    def do_wipe(self):
         pass
 
 
@@ -24,9 +24,9 @@ class ProcessTests(TransactionTestCase):
     def test(self):
         collection = Collection.objects.get(pk=1)
 
-        with patch("data_registry.process_manager.process.get_runner") as mock_get_runner:
-            # get_runner returns only TestTask
-            mock_get_runner.return_value = TestTask()
+        with patch("data_registry.process_manager.process.get_task_manager") as mock_get_task_manager:
+            # get_task_manager returns only TestTask
+            mock_get_task_manager.return_value = TestTask()
 
             settings.JOB_TASKS_PLAN = ["test"]
 
