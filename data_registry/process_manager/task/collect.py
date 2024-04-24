@@ -20,12 +20,13 @@ def scrapyd_url(path):
 
 class Collect(TaskManager):
     def __init__(self, task):
+        super().__init__(task)
+
         if not settings.SCRAPYD["url"]:
             raise Exception("SCRAPYD_URL is not set")
         if not settings.SCRAPYD["project"]:
             raise Exception("SCRAPYD_PROJECT is not set")
 
-        super().__init__(task)
         self.spider = task.job.collection.source_id
 
     @property
@@ -47,6 +48,7 @@ class Collect(TaskManager):
         )
 
         data = response.json()
+        # {"status": "error", "message": "spider 'nonexistent' not found"}
         if data.get("status") == "error":
             raise Exception(repr(data))
 
@@ -68,13 +70,15 @@ class Collect(TaskManager):
         )
 
         data = response.json()
+        # {"node_name": "ocp42.open-contracting.org", "status": "error", "message": "..."}
         if data.get("status") == "error":
             raise Exception(repr(data))
 
+        # If the job is pending, return early, because the log file will not exist yet.
         if any(j["id"] == scrapyd_job_id for j in data.get("pending", [])):
             return Task.Status.WAITING
 
-        # The log file does not exist if the job is pending.
+        # Check early for the log file, so that we can error if Scrapyd somehow stalled without writing a log file.
         if "process_id" not in self.job.context:
             try:
                 response = self.request("get", scrapy_log_url, error_message="Unable to read Scrapy log")
@@ -85,7 +89,7 @@ class Collect(TaskManager):
                 raise
 
             # Must match
-            # https://github.com/open-contracting/kingfisher-collect/blob/3258ff4/kingfisher_scrapy/extensions/kingfisher_process_api2.py#L101
+            # https://github.com/open-contracting/kingfisher-collect/blob/7bfeba8/kingfisher_scrapy/extensions/kingfisher_process_api2.py#L117
             if m := re.search("Created collection (.+) in Kingfisher Process", response.text):
                 self.job.context["process_id"] = m.group(1)
                 self.job.save()
@@ -94,13 +98,13 @@ class Collect(TaskManager):
             return Task.Status.RUNNING
 
         if any(j["id"] == scrapyd_job_id for j in data.get("finished", [])):
-            # If the collection ID was irretrievable, the job can't continue onto other tasks.
+            # If the collection ID was irretrievable, the job can't continue.
             if "process_id" not in self.job.context:
-                raise Exception("process_id is not set")
+                raise Exception("Unablel to retrieve collection ID from Scrapy log")
 
             return Task.Status.COMPLETED
 
-        raise RecoverableException("Collect task has no status")
+        raise RecoverableException(f"Unable to find status of Scrapyd job #{scrapyd_job_id}")
 
     def wipe(self):
         if "process_data_version" not in self.job.context:  # for example, if Process task never started

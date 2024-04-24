@@ -28,7 +28,10 @@ class Pelican(TaskManager):
         self.request(
             "POST",
             pelican_url("/api/datasets/"),
-            json={"name": name, "collection_id": compiled_collection_id},
+            json={
+                "name": name,
+                "collection_id": compiled_collection_id,
+            },
             error_message=f"Unable to create dataset with name {name!r} and collection ID {compiled_collection_id}",
         )
 
@@ -56,35 +59,34 @@ class Pelican(TaskManager):
 
         if not data:
             return Task.Status.WAITING
+        if data["phase"] != "CHECKED" or data["state"] != "OK":
+            return Task.Status.RUNNING
 
-        if data["phase"] == "CHECKED" and data["state"] == "OK":
-            response = self.request(
-                "GET",
-                pelican_url(f"/api/datasets/{pelican_id}/coverage/"),
-                error_message=f"Unable to get coverage of dataset {pelican_id}",
-            )
+        response = self.request(
+            "GET",
+            pelican_url(f"/api/datasets/{pelican_id}/coverage/"),
+            error_message=f"Unable to get coverage of dataset {pelican_id}",
+        )
 
-            counts = response.json()
+        counts = response.json()
 
-            self.job.tenders_count = counts.get("tenders")
-            self.job.tenderers_count = counts.get("tenderers")
-            self.job.tenders_items_count = counts.get("tenders_items")
-            self.job.parties_count = counts.get("parties")
-            self.job.awards_count = counts.get("awards")
-            self.job.awards_items_count = counts.get("awards_items")
-            self.job.awards_suppliers_count = counts.get("awards_suppliers")
-            self.job.contracts_count = counts.get("contracts")
-            self.job.contracts_items_count = counts.get("contracts_items")
-            self.job.contracts_transactions_count = counts.get("contracts_transactions")
-            self.job.documents_count = counts.get("documents")
-            self.job.plannings_count = counts.get("plannings")
-            self.job.milestones_count = counts.get("milestones")
-            self.job.amendments_count = counts.get("amendments")
-            self.job.save()
+        self.job.tenders_count = counts.get("tenders")
+        self.job.tenderers_count = counts.get("tenderers")
+        self.job.tenders_items_count = counts.get("tenders_items")
+        self.job.parties_count = counts.get("parties")
+        self.job.awards_count = counts.get("awards")
+        self.job.awards_items_count = counts.get("awards_items")
+        self.job.awards_suppliers_count = counts.get("awards_suppliers")
+        self.job.contracts_count = counts.get("contracts")
+        self.job.contracts_items_count = counts.get("contracts_items")
+        self.job.contracts_transactions_count = counts.get("contracts_transactions")
+        self.job.documents_count = counts.get("documents")
+        self.job.plannings_count = counts.get("plannings")
+        self.job.milestones_count = counts.get("milestones")
+        self.job.amendments_count = counts.get("amendments")
+        self.job.save()
 
-            return Task.Status.COMPLETED
-
-        return Task.Status.RUNNING
+        return Task.Status.COMPLETED
 
     def get_pelican_id(self):
         name = self.job.context["pelican_dataset_name"]  # set in run()

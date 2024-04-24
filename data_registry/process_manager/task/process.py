@@ -41,25 +41,26 @@ class Process(TaskManager):
             self.job.context["process_data_version"] = compiled_collection["data_version"]
             self.job.save()
 
-        if compiled_collection["completed_at"]:
-            response = self.request(
-                "GET",
-                url_for_collection(compiled_collection["id"], "metadata"),
-                error_message=f"Unable to get metadata of collection #{compiled_collection['id']}",
-            )
+        if not compiled_collection["completed_at"]:
+            return Task.Status.RUNNING
 
-            meta = response.json()
+        response = self.request(
+            "GET",
+            url_for_collection(compiled_collection["id"], "metadata"),
+            error_message=f"Unable to get metadata of collection #{compiled_collection['id']}",
+        )
 
-            if meta:  # can be empty (or partial) if the collection contained no data
-                self.job.date_from = meta.get("published_from")
-                self.job.date_to = meta.get("published_to")
-                self.job.license = meta.get("data_license") or ""
-                self.job.ocid_prefix = meta.get("ocid_prefix") or ""
-                self.job.save()
+        meta = response.json()
 
-            return Task.Status.COMPLETED
+        # The metadata can be empty (or partial) if the collection contained no data.
+        if meta:
+            self.job.date_from = meta.get("published_from")
+            self.job.date_to = meta.get("published_to")
+            self.job.license = meta.get("data_license") or ""
+            self.job.ocid_prefix = meta.get("ocid_prefix") or ""
+            self.job.save()
 
-        return Task.Status.RUNNING
+        return Task.Status.COMPLETED
 
     def wipe(self):
         if "process_id" not in self.job.context:  # for example, if Collect task failed

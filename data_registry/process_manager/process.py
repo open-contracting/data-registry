@@ -95,7 +95,7 @@ def process(collection):
                     active=Case(When(id=job.id, then=True), default=False, output_field=BooleanField())
                 )
 
-                logger.debug("Job %s has completed (%s: %s)", job, country, collection)
+                logger.debug("Job %s has succeeded (%s: %s)", job, country, collection)
 
 
 def should_be_planned(collection):
