@@ -15,6 +15,10 @@ def pelican_url(path):
 
 
 class Pelican(TaskManager):
+    @property
+    def final_output(self):
+        return False
+
     def run(self):
         spider = self.job.context["spider"]  # set in Collect.run()
         process_data_version = self.job.context["process_data_version"]  # set in Process.get_status()

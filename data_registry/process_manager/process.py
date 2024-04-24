@@ -17,18 +17,18 @@ from data_registry.process_manager.task.process import Process
 logger = logging.getLogger(__name__)
 
 
-def get_runner(job, task):
+def get_task_manager(task):
     match task.type:
         case Task.Type.COLLECT:
-            return Collect(job)
+            return Collect(task)
         case Task.Type.PROCESS:
-            return Process(job)
+            return Process(task)
         case Task.Type.PELICAN:
-            return Pelican(job)
+            return Pelican(task)
         case Task.Type.EXPORTER:
-            return Exporter(job)
+            return Exporter(task)
         case Task.Type.FLATTENER:
-            return Flattener(job)
+            return Flattener(task)
         case _:
             raise Exception("Unsupported task type")
 
@@ -48,11 +48,11 @@ def process(collection):
                 if task.status == Task.Status.COMPLETED:
                     continue
 
-                runner = get_runner(job, task)
+                task_manager = get_task_manager(task)
 
                 try:
                     if task.status in (Task.Status.WAITING, Task.Status.RUNNING):
-                        status = runner.get_status()
+                        status = task_manager.get_status()
                         logger.debug("Task %s is %s (%s: %s)", task, status, collection.country, collection)
                         if status in (Task.Status.WAITING, Task.Status.RUNNING):
                             # Reset the task, in case it has recovered.
@@ -74,7 +74,7 @@ def process(collection):
 
                             logger.debug("Job %s is starting (%s: %s)", job, collection.country, collection)
 
-                        runner.run()
+                        task_manager.run()
 
                         task.start = Now()
                         task.status = Task.Status.RUNNING

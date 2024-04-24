@@ -14,6 +14,10 @@ def url_for_collection(*parts):
 
 
 class Process(TaskManager):
+    @property
+    def final_output(self):
+        return False
+
     def run(self):
         # The Process task is started by Kingfisher Collect's Kingfisher Process API extension.
         pass

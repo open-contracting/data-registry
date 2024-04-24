@@ -11,14 +11,36 @@ logger = logging.getLogger(__name__)
 
 
 class TaskManager(ABC):
-    def __init__(self, job):
+    def __init__(self, task):
         """
         Initialize the task manager.
 
         This method must not assume that any previous tasks succeeded (for example, if it is called only to
-        :meth:`~data_registry.process_manager.util.wipe`).
+        :meth:`~data_registry.process_manager.util.TaskManager.wipe`).
         """
-        self.job = job
+        self.task = task
+
+    @property
+    def job(self):
+        """
+        The job of which the task is a part.
+        """
+        return self.task.job
+
+    @property
+    def collection(self):
+        """
+        The publication on which the task is performed.
+        """
+        return self.task.job.collection
+
+    @property
+    @abstractmethod
+    def final_output(self):
+        """
+        Whether the task produces a final output, like a bulk download. If not, its intermediate outputs are wiped if
+        the job is complete and isn't configured to preserve temporary data.
+        """
 
     def request(self, method, url, **kwargs):
         message = kwargs.pop("error_msg", "Request failed")
@@ -40,7 +62,6 @@ class TaskManager(ABC):
         """
         Start the task.
         """
-        pass
 
     @abstractmethod
     def get_status(self) -> Task.Status:
@@ -50,16 +71,14 @@ class TaskManager(ABC):
         This method can also write metadata about the task to the job. Since this method can be called multiple times,
         write metadata only when the metadata is missing or when the task is completed.
 
-        This method must be called only after :meth:`~data_registry.process_manager.util.run` has been called.
+        This method must be called only after :meth:`~data_registry.process_manager.util.TaskManager.run` is called.
         """
-        pass
 
     @abstractmethod
     def wipe(self) -> None:
         """
         Delete any side effects of (for example, data written by) the task.
         """
-        pass
 
     def __str__(self):
-        return f"Publication {self.job.collection}: {self.__class__.__name__}"
+        return f"Publication {self.collection}: {self.__class__.__name__}"

@@ -14,7 +14,7 @@ from markdownx.widgets import AdminMarkdownxWidget
 from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, TranslationTabularInline
 
 from data_registry.models import Collection, Issue, Job, License, Task
-from data_registry.process_manager.process import get_runner
+from data_registry.process_manager.process import get_task_manager
 
 logger = logging.getLogger(__name__)
 
@@ -405,6 +405,6 @@ class JobAdmin(admin.ModelAdmin):
 
     def delete_model(self, request, obj):
         for task in obj.task.all():
-            get_runner(obj, task).wipe()
+            get_task_manager(task).wipe()
 
         super().delete_model(request, obj)

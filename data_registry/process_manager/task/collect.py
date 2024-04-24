@@ -19,14 +19,18 @@ def scrapyd_url(path):
 
 
 class Collect(TaskManager):
-    def __init__(self, job):
+    def __init__(self, task):
         if not settings.SCRAPYD["url"]:
             raise Exception("SCRAPYD_URL is not set")
         if not settings.SCRAPYD["project"]:
             raise Exception("SCRAPYD_PROJECT is not set")
 
-        self.job = job
-        self.spider = job.collection.source_id
+        super().__init__(task)
+        self.spider = task.job.collection.source_id
+
+    @property
+    def final_output(self):
+        return False
 
     def run(self):
         project = settings.SCRAPYD["project"]
