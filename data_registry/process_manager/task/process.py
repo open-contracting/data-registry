@@ -14,19 +14,17 @@ def url_for_collection(*parts):
 
 
 class Process(TaskManager):
-    def __init__(self, job):
-        self.job = job
-        self.process_id = job.context.get("process_id", None)
-
     def run(self):
         # The Process task is started by Kingfisher Collect's Kingfisher Process API extension.
         pass
 
     def get_status(self):
+        process_id = self.job.context["process_id"]  # set in Collect.get_status()
+
         response = self.request(
             "GET",
-            url_for_collection(self.process_id, "tree"),
-            error_msg=f"Unable to get status of collection #{self.process_id}",
+            url_for_collection(process_id, "tree"),
+            error_msg=f"Unable to get status of collection #{process_id}",
         )
 
         tree = response.json()
@@ -60,13 +58,15 @@ class Process(TaskManager):
         return Task.Status.RUNNING
 
     def wipe(self):
-        if not self.process_id:
+        if "process_id" not in self.job.context:  # for example, if Collect task failed
             logger.warning("%s: Unable to wipe collection (collection ID is not set)", self)
             return
 
-        logger.info("%s: Wiping data for collection %s", self, self.process_id)
+        process_id = self.job.context["process_id"]
+
+        logger.info("%s: Wiping data for collection %s", self, process_id)
         self.request(
             "DELETE",
-            url_for_collection(self.process_id),
-            error_msg=f"Unable to wipe collection {self.process_id}",
+            url_for_collection(process_id),
+            error_msg=f"Unable to wipe collection {process_id}",
         )
