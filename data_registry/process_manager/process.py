@@ -4,7 +4,7 @@ from datetime import date, timedelta
 from django.conf import settings
 from django.db import transaction
 from django.db.models import BooleanField, Case, When
-from django.utils import timezone
+from django.db.models.functions import Now
 
 from data_registry.exceptions import RecoverableException
 from data_registry.models import Collection, Job, Task
@@ -51,10 +51,10 @@ def process(collection):
                 runner = get_runner(job, task)
 
                 try:
-                    if task.status in [Task.Status.WAITING, Task.Status.RUNNING]:
+                    if task.status in (Task.Status.WAITING, Task.Status.RUNNING):
                         status = runner.get_status()
                         logger.debug("Task %s is %s (%s: %s)", task, status, collection.country, collection)
-                        if status in [Task.Status.WAITING, Task.Status.RUNNING]:
+                        if status in (Task.Status.WAITING, Task.Status.RUNNING):
                             # Reset the task, in case it has recovered.
                             job_complete = False
                             task.result = ""
@@ -62,14 +62,13 @@ def process(collection):
                             task.save()
                             break
                         elif status == Task.Status.COMPLETED:
-                            # complete the task
-                            task.end = timezone.now()
+                            task.end = Now()
                             task.status = Task.Status.COMPLETED
                             task.result = Task.Result.OK
                             task.save()
                     elif task.status == Task.Status.PLANNED:
                         if job.status == Job.Status.PLANNED:
-                            job.start = timezone.now()
+                            job.start = Now()
                             job.status = Job.Status.RUNNING
                             job.save()
 
@@ -77,7 +76,7 @@ def process(collection):
 
                         runner.run()
 
-                        task.start = timezone.now()
+                        task.start = Now()
                         task.status = Task.Status.RUNNING
                         task.save()
 
@@ -100,15 +99,15 @@ def process(collection):
                     logger.exception(e)
 
                     # close task as failed
-                    task.end = timezone.now()
+                    task.end = Now()
                     task.status = Task.Status.COMPLETED
                     task.result = Task.Result.FAILED
                     task.note = str(e)
                     task.save()
 
                     # close job
+                    job.end = Now()
                     job.status = Job.Status.COMPLETED
-                    job.end = timezone.now()
                     job.save()
 
                     logger.warning("Job %s has failed (%s: %s)", job, collection.country, collection)
@@ -117,7 +116,7 @@ def process(collection):
             # complete the job if all of its tasks are completed
             if job_complete:
                 job.status = Job.Status.COMPLETED
-                job.end = timezone.now()
+                job.end = Now()
                 job.save()
 
                 collection.last_retrieved = job.task.get(type__in=("collect", "test")).end
@@ -162,7 +161,7 @@ def plan(collection):
     if not settings.JOB_TASKS_PLAN:
         raise Exception("JOB_TASKS_PLAN is not set")
 
-    job = collection.job.create(start=timezone.now(), status=Job.Status.PLANNED)
+    job = collection.job.create(start=Now(), status=Job.Status.PLANNED)
 
     for order, task_type in enumerate(settings.JOB_TASKS_PLAN, start=1):
         job.task.create(status=Task.Status.PLANNED, type=task_type, order=order)
