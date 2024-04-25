@@ -17,7 +17,7 @@ class Process(TaskManager):
     final_output = False
 
     def run(self):
-        # The Process task is started by Kingfisher Collect's Kingfisher Process API extension.
+        # Kingfisher Process is started by Kingfisher Collect's Kingfisher Process API extension.
         pass
 
     def get_status(self):
