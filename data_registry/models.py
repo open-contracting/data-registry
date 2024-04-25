@@ -4,12 +4,16 @@ from django.utils.translation import gettext_lazy as _
 from markdownx.models import MarkdownxField
 
 
+def format_datetime(dt):
+    return dt.strftime("%d-%b-%y") if dt else ""
+
+
 class Job(models.Model):
     collection = models.ForeignKey(
-        "Collection", related_name="job", on_delete=models.CASCADE, verbose_name="publication"
+        "Collection", related_name="job", on_delete=models.CASCADE, db_index=True, verbose_name="publication"
     )
-    start = models.DateTimeField(blank=True, null=True, db_index=True, verbose_name="job started at")
-    end = models.DateTimeField(blank=True, null=True, db_index=True, verbose_name="job ended at")
+    start = models.DateTimeField(blank=True, null=True, verbose_name="job started at")
+    end = models.DateTimeField(blank=True, null=True, verbose_name="job ended at")
 
     class Status(models.TextChoices):
         #: Not in use.
@@ -85,11 +89,8 @@ class Job(models.Model):
     ocid_prefix = models.TextField(blank=True, verbose_name="OCID prefix")
     license = models.TextField(blank=True)
 
-    created = models.DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)
-    modified = models.DateTimeField(auto_now=True, blank=True, null=True, db_index=True)
-
-    def __str__(self):
-        return f"{self.format_datetime(self.start)} .. {self.format_datetime(self.end)} ({self.id})"
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
 
     def initiate(self):
         """
@@ -107,8 +108,8 @@ class Job(models.Model):
         self.status = Job.Status.COMPLETED
         self.save()
 
-    def format_datetime(self, dt):
-        return dt.strftime("%d-%b-%y") if dt else ""
+    def __str__(self):
+        return f"{format_datetime(self.start)} .. {format_datetime(self.end)} ({self.id})"
 
 
 class CollectionQuerySet(models.QuerySet):
@@ -182,6 +183,7 @@ class Collection(models.Model):
         on_delete=models.CASCADE,
         blank=True,
         null=True,
+        db_index=True,
         verbose_name="data license",
         help_text="If not set, the Overview section will display the license URL within the OCDS package.",
     )
@@ -270,8 +272,8 @@ class Collection(models.Model):
         default=False, help_text="If the spider is broken, check this box to prevent the scheduling of new jobs."
     )
 
-    created = models.DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)
-    modified = models.DateTimeField(auto_now=True, blank=True, null=True, db_index=True)
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
 
     objects = CollectionQuerySet.as_manager()
 
@@ -290,8 +292,8 @@ class License(models.Model):
     )
     url = models.TextField(blank=True, verbose_name="URL", help_text="The canonical URL of the license.")
 
-    created = models.DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)
-    modified = models.DateTimeField(auto_now=True, blank=True, null=True, db_index=True)
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.name} ({self.id})"
@@ -302,19 +304,19 @@ class Issue(models.Model):
         verbose_name = "quality issue"
 
     description = MarkdownxField(help_text="A one-line description of the quality issue, as Markdown text.")
-    collection = models.ForeignKey("Collection", related_name="issue", on_delete=models.CASCADE)
+    collection = models.ForeignKey("Collection", related_name="issue", on_delete=models.CASCADE, db_index=True)
 
-    created = models.DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)
-    modified = models.DateTimeField(auto_now=True, blank=True, null=True, db_index=True)
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
 
 
 class Task(models.Model):
     class Meta:
         verbose_name = "job task"
 
-    job = models.ForeignKey("Job", related_name="task", on_delete=models.CASCADE)
-    start = models.DateTimeField(blank=True, null=True, db_index=True)
-    end = models.DateTimeField(blank=True, null=True, db_index=True)
+    job = models.ForeignKey("Job", related_name="task", on_delete=models.CASCADE, db_index=True)
+    start = models.DateTimeField(blank=True, null=True)
+    end = models.DateTimeField(blank=True, null=True)
 
     class Status(models.TextChoices):
         #: The task has started, but work has not yet started in the service.
@@ -353,8 +355,8 @@ class Task(models.Model):
     type = models.TextField(choices=Type.choices, blank=True)
     order = models.IntegerField(blank=True, null=True)
 
-    created = models.DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)
-    modified = models.DateTimeField(auto_now=True, blank=True, null=True, db_index=True)
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
 
     def initiate(self):
         """
