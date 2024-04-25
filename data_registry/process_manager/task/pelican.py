@@ -117,7 +117,7 @@ class Pelican(TaskManager):
                 logger.warning("%s: Unable to wipe dataset (dataset ID is not set)", self)
                 return
 
-        logger.info("%s: Wiping data for collection %s", self, self.compiled_collection_id)
+        logger.info("%s: Wiping data for dataset %s", self, pelican_id)
         self.request(
             "DELETE",
             pelican_url(f"/api/datasets/{pelican_id}/"),
