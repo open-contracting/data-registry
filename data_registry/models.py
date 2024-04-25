@@ -88,11 +88,17 @@ class Job(models.Model):
         return f"{self.format_datetime(self.start)} .. {self.format_datetime(self.end)} ({self.id})"
 
     def initiate(self):
+        """
+        Mark the job as started.
+        """
         self.start = Now()
         self.status = Job.Status.RUNNING
         self.save()
 
     def complete(self):
+        """
+        Mark the job as ended.
+        """
         self.end = Now()
         self.status = Job.Status.COMPLETED
         self.save()
@@ -100,14 +106,12 @@ class Job(models.Model):
     def format_datetime(self, dt):
         return dt.strftime("%d-%b-%y") if dt else ""
 
-    def get_max_rows_lower_bound(self):
-        return max(
-            getattr(self, field.attname) or 0 for field in Job._meta.get_fields() if field.name.endswith("_count")
-        )
-
 
 class CollectionQuerySet(models.QuerySet):
     def visible(self):
+        """
+        Return a query set of public collections with active jobs.
+        """
         # https://docs.djangoproject.com/en/4.2/ref/models/expressions/#some-examples
         active_jobs = Job.objects.filter(collection=models.OuterRef("pk"), active=True)
         return self.filter(models.Exists(active_jobs), public=True)

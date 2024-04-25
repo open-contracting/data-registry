@@ -63,4 +63,8 @@ SPOONBILL_API_USERNAME
 SPOONBILL_API_PASSWORD
   The password for basic HTTP authentication
 SPOONBILL_EXPORTER_DIR
-  The directory to which the ``exporter`` app writes files, from Spoonbill's perspective (e.g. if the projects are running in containers)
+  The directory to which the ``exporter`` app writes files, from Spoonbill's perspective
+
+  .. note::
+
+     This is relevant if the projects are running in containers.
