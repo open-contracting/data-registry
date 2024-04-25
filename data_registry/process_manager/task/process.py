@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 from urllib.parse import urljoin
 
 from django.conf import settings
@@ -46,8 +47,8 @@ class Process(TaskManager):
 
         # The metadata can be empty (or partial) if the collection contained no data.
         if meta:
-            self.job.date_from = meta.get("published_from")
-            self.job.date_to = meta.get("published_to")
+            self.job.date_from = datetime.strptime(meta.get("published_from"), "%Y-%m-%dT%H:%M:%SZ").date()
+            self.job.date_to = datetime.strptime(meta.get("published_to"), "%Y-%m-%dT%H:%M:%S%z").date()
             self.job.license = meta.get("data_license") or ""
             self.job.ocid_prefix = meta.get("ocid_prefix") or ""
 
