@@ -35,12 +35,6 @@ class Process(TaskManager):
 
         compiled_collection = next(c for c in tree if c["transform_type"] == "compile-releases")
 
-        # Write "process_data_version" early, since the Collect task uses it to wipe, even if the Process task fails.
-        if "process_data_version" not in self.job.context:
-            self.job.context["process_id_pelican"] = compiled_collection["id"]
-            self.job.context["process_data_version"] = compiled_collection["data_version"]
-            self.job.save()
-
         if not compiled_collection["completed_at"]:
             return Task.Status.RUNNING
 
@@ -58,7 +52,9 @@ class Process(TaskManager):
             self.job.date_to = meta.get("published_to")
             self.job.license = meta.get("data_license") or ""
             self.job.ocid_prefix = meta.get("ocid_prefix") or ""
-            self.job.save()
+
+        self.job.context["process_id_pelican"] = compiled_collection["id"]
+        self.job.save()
 
         return Task.Status.COMPLETED
 

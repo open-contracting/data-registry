@@ -95,17 +95,18 @@ class Collect(TaskManager):
 
             # Must match
             # https://github.com/open-contracting/kingfisher-collect/blob/7bfeba8/kingfisher_scrapy/extensions/kingfisher_process_api2.py#L117
-            if m := re.search("Created collection (.+) in Kingfisher Process", response.text):
+            if m := re.search(r"Created collection (.+) in Kingfisher Process \(([^\)]+)\)", response.text):
                 self.job.context["process_id"] = m.group(1)
+                self.job.context["data_version"] = m.group(2)
                 self.job.save()
 
         if any(j["id"] == scrapyd_job_id for j in data.get("running", [])):
             return Task.Status.RUNNING
 
         if any(j["id"] == scrapyd_job_id for j in data.get("finished", [])):
-            # If the collection ID was irretrievable, the job can't continue.
-            if "process_id" not in self.job.context:
-                raise Exception("Unable to retrieve collection ID from Scrapy log")
+            # If the collection ID or data version was irretrievable, the job can't continue.
+            if "process_id" not in self.job.context or "data_version" not in self.job.context:
+                raise Exception("Unable to retrieve collection ID and data version from Scrapy log")
 
             return Task.Status.COMPLETED
 
@@ -126,14 +127,31 @@ class Collect(TaskManager):
 
         scrapyd_data(response)  # raises for error message
 
-        if "process_data_version" not in self.job.context:  # for example, if Process task never started
+        # `data_version` can be missing due to:
+        #
+        # - Irrecoverable errors
+        #   - The Scrapyd job is gone
+        #   - The log file doesn't exist
+        #   - The request failed from Kingfisher Collect to Kingfisher Process
+        # - Temporary errors
+        #   - Scrapyd stopped responding after run()
+        #   - Scrapyd returned an error message
+        #   - wipe() was called before get_status() (or before get_status() sets `data_version`)
+        #
+        # The temporary errors are too rare to bother with.
+        #
+        # If the Scrapyd job was pending, there is nothing to wipe.
+        if "data_version" not in self.job.context:
             logger.warning("%s: Unable to wipe crawl (data version is not set)", self)
             return
 
-        data_version = self.job.context["process_data_version"]  # set in Process.get_status()
+        data_version = self.job.context["data_version"]  # set in get_status()
 
         logger.info("%s: Wiping data for crawl %s", self, data_version)
-        data_version = data_version.replace("-", "").replace(":", "").replace("T", "_")
+        # 20010203_040506     Kingfisher Collect's FileStore extension
+        # 2001-02-03 04:05:06 Kingfisher Collect's Kingfisher Process API extension
+        # 2001-02-03T04:05:06 Kingfisher Process
+        data_version = data_version.translate(str.maketrans(" T", "__", "-:"))
         path = f"{settings.KINGFISHER_COLLECT_FILES_STORE}/{self.spider}/{data_version}"
         if os.path.exists(path):
             shutil.rmtree(path)
