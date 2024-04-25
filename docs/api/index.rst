@@ -1,6 +1,13 @@
 API reference
 =============
 
+Process manager
+---------------
+
+.. automodule:: data_registry.process_manager.process
+   :members:
+   :undoc-members:
+
 Process manager utilities
 -------------------------
 
@@ -27,4 +34,6 @@ Models
 
 .. automodule:: data_registry.models
    :members:
-   :exclude-members: DoesNotExist, MultipleObjectsReturned
+   :exclude-members: DoesNotExist, MultipleObjectsReturned, clean_fields, get_deferred_fields, refresh_from_db
+
+.. Classes that set a Meta class need to exclude more methods.

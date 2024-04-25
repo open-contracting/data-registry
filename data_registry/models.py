@@ -12,9 +12,13 @@ class Job(models.Model):
     end = models.DateTimeField(blank=True, null=True, db_index=True, verbose_name="job ended at")
 
     class Status(models.TextChoices):
+        #: Not in use.
         WAITING = "WAITING", "WAITING"
+        #: The job is planned.
         PLANNED = "PLANNED", "PLANNED"
+        #: The job has started.
         RUNNING = "RUNNING", "RUNNING"
+        #: The job has ended.
         COMPLETED = "COMPLETED", "COMPLETED"
 
     status = models.TextField(choices=Status.choices, blank=True)
@@ -133,12 +137,19 @@ class Collection(models.Model):
     country_flag = models.TextField(blank=True)
 
     class Region(models.TextChoices):
+        #: Africa and Middle East
         MEA = "MEA", _("Africa and Middle East")
+        #: Asia
         AS = "AS", _("Asia")
+        #: Eastern Europe & Central Asia
         EECA = "EECA", _("Eastern Europe & Central Asia")
+        #: Europe
         EU = "EU", _("Europe")
+        #: Latin America & Caribbean
         LAC = "LAC", _("Latin America & Caribbean")
+        #: North America
         NA = "NA", _("North America")
+        #: Oceania
         OC = "OC", _("Oceania")
 
     region = models.TextField(
@@ -184,20 +195,33 @@ class Collection(models.Model):
     source_url = models.TextField(blank=True, verbose_name="source URL", help_text="The URL of the publication.")
 
     class RetrievalFrequency(models.TextChoices):
+        #: Monthly
         MONTHLY = "MONTHLY", _("Monthly")
+        #: Every 6 months
         HALF_YEARLY = "HALF_YEARLY", _("Every 6 months")
+        #: Annually
         ANNUALLY = "ANNUALLY", _("Annually")
+        #: This dataset is no longer updated by the publisher
         NEVER = "NEVER", _("This dataset is no longer updated by the publisher")
 
     class UpdateFrequency(models.TextChoices):
+        #: Unknown
         UNKNOWN = "UNKNOWN", _("Unknown")
+        #: Real time
         REAL_TIME = "REAL_TIME", _("Real time")
+        #: Hourly
         HOURLY = "HOURLY", _("Hourly")
+        #: Daily
         DAILY = "DAILY", _("Daily")
+        #: Weekly
         WEEKLY = "WEEKLY", _("Weekly")
+        #: Monthly
         MONTHLY = "MONTHLY", _("Monthly")
+        #: Every 3 months
         QUARTERLY = "QUARTERLY", _("Every 3 months")
+        #: Every 6 months
         HALF_YEARLY = "HALF_YEARLY", _("Every 6 months")
+        #: Annually
         ANNUALLY = "ANNUALLY", _("Annually")
 
     retrieval_frequency = models.TextField(
@@ -293,15 +317,21 @@ class Task(models.Model):
     end = models.DateTimeField(blank=True, null=True, db_index=True)
 
     class Status(models.TextChoices):
+        #: The task has started, but work has not yet started in the service.
         WAITING = "WAITING", "WAITING"
+        #: The task is planned.
         PLANNED = "PLANNED", "PLANNED"
+        #: The task has started.
         RUNNING = "RUNNING", "RUNNING"
+        #: The task has ended.
         COMPLETED = "COMPLETED", "COMPLETED"
 
     status = models.TextField(choices=Status.choices, blank=True)
 
     class Result(models.TextChoices):
+        #: The task ended successfully.
         OK = "OK", "OK"
+        #: The task ended unsuccessfully.
         FAILED = "FAILED", "FAILED"
 
     result = models.TextField(choices=Result.choices, blank=True)
@@ -309,10 +339,15 @@ class Task(models.Model):
     context = models.JSONField(blank=True, default=dict)
 
     class Type(models.TextChoices):
+        #: Kingfisher Collect
         COLLECT = "collect"
+        #: Kingfisher Process
         PROCESS = "process"
+        #: Pelican
         PELICAN = "pelican"
+        #: Exporter
         EXPORTER = "exporter"
+        #: Flattener
         FLATTENER = "flattener"
 
     type = models.TextField(choices=Type.choices, blank=True)

@@ -96,6 +96,7 @@ class TaskManager(ABC):
         :raises RecoverableException:
         """
 
+    @abstractmethod
     def wipe(self) -> None:
         """
         Delete any side effects of (for example, data written by) the task.
