@@ -14,6 +14,10 @@ def url_for_collection(*parts):
     return urljoin(settings.KINGFISHER_PROCESS_URL, f"/api/collections/{'/'.join(map(str, parts))}/")
 
 
+def parse_date(dt):
+    return datetime.strptime(dt, "%Y-%m-%dT%H:%M:%S%z").date()
+
+
 class Process(TaskManager):
     final_output = False
 
@@ -47,8 +51,8 @@ class Process(TaskManager):
 
         # The metadata can be empty (or partial) if the collection contained no data.
         if meta:
-            self.job.date_from = datetime.strptime(meta.get("published_from"), "%Y-%m-%dT%H:%M:%SZ").date()
-            self.job.date_to = datetime.strptime(meta.get("published_to"), "%Y-%m-%dT%H:%M:%S%z").date()
+            self.job.date_from = parse_date(meta.get("published_from"))
+            self.job.date_to = parse_date(meta.get("published_to"))
             self.job.license = meta.get("data_license") or ""
             self.job.ocid_prefix = meta.get("ocid_prefix") or ""
 
