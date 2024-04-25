@@ -4,7 +4,9 @@
         "pk": 1,
         "fields": {
             "title": "portugal",
-            "country": "PT"
+            "country": "PT",
+            "created": "2001-02-03T04:05:06Z",
+            "modified": "2001-02-03T07:08:09Z"
         }
     }
 ]
