@@ -24,6 +24,10 @@ def skip_if_not_started(method):
 
 
 class TaskManager(ABC):
+    """
+    Task managers should only update the :class:`~data_registry.models.Job` context and metadata fields.
+    """
+
     def __init__(self, task):
         """
         Initialize the task manager.
