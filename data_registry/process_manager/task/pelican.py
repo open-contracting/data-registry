@@ -105,7 +105,13 @@ class Pelican(TaskManager):
     def do_wipe(self):
         pelican_id = self.job.context.get("pelican_id")  # set in get_status()
 
-        # If wiped after run() but before get_status(), or before processed by Pelican...
+        # `pelican_id` can be missing because:
+        #
+        # - The Pelican API stopped responding after run()
+        # - The Pelican worker hasn't processed the message yet
+        # - wipe() was called before get_status()
+        #
+        # These temporary errors are too rare to bother with.
         if not pelican_id:
             pelican_id = self.get_pelican_id()
             if not pelican_id:
