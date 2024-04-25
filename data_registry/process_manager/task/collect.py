@@ -13,9 +13,22 @@ from data_registry.process_manager.util import TaskManager
 
 logger = logging.getLogger(__name__)
 
+PROJECT = settings.SCRAPYD["project"]
+
 
 def scrapyd_url(path):
     return urljoin(settings.SCRAPYD["url"], path)
+
+
+def scrapyd_data(response):
+    data = response.json()
+
+    # *.json: {"node_name": "ocp42.open-contracting.org", "status": "error", "message": "..."}
+    # schedule.json: {"status": "error", "message": "spider 'nonexistent' not found"}
+    if data.get("status") == "error":
+        raise Exception(repr(data))
+
+    return data
 
 
 class Collect(TaskManager):
@@ -34,28 +47,23 @@ class Collect(TaskManager):
         return False
 
     def run(self):
-        project = settings.SCRAPYD["project"]
-
         response = self.request(
             "POST",
             scrapyd_url("schedule.json"),
             data={
-                "project": project,
+                "project": PROJECT,
                 "spider": self.spider,
                 "steps": "compile",  # no "check"
             },
-            error_message=f"Unable to schedule crawl for project {project} and spider {self.spider}",
+            error_message=f"Unable to schedule a Scrapyd job for project {PROJECT} and spider {self.spider}",
         )
 
-        data = response.json()
-        # {"status": "error", "message": "spider 'nonexistent' not found"}
-        if data.get("status") == "error":
-            raise Exception(repr(data))
+        data = scrapyd_data(response)
 
         scrapyd_job_id = data.get("jobid")
         self.job.context["spider"] = self.spider
         self.job.context["job_id"] = scrapyd_job_id
-        self.job.context["scrapy_log"] = scrapyd_url(f"logs/{project}/{self.spider}/{scrapyd_job_id}.log")
+        self.job.context["scrapy_log"] = scrapyd_url(f"logs/{PROJECT}/{self.spider}/{scrapyd_job_id}.log")
         self.job.save()
 
     def get_status(self):
@@ -65,14 +73,11 @@ class Collect(TaskManager):
         response = self.request(
             "GET",
             scrapyd_url("listjobs.json"),
-            params={"project": settings.SCRAPYD["project"]},
+            params={"project": PROJECT},
             error_message=f"Unable to get status of Scrapyd job #{scrapyd_job_id}",
         )
 
-        data = response.json()
-        # {"node_name": "ocp42.open-contracting.org", "status": "error", "message": "..."}
-        if data.get("status") == "error":
-            raise Exception(repr(data))
+        data = scrapyd_data(response)
 
         # If the job is pending, return early, because the log file will not exist yet.
         if any(j["id"] == scrapyd_job_id for j in data.get("pending", [])):
@@ -83,7 +88,7 @@ class Collect(TaskManager):
             try:
                 response = self.request("get", scrapy_log_url, error_message="Unable to read Scrapy log")
             except RecoverableException as e:
-                # If the log file doesn't exist (e.g. the crawl never started), the job can't continue.
+                # If the log file doesn't exist, the job can't continue.
                 if isinstance(e.__cause__, HTTPError) and e.__cause__.response.status_code == 404:
                     raise Exception("Scrapy log doesn't exist") from e
                 raise
@@ -107,6 +112,20 @@ class Collect(TaskManager):
         raise RecoverableException(f"Unable to find status of Scrapyd job #{scrapyd_job_id}")
 
     def wipe(self):
+        scrapyd_job_id = self.job.context["job_id"]  # set in run()
+
+        response = self.request(
+            "POST",
+            scrapyd_url("cancel.json"),
+            data={
+                "project": PROJECT,
+                "job": scrapyd_job_id,
+            },
+            error_message=f"Unable to cancel the Scrapyd job #{self.job.context}",
+        )
+
+        scrapyd_data(response)  # raises for error message
+
         if "process_data_version" not in self.job.context:  # for example, if Process task never started
             logger.warning("%s: Unable to wipe crawl (data version is not set)", self)
             return

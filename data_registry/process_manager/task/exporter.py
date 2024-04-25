@@ -9,7 +9,7 @@ class Exporter(TaskManager):
         return True
 
     def run(self):
-        publish({"collection_id": self.job.context["process_id_pelican"], "job_id": self.job.id}, "exporter_init")
+        publish({"job_id": self.job.id, "collection_id": self.job.context["process_id_pelican"]}, "exporter_init")
 
     def get_status(self):
         match Export(self.job.id, basename="full.jsonl.gz").status:
