@@ -5,7 +5,7 @@ from urllib.parse import urljoin
 import requests
 from django import forms
 from django.conf import settings
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.db.models import BooleanField, Case, Q, When
 from django.forms.widgets import TextInput
 from django.utils import timezone
@@ -13,8 +13,9 @@ from django.utils.translation import gettext_lazy as _
 from markdownx.widgets import AdminMarkdownxWidget
 from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, TranslationTabularInline
 
+from data_registry.exceptions import RecoverableException
 from data_registry.models import Collection, Issue, Job, License, Task
-from data_registry.process_manager.process import get_runner
+from data_registry.process_manager.process import get_task_manager
 
 logger = logging.getLogger(__name__)
 
@@ -405,6 +406,10 @@ class JobAdmin(admin.ModelAdmin):
 
     def delete_model(self, request, obj):
         for task in obj.task.all():
-            get_runner(obj, task).wipe()
-
-        super().delete_model(request, obj)
+            try:
+                get_task_manager(task).wipe()
+            except RecoverableException as e:
+                messages.error(request, f"Recoverable exception when wiping task {task}: {e}. Please try again.")
+                break
+        else:
+            super().delete_model(request, obj)

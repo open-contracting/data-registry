@@ -9,113 +9,148 @@ from requests.exceptions import HTTPError
 
 from data_registry.exceptions import RecoverableException
 from data_registry.models import Task
-from data_registry.process_manager.util import request
+from data_registry.process_manager.util import TaskManager, skip_if_not_started
 
 logger = logging.getLogger(__name__)
 
+PROJECT = settings.SCRAPYD["project"]
 
-class Collect:
-    host = None
-    job = None
-    project = None
-    collection = None
 
-    def __init__(self, collection, job):
+def scrapyd_url(path):
+    return urljoin(settings.SCRAPYD["url"], path)
+
+
+def scrapyd_data(response):
+    data = response.json()
+
+    # *.json: {"node_name": "ocp42.open-contracting.org", "status": "error", "message": "..."}
+    # schedule.json: {"status": "error", "message": "spider 'nonexistent' not found"}
+    if data.get("status") == "error":
+        raise Exception(repr(data))
+
+    return data
+
+
+class Collect(TaskManager):
+    final_output = False
+
+    def __init__(self, task):
+        super().__init__(task)
+
         if not settings.SCRAPYD["url"]:
             raise Exception("SCRAPYD_URL is not set")
         if not settings.SCRAPYD["project"]:
             raise Exception("SCRAPYD_PROJECT is not set")
 
-        self.job = job
-        self.host = settings.SCRAPYD["url"]
-        self.project = settings.SCRAPYD["project"]
-        self.spider = collection.source_id
-        self.collection = collection
+        self.spider = task.job.collection.source_id
 
     def run(self):
-        response = request(
+        response = self.request(
             "POST",
-            urljoin(self.host, "schedule.json"),
+            scrapyd_url("schedule.json"),
             data={
-                "project": self.project,
+                "project": PROJECT,
                 "spider": self.spider,
                 "steps": "compile",  # no "check"
             },
-            error_msg=f"Unable to schedule crawl for project {self.project} and spider {self.spider}",
+            error_message=f"Unable to schedule a Scrapyd job for project {PROJECT} and spider {self.spider}",
         )
 
-        json = response.json()
-        if json.get("status") == "error":
-            raise Exception(json)
+        data = scrapyd_data(response)
 
-        job_id = json.get("jobid")
-
-        self.job.context["job_id"] = job_id
+        scrapyd_job_id = data.get("jobid")
         self.job.context["spider"] = self.spider
-        self.job.context["scrapy_log"] = urljoin(self.host, f"logs/{self.project}/{self.spider}/{job_id}.log")
+        self.job.context["job_id"] = scrapyd_job_id
+        self.job.context["scrapy_log"] = scrapyd_url(f"logs/{PROJECT}/{self.spider}/{scrapyd_job_id}.log")
         self.job.save()
 
     def get_status(self):
-        job_id = self.job.context.get("job_id")
-        process_id = self.job.context.get("process_id")
+        scrapyd_job_id = self.job.context["job_id"]  # set in run()
+        scrapy_log_url = self.job.context["scrapy_log"]  # set in run()
 
-        response = request(
+        response = self.request(
             "GET",
-            urljoin(self.host, "listjobs.json"),
-            params={"project": self.project},
-            error_msg=f"Unable to get status of collect job #{job_id}",
+            scrapyd_url("listjobs.json"),
+            params={"project": PROJECT},
+            error_message=f"Unable to get status of Scrapyd job #{scrapyd_job_id}",
         )
 
-        json = response.json()
+        data = scrapyd_data(response)
 
-        if json.get("status") == "error":
-            raise Exception(json)
-
-        if any(n["id"] == job_id for n in json.get("pending", [])):
+        # If the job is pending, return early, because the log file will not exist yet.
+        if any(j["id"] == scrapyd_job_id for j in data.get("pending", [])):
             return Task.Status.WAITING
 
-        # The log file does not exist if the job is pending.
-        if not process_id:
-            log = self.job.context.get("scrapy_log")
-
+        # Check early for the log file, so that we can error if Scrapyd somehow stalled without writing a log file.
+        if "process_id" not in self.job.context:
             try:
-                response = request("get", log, error_msg=f"Unable to read Scrapy log {log}")
+                response = self.request("get", scrapy_log_url, error_message="Unable to read Scrapy log")
             except RecoverableException as e:
-                ex_cause = e.__cause__
-                # If the request on the log file returns the error 404, something went wrong with the scrapy.
-                # The file was probably lost, and the job will never be able to continue
-                if isinstance(ex_cause, HTTPError) and ex_cause.response.status_code == 404:
-                    raise Exception("Scrapy log doesn't exist")
-                raise e
+                # If the log file doesn't exist, the job can't continue.
+                if isinstance(e.__cause__, HTTPError) and e.__cause__.response.status_code == 404:
+                    raise Exception("Scrapy log doesn't exist") from e
+                raise
 
             # Must match
-            # https://github.com/open-contracting/kingfisher-collect/blob/3258ff401899e342be3459fe975254ac14db7497/kingfisher_scrapy/extensions/kingfisher_process_api2.py#L101
-            m = re.search("Created collection (.+) in Kingfisher Process", response.text)
-            process_id = m.group(1) if m else None
+            # https://github.com/open-contracting/kingfisher-collect/blob/7bfeba8/kingfisher_scrapy/extensions/kingfisher_process_api2.py#L117
+            if m := re.search(r"Created collection (.+) in Kingfisher Process \(([^\)]+)\)", response.text):
+                self.job.context["process_id"] = m.group(1)
+                self.job.context["data_version"] = m.group(2)
+                self.job.save()
 
-            self.job.context["process_id"] = process_id
-            self.job.save()
-
-        if any(n["id"] == job_id for n in json.get("running", [])):
+        if any(j["id"] == scrapyd_job_id for j in data.get("running", [])):
             return Task.Status.RUNNING
 
-        if any(n["id"] == job_id for n in json.get("finished", [])):
-            if not process_id:
-                raise Exception("process_id is not set")
+        if any(j["id"] == scrapyd_job_id for j in data.get("finished", [])):
+            # If the collection ID or data version was irretrievable, the job can't continue.
+            if "process_id" not in self.job.context or "data_version" not in self.job.context:
+                raise Exception("Unable to retrieve collection ID and data version from Scrapy log")
 
             return Task.Status.COMPLETED
 
-        raise RecoverableException("Kingfisher Collect job is in undefined state")
+        raise RecoverableException(f"Unable to find status of Scrapyd job #{scrapyd_job_id}")
 
+    @skip_if_not_started
     def wipe(self):
-        version = self.job.context.get("process_data_version")
-        if not version:
-            logger.warning("Unable to wipe COLLECT - process_data_version is not set")
+        scrapyd_job_id = self.job.context["job_id"]  # set in run()
+
+        response = self.request(
+            "POST",
+            scrapyd_url("cancel.json"),
+            data={
+                "project": PROJECT,
+                "job": scrapyd_job_id,
+            },
+            error_message=f"Unable to cancel the Scrapyd job #{self.job.context}",
+        )
+
+        scrapyd_data(response)  # raises for error message
+
+        # `data_version` can be missing due to:
+        #
+        # - Irrecoverable errors
+        #   - The Scrapyd job is gone
+        #   - The log file doesn't exist
+        #   - The request failed from Kingfisher Collect to Kingfisher Process
+        # - Temporary errors
+        #   - Scrapyd stopped responding after run()
+        #   - Scrapyd returned an error message
+        #   - wipe() was called before get_status() (or before get_status() sets `data_version`)
+        #
+        # The temporary errors are too rare to bother with.
+        #
+        # If the Scrapyd job was pending, there is nothing to wipe.
+        if "data_version" not in self.job.context:
+            logger.warning("%s: Unable to wipe crawl (data version is not set)", self)
             return
 
-        logger.info("Wiping Kingfisher Collect data for data version %s.", version)
+        data_version = self.job.context["data_version"]  # set in get_status()
 
-        version = version.replace("-", "").replace(":", "").replace("T", "_")
-        path = f"{settings.KINGFISHER_COLLECT_FILES_STORE}/{self.spider}/{version}"
+        logger.info("%s: Wiping data for crawl %s", self, data_version)
+        # 20010203_040506     Kingfisher Collect's FileStore extension
+        # 2001-02-03 04:05:06 Kingfisher Collect's Kingfisher Process API extension
+        # 2001-02-03T04:05:06 Kingfisher Process
+        data_version = data_version.translate(str.maketrans(" T", "__", "-:"))
+        path = f"{settings.KINGFISHER_COLLECT_FILES_STORE}/{self.spider}/{data_version}"
         if os.path.exists(path):
             shutil.rmtree(path)

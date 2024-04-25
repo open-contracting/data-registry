@@ -1,11 +1,10 @@
 import logging
-from datetime import date, datetime, timedelta
-from urllib.parse import urljoin
+from datetime import date, timedelta
 
 from django.conf import settings
 from django.db import transaction
 from django.db.models import BooleanField, Case, When
-from django.utils import timezone
+from django.db.models.functions import Now
 
 from data_registry.exceptions import RecoverableException
 from data_registry.models import Collection, Job, Task
@@ -14,31 +13,22 @@ from data_registry.process_manager.task.exporter import Exporter
 from data_registry.process_manager.task.flattener import Flattener
 from data_registry.process_manager.task.pelican import Pelican
 from data_registry.process_manager.task.process import Process
-from data_registry.process_manager.util import request
 
 logger = logging.getLogger(__name__)
 
 
-def get_runner(job, task):
-    """
-    Task classes must implement three methods:
-
-    -  ``run()`` starts the task
-    -  ``get_status()`` returns a choice from ``Task.Status``
-    -  ``wipe()`` deletes any side-effects of ``run()``
-    """
-
+def get_task_manager(task):
     match task.type:
         case Task.Type.COLLECT:
-            return Collect(job.collection, job)
+            return Collect(task)
         case Task.Type.PROCESS:
-            return Process(job)
+            return Process(task)
         case Task.Type.PELICAN:
-            return Pelican(job)
+            return Pelican(task)
         case Task.Type.EXPORTER:
-            return Exporter(job)
+            return Exporter(task)
         case Task.Type.FLATTENER:
-            return Flattener(job)
+            return Flattener(task)
         case _:
             raise Exception("Unsupported task type")
 
@@ -47,106 +37,65 @@ def process(collection):
     if should_be_planned(collection):
         plan(collection)
 
-    jobs = collection.job.exclude(status=Job.Status.COMPLETED)
+    country = collection.country
 
-    for job in jobs:
+    for job in collection.job.exclude(status=Job.Status.COMPLETED):
         with transaction.atomic():
-            job_complete = True
-
-            for task in job.task.order_by("order"):
-                # finished task -> no action needed
-                if task.status == Task.Status.COMPLETED:
-                    continue
-
-                runner = get_runner(job, task)
+            for task in job.task.exclude(status=Task.Status.COMPLETED).order_by("order"):
+                task_manager = get_task_manager(task)
 
                 try:
-                    if task.status in [Task.Status.WAITING, Task.Status.RUNNING]:
-                        status = runner.get_status()
-                        logger.debug("Task %s is %s (%s: %s)", task, status, collection.country, collection)
-                        if status in [Task.Status.WAITING, Task.Status.RUNNING]:
-                            # Reset the task, in case it has recovered.
-                            job_complete = False
-                            task.result = ""
-                            task.note = ""
-                            task.save()
+                    match task.status:
+                        case Task.Status.PLANNED:
+                            # If this is the first task...
+                            if job.status == Job.Status.PLANNED:
+                                job.initiate()
+                                logger.debug("Job %s is starting (%s: %s)", job, country, collection)
+
+                            task_manager.run()
+
+                            task.initiate()
+                            logger.debug("Task %s is starting (%s: %s)", task, country, collection)
+
                             break
-                        elif status == Task.Status.COMPLETED:
-                            # complete the task
-                            task.end = timezone.now()
-                            task.status = Task.Status.COMPLETED
-                            task.result = Task.Result.OK
-                            task.save()
-                    elif task.status == Task.Status.PLANNED:
-                        if job.status == Job.Status.PLANNED:
-                            job.start = timezone.now()
-                            job.status = Job.Status.RUNNING
-                            job.save()
+                        case Task.Status.WAITING | Task.Status.RUNNING:
+                            status = task_manager.get_status()
+                            logger.debug("Task %s is %s (%s: %s)", task, status, country, collection)
 
-                            logger.debug("Job %s is starting (%s: %s)", job, collection.country, collection)
+                            match status:
+                                case Task.Status.WAITING | Task.Status.RUNNING:
+                                    task.progress()  # The service is responding (again). Reset any progress.
 
-                        runner.run()
+                                    break
+                                case Task.Status.COMPLETED:
+                                    task.complete(result=Task.Result.OK)
 
-                        task.start = timezone.now()
-                        task.status = Task.Status.RUNNING
-                        task.save()
-
-                        job_complete = False
-
-                        logger.debug("Task %s is starting (%s: %s)", task, collection.country, collection)
-
-                        break
+                                    # Do not break! Go onto the next task.
                 except RecoverableException as e:
-                    job_complete = False
-                    task.result = Task.Result.FAILED
-                    task.note = str(e)
-                    task.save()
+                    logger.exception("Recoverable exception during task %s (%s: %s)", task, country, collection)
+                    task.progress(result=Task.Result.FAILED, note=str(e))  # The service is not responding.
 
-                    logger.exception(e)
                     break
                 except Exception as e:
-                    job_complete = False
+                    logger.exception("Unhandled exception during task %s (%s: %s)", task, country, collection)
+                    task.complete(result=Task.Result.FAILED, note=str(e))
 
-                    logger.exception(e)
+                    job.complete()
+                    logger.warning("Job %s has failed (%s: %s)", job, country, collection)
 
-                    # close task as failed
-                    task.end = timezone.now()
-                    task.status = Task.Status.COMPLETED
-                    task.result = Task.Result.FAILED
-                    task.note = str(e)
-                    task.save()
-
-                    # close job
-                    job.status = Job.Status.COMPLETED
-                    job.end = timezone.now()
-                    job.save()
-
-                    logger.warning("Job %s has failed (%s: %s)", job, collection.country, collection)
                     break
+            # All tasks completed successfully.
+            else:
+                job.complete()
 
-            # complete the job if all of its tasks are completed
-            if job_complete:
-                # completed job postprocessing
-                try:
-                    update_collection_availability(job)
+                collection.last_retrieved = job.task.get(type=settings.JOB_TASKS_PLAN[0]).end
+                collection.save()
 
-                    update_collection_metadata(job)
-                except Exception as e:
-                    logger.exception(e)
-                else:
-                    job.status = Job.Status.COMPLETED
-                    job.end = timezone.now()
-                    job.save()
+                collection.job.update(
+                    active=Case(When(id=job.id, then=True), default=False, output_field=BooleanField())
+                )
 
-                    collection.last_retrieved = job.task.get(type__in=("collect", "test")).end
-                    collection.save()
-
-                    # set active job
-                    collection.job.update(
-                        active=Case(When(id=job.id, then=True), default=False, output_field=BooleanField())
-                    )
-
-                    logger.debug("Job %s has completed (%s: %s)", job, collection.country, collection)
+                logger.debug("Job %s has succeeded (%s: %s)", job, country, collection)
 
 
 def should_be_planned(collection):
@@ -154,8 +103,7 @@ def should_be_planned(collection):
     if collection.frozen:
         return False
 
-    jobs = collection.job.exclude(status=Job.Status.COMPLETED)
-    if not jobs:
+    if not collection.job.exclude(status=Job.Status.COMPLETED):
         # update frequency is not set, plan next job
         if not collection.retrieval_frequency:
             return True
@@ -180,69 +128,9 @@ def plan(collection):
     if not settings.JOB_TASKS_PLAN:
         raise Exception("JOB_TASKS_PLAN is not set")
 
-    job = collection.job.create(start=timezone.now(), status=Job.Status.PLANNED)
+    job = collection.job.create(start=Now(), status=Job.Status.PLANNED)
 
     for order, task_type in enumerate(settings.JOB_TASKS_PLAN, start=1):
         job.task.create(status=Task.Status.PLANNED, type=task_type, order=order)
 
     logger.debug("New job %s planned", job)
-
-
-def update_collection_availability(job):
-    try:
-        pelican_id = job.context.get("pelican_id")
-        response = request("GET", urljoin(settings.PELICAN_FRONTEND_URL, f"/api/datasets/{pelican_id}/coverage/"))
-    except Exception as e:
-        raise Exception(
-            f"Publication {job.collection}: Pelican: Unable to get coverage of dataset {pelican_id}"
-        ) from e
-
-    counts = response.json()
-
-    job.tenders_count = counts.get("tenders")
-    job.tenderers_count = counts.get("tenderers")
-    job.tenders_items_count = counts.get("tenders_items")
-    job.parties_count = counts.get("parties")
-    job.awards_count = counts.get("awards")
-    job.awards_items_count = counts.get("awards_items")
-    job.awards_suppliers_count = counts.get("awards_suppliers")
-    job.contracts_count = counts.get("contracts")
-    job.contracts_items_count = counts.get("contracts_items")
-    job.contracts_transactions_count = counts.get("contracts_transactions")
-    job.documents_count = counts.get("documents")
-    job.plannings_count = counts.get("plannings")
-    job.milestones_count = counts.get("milestones")
-    job.amendments_count = counts.get("amendments")
-    job.save()
-
-
-def update_collection_metadata(job):
-    try:
-        pelican_id = job.context.get("pelican_id")
-        response = request("GET", urljoin(settings.PELICAN_FRONTEND_URL, f"/api/datasets/{pelican_id}/metadata/"))
-    except Exception as e:
-        raise Exception(
-            f"Publication {job.collection}: Pelican: Unable to get metadata of dataset {pelican_id}"
-        ) from e
-
-    meta = response.json()
-
-    if meta:
-        job.date_from = parse_date(meta.get("published_from"))
-        job.date_to = parse_date(meta.get("published_to"))
-        job.license = meta.get("data_license") or ""
-        job.ocid_prefix = meta.get("ocid_prefix") or ""
-        job.save()
-
-
-def parse_date(datetime_str):
-    if not datetime_str:
-        return None
-
-    try:
-        try:
-            return datetime.strptime(datetime_str, "%Y-%m-%d %H.%M.%S").date()
-        except ValueError:  # e.g. nigeria_plateau_state
-            return datetime.strptime(datetime_str, "%y-%m-%d %H.%M.%S").date()
-    except ValueError as e:
-        logger.exception(e)

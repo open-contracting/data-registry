@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.functions import Now
 from django.utils.translation import gettext_lazy as _
 from markdownx.models import MarkdownxField
 
@@ -24,6 +25,8 @@ class Job(models.Model):
         help_text="<dl>"
         "<dt><code>spider</code></dt>"
         "<dd>The name of the spider in Kingfisher Collect</dd>"
+        "<dt><code>data_version</code></dt>"
+        "<dd>The data version of the crawl in Kingfisher Collect</dd>"
         "<dt><code>job_id</code></dt>"
         "<dd>The ID of the job in Scrapyd</dd>"
         "<dt><code>scrapy_log</code></dt>"
@@ -32,8 +35,6 @@ class Job(models.Model):
         "<dd>The ID of the base collection in Kingfisher Process</dd>"
         "<dt><code>process_id_pelican</code></dt>"
         "<dd>The ID of the compiled collection in Kingfisher Process</dd>"
-        "<dt><code>process_data_version</code></dt>"
-        "<dd>The data version of the collection in Kingfisher Process</dd>"
         "<dt><code>pelican_id</code></dt>"
         "<dd>The ID of the dataset in Pelican</dd>"
         "<dt><code>pelican_dataset_name</code></dt>"
@@ -85,6 +86,16 @@ class Job(models.Model):
 
     def __str__(self):
         return f"{self.format_datetime(self.start)} .. {self.format_datetime(self.end)} ({self.id})"
+
+    def initiate(self):
+        self.start = Now()
+        self.status = Job.Status.RUNNING
+        self.save()
+
+    def complete(self):
+        self.end = Now()
+        self.status = Job.Status.COMPLETED
+        self.save()
 
     def format_datetime(self, dt):
         return dt.strftime("%d-%b-%y") if dt else ""
@@ -305,6 +316,32 @@ class Task(models.Model):
 
     created = models.DateTimeField(auto_now_add=True, blank=True, null=True, db_index=True)
     modified = models.DateTimeField(auto_now=True, blank=True, null=True, db_index=True)
+
+    def initiate(self):
+        """
+        Mark the task as started.
+        """
+        self.start = Now()
+        self.status = Task.Status.RUNNING
+        self.save()
+
+    def progress(self, *, result="", note=""):
+        """
+        Update the task's progress. If called without arguments, reset the task's progress.
+        """
+        self.result = result
+        self.note = note
+        self.save()
+
+    def complete(self, *, result, note=""):
+        """
+        Mark the task as ended.
+        """
+        self.end = Now()
+        self.status = Task.Status.COMPLETED
+        self.result = result
+        self.note = note
+        self.save()
 
     def __str__(self):
         return f"#{self.id}({self.type})"

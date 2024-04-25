@@ -4,52 +4,70 @@ from urllib.parse import urljoin
 from django.conf import settings
 
 from data_registry.models import Task
-from data_registry.process_manager.util import request
+from data_registry.process_manager.util import TaskManager
 
 logger = logging.getLogger(__name__)
 
 
-class Process:
-    job = None
-    process_id = None
+def url_for_collection(*parts):
+    return urljoin(settings.KINGFISHER_PROCESS_URL, f"/api/collections/{'/'.join(map(str, parts))}/")
 
-    def __init__(self, job):
-        self.job = job
-        self.process_id = job.context.get("process_id")
+
+class Process(TaskManager):
+    final_output = False
 
     def run(self):
-        # process is started through collect-process integration
+        # Kingfisher Process is started by Kingfisher Collect's Kingfisher Process API extension.
         pass
 
     def get_status(self):
-        response = request(
+        process_id = self.job.context["process_id"]  # set in Collect.get_status()
+
+        response = self.request(
             "GET",
-            urljoin(settings.KINGFISHER_PROCESS_URL, f"/api/v1/tree/{self.process_id}/"),
-            error_msg=f"Unable to get status of process #{self.process_id}",
+            url_for_collection(process_id, "tree"),
+            error_message=f"Unable to get status of collection #{process_id}",
         )
 
-        json = response.json()
+        tree = response.json()
 
-        compile_releases = next(n for n in json if n.get("transform_type") == "compile-releases")
-        is_last_completed = compile_releases.get("completed_at") is not None
+        compiled_collection = next(c for c in tree if c["transform_type"] == "compile-releases")
 
-        if "process_id_pelican" not in self.job.context:
-            self.job.context["process_id_pelican"] = compile_releases.get("id")
-            self.job.context["process_data_version"] = compile_releases.get("data_version")
-            self.job.save()
+        if not compiled_collection["completed_at"]:
+            return Task.Status.RUNNING
 
-        return Task.Status.COMPLETED if is_last_completed else Task.Status.RUNNING
+        response = self.request(
+            "GET",
+            url_for_collection(compiled_collection["id"], "metadata"),
+            error_message=f"Unable to get metadata of collection #{compiled_collection['id']}",
+        )
 
+        meta = response.json()
+
+        # The metadata can be empty (or partial) if the collection contained no data.
+        if meta:
+            self.job.date_from = meta.get("published_from")
+            self.job.date_to = meta.get("published_to")
+            self.job.license = meta.get("data_license") or ""
+            self.job.ocid_prefix = meta.get("ocid_prefix") or ""
+
+        self.job.context["process_id_pelican"] = compiled_collection["id"]
+        self.job.save()
+
+        return Task.Status.COMPLETED
+
+    # Don't use @skip_if_not_started, because Kingfisher Process can start before the Process task starts.
     def wipe(self):
-        if not self.process_id:
-            logger.warning("Unable to wipe PROCESS - process_id is not set (because log file was not retrievable)")
+        # `process_id` can be missing for the reasons in Collect.wipe().
+        if "process_id" not in self.job.context:
+            logger.warning("%s: Unable to wipe collection (collection ID is not set)", self)
             return
 
-        logger.info("Wiping Kingfisher Process data for collection id %s.", self.process_id)
-        request(
-            "POST",
-            urljoin(settings.KINGFISHER_PROCESS_URL, "/api/v1/wipe_collection"),
-            json={"collection_id": self.process_id},
-            error_msg="Unable to wipe PROCESS",
-            consume_exception=True,
+        process_id = self.job.context["process_id"]  # set in Collect.get_status()
+
+        logger.info("%s: Wiping data for collection %s", self, process_id)
+        self.request(
+            "DELETE",
+            url_for_collection(process_id),
+            error_message=f"Unable to wipe collection {process_id}",
         )

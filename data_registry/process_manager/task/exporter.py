@@ -1,14 +1,13 @@
 from data_registry.models import Task
+from data_registry.process_manager.util import TaskManager, skip_if_not_started
 from exporter.util import Export, TaskStatus, publish
 
 
-class Exporter:
-    def __init__(self, job):
-        self.job = job
-        self.collection_id = self.job.context.get("process_id_pelican")
+class Exporter(TaskManager):
+    final_output = True
 
     def run(self):
-        publish({"collection_id": self.collection_id, "job_id": self.job.id}, "exporter_init")
+        publish({"job_id": self.job.id, "collection_id": self.job.context["process_id_pelican"]}, "exporter_init")
 
     def get_status(self):
         match Export(self.job.id, basename="full.jsonl.gz").status:
@@ -19,5 +18,6 @@ class Exporter:
             case TaskStatus.COMPLETED:
                 return Task.Status.COMPLETED
 
+    @skip_if_not_started
     def wipe(self):
         publish({"job_id": self.job.id}, "wiper_init")
