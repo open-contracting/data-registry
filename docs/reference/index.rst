@@ -1,6 +1,8 @@
 Reference
 =========
 
+.. _environment-variables:
+
 Environment variables
 ---------------------
 

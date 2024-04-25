@@ -44,6 +44,8 @@ The default values in the settings.py file should be appropriate as-is. You can 
 Backend
 ~~~~~~~
 
+As much as possible, use a single entrypoint (API) to other projects to limit coupling. See :ref:`environment-variables` for details.
+
 Run the web server
 ^^^^^^^^^^^^^^^^^^
 
