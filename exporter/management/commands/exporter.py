@@ -14,12 +14,10 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    """
-    Start a worker to export files from collections in Kingfisher Process.
+    help = """
+    Export JSON files from compiled collections in Kingfisher Process.
 
     Data is exported as gzipped line-delimited JSON files, with one file per year and one ``full.jsonl.gz`` file.
-
-    Multiple workers can run at the same time.
     """
 
     def handle(self, *args, **options):

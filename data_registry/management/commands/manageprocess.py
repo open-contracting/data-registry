@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    help = "Process, orchestrate and evaluate all jobs and tasks in data registry"
+    help = "Orchestrate and evaluate all jobs and tasks"
 
     def handle(self, *args, **options):
         for collection in Collection.objects.all():

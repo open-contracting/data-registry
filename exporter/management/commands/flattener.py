@@ -18,12 +18,10 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    """
-    Start a worker to flatten JSON files.
+    help = """
+    Convert JSON files to CSV and Excel files.
 
     Data is exported as gzipped CSV and Excel files, with one file per year and one full file per format.
-
-    Multiple workers can run at the same time.
     """
 
     def handle(self, *args, **options):

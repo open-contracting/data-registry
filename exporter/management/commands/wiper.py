@@ -9,11 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    """
-    Start a worker to delete the files exported from collections in Kingfisher Process.
-
-    Multiple workers can run at the same time.
-    """
+    help = """Delete the files exported from compiled collections in Kingfisher Process"""
 
     def handle(self, *args, **options):
         consume(on_message_callback=callback, queue="wiper_init")
