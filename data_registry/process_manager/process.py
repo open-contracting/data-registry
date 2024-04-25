@@ -1,12 +1,11 @@
 import logging
-from datetime import date, timedelta
 
 from django.conf import settings
 from django.db import transaction
 from django.db.models import BooleanField, Case, When
 
 from data_registry.exceptions import RecoverableException
-from data_registry.models import Collection, Job, Task
+from data_registry.models import Job, Task
 from data_registry.process_manager.task.collect import Collect
 from data_registry.process_manager.task.exporter import Exporter
 from data_registry.process_manager.task.flattener import Flattener
@@ -33,7 +32,7 @@ def get_task_manager(task):
 
 
 def process(collection):
-    if should_be_planned(collection):
+    if collection.is_out_of_date():
         collection.job.create()  # see signals.py
 
     country = collection.country
@@ -95,29 +94,3 @@ def process(collection):
                 )
 
                 logger.debug("Job %s has succeeded (%s: %s)", job, country, collection)
-
-
-def should_be_planned(collection):
-    # frozen collections shouldn't be planned
-    if collection.frozen:
-        return False
-
-    if not collection.job.exclude(status=Job.Status.COMPLETED):
-        # update frequency is not set, plan next job
-        if not collection.retrieval_frequency:
-            return True
-
-        # plan next job depending on update frequency
-        last_job = collection.job.filter(status=Job.Status.COMPLETED).order_by("-start").first()
-        if not last_job:
-            return True
-
-        delta = timedelta(days=30)  # MONTHLY
-        if collection.retrieval_frequency == Collection.RetrievalFrequency.HALF_YEARLY:
-            delta = timedelta(days=180)
-        elif collection.retrieval_frequency == Collection.RetrievalFrequency.ANNUALLY:
-            delta = timedelta(days=365)
-
-        return date.today() >= (last_job.start + delta).date()
-    else:
-        return False

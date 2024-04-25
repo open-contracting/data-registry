@@ -1,3 +1,5 @@
+from datetime import date, timedelta
+
 from django.db import models
 from django.db.models.functions import Now
 from django.utils.translation import gettext_lazy as _
@@ -276,6 +278,40 @@ class Collection(models.Model):
     modified = models.DateTimeField(auto_now=True)
 
     objects = CollectionQuerySet.as_manager()
+
+    def is_out_of_date(self):
+        if self.frozen:
+            return False
+
+        # Its retrieval frequency is "never".
+        if self.retrieval_frequency == self.RetrievalFrequency.NEVER:
+            return False
+
+        # There is an incomplete job.
+        if self.job.exclude(status=Job.Status.COMPLETED).exists():
+            return False
+
+        # It has no retrieval frequency.
+        if not self.retrieval_frequency:
+            return True
+
+        # It has never been retrieved.
+        most_recent_job = self.job.filter(status=Job.Status.COMPLETED).order_by("-start").first()
+        if not most_recent_job:
+            return True
+
+        match self.retrieval_frequency:
+            case self.RetrievalFrequency.MONTHLY:
+                days = 30
+            case self.RetrievalFrequency.HALF_YEARLY:
+                days = 180
+            case self.RetrievalFrequency.ANNUALLY:
+                days = 365
+            case _:
+                raise NotImplementedError
+
+        # It has been long enough since last retrieval.
+        return date.today() >= (most_recent_job.start + timedelta(days=days)).date()
 
     def __str__(self):
         return f"{self.title} ({self.id})"
