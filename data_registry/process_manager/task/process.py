@@ -58,7 +58,13 @@ class Process(TaskManager):
 
         return Task.Status.COMPLETED
 
-    def do_wipe(self):
+    # Override wipe(), because Kingfisher Process can start before the Process task starts.
+    def wipe(self):
+        # `process_id` can be missing for the reasons in Collect.wipe().
+        if "process_id" not in self.job.context:
+            logger.warning("%s: Unable to wipe collection (collection ID is not set)", self)
+            return
+
         process_id = self.job.context["process_id"]  # set in Collect.get_status()
 
         logger.info("%s: Wiping data for collection %s", self, process_id)
