@@ -25,6 +25,6 @@ Template tags
 Models
 ------
 
-.. automodule:: process.models
+.. automodule:: data_registry.models
    :members:
    :exclude-members: DoesNotExist, MultipleObjectsReturned
