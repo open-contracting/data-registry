@@ -1,5 +1,5 @@
 from data_registry.models import Task
-from data_registry.process_manager.util import TaskManager
+from data_registry.process_manager.util import TaskManager, skip_if_not_started
 from exporter.util import Export, TaskStatus, publish
 
 
@@ -20,5 +20,6 @@ class Flattener(TaskManager):
             case TaskStatus.COMPLETED:
                 return Task.Status.COMPLETED
 
-    def do_wipe(self):
+    @skip_if_not_started
+    def wipe(self):
         publish({"job_id": self.job.id}, "wiper_init")

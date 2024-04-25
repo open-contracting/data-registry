@@ -4,7 +4,7 @@ from urllib.parse import urljoin
 from django.conf import settings
 
 from data_registry.models import Task
-from data_registry.process_manager.util import TaskManager
+from data_registry.process_manager.util import TaskManager, skip_if_not_started
 
 logger = logging.getLogger(__name__)
 
@@ -102,7 +102,8 @@ class Pelican(TaskManager):
 
         return data.get("id")
 
-    def do_wipe(self):
+    @skip_if_not_started
+    def wipe(self):
         pelican_id = self.job.context.get("pelican_id")  # set in get_status()
 
         # `pelican_id` can be missing because:

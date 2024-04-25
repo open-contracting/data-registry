@@ -58,7 +58,7 @@ class Process(TaskManager):
 
         return Task.Status.COMPLETED
 
-    # Override wipe(), because Kingfisher Process can start before the Process task starts.
+    # Don't use @skip_if_not_started, because Kingfisher Process can start before the Process task starts.
     def wipe(self):
         # `process_id` can be missing for the reasons in Collect.wipe().
         if "process_id" not in self.job.context:

@@ -9,7 +9,7 @@ from requests.exceptions import HTTPError
 
 from data_registry.exceptions import RecoverableException
 from data_registry.models import Task
-from data_registry.process_manager.util import TaskManager
+from data_registry.process_manager.util import TaskManager, skip_if_not_started
 
 logger = logging.getLogger(__name__)
 
@@ -112,6 +112,7 @@ class Collect(TaskManager):
 
         raise RecoverableException(f"Unable to find status of Scrapyd job #{scrapyd_job_id}")
 
+    @skip_if_not_started
     def wipe(self):
         scrapyd_job_id = self.job.context["job_id"]  # set in run()
 

@@ -1,3 +1,4 @@
+import functools
 import logging
 from abc import ABC, abstractmethod
 
@@ -8,6 +9,18 @@ from data_registry import models
 from data_registry.exceptions import RecoverableException
 
 logger = logging.getLogger(__name__)
+
+
+def skip_if_not_started(method):
+    @functools.wraps(method)
+    def wrapper(self, *args, **kwargs):
+        if not self.task.start:
+            logger.debug("%s has nothing to wipe (task didn't start)", self)
+            return
+
+        method(self, *args, **kwargs)
+
+    return wrapper
 
 
 class TaskManager(ABC):
@@ -84,23 +97,6 @@ class TaskManager(ABC):
         Delete any side effects of (for example, data written by) the task.
 
         This method must be idempotent. It is retried if any task failed to be wiped.
-
-        Implement :meth:`~data_registry.process_manager.util.TaskManager.do_wipe` in subclasses.
-
-        :raises RecoverableException:
-        """
-        if not self.task.start:
-            logger.debug("%s has nothing to wipe (task didn't start)", self)
-            return
-
-        self.do_wipe()
-
-    @abstractmethod
-    def do_wipe(self) -> None:
-        """
-        Delete any side effects of the task.
-
-        This method can assume that the task had started.
 
         :raises RecoverableException:
         """

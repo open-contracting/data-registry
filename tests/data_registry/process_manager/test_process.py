@@ -14,7 +14,7 @@ class TestTask:
     def get_status(self):
         return Task.Status.COMPLETED
 
-    def do_wipe(self):
+    def wipe(self):
         pass
 
 
