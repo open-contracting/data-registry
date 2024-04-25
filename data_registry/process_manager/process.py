@@ -4,7 +4,6 @@ from datetime import date, timedelta
 from django.conf import settings
 from django.db import transaction
 from django.db.models import BooleanField, Case, When
-from django.db.models.functions import Now
 
 from data_registry.exceptions import RecoverableException
 from data_registry.models import Collection, Job, Task
@@ -35,7 +34,7 @@ def get_task_manager(task):
 
 def process(collection):
     if should_be_planned(collection):
-        plan(collection)
+        collection.job.create()  # see signals.py
 
     country = collection.country
 
@@ -122,15 +121,3 @@ def should_be_planned(collection):
         return date.today() >= (last_job.start + delta).date()
     else:
         return False
-
-
-def plan(collection):
-    if not settings.JOB_TASKS_PLAN:
-        raise Exception("JOB_TASKS_PLAN is not set")
-
-    job = collection.job.create(start=Now(), status=Job.Status.PLANNED)
-
-    for order, task_type in enumerate(settings.JOB_TASKS_PLAN, start=1):
-        job.task.create(status=Task.Status.PLANNED, type=task_type, order=order)
-
-    logger.debug("New job %s planned", job)

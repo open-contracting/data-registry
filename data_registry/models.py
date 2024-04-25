@@ -25,7 +25,7 @@ class Job(models.Model):
         #: The job has ended.
         COMPLETED = "COMPLETED", "COMPLETED"
 
-    status = models.TextField(choices=Status.choices, blank=True)
+    status = models.TextField(choices=Status.choices, blank=True, default=Status.PLANNED)
 
     context = models.JSONField(
         blank=True,
@@ -234,9 +234,9 @@ class Collection(models.Model):
     )
 
     update_frequency = models.TextField(
-        default=UpdateFrequency.UNKNOWN,
         choices=UpdateFrequency.choices,
         blank=True,
+        default=UpdateFrequency.UNKNOWN,
         help_text="The frequency at which the source updates the publication.",
     )
 
@@ -328,7 +328,7 @@ class Task(models.Model):
         #: The task has ended.
         COMPLETED = "COMPLETED", "COMPLETED"
 
-    status = models.TextField(choices=Status.choices, blank=True)
+    status = models.TextField(choices=Status.choices, blank=True, default=Status.PLANNED)
 
     class Result(models.TextChoices):
         #: The task ended successfully.
