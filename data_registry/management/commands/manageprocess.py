@@ -16,7 +16,7 @@ class Command(BaseCommand):
         for collection in Collection.objects.all():
             process(collection)
 
-        for job in Job.objects.select_related("task").filter(
+        for job in Job.objects.prefetch_related("task").filter(
             status=Job.Status.COMPLETED, keep_all_data=False, archived=False
         ):
             for task in job.task.all():
