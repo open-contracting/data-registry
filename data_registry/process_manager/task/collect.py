@@ -32,6 +32,8 @@ def scrapyd_data(response):
 
 
 class Collect(TaskManager):
+    final_output = False
+
     def __init__(self, task):
         super().__init__(task)
 
@@ -41,10 +43,6 @@ class Collect(TaskManager):
             raise Exception("SCRAPYD_PROJECT is not set")
 
         self.spider = task.job.collection.source_id
-
-    @property
-    def final_output(self):
-        return False
 
     def run(self):
         response = self.request(

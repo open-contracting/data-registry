@@ -4,9 +4,7 @@ from exporter.util import Export, TaskStatus, publish
 
 
 class Flattener(TaskManager):
-    @property
-    def final_output(self):
-        return True
+    final_output = True
 
     def run(self):
         publish({"job_id": self.job.id}, "flattener_init")

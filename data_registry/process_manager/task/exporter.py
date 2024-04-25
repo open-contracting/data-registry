@@ -4,9 +4,7 @@ from exporter.util import Export, TaskStatus, publish
 
 
 class Exporter(TaskManager):
-    @property
-    def final_output(self):
-        return True
+    final_output = True
 
     def run(self):
         publish({"job_id": self.job.id, "collection_id": self.job.context["process_id_pelican"]}, "exporter_init")
