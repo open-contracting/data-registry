@@ -7,7 +7,9 @@
             "source_id": "portugal_records",
             "source_url": "https://example.com",
             "country": "PT",
-            "public": true
+            "public": true,
+            "created": "2001-02-03T04:05:06Z",
+            "modified": "2001-02-03T07:08:09Z"
         }
     },
     {
@@ -15,7 +17,9 @@
         "pk": 1,
         "fields": {
             "collection_id": 1,
-            "active": true
+            "active": true,
+            "created": "2001-02-03T04:05:06Z",
+            "modified": "2001-02-03T07:08:09Z"
         }
     }
 ]
