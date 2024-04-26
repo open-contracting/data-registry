@@ -7,8 +7,19 @@ from requests.exceptions import RequestException
 
 from data_registry import models
 from data_registry.exceptions import RecoverableException
+from exporter.util import TaskStatus
 
 logger = logging.getLogger(__name__)
+
+
+def exporter_status_to_task_status(status) -> models.Task.Status:
+    match status:
+        case TaskStatus.WAITING:
+            return models.Task.Status.WAITING
+        case TaskStatus.RUNNING:
+            return models.Task.Status.RUNNING
+        case TaskStatus.COMPLETED:
+            return models.Task.Status.COMPLETED
 
 
 def skip_if_not_started(method):
