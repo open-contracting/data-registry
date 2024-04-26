@@ -14,7 +14,6 @@ from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, Translati
 
 from data_registry.exceptions import RecoverableException
 from data_registry.models import Collection, Issue, Job, License, Task
-from data_registry.process_manager import get_task_manager
 from data_registry.util import partialclass, scrapyd_url
 
 logger = logging.getLogger(__name__)
@@ -25,6 +24,22 @@ TRANSLATION_REMINDER = _(
     "<em>Remember to provide information in all languages. You can use the dropdown at the top "
     "of the page to toggle the language for all fields.</em>"
 )
+
+
+class CascadeTaskMixin:
+    def delete_queryset(self, request, queryset):
+        try:
+            super().delete_queryset(request, queryset)
+        except RecoverableException as e:
+            messages.set_level(request, messages.WARNING)
+            messages.error(request, f"Recoverable exception when wiping task: '{e}'. Please try again.")
+
+    def delete_model(self, request, obj):
+        try:
+            super().delete_model(request, obj)
+        except RecoverableException as e:
+            messages.set_level(request, messages.WARNING)
+            messages.error(request, f"Recoverable exception when wiping task {obj}: '{e}'. Please try again.")
 
 
 class IssueInLine(TranslationTabularInline):
@@ -172,7 +187,7 @@ class CustomDateFieldListFilter(admin.DateFieldListFilter):
 
 
 @admin.register(Collection)
-class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
+class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
     form = CollectionAdminForm
     search_fields = ["title_en", "country_en"]
     list_display = ["__str__", "country", "public", "frozen", "active_job", "last_reviewed"]
@@ -306,7 +321,7 @@ class TaskInLine(admin.TabularInline):
 
 
 @admin.register(Job)
-class JobAdmin(admin.ModelAdmin):
+class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
     class Media:
         css = {"all": ["admin.css"]}
 
@@ -411,13 +426,3 @@ class JobAdmin(admin.ModelAdmin):
             return f"{last_completed_task['type']} ({last_completed_task['order']}/{len(settings.JOB_TASKS_PLAN)})"
 
         return None
-
-    def delete_model(self, request, obj):
-        for task in obj.task_set.all():
-            try:
-                get_task_manager(task).wipe()
-            except RecoverableException as e:
-                messages.error(request, f"Recoverable exception when wiping task {task}: {e}. Please try again.")
-                break
-        else:
-            super().delete_model(request, obj)

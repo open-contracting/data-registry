@@ -48,6 +48,7 @@ class ViewsTests(TestCase):
         self.assertTemplateUsed("detail.html")
         self.assertContains(response, f"""<a href="{url}" rel="nofollow" download>2022</a>""", html=True)
 
+    @override_settings(SCRAPYD={"url": "http://127.0.0.1", "project": "kingfisher"})
     def test_publications_api(self):
         extra_job = self.collection.job_set.create(active=True)
 
