@@ -1,12 +1,8 @@
-import logging
-
 from django.core.management.base import BaseCommand
 
 from data_registry.exceptions import RecoverableException
 from data_registry.models import Collection, Job
 from data_registry.process_manager.process import get_task_manager, process
-
-logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
@@ -23,9 +19,11 @@ class Command(BaseCommand):
                     try:
                         task_manager.wipe()
                     except RecoverableException:
-                        logger.exception("Recoverable exception when wiping task %s for job %s", task, job)
+                        self.stderr.write(f"Recoverable exception when wiping task {task} for job {job}")
                         break
             else:
                 job.archived = True
                 job.save()
-                logger.info("Job %s wiped", job)
+                # https://docs.djangoproject.com/en/4.2/ref/django-admin/#cmdoption-verbosity
+                if options["verbosity"] > 1:
+                    self.stdout.write(f"Job {job} wiped")
