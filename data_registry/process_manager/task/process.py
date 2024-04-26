@@ -15,7 +15,9 @@ def url_for_collection(*parts):
 
 
 def parse_date(dt):
-    return datetime.strptime(dt, "%Y-%m-%dT%H:%M:%S%z").date()
+    if dt:
+        return datetime.strptime(dt, "%Y-%m-%dT%H:%M:%S%z").date()
+    return dt
 
 
 class Process(TaskManager):
