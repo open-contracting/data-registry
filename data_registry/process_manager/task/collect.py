@@ -68,7 +68,7 @@ class Collect(TaskManager):
             "GET",
             scrapyd_url("listjobs.json"),
             params={"project": PROJECT},
-            error_message=f"Unable to get status of Scrapyd job #{scrapyd_job_id}",
+            error_message=f"Unable to get status of Scrapyd job {scrapyd_job_id}",
         )
 
         data = scrapyd_data(response)
@@ -104,7 +104,7 @@ class Collect(TaskManager):
 
             return Task.Status.COMPLETED
 
-        raise RecoverableException(f"Unable to find status of Scrapyd job #{scrapyd_job_id}")
+        raise RecoverableException(f"Unable to find status of Scrapyd job {scrapyd_job_id}")
 
     @skip_if_not_started
     def wipe(self):
@@ -117,7 +117,7 @@ class Collect(TaskManager):
                 "project": PROJECT,
                 "job": scrapyd_job_id,
             },
-            error_message=f"Unable to cancel the Scrapyd job #{self.job.context}",
+            error_message=f"Unable to cancel the Scrapyd job {scrapyd_job_id}",
         )
 
         scrapyd_data(response)  # raises for error message
@@ -149,4 +149,7 @@ class Collect(TaskManager):
         data_version = data_version.translate(str.maketrans(" T", "__", "-:"))
         path = f"{settings.KINGFISHER_COLLECT_FILES_STORE}/{self.spider}/{data_version}"
         if os.path.exists(path):
-            shutil.rmtree(path)
+            try:
+                shutil.rmtree(path)
+            except OSError:
+                raise RecoverableException(f"Unable to wipe the Scrapyd job {scrapyd_job_id} at {path}")
