@@ -15,7 +15,7 @@ from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, Translati
 from data_registry.exceptions import RecoverableException
 from data_registry.models import Collection, Issue, Job, License, Task
 from data_registry.process_manager import get_task_manager
-from data_registry.util import scrapyd_url
+from data_registry.util import partialclass, scrapyd_url
 
 logger = logging.getLogger(__name__)
 
@@ -47,26 +47,32 @@ class CollectionAdminForm(forms.ModelForm):
     )
     country_flag = forms.ChoiceField(choices=[(None, "---------")], required=False)
 
-    def __init__(self, *args, instance=None, request=None, **kwargs):
+    def __init__(self, *args, request=None, **kwargs):
         super().__init__(*args, **kwargs)
 
-        choices = ((instance.source_id, instance.source_id),)
-        try:
-            response = requests.get(scrapyd_url("listspiders.json"), params={"project": settings.SCRAPYD["project"]})
-            response.raise_for_status()
-            data = response.json()
-            if data.get("status") == "ok":
-                choices = tuple((n, n) for n in data.get("spiders"))
-            else:
-                messages.warning(request, f"Scrapyd returned an error: {data!r}")
-        except (requests.exceptions.MissingSchema, requests.exceptions.ConnectionError) as e:
-            messages.warning(request, f"Couldn't connect to Scrapyd: {e}")
+        choices = ((self.instance.source_id, self.instance.source_id),)
+        if settings.SCRAPYD["url"]:
+            try:
+                response = requests.get(
+                    scrapyd_url("listspiders.json"), params={"project": settings.SCRAPYD["project"]}
+                )
+                response.raise_for_status()
+                data = response.json()
+                if data["status"] == "ok":
+                    choices = tuple((n, n) for n in data["spiders"])
+                else:
+                    messages.warning(request, f"Couldn't populate Source ID, because Scrapyd returned error: {data!r}")
+            except requests.exceptions.ConnectionError as e:
+                messages.warning(request, f"Couldn't populate Source ID, because Scrapyd connection failed: {e}")
+        else:
+            messages.warning(request, "Couldn't populate Source ID, because Scrapyd is not configured.")
 
         self.fields["source_id"].choices += choices
 
         # https://docs.djangoproject.com/en/4.2/ref/forms/fields/#fields-which-handle-relationships
-        self.fields["active_job"].queryset = instance.job_set.complete()
-        self.fields["active_job"].initial = instance.job_set.active().first()
+        # `self.instance.job_set` doesn't work, because `self.instance` might be an unsaved publication.
+        self.fields["active_job"].queryset = Job.objects.filter(collection=self.instance).complete()
+        self.fields["active_job"].initial = Job.objects.filter(collection=self.instance).active().first()
 
         # Populate choices in the form, not the model, for easier migration between icon sets.
         self.fields["country_flag"].choices += sorted((f.name, f.name) for f in FLAGS_DIR.iterdir() if f.is_file())
@@ -247,7 +253,8 @@ class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
     inlines = [IssueInLine]
 
     def get_form(self, request, obj=None, **kwargs):
-        return super().get_form(request, obj, request=request, **kwargs)  # add request
+        kwargs["form"] = partialclass(self.form, request=request)
+        return super().get_form(request, obj, **kwargs)
 
     def active_job(self, obj):
         return obj.job_set.active().first()

@@ -1,3 +1,4 @@
+import functools
 from urllib.parse import urljoin
 
 from django.conf import settings
@@ -28,3 +29,12 @@ def markdownify(content):
     md.enable(["smartquotes"])
     md.add_render_rule("link_open", render_blank_link)
     return md.render(content)
+
+
+# https://stackoverflow.com/a/38911383
+def partialclass(cls, *args, **kwargs):
+
+    class NewCls(cls):
+        __init__ = functools.partialmethod(cls.__init__, *args, **kwargs)
+
+    return NewCls
