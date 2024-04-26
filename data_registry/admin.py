@@ -63,13 +63,13 @@ class CollectionAdminForm(forms.ModelForm):
             logger.warning("Couldn't connect to Scrapyd: %s", e)
             self.fields["source_id"].choices += ((instance.source_id, instance.source_id),)
 
-        self.fields["active_job"].queryset = instance.job.complete()
-        self.fields["active_job"].initial = instance.job.active().first()
+        self.fields["active_job"].queryset = instance.job_set.complete()
+        self.fields["active_job"].initial = instance.job_set.active().first()
 
         self.fields["country_flag"].choices += sorted((f.name, f.name) for f in FLAGS_DIR.iterdir() if f.is_file())
 
     def save(self, *args, **kwargs):
-        jobs = self.instance.job
+        jobs = self.instance.job_set
 
         active_job = self.cleaned_data["active_job"]
         if active_job:
@@ -244,7 +244,7 @@ class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
     inlines = [IssueInLine]
 
     def active_job(self, obj):
-        return obj.job.active().first()
+        return obj.job_set.active().first()
 
 
 class LicenseAdminForm(forms.ModelForm):

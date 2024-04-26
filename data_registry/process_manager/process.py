@@ -33,11 +33,11 @@ def get_task_manager(task):
 
 def process(collection):
     if collection.is_out_of_date():
-        collection.job.create()  # see signals.py
+        collection.job_set.create()  # see signals.py
 
     country = collection.country
 
-    for job in collection.job.incomplete():
+    for job in collection.job_set.incomplete():
         with transaction.atomic():
             for task in job.task.exclude(status=Task.Status.COMPLETED).order_by("order"):
                 task_manager = get_task_manager(task)
@@ -89,7 +89,7 @@ def process(collection):
                 collection.last_retrieved = job.task.get(type=settings.JOB_TASKS_PLAN[0]).end
                 collection.save()
 
-                collection.job.update(
+                collection.job_set.update(
                     active=Case(When(id=job.id, then=True), default=False, output_field=BooleanField())
                 )
 

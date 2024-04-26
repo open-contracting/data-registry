@@ -154,7 +154,7 @@ def detail(request, pk):
         pk=pk,
     )
 
-    job = collection.job.active().first()
+    job = collection.job_set.active().first()
     files = Export.get_files(job and job.id)
 
     return render(
@@ -184,7 +184,7 @@ def download_export(request, pk):
         return HttpResponseBadRequest("The name query string parameter is invalid")
 
     collection = get_object_or_404(collection_queryset(request), pk=pk)
-    active_job = get_object_or_404(collection.job.active())
+    active_job = get_object_or_404(collection.job_set.active())
 
     export = Export(active_job.id, basename=name)
     if export.status != TaskStatus.COMPLETED:

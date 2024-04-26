@@ -31,7 +31,7 @@ class ViewsTests(TestCase):
             language_en="Spanish",
             language_es="Español",
         )
-        cls.job = cls.collection.job.create(
+        cls.job = cls.collection.job_set.create(
             active=True,
             date_from=datetime.date(2010, 2, 1),
             date_to=datetime.date(2023, 9, 30),
@@ -49,7 +49,7 @@ class ViewsTests(TestCase):
         self.assertContains(response, f"""<a href="{url}" rel="nofollow" download>2022</a>""", html=True)
 
     def test_publications_api(self):
-        extra_job = self.collection.job.create(active=True)
+        extra_job = self.collection.job_set.create(active=True)
 
         en_response = Client().get("/en/publications.json")
         es_response = Client().get("/es/publications.json")
@@ -91,8 +91,8 @@ class ViewsTests(TestCase):
         for public, active_job in ((False, True), (True, False), (False, False)):
             with self.subTest(public=public, active_job=active_job):
                 collection = models.Collection.objects.create(public=public)
-                job1 = collection.job.create(active=active_job)
-                job2 = collection.job.create(active=active_job)
+                job1 = collection.job_set.create(active=active_job)
+                job2 = collection.job_set.create(active=active_job)
 
                 response = Client().get("/es/publications.json")
 

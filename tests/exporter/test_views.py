@@ -16,7 +16,7 @@ class ViewsTests(TestCase):
             source_id="abc",
             public=True,
         )
-        cls.job = cls.collection.job.create(
+        cls.job = cls.collection.job_set.create(
             active=True,
             id=2,
         )
@@ -26,7 +26,7 @@ class ViewsTests(TestCase):
             source_id="abc",
             public=True,
         )
-        cls.collection_no_job.job.create(
+        cls.collection_no_job.job_set.create(
             active=True,
             id=4,
         )

@@ -33,7 +33,7 @@ class ProcessTests(TransactionTestCase):
             # first call initializes job and runs first task
             process(collection)
 
-            job = collection.job.first()
+            job = collection.job_set.first()
 
             # skip wipe
             job.keep_all_data = True
@@ -59,6 +59,6 @@ class ProcessTests(TransactionTestCase):
 
             # the job plan contains only one task, therefore the job should be completed
             # after completion of that task
-            job = collection.job.first()
+            job = collection.job_set.first()
             self.assertIsNotNone(job.end)
             self.assertEqual(Job.Status.COMPLETED, job.status)

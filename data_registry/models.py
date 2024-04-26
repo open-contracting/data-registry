@@ -31,9 +31,7 @@ class JobQuerySet(models.QuerySet):
 
 
 class Job(models.Model):
-    collection = models.ForeignKey(
-        "Collection", related_name="job", on_delete=models.CASCADE, db_index=True, verbose_name="publication"
-    )
+    collection = models.ForeignKey("Collection", on_delete=models.CASCADE, db_index=True, verbose_name="publication")
     start = models.DateTimeField(blank=True, null=True, verbose_name="job started at")
     end = models.DateTimeField(blank=True, null=True, verbose_name="job ended at")
 
@@ -310,7 +308,7 @@ class Collection(models.Model):
             return False
 
         # There is an incomplete job.
-        if self.job.incomplete().exists():
+        if self.job_set.incomplete().exists():
             return False
 
         # It has no retrieval frequency.
@@ -318,7 +316,7 @@ class Collection(models.Model):
             return True
 
         # It has never been retrieved.
-        most_recent_job = self.job.complete().order_by("-start").first()
+        most_recent_job = self.job_set.complete().order_by("-start").first()
         if not most_recent_job:
             return True
 
