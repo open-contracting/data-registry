@@ -11,8 +11,8 @@ maps = {
 urlpatterns = [
     path("", views.index, name="index"),
     path("search/", views.search, name="search"),
-    path("publication/<int:id>", views.detail, name="detail"),
-    path("publication/<int:id>/download", views.download_export, name="download"),
+    path("publication/<int:pk>", views.detail, name="detail"),
+    path("publication/<int:pk>/download", views.download_export, name="download"),
     path("publications.json", views.publications_api, name="publications_api"),
     # Uncomment after re-integrating Spoonbill.
     # path("excel-data/<int:job_id>/<str:job_range>", views.excel_data, name="excel-data"),

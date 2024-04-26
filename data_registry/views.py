@@ -77,7 +77,7 @@ def search(request):
     }
 
     # https://docs.djangoproject.com/en/4.2/ref/models/expressions/#subquery-expressions
-    active_job = Job.objects.filter(collection=OuterRef("pk"), active=True)[:1]
+    active_job = Job.objects.active().filter(collection=OuterRef("pk"))[:1]
     qs = collection_queryset(request).annotate(
         job_id=Subquery(active_job.values("pk")),
         # Display
@@ -146,15 +146,15 @@ def search(request):
     return render(request, "search.html", context)
 
 
-def detail(request, id):
+def detail(request, pk):
     collection = get_object_or_404(
         collection_queryset(request)
         .select_related("license_custom")
         .annotate(issues=ArrayAgg("issue__description", filter=Q(issue__isnull=False), default=None)),
-        id=id,
+        pk=pk,
     )
 
-    job = collection.job.filter(active=True).first()
+    job = collection.job.active().first()
     files = Export.get_files(job and job.id)
 
     return render(
@@ -176,15 +176,15 @@ def spiders(request):
     return JsonResponse(json.get("spiders"), safe=False)
 
 
-def download_export(request, id):
+def download_export(request, pk):
     name = request.GET.get("name", "")
 
     # Guard against path traversal.
     if not EXPORT_PATTERN.match(name):
         return HttpResponseBadRequest("The name query string parameter is invalid")
 
-    collection = get_object_or_404(collection_queryset(request), id=id)
-    active_job = get_object_or_404(collection.job, active=True)
+    collection = get_object_or_404(collection_queryset(request), pk=pk)
+    active_job = get_object_or_404(collection.job.active())
 
     export = Export(active_job.id, basename=name)
     if export.status != TaskStatus.COMPLETED:
@@ -201,7 +201,7 @@ def download_export(request, id):
 
 
 def publications_api(request):
-    active_job = Job.objects.filter(collection=OuterRef("pk"), active=True)[:1]
+    active_job = Job.objects.active().filter(collection=OuterRef("pk"))[:1]
     publications = (
         collection_queryset(request)
         .values(
@@ -232,7 +232,7 @@ def publications_api(request):
 
 
 def excel_data(request, job_id, job_range=None):
-    job = Job.objects.get(id=job_id)
+    job = Job.objects.get(pk=job_id)
     export = Export(job_id)
 
     urls = []

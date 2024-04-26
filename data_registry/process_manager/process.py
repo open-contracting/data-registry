@@ -37,7 +37,7 @@ def process(collection):
 
     country = collection.country
 
-    for job in collection.job.exclude(status=Job.Status.COMPLETED):
+    for job in collection.job.incomplete():
         with transaction.atomic():
             for task in job.task.exclude(status=Task.Status.COMPLETED).order_by("order"):
                 task_manager = get_task_manager(task)

@@ -10,6 +10,26 @@ def format_datetime(dt):
     return dt.strftime("%d-%b-%y") if dt else ""
 
 
+class JobQuerySet(models.QuerySet):
+    def active(self):
+        """
+        Return a query set of active jobs.
+        """
+        return self.filter(active=True)
+
+    def complete(self):
+        """
+        Return a query set of complete jobs.
+        """
+        return self.filter(status=Job.Status.COMPLETED)
+
+    def incomplete(self):
+        """
+        Return a query set of incomplete jobs.
+        """
+        return self.exclude(status=Job.Status.COMPLETED)
+
+
 class Job(models.Model):
     collection = models.ForeignKey(
         "Collection", related_name="job", on_delete=models.CASCADE, db_index=True, verbose_name="publication"
@@ -93,6 +113,8 @@ class Job(models.Model):
 
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
+
+    objects = JobQuerySet.as_manager()
 
     def initiate(self):
         """
@@ -288,7 +310,7 @@ class Collection(models.Model):
             return False
 
         # There is an incomplete job.
-        if self.job.exclude(status=Job.Status.COMPLETED).exists():
+        if self.job.incomplete().exists():
             return False
 
         # It has no retrieval frequency.
@@ -296,7 +318,7 @@ class Collection(models.Model):
             return True
 
         # It has never been retrieved.
-        most_recent_job = self.job.filter(status=Job.Status.COMPLETED).order_by("-start").first()
+        most_recent_job = self.job.complete().order_by("-start").first()
         if not most_recent_job:
             return True
 

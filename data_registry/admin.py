@@ -19,7 +19,9 @@ from data_registry.process_manager.process import get_task_manager
 
 logger = logging.getLogger(__name__)
 
-translation_reminder = _(
+FLAGS_DIR = Path("data_registry/static/img/flags")
+
+TRANSLATION_REMINDER = _(
     "<em>Remember to provide information in all languages. You can use the dropdown at the top "
     "of the page to toggle the language for all fields.</em>"
 )
@@ -45,7 +47,7 @@ class CollectionAdminForm(forms.ModelForm):
     )
     country_flag = forms.ChoiceField(choices=[(None, "---------")], required=False)
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, instance=None, **kwargs):
         super().__init__(*args, **kwargs)
 
         try:
@@ -59,19 +61,12 @@ class CollectionAdminForm(forms.ModelForm):
                 self.fields["source_id"].choices += tuple((n, n) for n in json.get("spiders"))
         except (requests.exceptions.MissingSchema, requests.exceptions.ConnectionError) as e:
             logger.warning("Couldn't connect to Scrapyd: %s", e)
-            sid = self.instance.source_id
-            self.fields["source_id"].choices += ((sid, sid),)
+            self.fields["source_id"].choices += ((instance.source_id, instance.source_id),)
 
-        self.fields["active_job"].queryset = Job.objects.filter(
-            collection=kwargs.get("instance"), status=Job.Status.COMPLETED
-        )
-        self.fields["active_job"].initial = Job.objects.filter(collection=kwargs.get("instance"), active=True).first()
+        self.fields["active_job"].queryset = instance.job.complete()
+        self.fields["active_job"].initial = instance.job.active().first()
 
-        # collect all years from annual dump files names
-        flags_dir = "data_registry/static/img/flags"
-        files = [f.name for f in Path(flags_dir).iterdir() if f.is_file()]
-        files.sort()
-        self.fields["country_flag"].choices += tuple((n, n) for n in files)
+        self.fields["country_flag"].choices += sorted((f.name, f.name) for f in FLAGS_DIR.iterdir() if f.is_file())
 
     def save(self, *args, **kwargs):
         jobs = self.instance.job
@@ -193,7 +188,7 @@ class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
         (
             _("Basics"),
             {
-                "description": translation_reminder,
+                "description": TRANSLATION_REMINDER,
                 "fields": (
                     "country_flag",
                     "country_en",
@@ -209,7 +204,7 @@ class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
         (
             _("Overview"),
             {
-                "description": translation_reminder,
+                "description": TRANSLATION_REMINDER,
                 "fields": (
                     "retrieval_frequency",
                     "update_frequency",
@@ -224,7 +219,7 @@ class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
         (
             _("Details"),
             {
-                "description": translation_reminder,
+                "description": TRANSLATION_REMINDER,
                 "fields": (
                     "description_en",
                     "description_es",
@@ -249,7 +244,7 @@ class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
     inlines = [IssueInLine]
 
     def active_job(self, obj):
-        return obj.job.filter(active=True).first()
+        return obj.job.active().first()
 
 
 class LicenseAdminForm(forms.ModelForm):
@@ -263,7 +258,7 @@ class LicenseAdmin(TabbedDjangoJqueryTranslationAdmin):
         (
             None,
             {
-                "description": translation_reminder,
+                "description": TRANSLATION_REMINDER,
                 "fields": (
                     "name_en",
                     "name_es",
