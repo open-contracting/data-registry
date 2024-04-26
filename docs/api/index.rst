@@ -4,7 +4,7 @@ API reference
 Process manager
 ---------------
 
-.. automodule:: data_registry.process_manager.process
+.. automodule:: data_registry.process_manager
    :members:
    :undoc-members:
 

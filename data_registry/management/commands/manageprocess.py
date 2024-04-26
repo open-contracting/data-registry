@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 
 from data_registry.exceptions import RecoverableException
 from data_registry.models import Collection, Job
-from data_registry.process_manager.process import get_task_manager, process
+from data_registry.process_manager import get_task_manager, process
 
 
 class Command(BaseCommand):

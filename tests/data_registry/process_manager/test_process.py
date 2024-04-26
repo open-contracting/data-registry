@@ -4,7 +4,7 @@ from django.conf import settings
 from django.test import TransactionTestCase
 
 from data_registry.models import Collection, Job, Task
-from data_registry.process_manager.process import process
+from data_registry.process_manager import process
 
 
 class TestTask:
@@ -24,7 +24,7 @@ class ProcessTests(TransactionTestCase):
     def test(self):
         collection = Collection.objects.get(pk=1)
 
-        with patch("data_registry.process_manager.process.get_task_manager") as mock_get_task_manager:
+        with patch("data_registry.process_manager.get_task_manager") as mock_get_task_manager:
             # get_task_manager returns only TestTask
             mock_get_task_manager.return_value = TestTask()
 

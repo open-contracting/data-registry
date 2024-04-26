@@ -14,7 +14,7 @@ from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, Translati
 
 from data_registry.exceptions import RecoverableException
 from data_registry.models import Collection, Issue, Job, License, Task
-from data_registry.process_manager.process import get_task_manager
+from data_registry.process_manager import get_task_manager
 from data_registry.util import scrapyd_url
 
 logger = logging.getLogger(__name__)
