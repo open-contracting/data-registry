@@ -47,7 +47,7 @@ class CollectionAdminForm(forms.ModelForm):
     )
     country_flag = forms.ChoiceField(choices=[(None, "---------")], required=False)
 
-    def __init__(self, *args, instance=None, **kwargs):
+    def __init__(self, *args, instance=None, request=None, **kwargs):
         super().__init__(*args, **kwargs)
 
         choices = ((instance.source_id, instance.source_id),)
@@ -58,9 +58,9 @@ class CollectionAdminForm(forms.ModelForm):
             if data.get("status") == "ok":
                 choices = tuple((n, n) for n in data.get("spiders"))
             else:
-                logger.warning("Scrapyd returned an error: %r", data)
+                messages.warning(request, f"Scrapyd returned an error: {data!r}")
         except (requests.exceptions.MissingSchema, requests.exceptions.ConnectionError) as e:
-            logger.warning("Couldn't connect to Scrapyd: %s", e)
+            messages.warning(request, f"Couldn't connect to Scrapyd: {e}")
 
         self.fields["source_id"].choices += choices
 
@@ -245,6 +245,9 @@ class CollectionAdmin(TabbedDjangoJqueryTranslationAdmin):
     readonly_fields = ["last_retrieved"]
 
     inlines = [IssueInLine]
+
+    def get_form(self, request, obj=None, **kwargs):
+        return super().get_form(request, obj, request=request, **kwargs)  # add request
 
     def active_job(self, obj):
         return obj.job_set.active().first()
