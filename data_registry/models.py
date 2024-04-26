@@ -299,15 +299,18 @@ class Collection(models.Model):
     objects = CollectionQuerySet.as_manager()
 
     def is_out_of_date(self):
+        """
+        A publication is out-of-date if it isn't frozen and doesn't have a retrieval frequency of "never", and one of:
+
+        -  was never retrieved
+        -  has no retrieval frequency
+        -  was last retrieved longer ago than the retrieval frequency
+        """
         if self.frozen:
             return False
 
         # Its retrieval frequency is "never".
         if self.retrieval_frequency == self.RetrievalFrequency.NEVER:
-            return False
-
-        # There is an incomplete job.
-        if self.job_set.incomplete().exists():
             return False
 
         # It has no retrieval frequency.
@@ -329,7 +332,6 @@ class Collection(models.Model):
             case _:
                 raise NotImplementedError
 
-        # It has been long enough since last retrieval.
         return date.today() >= (most_recent_job.start + timedelta(days=days)).date()
 
     def __str__(self):
