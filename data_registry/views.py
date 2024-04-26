@@ -8,7 +8,6 @@ from urllib.parse import urlencode, urljoin
 import requests
 from dateutil.relativedelta import relativedelta
 from django.conf import settings
-from django.contrib.auth.decorators import login_required
 from django.contrib.postgres.aggregates import ArrayAgg
 from django.db.models import Count, OuterRef, Q, Subquery
 from django.db.models.functions import Substr
@@ -162,18 +161,6 @@ def detail(request, pk):
         "detail.html",
         {"collection": collection, "job": job, "files": files, "never": Collection.RetrievalFrequency.NEVER},
     )
-
-
-@login_required
-def spiders(request):
-    url = urljoin(settings.SCRAPYD["url"], "listspiders.json")
-    response = requests.get(url, params={"project": settings.SCRAPYD["project"]})
-
-    json = response.json()
-    if json.get("status") == "error":
-        raise JsonResponse(json, status=503, safe=False)
-
-    return JsonResponse(json.get("spiders"), safe=False)
 
 
 def download_export(request, pk):
