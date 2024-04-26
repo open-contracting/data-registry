@@ -39,6 +39,8 @@ This project communicates with `Pelican frontend <https://pelican-frontend.readt
 PELICAN_FRONTEND_URL
   The base URL of Pelican frontend
 
+.. _env-exporter-flattener:
+
 Exporter and Flattener tasks
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

@@ -59,6 +59,15 @@ Replacing ``USERNAME`` AND ``PASSWORD``:
 
    To test integration with the production version of Spoonbill, you also need to set the ``SPOONBILL_API_USERNAME`` and ``SPOONBILL_API_PASSWORD`` environment variables.
 
+.. _django-shell:
+
+Open a Django shell
+^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: bash
+
+   ./manage.py shell
+
 Start workers
 ^^^^^^^^^^^^^
 
@@ -82,6 +91,8 @@ Run tests
 .. code-block:: bash
 
    ./manage.py test
+
+.. _publish-message:
 
 Publish a message
 ^^^^^^^^^^^^^^^^^

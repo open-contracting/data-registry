@@ -8,10 +8,14 @@ Command-line interface
 Commands
 --------
 
+.. _cli-manageprocess:
+
 manageprocess
 ~~~~~~~~~~~~~
 
-Orchestrate and evaluate all jobs and tasks, by calling :func:`data_registry.process_manager.process` with each publication.
+Orchestrate and evaluate all jobs and tasks.
+
+This calls :func:`data_registry.process_manager.process` with each publication.
 
 .. code-block:: bash
 

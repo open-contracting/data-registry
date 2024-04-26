@@ -12,6 +12,7 @@ Word choice
    :maxdepth: 2
    :caption: Contents:
 
+   admin/index
    cli
    reference/index
    contributing/index
