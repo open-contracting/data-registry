@@ -32,6 +32,24 @@ def get_task_manager(task):
 
 
 def process(collection):
+    """
+    If the collection is :meth:`out-of-date<data_registry.models.Collection.is_out_of_date>`, create a job.
+
+    For each of the collection's incomplete jobs:
+
+    -  If the job is planned, start the job
+    -  If the next task is planned, start the task
+    -  If the next task is waiting or running, recheck its status:
+
+       -  If it is completed, complete the task and start the next task
+       -  If it failed temporarily, log the reason
+       -  If it failed permanently, fail the task and end the job
+
+    -  If all tasks succeeded, end the job and update the collection's active job and last retrieved date.
+
+    As such, for all tasks of a job to succeed, this function needs to run at least as many times are there are tasks
+    in the ``JOB_TASKS_PLAN`` setting.
+    """
     if collection.is_out_of_date():
         collection.job_set.create()  # see signals.py
 
