@@ -39,74 +39,40 @@ Setup
 Development
 -----------
 
-The default values in the settings.py file should be appropriate as-is. You can override them by setting :ref:`environment-variables`.
+The default values in the ``settings.py`` file should be appropriate as-is. You can override them by setting :ref:`environment-variables`.
 
 Backend
 ~~~~~~~
 
-As much as possible, use a single entrypoint (API) to other projects to limit coupling. See :ref:`environment-variables` for details.
-
-Run the web server
-^^^^^^^^^^^^^^^^^^
-
-Replacing ``USERNAME`` AND ``PASSWORD``:
-
-.. code:: bash
-
-   env SCRAPYD_URL=https://USERNAME:PASSWORD@collect.kingfisher.open-contracting.org ./manage.py runserver
-
-.. note::
-
-   To test integration with the production version of Spoonbill, you also need to set the ``SPOONBILL_API_USERNAME`` and ``SPOONBILL_API_PASSWORD`` environment variables.
-
-.. _django-shell:
-
-Open a Django shell
-^^^^^^^^^^^^^^^^^^^
-
-.. code-block:: bash
-
-   ./manage.py shell
-
-Start workers
-^^^^^^^^^^^^^
-
-See :ref:`cli-workers`.
-
-.. tip::
-
-   Set the ``LOG_LEVEL`` environment variable to ``DEBUG`` to see log messages about message processing. For example:
+-  Run the server, replacing ``USERNAME`` AND ``PASSWORD``:
 
    .. code-block:: bash
 
-      env LOG_LEVEL=DEBUG ./manage.py flattener
+      env SCRAPYD_URL=https://USERNAME:PASSWORD@collect.kingfisher.open-contracting.org ./manage.py runserver
 
-.. note::
+   .. note::
 
-   Remember: `Consumers declare and bind queues, not publishers <https://ocp-software-handbook.readthedocs.io/en/latest/services/rabbitmq.html#bindings>`__. Start each worker before publishing messages.
+      To test integration with the production version of Spoonbill, you also need to set the ``SPOONBILL_API_USERNAME`` and ``SPOONBILL_API_PASSWORD`` environment variables.
 
-Run tests
-^^^^^^^^^
+.. _django-shell:
 
-.. code-block:: bash
+-  Open a Django shell:
 
-   ./manage.py test
+   .. code-block:: bash
 
-.. _publish-message:
+      ./manage.py shell
 
-Publish a message
-^^^^^^^^^^^^^^^^^
+-  Run tests:
 
-To manually start a task, run, for example:
+   .. code-block:: bash
 
-.. code:: python
+      ./manage.py test
 
-   import os
+Implementation notes
+^^^^^^^^^^^^^^^^^^^^
 
-   from exporter.util import publish
-   os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings")
-
-   publish({"job_id": 123}, "flattener_init")
+-  As much as possible, use a single entrypoint (API) to other applications to limit coupling.
+-  This project uses `Django signals <https://docs.djangoproject.com/en/4.2/topics/signals/>`__ (`reference <https://docs.djangoproject.com/en/4.2/ref/signals/>`__), which makes the code harder to understand, but guarantees that our desired actions are performed, regardless of how the related operation was called (for example, whether from a model, queryset or cascade).
 
 Frontend
 ~~~~~~~~
@@ -114,7 +80,7 @@ Frontend
 Autobuild the stylesheets
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. code:: bash
+.. code-block:: bash
 
    npx webpack --watch
 
@@ -123,7 +89,7 @@ Update the flags
 
 `Hampus Joakim Borgos <https://github.com/hampusborgos/country-flags>`__ maintains more accurate flags than `Lipis <https://github.com/lipis/flag-icons>`__.
 
-.. code:: bash
+.. code-block:: bash
 
    curl -LO https://github.com/hampusborgos/country-flags/archive/refs/heads/main.zip
    unzip main.zip

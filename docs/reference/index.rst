@@ -69,4 +69,4 @@ SPOONBILL_EXPORTER_DIR
 
   .. note::
 
-     This is relevant if the projects are running in containers.
+     This is relevant if this project or Spoonbill is running in a container.

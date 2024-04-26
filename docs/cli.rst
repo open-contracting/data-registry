@@ -26,6 +26,20 @@ This calls :func:`data_registry.process_manager.process` with each publication.
 Workers
 -------
 
+.. note::
+
+   `Consumers declare and bind queues, not publishers <https://ocp-software-handbook.readthedocs.io/en/latest/services/rabbitmq.html#bindings>`__.
+
+   Start each worker before publishing messages with the :ref:`cli-manageprocess` command.
+
+.. tip::
+
+   Set the ``LOG_LEVEL`` environment variable to ``DEBUG`` to see log messages about message processing. For example:
+
+   .. code-block:: bash
+
+      env LOG_LEVEL=DEBUG ./manage.py flattener
+
 exporter
 ~~~~~~~~
 
