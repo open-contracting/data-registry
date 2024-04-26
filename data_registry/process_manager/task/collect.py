@@ -2,7 +2,6 @@ import logging
 import os
 import re
 import shutil
-from urllib.parse import urljoin
 
 from django.conf import settings
 from requests.exceptions import HTTPError
@@ -10,14 +9,11 @@ from requests.exceptions import HTTPError
 from data_registry.exceptions import RecoverableException
 from data_registry.models import Task
 from data_registry.process_manager.util import TaskManager, skip_if_not_started
+from data_registry.util import scrapyd_url
 
 logger = logging.getLogger(__name__)
 
 PROJECT = settings.SCRAPYD["project"]
-
-
-def scrapyd_url(path):
-    return urljoin(settings.SCRAPYD["url"], path)
 
 
 def scrapyd_data(response):

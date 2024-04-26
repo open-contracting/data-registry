@@ -1,6 +1,5 @@
 import logging
 from pathlib import Path
-from urllib.parse import urljoin
 
 import requests
 from django import forms
@@ -16,6 +15,7 @@ from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, Translati
 from data_registry.exceptions import RecoverableException
 from data_registry.models import Collection, Issue, Job, License, Task
 from data_registry.process_manager.process import get_task_manager
+from data_registry.util import scrapyd_url
 
 logger = logging.getLogger(__name__)
 
@@ -50,22 +50,25 @@ class CollectionAdminForm(forms.ModelForm):
     def __init__(self, *args, instance=None, **kwargs):
         super().__init__(*args, **kwargs)
 
+        choices = ((instance.source_id, instance.source_id),)
         try:
-            url = urljoin(settings.SCRAPYD["url"], "listspiders.json")
-            response = requests.get(url, params={"project": settings.SCRAPYD["project"]})
+            response = requests.get(scrapyd_url("listspiders.json"), params={"project": settings.SCRAPYD["project"]})
             response.raise_for_status()
-
-            json = response.json()
-
-            if json.get("status") == "ok":
-                self.fields["source_id"].choices += tuple((n, n) for n in json.get("spiders"))
+            data = response.json()
+            if data.get("status") == "ok":
+                choices = tuple((n, n) for n in data.get("spiders"))
+            else:
+                logger.warning("Scrapyd returned an error: %r", data)
         except (requests.exceptions.MissingSchema, requests.exceptions.ConnectionError) as e:
             logger.warning("Couldn't connect to Scrapyd: %s", e)
-            self.fields["source_id"].choices += ((instance.source_id, instance.source_id),)
 
+        self.fields["source_id"].choices += choices
+
+        # https://docs.djangoproject.com/en/4.2/ref/forms/fields/#fields-which-handle-relationships
         self.fields["active_job"].queryset = instance.job_set.complete()
         self.fields["active_job"].initial = instance.job_set.active().first()
 
+        # Populate choices in the form, not the model, for easier migration between icon sets.
         self.fields["country_flag"].choices += sorted((f.name, f.name) for f in FLAGS_DIR.iterdir() if f.is_file())
 
     def save(self, *args, **kwargs):

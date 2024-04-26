@@ -1,6 +1,13 @@
+from urllib.parse import urljoin
+
+from django.conf import settings
 from markdown_it import MarkdownIt
 
 from data_registry.models import Collection
+
+
+def scrapyd_url(path):
+    return urljoin(settings.SCRAPYD["url"], path)
 
 
 def collection_queryset(request):
