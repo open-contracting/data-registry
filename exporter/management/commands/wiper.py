@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    help = """Delete the files exported from compiled collections in Kingfisher Process"""
+    help = """Delete export directories."""
 
     def handle(self, *args, **options):
         consume(on_message_callback=callback, queue="wiper_init")

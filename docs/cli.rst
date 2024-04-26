@@ -40,6 +40,8 @@ Workers
 
       env LOG_LEVEL=DEBUG ./manage.py flattener
 
+.. _cli-exporter:
+
 exporter
 ~~~~~~~~
 
@@ -48,6 +50,18 @@ Export JSON files from compiled collections in Kingfisher Process.
 .. code-block:: bash
 
    ./manage.py exporter
+
+-  Deletes files in the export directory before processing.
+-  Uses a lockfile to determine whether the processing of a *job* is in-progress.
+-  Acknowledges the messages after creating the lockfile, but before exporting files.
+
+The lockfile is not deleted if an unhandled exception occurs.
+
+.. admonition:: System administrators
+
+   Delete the lockfile, if attempting to finish a task after fixing the error that raised the exception.
+
+.. _cli-flattener:
 
 flattener
 ~~~~~~~~~
@@ -58,10 +72,20 @@ Convert JSON files to CSV and Excel files.
 
    ./manage.py flattener
 
+-  *Does not* delete files in the export directory before processing.
+-  Uses a lockfile to determine whether the processing of a *file* is in-progress.
+-  Acknowledges the messages before the `Splitter pattern <https://ocp-software-handbook.readthedocs.io/en/latest/services/rabbitmq.html#acknowledgements>`__ and before converting files.
+
+The lockfile is not deleted if an unhandled exception occurs.
+
+.. admonition:: System administrators
+
+   Delete the lockfile, if attempting to finish a task after fixing the error that raised the exception.
+
 wiper
 ~~~~~
 
-Delete the files exported from compiled collections in Kingfisher Process.
+Delete export directories.
 
 .. code-block:: bash
 

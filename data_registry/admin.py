@@ -327,7 +327,7 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
 
     search_fields = ["collection__title_en", "collection__country_en"]
     list_display = ["__str__", "country", "collection", "status", "last_task", "active", "archived", "keep_all_data"]
-    # Multiple jobs can be set as active for the same collection, so "active" is set as read-only.
+    # "active" is read-only and uneditable, because at most one job must be set as active for a given collection.
     list_editable = ["status", "keep_all_data"]
     list_filter = ["status", "active", "archived"]
 
