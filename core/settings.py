@@ -201,6 +201,11 @@ LOGGING = {
             "level": os.getenv("LOG_LEVEL", "INFO"),
             "propagate": False,
         },
+        "django.db.backends": {
+            "handlers": ["console"],
+            "level": os.getenv("LOG_LEVEL", "INFO"),
+            "propagate": False,
+        },
         "django.security.DisallowedHost": {
             "handlers": ["null"],
             "propagate": False,
