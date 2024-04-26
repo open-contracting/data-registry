@@ -42,7 +42,7 @@ class ProcessTests(TransactionTestCase):
             self.assertIsNotNone(job)
             self.assertIsNotNone(job.start)
 
-            task = job.task.order_by("order").first()
+            task = job.task_set.order_by("order").first()
 
             self.assertEqual(Task.Status.RUNNING, task.status)
             self.assertIsNotNone(task.start)
@@ -51,7 +51,7 @@ class ProcessTests(TransactionTestCase):
             # next call updates running task state
             process(collection)
 
-            task = job.task.order_by("order").first()
+            task = job.task_set.order_by("order").first()
 
             self.assertEqual(Task.Status.COMPLETED, task.status)
             self.assertIsNotNone(task.end)

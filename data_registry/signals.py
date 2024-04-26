@@ -9,4 +9,4 @@ from data_registry import models
 def create_tasks(sender, instance, created, raw, **kwargs):
     if created and not raw:
         for order, task_type in enumerate(settings.JOB_TASKS_PLAN, 1):
-            instance.task.create(type=task_type, order=order)
+            instance.task_set.create(type=task_type, order=order)

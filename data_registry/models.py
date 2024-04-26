@@ -201,7 +201,6 @@ class Collection(models.Model):
 
     license_custom = models.ForeignKey(
         "License",
-        related_name="collection",
         on_delete=models.CASCADE,
         blank=True,
         null=True,
@@ -360,7 +359,7 @@ class Issue(models.Model):
         verbose_name = "quality issue"
 
     description = MarkdownxField(help_text="A one-line description of the quality issue, as Markdown text.")
-    collection = models.ForeignKey("Collection", related_name="issue", on_delete=models.CASCADE, db_index=True)
+    collection = models.ForeignKey("Collection", on_delete=models.CASCADE, db_index=True)
 
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
@@ -370,7 +369,7 @@ class Task(models.Model):
     class Meta:
         verbose_name = "job task"
 
-    job = models.ForeignKey("Job", related_name="task", on_delete=models.CASCADE, db_index=True)
+    job = models.ForeignKey("Job", on_delete=models.CASCADE, db_index=True)
     start = models.DateTimeField(blank=True, null=True)
     end = models.DateTimeField(blank=True, null=True)
 

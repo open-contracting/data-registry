@@ -39,7 +39,7 @@ def process(collection):
 
     for job in collection.job_set.incomplete():
         with transaction.atomic():
-            for task in job.task.exclude(status=Task.Status.COMPLETED).order_by("order"):
+            for task in job.task_set.exclude(status=Task.Status.COMPLETED).order_by("order"):
                 task_manager = get_task_manager(task)
 
                 try:
@@ -86,7 +86,7 @@ def process(collection):
             else:
                 job.complete()
 
-                collection.last_retrieved = job.task.get(type=settings.JOB_TASKS_PLAN[0]).end
+                collection.last_retrieved = job.task_set.get(type=settings.JOB_TASKS_PLAN[0]).end
                 collection.save()
 
                 collection.job_set.update(

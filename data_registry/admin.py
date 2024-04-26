@@ -391,7 +391,7 @@ class JobAdmin(admin.ModelAdmin):
     @admin.display(description="Last completed task")
     def last_task(self, obj):
         last_completed_task = (
-            obj.task.values("type", "order").filter(status=Task.Status.COMPLETED).order_by("-order").first()
+            obj.task_set.values("type", "order").filter(status=Task.Status.COMPLETED).order_by("-order").first()
         )
 
         if last_completed_task:
@@ -400,7 +400,7 @@ class JobAdmin(admin.ModelAdmin):
         return None
 
     def delete_model(self, request, obj):
-        for task in obj.task.all():
+        for task in obj.task_set.all():
             try:
                 get_task_manager(task).wipe()
             except RecoverableException as e:
