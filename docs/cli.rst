@@ -63,10 +63,6 @@ Export JSON files from compiled collections in Kingfisher Process.
 
 The lockfile is not deleted if an unhandled exception occurs.
 
-.. admonition:: System administrators
-
-   Delete the lockfile, if attempting to finish a task after fixing the error that raised the exception.
-
 .. _cli-flattener:
 
 flattener
@@ -83,10 +79,6 @@ Convert JSON files to Excel and CSV files.
 -  Acknowledges the messages before the `Splitter pattern <https://ocp-software-handbook.readthedocs.io/en/latest/services/rabbitmq.html#acknowledgements>`__ and before converting files.
 
 The lockfile is not deleted if an unhandled exception occurs.
-
-.. admonition:: System administrators
-
-   Delete the lockfile, if attempting to finish a task after fixing the error that raised the exception.
 
 wiper
 ~~~~~

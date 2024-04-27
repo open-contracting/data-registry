@@ -379,6 +379,7 @@ class Task(models.Model):
 
     class Status(models.TextChoices):
         #: The task has started, but work has not yet started in the application.
+        #: (This status is never saved to the database.)
         WAITING = "WAITING", "WAITING"
         #: The task is planned.
         PLANNED = "PLANNED", "PLANNED"

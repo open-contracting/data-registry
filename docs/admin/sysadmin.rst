@@ -58,61 +58,52 @@ All containers log to standard output, which can be `read as usual using Docker 
 
    :ref:`Troubleshooting for site administrators<siteadmin-troubleshoot>`
 
-.. _admin-wipe:
-
-Delete a job
+Cancel a job
 ~~~~~~~~~~~~
 
-A job can stall (always "running"). The only options are to set its *Status* to *COMPLETED* or to delete it, using the `Django admin <https://data.open-contracting.org/admin/>`__. Deleting a job also cancels the Scrapyd job.
+A job can stall (always "running"). The only option is to `cancel <https://scrapyd.readthedocs.io/en/latest/api.html#cancel-json>`__ the Scrapyd job and set the job's *Status* to *COMPLETED* using the `Django admin <https://data.open-contracting.org/admin/>`__.
 
-.. warning::
+.. attention::
 
-   Deleting a job whose last completed task is not ``exporter`` could delete a Kingfisher Process collection or Pelican dataset while work is still queued in RabbitMQ, which could cause 100,000s of errors to be reported to Sentry.
-
-If you expect the job to stall again, :ref:`freeze the publication<siteadmin-unpublish-freeze>`.
-
-The Kingfisher Process, Pelican, Exporter and Flattener tasks use RabbitMQ. In exceptional circumstances, it might be desirable to purge relevant queues in the `management interface <https://rabbitmq.data.open-contracting.org/>`__.
-
-.. warning::
-
-   Purging queues affects all running jobs! It is not possible to purge only one job's messages from a queue.
+   To properly implement this feature, see `#350 <https://github.com/open-contracting/data-registry/issues/350>`__.
 
 Restart a task
 ~~~~~~~~~~~~~~
 
-If it's a small publication, :ref:`delete the job<admin-wipe>`, instead (see warnings above). The :ref:`cli-manageprocess` command will create a new job. If it's a large publication (see warnings above):
+.. attention::
+
+   To properly implement this feature, see `#354 <https://github.com/open-contracting/data-registry/issues/354>`__ (for retryable tasks) and `#350 <https://github.com/open-contracting/data-registry/issues/350>`__ (for non-retryable tasks).
+
+Debug another application
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Kingfisher Collect
-  Delete the job, instead.
+  `Use Kingfisher Collect locally <https://kingfisher-collect.readthedocs.io/en/latest/local.html>`__.
 Kingfisher Process
-  Delete the job, instead.
-
-  Kingfisher Process is started by Kingfisher Collect, not by this project; replicating the integration is out of scope for this guide. To debug, download the data and run Process' ``load`` `command <https://kingfisher-process.readthedocs.io/en/latest/cli.html#load>`__.
+  Download the data from crawl directory in the ``KINGFISHER_COLLECT_FILES_STORE`` directory, and run Kingfisher Process' ``load`` `command <https://kingfisher-process.readthedocs.io/en/latest/cli.html#load>`__.
 Pelican
-  Delete the dataset, using Pelican backend's ``remove`` `command <https://pelican-backend.readthedocs.io/en/latest/tasks/datasets.html#remove>`__.
-
-  Change the status of the Pelican task and subsequent tasks to ``PLANNED``, then change the status of the job to ``RUNNING``.
-Exporter
-  Publish a message from the :ref:`Django shell<django-shell>`, using the compiled collection in Kingfisher Process:
+  Open an SSH tunnel to forward the PostgreSQL port:
 
   .. code-block:: bash
 
-     from exporter.util import publish
+      ssh -N ssh://root@ocp13.open-contracting.org:2223 -L 65432:localhost:5432
 
-     publish({"job_id": 123, "collection_id": 456}, "exporter_init")
+  Run Pelican backend's ``add`` `command <https://pelican-backend.readthedocs.io/en/latest/tasks/datasets.html#add>`__:
+
+  .. code-block:: bash
+
+     env KINGFISHER_PROCESS_DATABASE_URL=postgresql://pelican_backend:PASSWORD@localhost:65432/kingfisher_process ./manage.py add SPIDER_YYYY-MM-DD ID
 Flattener
-  Delete the ``.csv.tar.gz.lock`` files in the job's directory within the ``EXPORTER_DIR`` :ref:`directory<env-exporter-flattener>`.
-
-  Publish a message from the :ref:`Django shell<django-shell>`:
-
-  .. code-block:: bash
-
-     from exporter.util import publish
-
-     publish({"job_id": 123}, "flattener_init")
+  Download the data from the job's directory in the ``EXPORTER_DIR`` directory, and run the `flatterer <https://flatterer.opendata.coop>`__ command locally.
 
 Reset other applications
 ~~~~~~~~~~~~~~~~~~~~~~~~
+
+The Kingfisher Process, Pelican, Exporter and Flattener tasks use RabbitMQ. In an extreme scenario, the relevant queues can be purged in the `RabbitMQ management interface <https://rabbitmq.data.open-contracting.org/>`__.
+
+.. warning::
+
+   Purging queues affects all running jobs! It is not possible to purge only one job's messages from a queue.
 
 In an extreme scenario, the other applications can be reset:
 

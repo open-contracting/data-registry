@@ -75,11 +75,11 @@ A job's detail page:
 
 -  Displays the status, result and note (e.g. error messages) for each task, in the *Job tasks* section.
 
-   If a task's result is ``FAILED``, but :func:`~data_registry.process_manager.process` considers the failure to be :class:`temporary<data_registry.exceptions.RecoverableException>`, then the :ref:`cli-manageprocess` command retries the task until it succeeds or fails permanently. Read the *Note*, and judge whether the failure is permanent. If so, you can set the job's *Status* to *COMPLETED* to stop the retries. The :ref:`cli-manageprocess` command will then delete the job's temporary data.
+   If a task's result is ``FAILED``, but :func:`~data_registry.process_manager.process` considers the failure to be :class:`temporary<data_registry.exceptions.RecoverableException>`, then the :ref:`cli-manageprocess` command retries the task until it succeeds or fails permanently. Read the *Note*, and judge whether the failure is permanent. If so, you can set the job's *Status* to *COMPLETED* to stop the retries. The :ref:`cli-manageprocess` command will then delete the job's temporary data. The next job will be scheduled according to the publication's retrieval status.
 
-   The next job will be scheduled according to the publication's retrieval status. If you want it scheduled sooner, you can delete the job **ONLY IF** the last completed task is ``exporter``. If not, deleting the job could delete a Kingfisher Process collection or Pelican dataset while work is still queued in RabbitMQ, which could cause 100,000s of errors to be reported to `Sentry <https://ocdsdeploy.readthedocs.io/en/latest/reference/index.html#sentry>`__.
+   .. attention::
 
-   To delete a job in these cases, ask :doc:`sysadmin`.
+      If you want it scheduled sooner, prioritize `#350 <https://github.com/open-contracting/data-registry/issues/350>`__.
 
 -  Defines and displays metadata (*Context*) from its tasks, in the *Management* section
 
