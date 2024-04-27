@@ -1,40 +1,35 @@
 System administrators
 =====================
 
-.. admonition:: One-time setup
+Setup
+-----
 
-   -  `Create a .netrc file <https://ocdsdeploy.readthedocs.io/en/latest/use/http.html#netrc>`__ to authenticate the ``collect`` login on the ``collect.data.open-contracting.org`` machine.
-   -  `Create a ~/.config/scrapy.cfg file <https://kingfisher-collect.readthedocs.io/en/latest/scrapyd.html#configure-kingfisher-collect>`__ with:
+-  `Create a .netrc file <https://ocdsdeploy.readthedocs.io/en/latest/use/http.html#netrc>`__ with a ``collect`` login and ``collect.data.open-contracting.org`` machine.
+-  `Create a ~/.config/scrapy.cfg file <https://kingfisher-collect.readthedocs.io/en/latest/scrapyd.html#configure-kingfisher-collect>`__ with:
 
-      .. code-block:: ini
+   .. code-block:: ini
 
-         [deploy:registry]
-         url = https://collect.data.open-contracting.org/
-         project = kingfisher
+      [deploy:registry]
+      url = https://collect.data.open-contracting.org/
+      project = kingfisher
 
-.. _admin-update-apps:
+Deploy
+------
 
-Deploy applications
--------------------
-
-If the Salt configuration has changed, `deploy the service <https://ocdsdeploy.readthedocs.io/en/latest/deploy/deploy.html>`__:
-
-.. code-block:: bash
-
-   ./run.py --state-output=changes 'registry' state.apply
+If the Salt configuration has changed, `deploy the service <https://ocdsdeploy.readthedocs.io/en/latest/deploy/deploy.html>`__.
 
 Kingfisher Collect
 ~~~~~~~~~~~~~~~~~~
 
-#. If the ``requirements.txt`` file has changed, deploy the service as above.
+#. If the ``requirements.txt`` file has changed, `deploy the service <https://ocdsdeploy.readthedocs.io/en/latest/deploy/deploy.html>`__.
 #. `Deploy the latest version to Scrapyd <https://ocdsdeploy.readthedocs.io/en/latest/use/kingfisher-collect.html#update-spiders-in-kingfisher-collect>`__. If your local repository is up-to-date:
 
    .. code-block:: bash
 
       scrapyd-deploy registry
 
-Kingfisher Process, Pelican backend, Pelican frontend, Data Registry
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Kingfisher Process, Pelican, Data Registry
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #. Wait for the Docker image to build in GitHub Actions.
 
@@ -59,24 +54,24 @@ Read log files
 
 All containers log to standard output, which can be `read as usual using Docker <https://ocdsdeploy.readthedocs.io/en/latest/maintain/docker.html#review-log-files>`__.
 
-For Scrapyd, the  ``scrapy_log`` key in the job's ``context`` links to the crawl log. For example, run, from the server, replacing ``JOB_ID``:
+.. seealso::
 
-.. code-block::  bash
-
-   curl http://localhost:6800/logs/kingfisher/kyrgyzstan/JOB_ID.log
+   :ref:`Troubleshooting for site administrators<siteadmin-troubleshoot>`
 
 .. _admin-wipe:
 
 Delete a job
 ~~~~~~~~~~~~
 
-A job can stall (always "running"). The only solution is to delete it.
+A job can stall (always "running"). The only options are to set its *Status* to *COMPLETED* or to delete it, using the `Django admin <https://data.open-contracting.org/admin/>`__. Deleting a job also cancels the Scrapyd job.
 
-#. If you expect the job to stall again, :ref:`freeze the publication<admin-unpublish-freeze>`.
-#. `Find the job <https://data.open-contracting.org/admin/data_registry/job/>`__ in the Django admin.
-#. Delete the job. This also cancels the Kingfisher Collect crawl in Scrapyd.
+.. warning::
 
-The Kingfisher Process, Pelican, Exporter and Flattener tasks use RabbitMQ. In exceptional circumstances, it might be desirable to purge relevant queues in its `management interface <https://ocdsdeploy.readthedocs.io/en/latest/use/rabbitmq.html#access-the-management-interface>`__.
+   Deleting a job whose last completed task is not ``exporter`` could delete a Kingfisher Process collection or Pelican dataset while work is still queued in RabbitMQ, which could cause 100,000s of errors to be reported to Sentry.
+
+If you expect the job to stall again, :ref:`freeze the publication<siteadmin-unpublish-freeze>`.
+
+The Kingfisher Process, Pelican, Exporter and Flattener tasks use RabbitMQ. In exceptional circumstances, it might be desirable to purge relevant queues in its `management interface <https://rabbitmq.data.open-contracting.org/>`__.
 
 .. warning::
 
@@ -117,3 +112,22 @@ Flattener
      from exporter.util import publish
 
      publish({"job_id": 123}, "flattener_init")
+
+Reset other applications
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+In an extreme scenario, the other applications can be reset:
+
+#. Cancel all Scrapyd jobs
+#. Stop their Docker containers
+#. Purge all RabbitMQ queues
+#. `Backup the exchange_rates table <https://ocdsdeploy.readthedocs.io/en/latest/deploy/data-support.html#pelican-backend>`__
+#. Drop the PostgreSQL databases for Kingfisher Process and Pelican backend
+#. Delete the ``/data/deploy/pelican-backend/files/`` directory
+#. `Deploy the service <https://ocdsdeploy.readthedocs.io/en/latest/deploy/deploy.html>`__ to recreate the databases
+#. Run the `Django migrations <https://ocdsdeploy.readthedocs.io/en/latest/deploy/data-support.html#docker-apps>`__
+#. Populate the ``exchange_rates`` table
+
+.. note::
+
+   This will cause database ``id`` values in old job contexts to collide with those in new job contexts. This is okay, because we don't touch old Kingfisher Process and Pelican tasks.

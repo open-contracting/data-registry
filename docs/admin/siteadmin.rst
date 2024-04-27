@@ -55,6 +55,8 @@ From time to time, use the filters in the right-hand sidebar to:
 
       The *WAITING* status is not used.
 
+.. _siteadmin-troubleshoot:
+
 Troubleshoot a job
 ------------------
 
@@ -81,7 +83,7 @@ A job's detail page:
 
       This project's RabbitMQ management interface is at `rabbitmq.data.open-contracting.org <https://rabbitmq.data.open-contracting.org/>`__.
 
-.. _admin-unpublish-freeze:
+.. _siteadmin-unpublish-freeze:
 
 Unpublish or freeze a publication
 ---------------------------------
