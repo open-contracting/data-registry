@@ -25,6 +25,8 @@ Orchestrate and evaluate all jobs and tasks.
    -  :meth:`Wipe<data_registry.process_manager.util.TaskManager.wipe>` all intermediate output of :meth:`non-final<data_registry.process_manager.util.TaskManager.final_output>` tasks
    -  Mark the job as having deleted its temporary data
 
+In production, this command runs every few minutes.
+
 .. _cli-workers:
 
 Workers

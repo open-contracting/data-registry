@@ -3,10 +3,83 @@ Site administrators
 
 Use the `Django admin <https://data.open-contracting.org/admin/>`__ to:
 
--  Add a publication
+-  Add and edit publications
+
+   .. note::
+
+      Once a new publication is added, the :ref:`cli-manageprocess` command will collect its data, unless *Frozen* is checked.
+
 -  Check the status of a job and its tasks
 
-Once a new publication is added, the :ref:`cli-manageprocess` command runs at a regular interval, and advances each job by at most one task.
+   .. note::
+
+      The :ref:`cli-flattener` task was added in September 2022, so earlier jobs have a *Last completed task* of "exporter (4/5)".
+
+Publications and jobs can be searched by publication country and publication title.
+
+Review publications
+-------------------
+
+From time to time, use the filters in the right-hand sidebar to:
+
+-  Review publications for out-of-date or missing information:
+
+   -  Publications that weren't recently reviewed (*By last reviewed*: More than a year ago)
+   -  Publications without all English and Spanish translations (*By untranslated*: Yes)
+   -  Publications without licenses (*By data license*: Empty)
+   -  Publications without quality summaries (*By quality summary [en]*: Empty)
+   -  Publications without other information (*By incomplete*: Yes), one or more of:
+
+      -  Country flag
+      -  Country (en)
+      -  Retrieval frequency
+      -  Source URL
+      -  Language (en)
+      -  Description (en)
+      -  Data availability (en)
+
+-  Review publications for visibility and processing:
+
+   -  Unpublished publications (*By public*: No)
+   -  Frozen publications (*By frozen*: Yes)
+
+Review jobs
+-----------
+
+From time to time, use the filters in the right-hand sidebar to:
+
+-  Check for completed jobs whose temporary data has not been deleted
+-  Check for running jobs that are old
+
+   .. note::
+
+      The *WAITING* status is not used.
+
+Troubleshoot a job
+------------------
+
+A job's detail page:
+
+-  Displays the status, result and note (e.g. error messages) for each task, in the *Job tasks* section.
+
+   If a task's result is ``FAILED``, but :func:`~data_registry.process_manager.process` considers the failure to be :class:`temporary<data_registry.exceptions.RecoverableException>`, then the :ref:`cli-manageprocess` command retries the task until it succeeds or fails permanently. Read the *Note*, and judge whether the failure is permanent. If so, you can set the job's *Status* to *COMPLETED* to stop the retries. The :ref:`cli-manageprocess` command will then delete the job's temporary data.
+
+   The next job will be scheduled according to the publication's retrieval status. If you want it scheduled sooner, you can delete the job **ONLY IF** the last completed task is ``exporter``. If not, deleting the job could delete a Kingfisher Process collection or Pelican dataset while work is still queued in RabbitMQ, which could cause 100,000s of errors to be reported to `Sentry <https://ocdsdeploy.readthedocs.io/en/latest/reference/index.html#sentry>`__.
+
+   To delete a job in these cases, ask :doc:`sysadmin`.
+
+-  Defines and displays metadata (*Context*) from its tasks, in the *Management* section
+
+   Use the metadata to troubleshoot other applications. For example, to check the Scrapy log, replace the hostname and port in the ``scrapy_log`` value with ``collect.data.open-contracting.org``.
+
+   .. seealso::
+
+      How to check on progress in:
+
+      -  `Kingfisher Process <https://ocdsdeploy.readthedocs.io/en/latest/use/kingfisher-process.html#check-on-progress>`__
+      -  `Pelican <https://ocdsdeploy.readthedocs.io/en/latest/use/pelican.html#check-on-progress>`__
+
+      This project's RabbitMQ management interface is at `rabbitmq.data.open-contracting.org <https://rabbitmq.data.open-contracting.org/>`__.
 
 .. _admin-unpublish-freeze:
 
@@ -20,9 +93,10 @@ Unpublish or freeze a publication
 
 Only *delete* a publication if it is a duplicate or if it was otherwise created in error.
 
-Add a user
-----------
+Add an administrator
+--------------------
 
+#. Click *Add* next to *Users* in the left-hand menu
 #. Fill in *Username* and *Password*, using a `strong password <https://www.lastpass.com/features/password-generator>`__
 #. Click *Save and continue editing*
 

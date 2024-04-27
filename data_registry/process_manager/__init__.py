@@ -52,8 +52,8 @@ def process(collection: models.Collection) -> None:
 
     -  If all tasks succeeded, end the job and update the collection's active job and last retrieved date.
 
-    As such, for all tasks of a job to succeed, this function needs to run at least as many times are there are tasks
-    in the ``JOB_TASKS_PLAN`` setting.
+    In other words, this function advances each job by at most one task. As such, for all tasks of a job to succeed,
+    this function needs to run at least as many times are there are tasks in the ``JOB_TASKS_PLAN`` setting.
     """
     if collection.is_out_of_date():
         collection.job_set.create()  # see signals.py
