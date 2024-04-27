@@ -136,7 +136,7 @@ class Job(models.Model):
         return f"{format_datetime(self.start)} .. {format_datetime(self.end)} ({self.id})"
 
     def __repr__(self):
-        return f"{self.collection.country}: {self.collection}: {self}"
+        return f"{repr(self.collection)}: {self}"
 
 
 class CollectionQuerySet(models.QuerySet):
@@ -342,6 +342,9 @@ class Collection(models.Model):
 
     def __str__(self):
         return f"{self.title} ({self.id})"
+
+    def __repr__(self):
+        return f"{self.country}: {self}"
 
 
 class License(models.Model):
