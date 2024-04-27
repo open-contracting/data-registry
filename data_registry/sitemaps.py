@@ -27,7 +27,7 @@ class CollectionSitemap(Sitemap):
         return models.Collection.objects.visible()
 
     def location(self, item):
-        return reverse("detail", kwargs={"id": item.pk})
+        return reverse("detail", kwargs={"pk": item.pk})
 
     def lastmod(self, obj):
         return obj.modified
