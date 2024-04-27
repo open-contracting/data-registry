@@ -15,11 +15,15 @@ manageprocess
 
 Orchestrate and evaluate all jobs and tasks.
 
-This calls :func:`data_registry.process_manager.process` with each publication.
-
 .. code-block:: bash
 
    ./manage.py manageprocess
+
+-  For each publication, call :func:`data_registry.process_manager.process`
+-  For each complete job whose temporary data isn't to be preserved or already deleted:
+
+   -  :meth:`Wipe<data_registry.process_manager.util.TaskManager.wipe>` all intermediate output of :meth:`non-final<data_registry.process_manager.util.TaskManager.final_output>` tasks
+   -  Mark the job as having deleted its temporary data
 
 .. _cli-workers:
 

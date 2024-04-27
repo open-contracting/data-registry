@@ -16,8 +16,8 @@ class Command(BaseCommand):
         for collection in Collection.objects.all():
             process(collection)
 
-        # Complete jobs, whose temporary data is not deleted or to be preserved.
-        for job in Job.objects.prefetch_related("task_set").complete().filter(archived=False, keep_all_data=False):
+        # Complete jobs, whose temporary data isn't to be preserved or already deleted.
+        for job in Job.objects.prefetch_related("task_set").complete().filter(keep_all_data=False, archived=False):
             for task in job.task_set.all():
                 task_manager = get_task_manager(task)
                 if not task_manager.final_output:

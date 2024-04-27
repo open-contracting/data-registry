@@ -42,8 +42,9 @@ def process(collection: models.Collection) -> None:
     For each of the collection's incomplete jobs:
 
     -  If the job is planned, start the job
-    -  If the next task is planned, start the task
-    -  If the next task is waiting or running, recheck its status:
+    -  If the next task is planned, start the task with :meth:`~data_registry.process_manager.util.TaskManager.run`
+    -  If the next task is waiting or running, recheck its status with
+       :meth:`~data_registry.process_manager.util.TaskManager.get_status`:
 
        -  If it is completed, complete the task and start the next task
        -  If it failed temporarily, log the reason
@@ -84,7 +85,7 @@ def process(collection: models.Collection) -> None:
 
                             match status:
                                 case models.Task.Status.WAITING | models.Task.Status.RUNNING:
-                                    task.progress()  # The service is responding (again). Reset any progress.
+                                    task.progress()  # The application is responding (again). Reset any progress.
 
                                     break
                                 case models.Task.Status.COMPLETED:
@@ -93,7 +94,7 @@ def process(collection: models.Collection) -> None:
                                     # Do not break! Go onto the next task.
                 except RecoverableException as e:
                     logger.exception("Recoverable exception during task %s (%s: %s)", task, country, collection)
-                    task.progress(result=models.Task.Result.FAILED, note=str(e))  # The service is not responding.
+                    task.progress(result=models.Task.Result.FAILED, note=str(e))  # The application is not responding.
 
                     break
                 except Exception as e:

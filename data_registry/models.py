@@ -42,7 +42,7 @@ class Job(models.Model):
         PLANNED = "PLANNED", "PLANNED"
         #: The job has started.
         RUNNING = "RUNNING", "RUNNING"
-        #: The job has ended.
+        #: The job has ended (either successfully or unsuccessfully).
         COMPLETED = "COMPLETED", "COMPLETED"
 
     status = models.TextField(choices=Status.choices, blank=True, default=Status.PLANNED)
@@ -304,7 +304,7 @@ class Collection(models.Model):
 
         -  has never been scheduled
         -  has no retrieval frequency
-        -  was last retrieved longer ago than the retrieval frequency
+        -  was last scheduled longer ago than the retrieval frequency
         """
         if self.frozen:
             return False
@@ -377,13 +377,13 @@ class Task(models.Model):
     end = models.DateTimeField(blank=True, null=True)
 
     class Status(models.TextChoices):
-        #: The task has started, but work has not yet started in the service.
+        #: The task has started, but work has not yet started in the application.
         WAITING = "WAITING", "WAITING"
         #: The task is planned.
         PLANNED = "PLANNED", "PLANNED"
         #: The task has started.
         RUNNING = "RUNNING", "RUNNING"
-        #: The task has ended.
+        #: The task has ended (either successfully or unsuccessfully).
         COMPLETED = "COMPLETED", "COMPLETED"
 
     status = models.TextField(choices=Status.choices, blank=True, default=Status.PLANNED)

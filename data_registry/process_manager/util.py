@@ -71,14 +71,13 @@ class TaskManager(ABC):
     @abstractmethod
     def final_output(self) -> bool:
         """
-        Whether the task produces a final output, like a bulk download. If not, its intermediate outputs are wiped if
-        the job is complete and isn't configured to preserve temporary data.
+        Whether the task produces a final output, like a bulk download.
         """
 
     def request(self, method, url, *, error_message, **kwargs):
         """
-        Send a request to the service. If the service returns an error response or is temporarily unavailable, raise
-        :class:`~data_registry.exceptions.RecoverableException`.
+        Send a request to an application. If the application returns an error response or is temporarily unavailable,
+        raise :class:`~data_registry.exceptions.RecoverableException`.
 
         :raises RecoverableException:
         """
@@ -116,6 +115,8 @@ class TaskManager(ABC):
     def wipe(self) -> None:
         """
         Delete any side effects of (for example, data written by) the task.
+
+        This method can be called even when the task hasn't started.
 
         This method must be idempotent. It is retried if any task failed to be wiped.
 

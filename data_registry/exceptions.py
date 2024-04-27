@@ -3,7 +3,7 @@ class DataRegistryError(Exception):
 
 
 class RecoverableException(DataRegistryError):
-    """Raised if the failure is expected to be temporary: for example, a service's API is temporarily unavailable."""
+    """Raised if the failure is expected to be temporary."""
 
 
 class LockFileError(DataRegistryError):

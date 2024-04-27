@@ -14,7 +14,7 @@ LOG_LEVEL
 Collect task
 ~~~~~~~~~~~~
 
-This project communicates with `Kingfisher Collect <https://kingfisher-collect.readthedocs.io/en/latest/>`__ using the `Scrapyd entrypoint <https://kingfisher-collect.readthedocs.io/en/latest/scrapyd.html>`__. (Scrapyd has no endpoint for deleting data, however.)
+This project communicates with Kingfisher Collect via Scrapyd. However, Scrapyd has no endpoint for deleting data, so ``KINGFISHER_COLLECT_FILES_STORE`` is needed.
 
 SCRAPYD_URL
   The base URL of Scrapyd, for example: ``http://localhost:6800``
@@ -26,7 +26,7 @@ KINGFISHER_COLLECT_FILES_STORE
 Process task
 ~~~~~~~~~~~~
 
-This project communicates with `Kingfisher Process <https://kingfisher-process.readthedocs.io/en/latest/>`__ via its `API <https://kingfisher-process.readthedocs.io/en/latest/reference/index.html#api>`__.
+This project communicates with Kingfisher Process via its `API <https://kingfisher-process.readthedocs.io/en/latest/reference/index.html#api>`__.
 
 KINGFISHER_PROCESS_URL
   The base URL of Kingfisher Process
@@ -34,7 +34,7 @@ KINGFISHER_PROCESS_URL
 Pelican task
 ~~~~~~~~~~~~
 
-This project communicates with `Pelican frontend <https://pelican-frontend.readthedocs.io/en/latest/>`__ via its `API <https://pelican-frontend.readthedocs.io/en/latest/reference/index.html#api>`__.
+This project communicates with Pelican frontend via its `API <https://pelican-frontend.readthedocs.io/en/latest/reference/index.html#api>`__.
 
 PELICAN_FRONTEND_URL
   The base URL of Pelican frontend
@@ -44,7 +44,7 @@ PELICAN_FRONTEND_URL
 Exporter and Flattener tasks
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This project contains an ``exporter`` app, that reads compiled releases from Kingfisher Process' database (similar to `Pelican backend <https://pelican-backend.readthedocs.io/en/latest/reference/workers.html#extract-kingfisher-process>`__).
+:ref:`cli-exporter` reads compiled releases directly from Kingfisher Process' database (like `Pelican backend <https://pelican-backend.readthedocs.io/en/latest/reference/workers.html#extract-kingfisher-process>`__).
 
 RABBIT_URL
   The `connection string <https://pika.readthedocs.io/en/stable/examples/using_urlparameters.html#using-urlparameters>`__ for RabbitMQ

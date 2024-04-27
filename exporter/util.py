@@ -64,8 +64,11 @@ def decorator(decode, callback, state, channel, method, properties, body):
 
 
 class TaskStatus:
+    #: Processing hasn't started.
     WAITING = "WAITING"
+    #: Processing has started.
     RUNNING = "RUNNING"
+    #: Processing has ended.
     COMPLETED = "COMPLETED"
 
 
