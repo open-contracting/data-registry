@@ -21,6 +21,11 @@ Publications and jobs can be searched by publication country and publication tit
 
    The search performs only case normalization. For example, "Montreal" will not match "Montréal" (with an accent).
 
+Add a publication
+-----------------
+
+Refer to our `internal documentation <https://docs.google.com/document/d/12d61HXZaD3wBYN479ShfZmc0xW29fJvmGNhkyf4xUhg/edit>`__ (contains links to internal resources).
+
 Review publications
 -------------------
 
