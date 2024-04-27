@@ -53,7 +53,7 @@ From time to time, use the filters in the right-hand sidebar to:
 
    -  Unpublished publications (*By public*: No)
    -  Frozen publications (*By frozen*: Yes)
-   -  Historical publications (*By retrieval frequency*: NEVER)
+   -  Historical publications (*By retrieval frequency*: This dataset is no longer updated by the publisher)
 
 Review jobs
 -----------
