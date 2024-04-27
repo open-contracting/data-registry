@@ -8,7 +8,7 @@ from markdownx.models import MarkdownxField
 
 def format_datetime(dt):
     if isinstance(dt, Now):
-        "now"
+        return "now"
     return dt.strftime("%d-%b-%y") if dt else ""
 
 
