@@ -95,6 +95,24 @@ A job's detail page:
 
       This project's RabbitMQ management interface is at `rabbitmq.data.open-contracting.org <https://rabbitmq.data.open-contracting.org/>`__.
 
+.. _admin-cancel:
+
+Cancel a job
+~~~~~~~~~~~~
+
+A job can stall (always "running"). The only option is to `cancel <https://scrapyd.readthedocs.io/en/latest/api.html#cancel-json>`__ the Scrapyd job and set the job's *Status* to *COMPLETED* using the `Django admin <https://data.open-contracting.org/admin/>`__.
+
+.. attention::
+
+   To properly implement this feature, see `#352 <https://github.com/open-contracting/data-registry/issues/352>`__.
+
+Restart a task
+~~~~~~~~~~~~~~
+
+.. attention::
+
+   To properly implement this feature, see `#354 <https://github.com/open-contracting/data-registry/issues/354>`__ (for retryable tasks) and `#350 <https://github.com/open-contracting/data-registry/issues/350>`__ (for non-retryable tasks).
+
 Unpublish or freeze a publication
 ---------------------------------
 

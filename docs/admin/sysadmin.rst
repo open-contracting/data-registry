@@ -62,45 +62,29 @@ All containers log to standard output, which can be `read as usual using Docker 
 
    :ref:`Troubleshooting for site administrators<admin-troubleshoot>`
 
-.. _admin-cancel:
-
-Cancel a job
-~~~~~~~~~~~~
-
-A job can stall (always "running"). The only option is to `cancel <https://scrapyd.readthedocs.io/en/latest/api.html#cancel-json>`__ the Scrapyd job and set the job's *Status* to *COMPLETED* using the `Django admin <https://data.open-contracting.org/admin/>`__.
-
-.. attention::
-
-   To properly implement this feature, see `#352 <https://github.com/open-contracting/data-registry/issues/352>`__.
-
-Restart a task
-~~~~~~~~~~~~~~
-
-.. attention::
-
-   To properly implement this feature, see `#354 <https://github.com/open-contracting/data-registry/issues/354>`__ (for retryable tasks) and `#350 <https://github.com/open-contracting/data-registry/issues/350>`__ (for non-retryable tasks).
-
 Debug another application
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Kingfisher Collect
   `Use Kingfisher Collect locally <https://kingfisher-collect.readthedocs.io/en/latest/local.html>`__.
 Kingfisher Process
-  Download the data from crawl directory in the ``KINGFISHER_COLLECT_FILES_STORE`` directory, and run Kingfisher Process' ``load`` `command <https://kingfisher-process.readthedocs.io/en/latest/cli.html#load>`__.
+  -  Download the data from crawl directory in the ``KINGFISHER_COLLECT_FILES_STORE`` directory.
+  -  Run Kingfisher Process' ``load`` `command <https://kingfisher-process.readthedocs.io/en/latest/cli.html#load>`__.
 Pelican
-  Open an SSH tunnel to forward the PostgreSQL port:
+  -  Open an SSH tunnel to forward the PostgreSQL port:
 
-  .. code-block:: bash
+     .. code-block:: bash
 
-      ssh -N ssh://root@ocp13.open-contracting.org:2223 -L 65432:localhost:5432
+         ssh -N ssh://root@ocp13.open-contracting.org:2223 -L 65432:localhost:5432
 
-  Run Pelican backend's ``add`` `command <https://pelican-backend.readthedocs.io/en/latest/tasks/datasets.html#add>`__:
+  -  Run Pelican backend's ``add`` `command <https://pelican-backend.readthedocs.io/en/latest/tasks/datasets.html#add>`__:
 
-  .. code-block:: bash
+     .. code-block:: bash
 
-     env KINGFISHER_PROCESS_DATABASE_URL=postgresql://pelican_backend:PASSWORD@localhost:65432/kingfisher_process ./manage.py add SPIDER_YYYY-MM-DD ID
+        env KINGFISHER_PROCESS_DATABASE_URL=postgresql://pelican_backend:PASSWORD@localhost:65432/kingfisher_process ./manage.py add SPIDER_YYYY-MM-DD ID
 Flattener
-  Download the data from the job's directory in the ``EXPORTER_DIR`` directory, and run the `flatterer <https://flatterer.opendata.coop>`__ command locally.
+  -  Download the data from the job's directory in the ``EXPORTER_DIR`` directory.
+  -  Run the `flatterer <https://flatterer.opendata.coop>`__ command locally.
 
 Reset other applications
 ~~~~~~~~~~~~~~~~~~~~~~~~
