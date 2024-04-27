@@ -259,6 +259,7 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
     list_filter = [
         "public",
         "frozen",
+        "retrieval_frequency",
         ("license_custom", admin.EmptyFieldListFilter),
         ("summary_en", admin.EmptyFieldListFilter),
         IncompleteFilter,
