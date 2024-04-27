@@ -62,6 +62,12 @@ Backend
 
       ./manage.py shell
 
+   When using Docker:
+
+   .. code-block:: bash
+
+      docker compose run -e LOG_LEVEL=DEBUG --rm web python manage.py shell
+
 -  Run tests:
 
    .. code-block:: bash

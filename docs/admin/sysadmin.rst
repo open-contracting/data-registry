@@ -101,7 +101,7 @@ Exporter
 
      publish({"job_id": 123, "collection_id": 456}, "exporter_init")
 Flattener
-  Delete the ``.csv.tar.gz`` or ``.xlsx`` files in the job's directory within the ``EXPORTER_DIR`` :ref:`directory<env-exporter-flattener>`.
+  Delete the ``.csv.tar.gz.lock`` files in the job's directory within the ``EXPORTER_DIR`` :ref:`directory<env-exporter-flattener>`.
 
   Publish a message from the :ref:`Django shell<django-shell>`:
 
