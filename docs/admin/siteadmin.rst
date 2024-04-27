@@ -17,6 +17,10 @@ Use the `Django admin <https://data.open-contracting.org/admin/>`__ to:
 
 Publications and jobs can be searched by publication country and publication title.
 
+.. note::
+
+   The search performs only case normalization. For example, "Montreal" will not match "Montréal" (with an accent).
+
 Review publications
 -------------------
 
