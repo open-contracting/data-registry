@@ -15,6 +15,8 @@ Use the `Django admin <https://data.open-contracting.org/admin/>`__ to:
 
       The :ref:`cli-flattener` task was added in September 2022, so earlier jobs have a *Last completed task* of "exporter (4/5)".
 
+-  Review log entries for other administrators' actions
+
 Publications and jobs can be searched by publication country and publication title.
 
 .. note::
