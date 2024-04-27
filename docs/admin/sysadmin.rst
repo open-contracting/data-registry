@@ -71,7 +71,7 @@ A job can stall (always "running"). The only options are to set its *Status* to 
 
 If you expect the job to stall again, :ref:`freeze the publication<siteadmin-unpublish-freeze>`.
 
-The Kingfisher Process, Pelican, Exporter and Flattener tasks use RabbitMQ. In exceptional circumstances, it might be desirable to purge relevant queues in its `management interface <https://rabbitmq.data.open-contracting.org/>`__.
+The Kingfisher Process, Pelican, Exporter and Flattener tasks use RabbitMQ. In exceptional circumstances, it might be desirable to purge relevant queues in the `management interface <https://rabbitmq.data.open-contracting.org/>`__.
 
 .. warning::
 
@@ -80,7 +80,7 @@ The Kingfisher Process, Pelican, Exporter and Flattener tasks use RabbitMQ. In e
 Restart a task
 ~~~~~~~~~~~~~~
 
-If it's a small publication, :ref:`delete the job<admin-wipe>`, instead. The :ref:`cli-manageprocess` command will create a new job.
+If it's a small publication, :ref:`delete the job<admin-wipe>`, instead (see warnings above). The :ref:`cli-manageprocess` command will create a new job. If it's a large publication (see warnings above):
 
 Kingfisher Collect
   Delete the job, instead.
@@ -93,8 +93,6 @@ Pelican
 
   Change the status of the Pelican task and subsequent tasks to ``PLANNED``, then change the status of the job to ``RUNNING``.
 Exporter
-  The worker will delete all the files in the job directory within the ``EXPORTER_DIR`` :ref:`directory<env-exporter-flattener>`.
-
   Publish a message from the :ref:`Django shell<django-shell>`, using the compiled collection in Kingfisher Process:
 
   .. code-block:: bash
@@ -103,7 +101,7 @@ Exporter
 
      publish({"job_id": 123, "collection_id": 456}, "exporter_init")
 Flattener
-  Delete the ``.csv.tar.gz`` or ``.xlsx`` files in the job directory within the ``EXPORTER_DIR`` :ref:`directory<env-exporter-flattener>`.
+  Delete the ``.csv.tar.gz`` or ``.xlsx`` files in the job's directory within the ``EXPORTER_DIR`` :ref:`directory<env-exporter-flattener>`.
 
   Publish a message from the :ref:`Django shell<django-shell>`:
 
