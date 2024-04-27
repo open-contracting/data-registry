@@ -305,22 +305,15 @@ class Collection(models.Model):
 
     def is_out_of_date(self):
         """
-        A publication is out-of-date if it isn't frozen and doesn't have a retrieval frequency of "never", and one of:
-
-        -  has never been scheduled
-        -  has no retrieval frequency
-        -  was last scheduled longer ago than the retrieval frequency
+        A publication is out-of-date if it isn't frozen and has a retrieval frequency other than "never", and either
+        has never been scheduled or was last scheduled longer ago than the retrieval frequency.
         """
         if self.frozen:
             return False
 
-        # Its retrieval frequency is "never".
-        if self.retrieval_frequency == self.RetrievalFrequency.NEVER:
+        # It has no retrieval frequency or the retrieval frequency is "never".
+        if not self.retrieval_frequency or self.retrieval_frequency == self.RetrievalFrequency.NEVER:
             return False
-
-        # It has no retrieval frequency.
-        if not self.retrieval_frequency:
-            return True
 
         most_recent_job = self.job_set.order_by("-start").first()
 
