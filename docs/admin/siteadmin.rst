@@ -28,11 +28,11 @@ From time to time, use the filters in the right-hand sidebar to:
 
 -  Review publications for out-of-date or missing information:
 
-   -  Publications that weren't recently reviewed (*By last reviewed*: More than a year ago)
+   -  Non-frozen publications that weren't recently reviewed (*By last reviewed*: More than a year ago)
    -  Publications without all English and Spanish translations (*By untranslated*: Yes)
    -  Publications without licenses (*By data license*: Empty)
-   -  Publications without quality summaries (*By quality summary [en]*: Empty)
-   -  Publications without other information (*By incomplete*: Yes), one or more of:
+   -  Non-frozen publications without quality summaries (*By quality summary [en]*: Empty)
+   -  Non-frozen publications without other information (*By incomplete*: Yes), one or more of:
 
       -  Country flag
       -  Country (en)
