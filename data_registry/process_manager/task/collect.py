@@ -58,7 +58,7 @@ class Collect(TaskManager):
         self.job.context["spider"] = self.spider
         self.job.context["job_id"] = scrapyd_job_id
         self.job.context["scrapy_log"] = scrapyd_url(f"logs/{PROJECT}/{self.spider}/{scrapyd_job_id}.log")
-        self.job.save()
+        self.job.save(update_fields=["modified", "context"])
 
     def get_status(self):
         scrapyd_job_id = self.job.context["job_id"]  # set in run()
@@ -92,7 +92,7 @@ class Collect(TaskManager):
             if m := re.search(r"Created collection (.+) in Kingfisher Process \(([^\)]+)\)", response.text):
                 self.job.context["process_id"] = m.group(1)
                 self.job.context["data_version"] = m.group(2)
-                self.job.save()
+                self.job.save(update_fields=["modified", "context"])
 
         if any(j["id"] == scrapyd_job_id for j in data["running"]):
             return Task.Status.RUNNING

@@ -34,7 +34,7 @@ class Pelican(TaskManager):
         )
 
         self.job.context["pelican_dataset_name"] = name
-        self.job.save()
+        self.job.save(update_fields=["modified", "context"])
 
     def get_status(self):
         pelican_id = self.job.context.get("pelican_id")
@@ -45,7 +45,7 @@ class Pelican(TaskManager):
                 return Task.Status.WAITING
 
             self.job.context["pelican_id"] = pelican_id
-            self.job.save()
+            self.job.save(update_fields=["modified", "context"])
 
         response = self.request(
             "GET",
@@ -68,21 +68,25 @@ class Pelican(TaskManager):
 
         counts = response.json()
 
-        self.job.tenders_count = counts.get("tenders")
-        self.job.tenderers_count = counts.get("tenderers")
-        self.job.tenders_items_count = counts.get("tenders_items")
-        self.job.parties_count = counts.get("parties")
-        self.job.awards_count = counts.get("awards")
-        self.job.awards_items_count = counts.get("awards_items")
-        self.job.awards_suppliers_count = counts.get("awards_suppliers")
-        self.job.contracts_count = counts.get("contracts")
-        self.job.contracts_items_count = counts.get("contracts_items")
-        self.job.contracts_transactions_count = counts.get("contracts_transactions")
-        self.job.documents_count = counts.get("documents")
-        self.job.plannings_count = counts.get("plannings")
-        self.job.milestones_count = counts.get("milestones")
-        self.job.amendments_count = counts.get("amendments")
-        self.job.save()
+        mapping = {
+            "tenders_count": "tenders",
+            "tenderers_count": "tenderers",
+            "tenders_items_count": "tenders_items",
+            "parties_count": "parties",
+            "awards_count": "awards",
+            "awards_items_count": "awards_items",
+            "awards_suppliers_count": "awards_suppliers",
+            "contracts_count": "contracts",
+            "contracts_items_count": "contracts_items",
+            "contracts_transactions_count": "contracts_transactions",
+            "documents_count": "documents",
+            "plannings_count": "plannings",
+            "milestones_count": "milestones",
+            "amendments_count": "amendments",
+        }
+        for key, value in mapping.items():
+            setattr(self.job, key, counts.get(value))
+        self.job.save(update_fields=["modified"] + list(mapping))
 
         return Task.Status.COMPLETED
 

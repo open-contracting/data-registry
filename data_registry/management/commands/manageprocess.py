@@ -28,5 +28,5 @@ class Command(BaseCommand):
                         break
             else:
                 job.archived = True
-                job.save()
+                job.save(update_fields=["modified", "archived"])
                 logger.info("Job %s wiped", job)

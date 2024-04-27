@@ -59,7 +59,7 @@ class Process(TaskManager):
             self.job.ocid_prefix = meta.get("ocid_prefix") or ""
 
         self.job.context["process_id_pelican"] = compiled_collection["id"]
-        self.job.save()
+        self.job.save(update_fields=["modified", "context", "date_from", "date_to", "license", "ocid_prefix"])
 
         return Task.Status.COMPLETED
 

@@ -79,6 +79,7 @@ Implementation notes
 
 -  As much as possible, use a single entrypoint (API) to other applications to limit coupling.
 -  This project uses `Django signals <https://docs.djangoproject.com/en/4.2/topics/signals/>`__ (`reference <https://docs.djangoproject.com/en/4.2/ref/signals/>`__), which makes the code harder to understand, but guarantees that our desired actions are performed, regardless of how the related operation was called (for example, whether from a model, queryset or cascade).
+-  The `update_fields <https://docs.djangoproject.com/en/4.2/ref/models/instances/#ref-models-update-fields>`__ argument must include any ``auto_now`` fields.
 
 Frontend
 ~~~~~~~~
