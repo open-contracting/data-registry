@@ -1,7 +1,7 @@
 from django.conf import settings
 from modeltranslation.translator import TranslationOptions, register
 
-from data_registry.models import Collection, Issue, License
+from data_registry import models
 
 # django-modeltranslation always sets null=True:
 # https://django-modeltranslation.readthedocs.io/en/latest/registration.html#required-langs
@@ -10,21 +10,21 @@ from data_registry.models import Collection, Issue, License
 # https://django-modeltranslation.readthedocs.io/en/latest/usage.html#fallback-undef
 
 
-@register(Collection)
+@register(models.Collection)
 class CollectionTranslation(TranslationOptions):
     fields = ["title", "description", "description_long", "summary", "additional_data", "country", "language"]
     required_languages = {language: ("title",) for language, _ in settings.LANGUAGES}
     fallback_undefined = ""
 
 
-@register(Issue)
+@register(models.Issue)
 class IssueTranslation(TranslationOptions):
     fields = ["description"]
     required_languages = {language: ("description",) for language, _ in settings.LANGUAGES}
     fallback_undefined = ""
 
 
-@register(License)
+@register(models.License)
 class LicenseTranslation(TranslationOptions):
     fields = ["name", "description"]
     fallback_undefined = ""

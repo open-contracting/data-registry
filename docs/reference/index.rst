@@ -53,7 +53,7 @@ RABBIT_EXCHANGE_NAME
 KINGFISHER_PROCESS_DATABASE_URL
   The `connection string <https://github.com/kennethreitz/dj-database-url#url-schema>`__ for Kingfisher Process's database
 EXPORTER_DIR
-  The directory to which the ``exporter`` app writes files.
+  The directory to which the ``exporter`` app writes files
 
 Spoonbill integration
 ~~~~~~~~~~~~~~~~~~~~~
@@ -65,8 +65,4 @@ SPOONBILL_API_USERNAME
 SPOONBILL_API_PASSWORD
   The password for basic HTTP authentication
 SPOONBILL_EXPORTER_DIR
-  The directory to which the ``exporter`` app writes files, from Spoonbill's perspective
-
-  .. note::
-
-     This is relevant if this project or Spoonbill is running in a container.
+  The directory to which the ``exporter`` app writes files, from Spoonbill's perspective. This is relevant if this project or Spoonbill is running in a container.

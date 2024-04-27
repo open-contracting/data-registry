@@ -100,7 +100,7 @@ Pelican
 Exporter
   The worker will delete all the files in the job directory within the ``EXPORTER_DIR`` :ref:`directory<env-exporter-flattener>`.
 
-  :ref:`Publish a message<publish-message>` from the :ref:`Django shell<django-shell>`, using the compiled collection in Kingfisher Process:
+  Publish a message from the :ref:`Django shell<django-shell>`, using the compiled collection in Kingfisher Process:
 
   .. code-block:: bash
 
@@ -110,7 +110,7 @@ Exporter
 Flattener
   Delete the ``.csv.tar.gz`` or ``.xlsx`` files in the job directory within the ``EXPORTER_DIR`` :ref:`directory<env-exporter-flattener>`.
 
-  :ref:`Publish a message<publish-message>` from the :ref:`Django shell<django-shell>`:
+  Publish a message from the :ref:`Django shell<django-shell>`:
 
   .. code-block:: bash
 

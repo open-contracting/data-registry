@@ -66,7 +66,7 @@ The lockfile is not deleted if an unhandled exception occurs.
 flattener
 ~~~~~~~~~
 
-Convert JSON files to CSV and Excel files.
+Convert JSON files to Excel and CSV files.
 
 .. code-block:: bash
 

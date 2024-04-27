@@ -12,7 +12,7 @@ from exporter.util import TaskStatus
 logger = logging.getLogger(__name__)
 
 
-def exporter_status_to_task_status(status) -> models.Task.Status:
+def exporter_status_to_task_status(status: TaskStatus) -> models.Task.Status:
     match status:
         case TaskStatus.WAITING:
             return models.Task.Status.WAITING
@@ -23,6 +23,11 @@ def exporter_status_to_task_status(status) -> models.Task.Status:
 
 
 def skip_if_not_started(method):
+    """
+    A decorator to return early from a :meth:`~data_registry.process_manager.util.TaskManager.wipe` method if the task
+    hadn't started.
+    """
+
     @functools.wraps(method)
     def wrapper(self, *args, **kwargs):
         if not self.task.start:
@@ -39,7 +44,7 @@ class TaskManager(ABC):
     Task managers should only update the :class:`~data_registry.models.Job` context and metadata fields.
     """
 
-    def __init__(self, task):
+    def __init__(self, task: models.Task):
         """
         Initialize the task manager.
 
@@ -99,10 +104,10 @@ class TaskManager(ABC):
         """
         Return the status of the task.
 
-        This method can also write metadata about the task to the job. Since this method can be called multiple times,
-        write metadata only when the metadata is missing or when the task is completed.
-
         This method must be called only after :meth:`~data_registry.process_manager.util.TaskManager.run` is called.
+
+        This method can write metadata about the task to the job. Since this method can be called many times, write
+        metadata only when the metadata is missing or when the task is complete.
 
         :raises RecoverableException:
         """
