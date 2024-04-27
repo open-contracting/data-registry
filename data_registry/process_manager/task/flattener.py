@@ -14,4 +14,5 @@ class Flattener(TaskManager):
 
     @skip_if_not_started
     def wipe(self):
-        publish({"job_id": self.job.id}, "wiper_init")
+        # The exporter task already deletes the entire directory.
+        pass
