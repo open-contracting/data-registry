@@ -66,7 +66,7 @@ From time to time, use the filters in the right-hand sidebar to:
 
       The *WAITING* status is not used.
 
-.. _siteadmin-troubleshoot:
+.. _admin-troubleshoot:
 
 Troubleshoot a job
 ------------------
@@ -93,8 +93,6 @@ A job's detail page:
       -  `Pelican <https://ocdsdeploy.readthedocs.io/en/latest/use/pelican.html#check-on-progress>`__
 
       This project's RabbitMQ management interface is at `rabbitmq.data.open-contracting.org <https://rabbitmq.data.open-contracting.org/>`__.
-
-.. _siteadmin-unpublish-freeze:
 
 Unpublish or freeze a publication
 ---------------------------------

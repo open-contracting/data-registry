@@ -28,6 +28,10 @@ Kingfisher Collect
 
       scrapyd-deploy registry
 
+.. attention::
+
+   When the Scrapyd service restarts (for example, when the server restarts), the running Scrapyd jobs are lost, and therefore the Collect :class:`~data_registry.process_manager.util.TaskManager` won't be able to check the task's status. The job needs to be cancelled and rescheduled (`#350 <https://github.com/open-contracting/data-registry/issues/350>`__).
+
 Kingfisher Process, Pelican, Data Registry
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -56,7 +60,9 @@ All containers log to standard output, which can be `read as usual using Docker 
 
 .. seealso::
 
-   :ref:`Troubleshooting for site administrators<siteadmin-troubleshoot>`
+   :ref:`Troubleshooting for site administrators<admin-troubleshoot>`
+
+.. _admin-cancel:
 
 Cancel a job
 ~~~~~~~~~~~~
@@ -65,7 +71,7 @@ A job can stall (always "running"). The only option is to `cancel <https://scrap
 
 .. attention::
 
-   To properly implement this feature, see `#350 <https://github.com/open-contracting/data-registry/issues/350>`__.
+   To properly implement this feature, see `#352 <https://github.com/open-contracting/data-registry/issues/352>`__.
 
 Restart a task
 ~~~~~~~~~~~~~~

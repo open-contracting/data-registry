@@ -44,7 +44,7 @@ The default values in the ``settings.py`` file should be appropriate as-is. You 
 Backend
 ~~~~~~~
 
--  Run the server, replacing ``USERNAME`` AND ``PASSWORD``:
+-  Run the server, replacing ``USERNAME`` and ``PASSWORD``:
 
    .. code-block:: bash
 
