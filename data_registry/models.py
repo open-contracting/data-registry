@@ -135,6 +135,9 @@ class Job(models.Model):
     def __str__(self):
         return f"{format_datetime(self.start)} .. {format_datetime(self.end)} ({self.id})"
 
+    def __repr__(self):
+        return f"{self.collection.country}: {self.collection}: {self}"
+
 
 class CollectionQuerySet(models.QuerySet):
     def visible(self):
