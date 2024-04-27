@@ -5,6 +5,7 @@
         "fields": {
             "title": "portugal",
             "country": "PT",
+            "retrieval_frequency": "MONTHLY",
             "created": "2001-02-03T04:05:06Z",
             "modified": "2001-02-03T07:08:09Z"
         }
