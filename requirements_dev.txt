@@ -59,7 +59,7 @@ flake8==3.8.4
     # via -r requirements_dev.in
 flatterer==0.19.15
     # via -r requirements.txt
-gunicorn[setproctitle]==20.1.0
+gunicorn[setproctitle]==22.0.0
     # via -r requirements.txt
 identify==2.3.5
     # via pre-commit
@@ -98,10 +98,12 @@ orjson==3.9.15
     #   -r requirements.txt
     #   flatterer
     #   yapw
-packaging==23.1
+packaging==24.0
     # via
+    #   -r requirements.txt
     #   black
     #   build
+    #   gunicorn
 pandas==1.5.0
     # via
     #   -r requirements.txt
