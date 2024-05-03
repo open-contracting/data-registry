@@ -16,7 +16,10 @@ def url_for_collection(*parts):
 
 def parse_date(dt):
     if dt:
-        return datetime.strptime(dt, "%Y-%m-%dT%H:%M:%S%z").date()
+        if len(dt) == 10:
+            return datetime.strptime(dt, "%Y-%m-%d").date()
+        else:
+            return datetime.strptime(dt, "%Y-%m-%dT%H:%M:%S%z").date()
     return dt
 
 
