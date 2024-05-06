@@ -18,8 +18,9 @@ def parse_date(dt):
     if dt:
         if len(dt) == 10:
             return datetime.strptime(dt, "%Y-%m-%d").date()
-        else:
-            return datetime.strptime(dt, "%Y-%m-%dT%H:%M:%S%z").date()
+        elif "." in dt:
+            return datetime.strptime(dt, "%Y-%m-%dT%H:%M:%S.%f%z").date()
+        return datetime.strptime(dt, "%Y-%m-%dT%H:%M:%S%z").date()
     return dt
 
 
