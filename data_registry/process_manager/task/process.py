@@ -16,6 +16,10 @@ def url_for_collection(*parts):
 
 def parse_date(dt):
     if dt:
+        # nigeria_ebonyi_state
+        if dt.count(":") == 3:
+            dt = ".".join(dt.rsplit(":", 1))
+
         if len(dt) == 10:
             return datetime.strptime(dt, "%Y-%m-%d").date()
         elif "." in dt:
