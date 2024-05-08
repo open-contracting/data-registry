@@ -115,7 +115,7 @@ class Export:
     # providing only the desired filename.
     @property
     def lockfile(self) -> str:
-        # All JSON files are exported at once.
+        # All JSONL files are exported at once.
         if self.basename.endswith(".jsonl.gz"):
             return self.directory / "exporter_full.jsonl.gz.lock"
         # Each XLSX file is exported with a CSV file.
@@ -178,15 +178,29 @@ class Export:
         """
         files = self.default_files()
 
-        if self.directory.exists():
-            for path in self.directory.iterdir():
-                suffix = path.name.split(".", 2)[1]  # works for .xlsx .jsonl.gz .csv.tar.gz
-                if suffix not in files:
-                    continue
-                prefix = path.name[:4]  # year or "full"
-                if prefix.isdigit() and "_" not in path.name:  # don't return month files
-                    files[suffix]["by_year"].append({"year": int(prefix), "size": os.path.getsize(path)})
-                elif prefix == "full":
-                    files[suffix]["full"] = os.path.getsize(path)
+        for path in self.iterdir():
+            suffix = path.name.split(".", 2)[1]  # works for .xlsx .jsonl.gz .csv.tar.gz
+            if suffix not in files:
+                continue
+            prefix = path.name[:4]  # year or "full"
+            if prefix.isdigit() and "_" not in path.name:  # don't return month files
+                files[suffix]["by_year"].append({"year": int(prefix), "size": os.path.getsize(path)})
+            elif prefix == "full":
+                files[suffix]["full"] = os.path.getsize(path)
 
         return files
+
+    def iterdir(self):
+        """
+        Yield path objects of the directory contents.
+        """
+        if self.directory.exists():
+            yield from self.directory.iterdir()
+
+    def get_convertible_paths(self):
+        """
+        Yield paths to ``.jsonl.gz`` files.
+        """
+        for path in self.iterdir():
+            if path.name.endswith(".jsonl.gz") and "_" not in path.name:  # don't process YYYY_MM files
+                yield path
