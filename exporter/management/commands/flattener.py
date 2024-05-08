@@ -29,6 +29,9 @@ class Command(BaseCommand):
             on_message_callback=callback,
             queue="flattener_init",
             routing_keys=["flattener_init", "flattener_file"],
+            # Witnessed "AMQPHeartbeatTimeout: No activity or too many missed heartbeats in the last 60 seconds."
+            # while using Pika's BlockingConnection when processing the largest files.
+            rabbit_params={"heartbeat": 0},
             decorator=decorator,
         )
 
