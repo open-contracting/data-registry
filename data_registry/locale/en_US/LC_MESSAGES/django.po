@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-02 15:02-0300\n"
+"POT-Creation-Date: 2024-05-08 02:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,118 +17,123 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: data_registry/admin.py:22
+#: data_registry/admin.py:27
 msgid ""
 "<em>Remember to provide information in all languages. You can use the "
 "dropdown at the top of the page to toggle the language for all fields.</em>"
 msgstr ""
 
-#: data_registry/admin.py:98
+#: data_registry/admin.py:121
 msgid "incomplete"
 msgstr ""
 
-#: data_registry/admin.py:103 data_registry/admin.py:124
+#: data_registry/admin.py:126 data_registry/admin.py:147
+#: data_registry/admin.py:380
 msgid "Yes"
 msgstr ""
 
-#: data_registry/admin.py:119
+#: data_registry/admin.py:142
 msgid "untranslated"
 msgstr ""
 
-#: data_registry/admin.py:154
+#: data_registry/admin.py:177
 msgid "Previous year"
 msgstr ""
 
-#: data_registry/admin.py:161
+#: data_registry/admin.py:184
 msgid "More than a year ago"
 msgstr ""
 
-#: data_registry/admin.py:187 data_registry/admin.py:312
+#: data_registry/admin.py:272 data_registry/admin.py:420
 msgid "Management"
 msgstr ""
 
-#: data_registry/admin.py:193
+#: data_registry/admin.py:278
 msgid "Basics"
 msgstr ""
 
-#: data_registry/admin.py:209 data_registry/admin.py:327
+#: data_registry/admin.py:294 data_registry/admin.py:435
 #: data_registry/templates/detail.html:116
 msgid "Overview"
 msgstr ""
 
-#: data_registry/admin.py:224
+#: data_registry/admin.py:309
 msgid "Details"
 msgstr ""
 
-#: data_registry/admin.py:338
+#: data_registry/admin.py:375
+msgid "failed"
+msgstr ""
+
+#: data_registry/admin.py:446
 msgid "Data availability"
 msgstr ""
 
-#: data_registry/models.py:121
+#: data_registry/models.py:169
 msgid "Africa and Middle East"
 msgstr ""
 
-#: data_registry/models.py:122
+#: data_registry/models.py:171
 msgid "Asia"
 msgstr ""
 
-#: data_registry/models.py:123
+#: data_registry/models.py:173
 msgid "Eastern Europe & Central Asia"
 msgstr ""
 
-#: data_registry/models.py:124
+#: data_registry/models.py:175
 msgid "Europe"
 msgstr ""
 
-#: data_registry/models.py:125
+#: data_registry/models.py:177
 msgid "Latin America & Caribbean"
 msgstr ""
 
-#: data_registry/models.py:126
+#: data_registry/models.py:179
 msgid "North America"
 msgstr ""
 
-#: data_registry/models.py:127
+#: data_registry/models.py:181
 msgid "Oceania"
 msgstr ""
 
-#: data_registry/models.py:172 data_registry/models.py:183
+#: data_registry/models.py:227 data_registry/models.py:247
 msgid "Monthly"
 msgstr ""
 
-#: data_registry/models.py:173 data_registry/models.py:185
+#: data_registry/models.py:229 data_registry/models.py:251
 msgid "Every 6 months"
 msgstr ""
 
-#: data_registry/models.py:174 data_registry/models.py:186
+#: data_registry/models.py:231 data_registry/models.py:253
 msgid "Annually"
 msgstr ""
 
-#: data_registry/models.py:175
+#: data_registry/models.py:233
 msgid "This dataset is no longer updated by the publisher"
 msgstr ""
 
-#: data_registry/models.py:178
+#: data_registry/models.py:237
 msgid "Unknown"
 msgstr ""
 
-#: data_registry/models.py:179
+#: data_registry/models.py:239
 msgid "Real time"
 msgstr ""
 
-#: data_registry/models.py:180
+#: data_registry/models.py:241
 msgid "Hourly"
 msgstr ""
 
-#: data_registry/models.py:181
+#: data_registry/models.py:243
 msgid "Daily"
 msgstr ""
 
-#: data_registry/models.py:182
+#: data_registry/models.py:245
 msgid "Weekly"
 msgstr ""
 
-#: data_registry/models.py:184
+#: data_registry/models.py:249
 msgid "Every 3 months"
 msgstr ""
 
@@ -579,50 +584,50 @@ msgstr ""
 msgid "[data-registry] Re: %(collection)s"
 msgstr ""
 
-#: data_registry/views.py:56 data_registry/views.py:184
+#: data_registry/views.py:57 data_registry/views.py:228
 msgid "All"
 msgstr ""
 
-#: data_registry/views.py:57
+#: data_registry/views.py:58
 msgid "Past year"
 msgstr ""
 
-#: data_registry/views.py:58
+#: data_registry/views.py:59
 msgid "Past 6 months"
 msgstr ""
 
-#: data_registry/views.py:67
+#: data_registry/views.py:68
 msgid "Parties data"
 msgstr ""
 
-#: data_registry/views.py:68
+#: data_registry/views.py:69
 msgid "Plannings data"
 msgstr ""
 
-#: data_registry/views.py:69
+#: data_registry/views.py:70
 msgid "Tenders data"
 msgstr ""
 
-#: data_registry/views.py:70
+#: data_registry/views.py:71
 msgid "Awards data"
 msgstr ""
 
-#: data_registry/views.py:71
+#: data_registry/views.py:72
 msgid "Contracts data"
 msgstr ""
 
-#: data_registry/views.py:72
+#: data_registry/views.py:73
 msgid "Documents data"
 msgstr ""
 
-#: data_registry/views.py:73
+#: data_registry/views.py:74
 msgid "Milestones data"
 msgstr ""
 
-#: data_registry/views.py:74
+#: data_registry/views.py:75
 msgid "Amendments data"
 msgstr ""
 
-#: data_registry/views.py:224
+#: data_registry/views.py:268
 msgid "OCP Kingfisher Database"
 msgstr ""

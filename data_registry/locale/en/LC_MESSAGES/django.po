@@ -2,28 +2,29 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 # Translators:
 # Georg <gneumann@open-contracting.org>, 2021
 # James McKinney, 2022
 # Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2023
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-02 15:02-0300\n"
+"POT-Creation-Date: 2024-05-08 02:34+0000\n"
 "PO-Revision-Date: 2021-08-04 17:44+0000\n"
 "Last-Translator: Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2023\n"
-"Language-Team: English (https://app.transifex.com/open-contracting-partnership-1/teams/123427/en/)\n"
+"Language-Team: English (https://app.transifex.com/open-contracting-"
+"partnership-1/teams/123427/en/)\n"
+"Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: data_registry/admin.py:22
+#: data_registry/admin.py:27
 msgid ""
 "<em>Remember to provide information in all languages. You can use the "
 "dropdown at the top of the page to toggle the language for all fields.</em>"
@@ -31,112 +32,117 @@ msgstr ""
 "<em>Remember to provide information in all languages. You can use the "
 "dropdown at the top of the page to toggle the language for all fields.</em>"
 
-#: data_registry/admin.py:98
+#: data_registry/admin.py:121
 msgid "incomplete"
 msgstr "incomplete"
 
-#: data_registry/admin.py:103 data_registry/admin.py:124
+#: data_registry/admin.py:126 data_registry/admin.py:147
+#: data_registry/admin.py:380
 msgid "Yes"
 msgstr "Yes"
 
-#: data_registry/admin.py:119
+#: data_registry/admin.py:142
 msgid "untranslated"
 msgstr "untranslated"
 
-#: data_registry/admin.py:154
+#: data_registry/admin.py:177
 msgid "Previous year"
 msgstr "Past year"
 
-#: data_registry/admin.py:161
+#: data_registry/admin.py:184
 msgid "More than a year ago"
 msgstr "More than a year ago"
 
-#: data_registry/admin.py:187 data_registry/admin.py:312
+#: data_registry/admin.py:272 data_registry/admin.py:420
 msgid "Management"
 msgstr "Management"
 
-#: data_registry/admin.py:193
+#: data_registry/admin.py:278
 msgid "Basics"
 msgstr "Basics"
 
-#: data_registry/admin.py:209 data_registry/admin.py:327
+#: data_registry/admin.py:294 data_registry/admin.py:435
 #: data_registry/templates/detail.html:116
 msgid "Overview"
 msgstr "Overview"
 
-#: data_registry/admin.py:224
+#: data_registry/admin.py:309
 msgid "Details"
 msgstr "Details"
 
-#: data_registry/admin.py:338
+#: data_registry/admin.py:375
+msgid "failed"
+msgstr "failed"
+
+#: data_registry/admin.py:446
 msgid "Data availability"
 msgstr "Data availability"
 
-#: data_registry/models.py:121
+#: data_registry/models.py:169
 msgid "Africa and Middle East"
 msgstr "Africa and Middle East"
 
-#: data_registry/models.py:122
+#: data_registry/models.py:171
 msgid "Asia"
 msgstr "Asia"
 
-#: data_registry/models.py:123
+#: data_registry/models.py:173
 msgid "Eastern Europe & Central Asia"
 msgstr "Eastern Europe & Central Asia"
 
-#: data_registry/models.py:124
+#: data_registry/models.py:175
 msgid "Europe"
 msgstr "Europe"
 
-#: data_registry/models.py:125
+#: data_registry/models.py:177
 msgid "Latin America & Caribbean"
 msgstr "Latin America & Caribbean"
 
-#: data_registry/models.py:126
+#: data_registry/models.py:179
 msgid "North America"
 msgstr "North America"
 
-#: data_registry/models.py:127
+#: data_registry/models.py:181
 msgid "Oceania"
 msgstr "Oceania"
 
-#: data_registry/models.py:172 data_registry/models.py:183
+#: data_registry/models.py:227 data_registry/models.py:247
 msgid "Monthly"
 msgstr "Monthly"
 
-#: data_registry/models.py:173 data_registry/models.py:185
+#: data_registry/models.py:229 data_registry/models.py:251
 msgid "Every 6 months"
 msgstr "Every 6 months"
 
-#: data_registry/models.py:174 data_registry/models.py:186
+#: data_registry/models.py:231 data_registry/models.py:253
 msgid "Annually"
 msgstr "Annually"
 
-#: data_registry/models.py:175
+#: data_registry/models.py:233
 msgid "This dataset is no longer updated by the publisher"
 msgstr "This dataset is no longer updated by the publisher"
 
-#: data_registry/models.py:178
+#: data_registry/models.py:237
 msgid "Unknown"
 msgstr "Unknown"
 
-#: data_registry/models.py:179
+#: data_registry/models.py:239
 msgid "Real time"
 msgstr "Real time"
 
-#: data_registry/models.py:180
+#: data_registry/models.py:241
 msgid "Hourly"
 msgstr "Hourly"
 
-#: data_registry/models.py:181
+#: data_registry/models.py:243
 msgid "Daily"
 msgstr "Daily"
 
-#: data_registry/models.py:182
+#: data_registry/models.py:245
 msgid "Weekly"
 msgstr "Weekly"
 
-#: data_registry/models.py:184
+#: data_registry/models.py:249
 msgid "Every 3 months"
 msgstr "Every 3 months"
 
@@ -208,8 +214,8 @@ msgstr "Data available"
 msgid ""
 "An individual contracting process has several different stages: tendering, "
 "awarding, contracting and implementation. You can dive into the details of "
-"the contracting stages in this <a href=\"https://standard.open-"
-"contracting.org/latest/en/primer/how/\" target=\"_blank\">tutorial</a>."
+"the contracting stages in this <a href=\"https://standard.open-contracting."
+"org/latest/en/primer/how/\" target=\"_blank\">tutorial</a>."
 msgstr ""
 "A contracting process has several stages: tendering, awarding, contracting "
 "and implementation. You can learn about the contracting stages in <a "
@@ -352,14 +358,14 @@ msgstr ""
 
 #: data_registry/templates/detail.html:313
 msgid ""
-"The <code>.jsonl</code> file is compressed using Gzip. Windows users need <a"
-" href=\"https://www.7-zip.org\" target=\"_blank\">7-Zip</a>, <a "
+"The <code>.jsonl</code> file is compressed using Gzip. Windows users need <a "
+"href=\"https://www.7-zip.org\" target=\"_blank\">7-Zip</a>, <a "
 "href=\"https://www.win-rar.com\" target=\"_blank\">WinRAR</a> or <a "
 "href=\"https://www.winzip.com\" target=\"_blank\">WinZip</a> to decompress "
 "the <code>.gz</code> file."
 msgstr ""
-"The <code>.jsonl</code> file is compressed using Gzip. Windows users need <a"
-" href=\"https://www.7-zip.org\" target=\"_blank\">7-Zip</a>, <a "
+"The <code>.jsonl</code> file is compressed using Gzip. Windows users need <a "
+"href=\"https://www.7-zip.org\" target=\"_blank\">7-Zip</a>, <a "
 "href=\"https://www.win-rar.com\" target=\"_blank\">WinRAR</a> or <a "
 "href=\"https://www.winzip.com\" target=\"_blank\">WinZip</a> to decompress "
 "the <code>.gz</code> file."
@@ -374,25 +380,23 @@ msgstr ""
 
 #: data_registry/templates/detail.html:327
 msgid ""
-"Excel files can have at most <a href=\"https://support.microsoft.com/en-"
-"us/office/excel-specifications-and-"
+"Excel files can have at most <a href=\"https://support.microsoft.com/en-us/"
+"office/excel-specifications-and-"
 "limits-1672b34d-7043-467e-8e27-269d656771c3\" target=\"_blank\">1,048,576 "
 "rows</a>. If a year is missing, it had too many rows."
 msgstr ""
-"Excel files can have at most <a href=\"https://support.microsoft.com/en-"
-"us/office/excel-specifications-and-"
+"Excel files can have at most <a href=\"https://support.microsoft.com/en-us/"
+"office/excel-specifications-and-"
 "limits-1672b34d-7043-467e-8e27-269d656771c3\" target=\"_blank\">1,048,576 "
 "rows</a>. If a year is missing, it had too many rows."
 
 #: data_registry/templates/detail.html:336
 msgid ""
-"Each contracting process is represented as one row in the "
-"<code>main.csv</code> file. Other files link to it via the "
-"<code>_link_main</code> column."
+"Each contracting process is represented as one row in the <code>main.csv</"
+"code> file. Other files link to it via the <code>_link_main</code> column."
 msgstr ""
-"Each contracting process is represented as one row in the "
-"<code>main.csv</code> file. Other files link to it via the "
-"<code>_link_main</code> column."
+"Each contracting process is represented as one row in the <code>main.csv</"
+"code> file. Other files link to it via the <code>_link_main</code> column."
 
 #: data_registry/templates/detail.html:341
 msgid ""
@@ -503,28 +507,28 @@ msgstr "Data by country"
 #: data_registry/templates/index.html:43
 msgid ""
 "We've designed the Data Registry to help you find and access public "
-"procurement datasets that are available in the <a "
-"href=\"https://standard.open-contracting.org/latest/en/primer/what/\" "
-"target=\"_blank\">OCDS format</a>."
+"procurement datasets that are available in the <a href=\"https://standard."
+"open-contracting.org/latest/en/primer/what/\" target=\"_blank\">OCDS format</"
+"a>."
 msgstr ""
 "We've designed the Data Registry to help you find and access public "
-"procurement datasets that are available in the <a "
-"href=\"https://standard.open-contracting.org/latest/en/primer/what/\" "
-"target=\"_blank\">OCDS format</a>."
+"procurement datasets that are available in the <a href=\"https://standard."
+"open-contracting.org/latest/en/primer/what/\" target=\"_blank\">OCDS format</"
+"a>."
 
 #: data_registry/templates/index.html:48
 msgid ""
-"Currently, you can access data from over 50 publishers from around the world"
-" as <b>compiled releases</b> with the latest value of each field. <a "
-"href=\"https://standard.open-"
-"contracting.org/latest/en/primer/releases_and_records/\" "
-"target=\"_blank\">Learn about how OCDS data is published</a>."
+"Currently, you can access data from over 50 publishers from around the world "
+"as <b>compiled releases</b> with the latest value of each field. <a "
+"href=\"https://standard.open-contracting.org/latest/en/primer/"
+"releases_and_records/\" target=\"_blank\">Learn about how OCDS data is "
+"published</a>."
 msgstr ""
-"Currently, you can access data from over 50 publishers from around the world"
-" as <b>compiled releases</b> with the latest value of each field. <a "
-"href=\"https://standard.open-"
-"contracting.org/latest/en/primer/releases_and_records/\" "
-"target=\"_blank\">Learn about how OCDS data is published</a>."
+"Currently, you can access data from over 50 publishers from around the world "
+"as <b>compiled releases</b> with the latest value of each field. <a "
+"href=\"https://standard.open-contracting.org/latest/en/primer/"
+"releases_and_records/\" target=\"_blank\">Learn about how OCDS data is "
+"published</a>."
 
 #: data_registry/templates/index.html:64
 msgid "Learn about the source"
@@ -635,50 +639,50 @@ msgstr "Back to Top"
 msgid "[data-registry] Re: %(collection)s"
 msgstr "[data-registry] Re: %(collection)s"
 
-#: data_registry/views.py:56 data_registry/views.py:184
+#: data_registry/views.py:57 data_registry/views.py:228
 msgid "All"
 msgstr "All"
 
-#: data_registry/views.py:57
+#: data_registry/views.py:58
 msgid "Past year"
 msgstr "Past year"
 
-#: data_registry/views.py:58
+#: data_registry/views.py:59
 msgid "Past 6 months"
 msgstr "Past 6 months"
 
-#: data_registry/views.py:67
+#: data_registry/views.py:68
 msgid "Parties data"
 msgstr "Parties data"
 
-#: data_registry/views.py:68
+#: data_registry/views.py:69
 msgid "Plannings data"
 msgstr "Planning data"
 
-#: data_registry/views.py:69
+#: data_registry/views.py:70
 msgid "Tenders data"
 msgstr "Tender data"
 
-#: data_registry/views.py:70
+#: data_registry/views.py:71
 msgid "Awards data"
 msgstr "Awards data"
 
-#: data_registry/views.py:71
+#: data_registry/views.py:72
 msgid "Contracts data"
 msgstr "Contracts data"
 
-#: data_registry/views.py:72
+#: data_registry/views.py:73
 msgid "Documents data"
 msgstr "Documents data"
 
-#: data_registry/views.py:73
+#: data_registry/views.py:74
 msgid "Milestones data"
 msgstr "Milestones data"
 
-#: data_registry/views.py:74
+#: data_registry/views.py:75
 msgid "Amendments data"
 msgstr "Amendments data"
 
-#: data_registry/views.py:224
+#: data_registry/views.py:268
 msgid "OCP Kingfisher Database"
 msgstr "OCP Kingfisher Database"

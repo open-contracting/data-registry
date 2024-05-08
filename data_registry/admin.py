@@ -5,7 +5,7 @@ import requests
 from django import forms
 from django.conf import settings
 from django.contrib import admin, messages
-from django.db.models import BooleanField, Case, Q, When
+from django.db.models import BooleanField, Case, Exists, OuterRef, Q, When
 from django.forms.widgets import TextInput
 from django.urls import NoReverseMatch, reverse
 from django.utils import timezone
@@ -369,6 +369,25 @@ class LicenseAdmin(TabbedDjangoJqueryTranslationAdmin):
 class IssueAdminForm(forms.ModelForm):
     class Meta:
         widgets = {"description": AdminMarkdownxWidget(attrs={"cols": 100, "rows": 3})}
+
+
+class FailedFilter(admin.SimpleListFilter):
+    title = "failed"
+
+    parameter_name = "failed"
+
+    def lookups(self, request, model_admin):
+        return (("1", _("Yes")),)
+
+    def queryset(self, request, queryset):
+        if self.value() == "1":
+            # https://docs.djangoproject.com/en/4.2/ref/models/expressions/#some-examples
+            failed_tasks = Task.objects.filter(
+                job=OuterRef("pk"),
+                status=Task.Status.COMPLETED,
+                result=Task.Result.FAILED,
+            )
+            return queryset.filter(Exists(failed_tasks))
 
 
 class TaskInLine(admin.TabularInline):
