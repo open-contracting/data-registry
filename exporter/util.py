@@ -137,7 +137,7 @@ class Export:
         """
         Delete the lock file.
         """
-        self.lockfile.unlink()
+        self.lockfile.unlink(missing_ok=True)
 
     def remove(self):
         """
