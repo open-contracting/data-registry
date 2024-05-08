@@ -109,9 +109,23 @@ A job can stall (always "running"). The only option is to `cancel <https://scrap
 Restart a task
 ~~~~~~~~~~~~~~
 
+You can restart the :ref:`Exporter<cli-exporter>` and :ref:`Flattener<cli-flattener>` tasks. Do this only if the ``data_registry_production_exporter_init`` and ``data_registry_production_flattener_init`` queues are empty in the `RabbitMQ management interface <https://rabbitmq.data.open-contracting.org/>`__.
+
+.. note::
+
+   The Flattener task publishes one message per file. You might receive a Sentry notification about a failed conversion, while other conversions are still enqueued or in-progress.
+
+   The Exporter task publishes one message per job. This task *can* be restarted while the queue is non-empty – as long as another administrator has not restarted it independently.
+
+#. `Access the job <https://data.open-contracting.org/admin/data_registry/job/>`__
+#. Set only the *Exporter* and/or *Flattener* task's *Status* to *PLANNED*
+#. Click *SAVE*
+
+Any lockfiles are deleted to allow the task to run.
+
 .. attention::
 
-   To properly implement this feature, see `#354 <https://github.com/open-contracting/data-registry/issues/354>`__ (for retryable tasks) and `#350 <https://github.com/open-contracting/data-registry/issues/350>`__ (for non-retryable tasks).
+   See `#350 <https://github.com/open-contracting/data-registry/issues/350>`__.
 
 Unpublish or freeze a publication
 ---------------------------------
