@@ -35,9 +35,9 @@ def callback(state, channel, method, properties, input_message):
         export.directory.mkdir(parents=True)
     except FileExistsError:
         # Empty the directory, because files are opened with mode="a".
-        for f in export.directory.iterdir():
-            if f.is_file():
-                f.unlink()
+        for path in export.iterdir():
+            if path.is_file():
+                path.unlink()
 
     export.lock()
 

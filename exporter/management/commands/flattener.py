@@ -48,10 +48,8 @@ def callback(state, channel, method, properties, input_message):
 
 def publish_file(job_id):
     export = Export(job_id)
-    for entry in os.scandir(export.directory):
-        if not entry.name.endswith(".jsonl.gz") or "_" in entry.name:  # don't process YYYY_MM files
-            continue
-        publish({"job_id": job_id, "file_path": entry.path}, "flattener_file")
+    for path in export.get_convertible_paths():
+        publish({"job_id": job_id, "file_path": path.path}, "flattener_file")
 
 
 def process_file(job_id, file_path):
