@@ -49,7 +49,7 @@ def callback(state, channel, method, properties, input_message):
 def publish_file(job_id):
     export = Export(job_id)
     for path in export.get_convertible_paths():
-        publish({"job_id": job_id, "file_path": path.path}, "flattener_file")
+        publish({"job_id": job_id, "file_path": str(path)}, "flattener_file")
 
 
 def process_file(job_id, file_path):
