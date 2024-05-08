@@ -29,9 +29,12 @@ class Command(BaseCommand):
             on_message_callback=callback,
             queue="flattener_init",
             routing_keys=["flattener_init", "flattener_file"],
-            # Witnessed "AMQPHeartbeatTimeout: No activity or too many missed heartbeats in the last 60 seconds."
-            # while using Pika's BlockingConnection when processing the largest files.
-            rabbit_params={"heartbeat": 0},
+            # When there's high load, the heartbeat isn't sent, causing "missed heartbeats from client, timeout: 60s"
+            # and "closing AMQP connection" in RabbitMQ logs and ConnectionResetError(104, 'Connection reset by peer')
+            # in the asynchronous client. Use 1800 seconds to give time for a heartbeat.
+            # https://stackoverflow.com/q/70006802/244258
+            # https://www.rabbitmq.com/docs/heartbeats#disabling
+            rabbit_params={"heartbeat": 1800},  # 30 mins
             decorator=decorator,
         )
 
