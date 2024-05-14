@@ -52,6 +52,9 @@ def decorator(decode, callback, state, channel, method, properties, body):
         if isinstance(exception, LockFileError):
             logger.exception("Locked since %s, maybe caused by duplicate message %r, skipping", exception, body)
             nack(state, channel, method.delivery_tag, requeue=False)
+        elif isinstance(exception, EOFError):  # "Compressed file ended before the end-of-stream marker was reached"
+            logger.exception(exception)
+            nack(state, channel, method.delivery_tag, requeue=True)
         else:
             logger.exception("Unhandled exception when consuming %r, shutting down gracefully", body)
             add_callback_threadsafe(state.connection, state.interrupt)
