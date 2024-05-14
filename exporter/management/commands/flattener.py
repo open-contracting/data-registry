@@ -100,8 +100,8 @@ def process_file(job_id, file_path):
     # https://github.com/open-contracting/data-registry/issues/254
     except FileNotFoundError:
         # Only delete any files whose creation was attempted.
-        for path, exists in ((csv_path, csv_exists), (xlsx_path, xlsx_exists)):
-            if not exists:
+        for path, attempt in ((csv_path, csv), (xlsx_path, xlsx)):
+            if attempt:
                 Path(path).unlink(missing_ok=True)
     finally:
         export.unlock()
