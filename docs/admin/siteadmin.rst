@@ -60,12 +60,13 @@ Review jobs
 
 From time to time, use the filters in the right-hand sidebar to:
 
--  Check for completed jobs whose temporary data has not been deleted
--  Check for running jobs that are old
+-  Check for failed jobs, and :ref:`restart tasks<admin-restart>` as appropriate (*By failed*: Yes)
+-  Check for completed jobs whose temporary data has not been deleted (*By temporary data deleted*: No, *By status*: COMPLETED)
+-  Check for running jobs that are old (*By status*: RUNNING)
 
-   .. note::
+.. note::
 
-      The *WAITING* status is not used.
+   The *WAITING* status is not used.
 
 .. _admin-troubleshoot:
 
@@ -105,6 +106,8 @@ A job can stall (always "running"). The only option is to `cancel <https://scrap
 .. attention::
 
    To properly implement this feature, see `#352 <https://github.com/open-contracting/data-registry/issues/352>`__.
+
+.. _admin-restart:
 
 Restart a task
 ~~~~~~~~~~~~~~
