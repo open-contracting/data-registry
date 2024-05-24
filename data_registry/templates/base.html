@@ -13,6 +13,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon-16x16.png' %}">
     <link rel="stylesheet" href="{% static 'main.css' %}">
+    <link rel="alternate" hreflang="x-default" href="{% translate_url 'en' %}">
 {% for language_code, _ in LANGUAGES %}
     <link rel="alternate" hreflang="{{ language_code }}" href="{% translate_url language_code %}">
 {% endfor %}
