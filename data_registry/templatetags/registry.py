@@ -47,18 +47,22 @@ def catalog_str():
 
 
 @register.simple_tag(takes_context=True)
-def canonical_url(context):
+def canonical_url(context, language=None):
     request = context["request"]
     name = urls.resolve(request.path).url_name
 
-    if name == "index" and get_language() == "en":
-        # / is the canonical of /en/.
-        args = ["/"]
-    if name == "search":
-        # Avoid duplicate content across different filters. Okay since there's no pagination.
-        args = [urls.reverse("search")]
-    else:
-        args = []
+    if language is None:
+        language = get_language()
+
+    match (name, language):
+        case ("index", "en"):
+            # / is the canonical of /en/.
+            args = ["/"]
+        case ("search", _):
+            # Avoid duplicate content across different filters. Okay since there's no pagination.
+            args = [urls.reverse("search")]
+        case _:
+            args = []
     return request.build_absolute_uri(*args)
 
 
@@ -67,7 +71,7 @@ def translate_url(context, language):
     request = context["request"]
     name = urls.resolve(request.path).url_name
 
-    url = canonical_url(context)
+    url = canonical_url(context, language)
     if name == "index" and language == "en":
         # Translating "/es/" to "en" would return "/en/", which is not canonical.
         return url
