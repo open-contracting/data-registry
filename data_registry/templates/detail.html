@@ -7,7 +7,8 @@
 
 {% block og_title %}{% block title %}{{ collection.country }}: {{ collection.title }} | {% translate "OCP Data Registry" %}{% endblock %}{% endblock %}
 {% block og_description %}{% block description %}{% blocktranslate trimmed with country=collection.country title=collection.title %}
-Learn about and download the OCDS data for {{ country }}: {{ title }}.
+Download the OCDS data for {{ country }}: {{ title }}. Learn about the data source's coverage, features and quality issues.
+
 {% endblocktranslate %}{% endblock %}{% endblock %}
 {% block og_image %}{% static 'img/flags/' %}{{ collection.country_flag }}{% endblock %}
 
