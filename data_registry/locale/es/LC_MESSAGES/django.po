@@ -154,6 +154,8 @@ msgid ""
 "Download the OCDS data for %(country)s: %(title)s. Learn about the data "
 "source's coverage, features and quality issues."
 msgstr ""
+"Descarga los datos OCDS para %(country)s: %(title)s. Conoce la cobertura, "
+"características y problemas de calidad de la fuente de datos."
 
 #: data_registry/templates/detail.html:63
 msgid "BACK TO DATASETS SEARCH"
