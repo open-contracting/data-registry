@@ -155,6 +155,10 @@ msgid ""
 "Download the OCDS data for %(country)s: %(title)s. Learn about the data "
 "source's coverage, features and quality issues."
 msgstr ""
+"Загрузите данные в формате OCDS для %(country)s: %(title)s. Узнайте больше о том, "
+"какие этапы контрактного процесса описаны в данных, особенностях этого набора данных, "
+"а также о проблемах с качеством данных."
+
 
 #: data_registry/templates/detail.html:63
 msgid "BACK TO DATASETS SEARCH"
