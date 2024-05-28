@@ -134,7 +134,7 @@ observer.observe(document.querySelector('.toppable'))
             <div class="row">
                 <div class="col-md mt-sm-1 mb-3 fixed-9">
     {% if collection.country_flag %}
-                    <img src="{% static 'img/flags/' %}{{ collection.country_flag }}" width="120" alt="" role="presentation" loading="lazy" class="flag-search">
+                    <img src="{% static 'img/flags/' %}{{ collection.country_flag }}" width="120" alt="" role="presentation" aria-hidden="true" loading="lazy" class="flag-search">
     {% endif %}
                 </div>
                 <div class="col-md">
