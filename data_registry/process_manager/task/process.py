@@ -4,6 +4,7 @@ from urllib.parse import urljoin
 
 from django.conf import settings
 
+from data_registry.exceptions import IrrecoverableError
 from data_registry.models import Task
 from data_registry.process_manager.util import TaskManager
 
@@ -52,6 +53,7 @@ class Process(TaskManager):
 
         tree = response.json()
 
+        original_collection = next(c for c in tree if c["transform_type"] == "")
         compiled_collection = next(c for c in tree if c["transform_type"] == "compile-releases")
 
         if not compiled_collection["completed_at"]:
@@ -74,6 +76,9 @@ class Process(TaskManager):
 
         self.job.context["process_id_pelican"] = compiled_collection["id"]
         self.job.save(update_fields=["modified", "context", "date_from", "date_to", "license", "ocid_prefix"])
+
+        if original_collection["expected_files_count"] == 0:
+            raise IrrecoverableError("Collection is empty")
 
         return Task.Status.COMPLETED
 

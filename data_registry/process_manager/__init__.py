@@ -5,7 +5,7 @@ from django.db import transaction
 from django.db.models import BooleanField, Case, When
 
 from data_registry import models
-from data_registry.exceptions import RecoverableException
+from data_registry.exceptions import IrrecoverableError, RecoverableException
 from data_registry.process_manager.task.collect import Collect
 from data_registry.process_manager.task.exporter import Exporter
 from data_registry.process_manager.task.flattener import Flattener
@@ -95,6 +95,11 @@ def process(collection: models.Collection) -> None:
                 except RecoverableException as e:
                     logger.exception("Recoverable exception during task %s (%s: %s)", task, country, collection)
                     task.progress(result=models.Task.Result.FAILED, note=str(e))  # The application is not responding.
+
+                    break
+                except IrrecoverableError as e:
+                    logger.warning("Irrecoverable error during task %s (%s: %s): %s", task, country, collection, e)
+                    task.progress(result=models.Task.Result.FAILED, note=str(e))
 
                     break
                 except Exception as e:
