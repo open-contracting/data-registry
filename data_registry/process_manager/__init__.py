@@ -99,7 +99,10 @@ def process(collection: models.Collection) -> None:
                     break
                 except IrrecoverableError as e:
                     logger.warning("Irrecoverable error during task %s (%s: %s): %s", task, country, collection, e)
-                    task.progress(result=models.Task.Result.FAILED, note=str(e))
+                    task.complete(result=models.Task.Result.FAILED, note=str(e))
+
+                    job.complete()
+                    logger.warning("Job %s has failed (%s: %s)", job, country, collection)
 
                     break
                 except Exception as e:
