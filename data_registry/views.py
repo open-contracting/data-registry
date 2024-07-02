@@ -105,11 +105,11 @@ def search(request):
             exclude[count] = 0
 
     facets = {
-        "letters": {value: 0 for value in alphabets[language_code]},
-        "date_ranges": {value: 0 for value in date_ranges},
-        "frequencies": {value: 0 for value in Collection.UpdateFrequency.values},
-        "regions": {value: 0 for value in Collection.Region.values},
-        "counts": {value: 0 for value in counts},
+        "letters": {dict.fromkeys(alphabets[language_code], 0)},
+        "date_ranges": {dict.fromkeys(date_ranges, 0)},
+        "frequencies": {dict.fromkeys(Collection.UpdateFrequency.values, 0)},
+        "regions": {dict.fromkeys(Collection.Region.values, 0)},
+        "counts": {dict.fromkeys(counts, 0)},
     }
     for value, n in facet_counts(qs, "letter"):
         facets["letters"][value] = n
