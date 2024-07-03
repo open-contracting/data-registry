@@ -303,6 +303,7 @@ class Collection(models.Model):
 
     objects = CollectionQuerySet.as_manager()
 
+    @property
     def active_job(self):
         return self.job_set.active().first()
 
