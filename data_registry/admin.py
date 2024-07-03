@@ -336,9 +336,6 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
         kwargs["form"] = partialclass(self.form, request=request)
         return super().get_form(request, obj, **kwargs)
 
-    def active_job(self, obj):
-        return obj.job_set.active().first()
-
 
 class LicenseAdminForm(forms.ModelForm):
     class Meta:

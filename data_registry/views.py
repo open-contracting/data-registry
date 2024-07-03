@@ -153,7 +153,7 @@ def detail(request, pk):
         pk=pk,
     )
 
-    job = collection.job_set.active().first()
+    job = collection.active_job
     files = Export.get_files(job and job.id)
 
     return render(

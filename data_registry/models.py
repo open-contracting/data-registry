@@ -303,6 +303,9 @@ class Collection(models.Model):
 
     objects = CollectionQuerySet.as_manager()
 
+    def active_job(self):
+        return self.job_set.active().first()
+
     def is_out_of_date(self):
         """
         A publication is out-of-date if it isn't frozen and has a retrieval frequency other than "never", and either
