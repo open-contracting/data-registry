@@ -176,13 +176,13 @@ Processing step remaining
 
 .. note::
 
-   The bug used for demonstration has been fixed. The bug was diagnosed by observing one remaining load step and a ``collection_note`` like:
+   This bug is fixed. It was diagnosed by observing one remaining load step and a note like:
 
    .. code-block:: none
 
       Empty format 'empty package' for file /data/my_spider/20010203_040506/E76/my_file.json (id: 55555).
 
-   The fix was to delete the step when an empty package was encountered.
+   The fix was to delete load steps for empty packages.
 
 If the output looks like:
 
