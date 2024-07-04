@@ -130,6 +130,109 @@ Any lockfiles are deleted to allow the task to run.
 
    See `#350 <https://github.com/open-contracting/data-registry/issues/350>`__.
 
+Unblock the Process task
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Bugs can cause a job to get stuck on the Process task. To diagnose and fix a bug, run Kingfisher Process' `collectionstatus <https://kingfisher-process.readthedocs.io/en/latest/cli.html#collectionstatus>`__ command and select the collection's notes, for example:
+
+.. code-block:: sql
+
+   SELECT * FROM collection_note WHERE collection_id = 100;
+
+If the collection is large, you can manually unblock the Process task.
+
+No data collected
+^^^^^^^^^^^^^^^^^
+
+.. note::
+
+   This bug is open.
+
+If the output looks like:
+
+.. code-block:: none
+   :emphasize-lines: 2,6,11-13
+
+   steps: compile
+   data_type: to be determined
+   store_end_at: 2001-02-03 04:05:06.979418
+   completed_at: 2001-02-03 04:05:07.074971
+   expected_files_count: 0
+   collection_files: 0
+   processing_steps: 0
+
+   Compiled collection
+   compilation_started: True
+   store_end_at: None
+   completed_at: None
+   collection_files: 0
+   processing_steps: 0
+   completable: yes
+
+Then, confirm that the Collect task didn't write files, by checking the crawl's log file in `Scrapyd <https://kingfisher-collect.readthedocs.io/en/latest/scrapyd.html#using-the-scrapyd-web-interface>`__. If so, run Kingfisher Process' `closecollection <https://kingfisher-process.readthedocs.io/en/latest/cli.html#closecollection>`__ command, to allow the task to finish.
+
+Processing step remaining
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. note::
+
+   The bug used for demonstration has been fixed. The bug was diagnosed by observing one remaining load step and a ``collection_note`` like:
+
+   .. code-block:: none
+
+      Empty format 'empty package' for file /data/my_spider/20010203_040506/E76/my_file.json (id: 55555).
+
+   The fix was to delete the step when an empty package was encountered.
+
+If the output looks like:
+
+.. code-block:: none
+   :emphasize-lines: 4,7,9,11,15-17,20
+
+   steps: compile
+   data_type: release package
+   store_end_at: 2001-02-03 04:05:06.979418
+   completed_at: None
+   expected_files_count: 654321
+   collection_files: 654321
+   processing_steps: 1
+   2001-02-03 04:05:07,074 DEBUG [process.management.commands.compiler:120] Collection my_spider:2001-02-03 04:05:06 (id: 100) not compilable (load steps remaining)
+   compilable: no (or not yet)
+   2001-02-03 04:05:07,074 DEBUG [process.management.commands.finisher:130] Collection my_spider:2001-02-03 04:05:06 (id: 100) not completable (steps remaining)
+   completable: no (or not yet)
+
+   Compiled collection
+   compilation_started: False
+   store_end_at: None
+   completed_at: None
+   collection_files: 0
+   processing_steps: 0
+   2024-07-04 14:45:01,718 DEBUG [process.management.commands.finisher:114] Collection my_spider:2001-02-03 04:05:06 (id: 101) not completable (compile steps not created)
+   completable: no (or not yet)
+
+Then, confirm that the messages corresponding to the remaining processing steps have already been consumed by the `file_worker <https://kingfisher-process.readthedocs.io/en/latest/cli.html#file-worker>`__ worker, by checking `RabbitMQ's management interface <https://rabbitmq.data.open-contracting.org/>`__. If so, select the remaining load steps for the original collection, for example:
+
+.. code-block:: sql
+
+   SELECT collection_file_id FROM processing_step WHERE name = 'LOAD' AND collection_id = 100;
+
+.. code-block:: none
+
+    collection_file_id
+   --------------------
+   55555
+   (1 row)
+
+And, re-publish the messages, using the Django `shell <https://docs.djangoproject.com/en/5.0/ref/django-admin/#shell>`__ command, for example:
+
+.. code-block:: python
+
+   from process.util import get_publisher
+
+   with get_publisher() as client:
+      message = {"collection_id": 100, "collection_file_id": 55555}
+      client.publish(message, routing_key="api_loader")
+
 Unpublish or freeze a publication
 ---------------------------------
 
