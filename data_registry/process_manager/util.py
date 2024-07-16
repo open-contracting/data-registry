@@ -124,4 +124,4 @@ class TaskManager(ABC):
         """
 
     def __str__(self):
-        return f"Publication {self.collection}: {self.__class__.__name__}"
+        return f"Publication {self.collection}: {type(self).__name__}"
