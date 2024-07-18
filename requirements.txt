@@ -64,7 +64,7 @@ pytz==2021.1
     # via pandas
 requests==2.32.0
     # via -r requirements.in
-sentry-sdk==1.19.0
+sentry-sdk==2.8.0
     # via -r requirements.in
 setproctitle==1.2.2
     # via gunicorn
