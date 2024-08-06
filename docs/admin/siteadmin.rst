@@ -294,8 +294,8 @@ Unpublish or freeze a publication
 
 A publication is frozen if:
 
--  The spider is `removed from Kingfisher Collect <https://kingfisher-collect.readthedocs.io/en/latest/history.html>`__. The publication is never unfrozen.
--  The source is temporarily broken or otherwise unavailable. The publication is unfrozen when the source is fixed.
+-  The spider is `removed from Kingfisher Collect <https://kingfisher-collect.readthedocs.io/en/latest/history.html>`__. The publication will never be updated.
+-  The source is temporarily broken or otherwise unavailable. Unfreeze the publication when the source is fixed.
 
 #. `Find the publication <https://data.open-contracting.org/admin/data_registry/collection/>`__
 #. Uncheck *Public*, to hide the publication
