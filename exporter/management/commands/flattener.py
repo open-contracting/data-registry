@@ -69,6 +69,7 @@ def process_file(job_id, file_path):
     xlsx_exists = os.path.isfile(xlsx_path)
 
     if csv_exists and xlsx_exists:
+        logger.debug("Already done job_id=%s file_path=%s", job_id, file_path)
         return
 
     export.lock()
@@ -88,6 +89,7 @@ def process_file(job_id, file_path):
             xlsx = not xlsx_exists and infile.stat().st_size < settings.EXPORTER_MAX_JSON_BYTES_TO_EXCEL
 
             if not csv and not xlsx:
+                logger.debug("CSV already done and XLSX limit exceeded job_id=%s file_path=%s", job_id, file_path)
                 return
 
             output = flatterer_flatten(file_path, str(infile), str(outdir), csv=csv, xlsx=xlsx)
@@ -105,6 +107,7 @@ def process_file(job_id, file_path):
                 Path(path).unlink(missing_ok=True)
     finally:
         export.unlock()
+    logger.debug("Done job_id=%s file_path=%s", job_id, file_path)
 
 
 def flatterer_flatten(file_path, infile, outdir, csv=False, xlsx=False, threads=0):

@@ -118,3 +118,4 @@ def callback(state, channel, method, properties, input_message):
         path.unlink()
 
     export.unlock()
+    logger.debug("Done %r", input_message)
