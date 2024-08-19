@@ -35,7 +35,7 @@ msgstr ""
 
 #: data_registry/admin.py:121
 msgid "no active job"
-msgstr "indisponible"
+msgstr "no disponible"
 
 #: data_registry/admin.py:126 data_registry/admin.py:140
 #: data_registry/admin.py:161 data_registry/admin.py:392
