@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-25 01:45+0000\n"
+"POT-Creation-Date: 2024-08-19 16:11+0000\n"
 "PO-Revision-Date: 2021-08-04 17:44+0000\n"
 "Last-Translator: Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2023\n"
 "Language-Team: English (https://app.transifex.com/open-contracting-"
@@ -33,44 +33,48 @@ msgstr ""
 "dropdown at the top of the page to toggle the language for all fields.</em>"
 
 #: data_registry/admin.py:121
-msgid "incomplete"
-msgstr "incomplete"
+msgid "no active job"
+msgstr "no active job"
 
-#: data_registry/admin.py:126 data_registry/admin.py:147
-#: data_registry/admin.py:380
+#: data_registry/admin.py:126 data_registry/admin.py:140
+#: data_registry/admin.py:161 data_registry/admin.py:392
 msgid "Yes"
 msgstr "Yes"
 
-#: data_registry/admin.py:142
+#: data_registry/admin.py:135
+msgid "incomplete"
+msgstr "incomplete"
+
+#: data_registry/admin.py:156
 msgid "untranslated"
 msgstr "untranslated"
 
-#: data_registry/admin.py:177
+#: data_registry/admin.py:191
 msgid "Previous year"
 msgstr "Past year"
 
-#: data_registry/admin.py:184
+#: data_registry/admin.py:198
 msgid "More than a year ago"
 msgstr "More than a year ago"
 
-#: data_registry/admin.py:272 data_registry/admin.py:420
+#: data_registry/admin.py:287 data_registry/admin.py:432
 msgid "Management"
 msgstr "Management"
 
-#: data_registry/admin.py:278
+#: data_registry/admin.py:293
 msgid "Basics"
 msgstr "Basics"
 
-#: data_registry/admin.py:294 data_registry/admin.py:435
+#: data_registry/admin.py:309 data_registry/admin.py:447
 #: data_registry/templates/detail.html:117
 msgid "Overview"
 msgstr "Overview"
 
-#: data_registry/admin.py:309
+#: data_registry/admin.py:324
 msgid "Details"
 msgstr "Details"
 
-#: data_registry/admin.py:446
+#: data_registry/admin.py:458
 msgid "Data availability"
 msgstr "Data availability"
 

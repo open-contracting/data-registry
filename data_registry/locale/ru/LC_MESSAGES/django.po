@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-25 01:45+0000\n"
+"POT-Creation-Date: 2024-08-19 16:11+0000\n"
 "PO-Revision-Date: 2021-08-04 17:44+0000\n"
 "Last-Translator: Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2023\n"
 "Language-Team: Russian (https://app.transifex.com/open-contracting-"
@@ -35,44 +35,48 @@ msgstr ""
 "язык для всех полей. </em>"
 
 #: data_registry/admin.py:121
-msgid "incomplete"
-msgstr "неполный"
+msgid "no active job"
+msgstr "недоступен"
 
-#: data_registry/admin.py:126 data_registry/admin.py:147
-#: data_registry/admin.py:380
+#: data_registry/admin.py:126 data_registry/admin.py:140
+#: data_registry/admin.py:161 data_registry/admin.py:392
 msgid "Yes"
 msgstr "Да"
 
-#: data_registry/admin.py:142
+#: data_registry/admin.py:135
+msgid "incomplete"
+msgstr "неполный"
+
+#: data_registry/admin.py:156
 msgid "untranslated"
 msgstr "непереведенный"
 
-#: data_registry/admin.py:177
+#: data_registry/admin.py:191
 msgid "Previous year"
 msgstr "Предыдущий год"
 
-#: data_registry/admin.py:184
+#: data_registry/admin.py:198
 msgid "More than a year ago"
 msgstr "Больше года тому назад"
 
-#: data_registry/admin.py:272 data_registry/admin.py:420
+#: data_registry/admin.py:287 data_registry/admin.py:432
 msgid "Management"
 msgstr "Управление"
 
-#: data_registry/admin.py:278
+#: data_registry/admin.py:293
 msgid "Basics"
 msgstr "Основы"
 
-#: data_registry/admin.py:294 data_registry/admin.py:435
+#: data_registry/admin.py:309 data_registry/admin.py:447
 #: data_registry/templates/detail.html:117
 msgid "Overview"
 msgstr "Обзор"
 
-#: data_registry/admin.py:309
+#: data_registry/admin.py:324
 msgid "Details"
 msgstr "Подробности"
 
-#: data_registry/admin.py:446
+#: data_registry/admin.py:458
 msgid "Data availability"
 msgstr "Доступность данных"
 
@@ -155,10 +159,9 @@ msgid ""
 "Download the OCDS data for %(country)s: %(title)s. Learn about the data "
 "source's coverage, features and quality issues."
 msgstr ""
-"Загрузите данные в формате OCDS для %(country)s: %(title)s. Узнайте больше о том, "
-"какие этапы контрактного процесса описаны в данных, особенностях этого набора данных, "
-"а также о проблемах с качеством данных."
-
+"Загрузите данные в формате OCDS для %(country)s: %(title)s. Узнайте больше о "
+"том, какие этапы контрактного процесса описаны в данных, особенностях этого "
+"набора данных, а также о проблемах с качеством данных."
 
 #: data_registry/templates/detail.html:63
 msgid "BACK TO DATASETS SEARCH"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-25 01:45+0000\n"
+"POT-Creation-Date: 2024-08-19 16:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,44 +24,48 @@ msgid ""
 msgstr ""
 
 #: data_registry/admin.py:121
-msgid "incomplete"
+msgid "no active job"
 msgstr ""
 
-#: data_registry/admin.py:126 data_registry/admin.py:147
-#: data_registry/admin.py:380
+#: data_registry/admin.py:126 data_registry/admin.py:140
+#: data_registry/admin.py:161 data_registry/admin.py:392
 msgid "Yes"
 msgstr ""
 
-#: data_registry/admin.py:142
+#: data_registry/admin.py:135
+msgid "incomplete"
+msgstr ""
+
+#: data_registry/admin.py:156
 msgid "untranslated"
 msgstr ""
 
-#: data_registry/admin.py:177
+#: data_registry/admin.py:191
 msgid "Previous year"
 msgstr ""
 
-#: data_registry/admin.py:184
+#: data_registry/admin.py:198
 msgid "More than a year ago"
 msgstr ""
 
-#: data_registry/admin.py:272 data_registry/admin.py:420
+#: data_registry/admin.py:287 data_registry/admin.py:432
 msgid "Management"
 msgstr ""
 
-#: data_registry/admin.py:278
+#: data_registry/admin.py:293
 msgid "Basics"
 msgstr ""
 
-#: data_registry/admin.py:294 data_registry/admin.py:435
+#: data_registry/admin.py:309 data_registry/admin.py:447
 #: data_registry/templates/detail.html:117
 msgid "Overview"
 msgstr ""
 
-#: data_registry/admin.py:309
+#: data_registry/admin.py:324
 msgid "Details"
 msgstr ""
 
-#: data_registry/admin.py:446
+#: data_registry/admin.py:458
 msgid "Data availability"
 msgstr ""
 
