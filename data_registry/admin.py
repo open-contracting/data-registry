@@ -128,7 +128,7 @@ class UnavailableFilter(admin.SimpleListFilter):
     def queryset(self, request, queryset):
         if self.value() == "1":
             active_jobs = Job.objects.active().filter(collection=OuterRef("pk"))
-            return queryset.filter(Exists(active_jobs))
+            return queryset.exclude(Exists(active_jobs))
 
 
 class IncompleteFilter(admin.SimpleListFilter):
