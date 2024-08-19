@@ -77,7 +77,7 @@ class CollectionAdminForm(forms.ModelForm):
                 response.raise_for_status()
                 data = response.json()
                 if data["status"] == "ok":
-                    choices = tuple((n, n) for n in data["spiders"])
+                    choices += tuple((n, n) for n in data["spiders"])
                 else:
                     messages.warning(request, f"Couldn't populate Source ID, because Scrapyd returned error: {data!r}")
             except requests.exceptions.ConnectionError as e:
