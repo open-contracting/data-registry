@@ -117,6 +117,20 @@ class CollectionAdminForm(forms.ModelForm):
         }
 
 
+class UnavailableFilter(admin.SimpleListFilter):
+    title = _("no active job")
+
+    parameter_name = "unavailable"
+
+    def lookups(self, request, model_admin):
+        return (("1", _("Yes")),)
+
+    def queryset(self, request, queryset):
+        if self.value() == "1":
+            active_jobs = Job.objects.active().filter(collection=OuterRef("pk"))
+            return queryset.filter(Exists(active_jobs))
+
+
 class IncompleteFilter(admin.SimpleListFilter):
     title = _("incomplete")
 
@@ -262,6 +276,7 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
         "retrieval_frequency",
         ("license_custom", admin.EmptyFieldListFilter),
         ("summary_en", admin.EmptyFieldListFilter),
+        UnavailableFilter,
         IncompleteFilter,
         UntranslatedFilter,
         ("last_reviewed", CustomDateFieldListFilter),

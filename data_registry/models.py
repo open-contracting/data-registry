@@ -145,7 +145,7 @@ class CollectionQuerySet(models.QuerySet):
         Return a query set of public collections with active jobs.
         """
         # https://docs.djangoproject.com/en/4.2/ref/models/expressions/#some-examples
-        active_jobs = Job.objects.filter(collection=models.OuterRef("pk"), active=True)
+        active_jobs = Job.objects.active().filter(collection=models.OuterRef("pk"))
         return self.filter(models.Exists(active_jobs), public=True)
 
 
