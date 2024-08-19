@@ -147,9 +147,13 @@ class Collect(TaskManager):
         # 2001-02-03 04:05:06 Kingfisher Collect's Kingfisher Process API extension
         # 2001-02-03T04:05:06 Kingfisher Process
         data_version = data_version.translate(str.maketrans(" T", "__", "-:"))
-        path = f"{settings.KINGFISHER_COLLECT_FILES_STORE}/{self.spider}/{data_version}"
-        if os.path.exists(path):
+        spider_path = os.path.join(settings.KINGFISHER_COLLECT_FILES_STORE, self.spider)
+        crawl_path = os.path.join(spider_path, data_version)
+        if os.path.exists(crawl_path):
             try:
-                shutil.rmtree(path)
+                shutil.rmtree(crawl_path)
+                with os.scandir(spider_path) as it:
+                    if not any(it):
+                        os.rmdir(spider_path)
             except OSError:
-                raise RecoverableException(f"Unable to wipe the Scrapyd job {scrapyd_job_id} at {path}")
+                raise RecoverableException(f"Unable to wipe the Scrapyd job {scrapyd_job_id} at {crawl_path}")
