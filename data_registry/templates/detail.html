@@ -10,7 +10,7 @@
 Download the OCDS data for {{ country }}: {{ title }}. Learn about the data source's coverage, features and quality issues.
 
 {% endblocktranslate %}{% endblock %}{% endblock %}
-{% block og_image %}{% static 'img/flags/' %}{{ collection.country_flag }}{% endblock %}
+{% block og_image %}{% static 'img/flags/'|add:collection.country_flag %}{% endblock %}
 
 {% block script %}
 {% get_current_language as LANGUAGE_CODE %}
@@ -69,7 +69,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
 <div class="row mb-5">
     <div class="col-sm mt-sm-1 mb-3 fixed-12">
 {% if collection.country_flag %}
-        <img src="{% static 'img/flags/' %}{{ collection.country_flag }}" width="168" alt="" role="presentation" aria-hidden="true" class="flag-detail">
+        <img src="{% static 'img/flags/'|add:collection.country_flag %}" width="168" alt="" role="presentation" aria-hidden="true" class="flag-detail">
 {% endif %}
     </div>
     <div class="col-sm">
