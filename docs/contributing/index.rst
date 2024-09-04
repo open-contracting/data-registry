@@ -14,8 +14,7 @@ Setup
 
    .. code-block:: bash
 
-      pip install pip-tools
-      pip-sync requirements_dev.txt
+      pip install -r requirements_dev.txt
 
 #. Set up the git pre-commit hook:
 
