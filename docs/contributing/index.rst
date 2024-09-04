@@ -104,6 +104,12 @@ Update the flags
    mv country-flags-main/ data_registry/static/img/flags
    rm -rf country-flags-main/ main.zip
 
+Then, simplify the largest files with `svgo <https://github.com/svg/svgo>`__:
+
+.. code-block:: bash
+
+   find data_registry/static/img/flags/ -type f -size +10k -exec svgo --multipass --precision 2 {} \+
+
 Translate with Transifex
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
