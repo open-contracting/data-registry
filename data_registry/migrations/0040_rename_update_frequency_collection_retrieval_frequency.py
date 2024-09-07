@@ -4,20 +4,28 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('data_registry', '0039_update_collection_country_flag_value'),
+        ("data_registry", "0039_update_collection_country_flag_value"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='collection',
-            old_name='update_frequency',
-            new_name='retrieval_frequency',
+            model_name="collection",
+            old_name="update_frequency",
+            new_name="retrieval_frequency",
         ),
         migrations.AlterField(
-            model_name='collection',
-            name='retrieval_frequency',
-            field=models.TextField(blank=True, choices=[('MONTHLY', 'Monthly'), ('HALF_YEARLY', 'Every 6 months'), ('ANNUALLY', 'Annually'), ('NEVER', 'This dataset is no longer updated by the publisher')], help_text='The frequency at which the registry updates the publication, based on the frequency at which the publication is updated.'),
+            model_name="collection",
+            name="retrieval_frequency",
+            field=models.TextField(
+                blank=True,
+                choices=[
+                    ("MONTHLY", "Monthly"),
+                    ("HALF_YEARLY", "Every 6 months"),
+                    ("ANNUALLY", "Annually"),
+                    ("NEVER", "This dataset is no longer updated by the publisher"),
+                ],
+                help_text="The frequency at which the registry updates the publication, based on the frequency at which the publication is updated.",
+            ),
         ),
     ]

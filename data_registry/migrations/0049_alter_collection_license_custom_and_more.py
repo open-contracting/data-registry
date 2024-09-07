@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("data_registry", "0048_alter_job_status_alter_task_status"),
     ]

@@ -4,25 +4,36 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('data_registry', '0040_rename_update_frequency_collection_retrieval_frequency'),
+        ("data_registry", "0040_rename_update_frequency_collection_retrieval_frequency"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='collection',
-            old_name='last_update',
-            new_name='last_retrieved',
+            model_name="collection",
+            old_name="last_update",
+            new_name="last_retrieved",
         ),
         migrations.AlterField(
-            model_name='collection',
-            name='last_retrieved',
-            field=models.DateField(blank=True, help_text="The date on which the most recent 'collect' job task completed.", null=True),
+            model_name="collection",
+            name="last_retrieved",
+            field=models.DateField(
+                blank=True, help_text="The date on which the most recent 'collect' job task completed.", null=True
+            ),
         ),
         migrations.AddField(
-            model_name='collection',
-            name='update_frequency',
-            field=models.TextField(blank=True, choices=[('REAL_TIME', 'Real time'), ('HOURLY', 'Hourly'), ('DAILY', 'Daily'), ('QUARTERLY', 'Every 3 months'), ('ANNUALLY', 'Annually')], help_text='The frequency at which the source updates the publication.'),
+            model_name="collection",
+            name="update_frequency",
+            field=models.TextField(
+                blank=True,
+                choices=[
+                    ("REAL_TIME", "Real time"),
+                    ("HOURLY", "Hourly"),
+                    ("DAILY", "Daily"),
+                    ("QUARTERLY", "Every 3 months"),
+                    ("ANNUALLY", "Annually"),
+                ],
+                help_text="The frequency at which the source updates the publication.",
+            ),
         ),
     ]

@@ -4,20 +4,23 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('data_registry', '0035_auto_20211115_1938'),
+        ("data_registry", "0035_auto_20211115_1938"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='collection',
-            name='csv_format',
+            model_name="collection",
+            name="csv_format",
             field=models.BooleanField(default=True),
         ),
         migrations.AlterField(
-            model_name='collection',
-            name='update_frequency',
-            field=models.TextField(blank=True, choices=[('MONTHLY', 'Monthly'), ('HALF_YEARLY', 'Every 6 months'), ('ANNUALLY', 'Annually')], help_text='The frequency at which the registry updates the publication, based on the frequency at which the publication is updated.'),
+            model_name="collection",
+            name="update_frequency",
+            field=models.TextField(
+                blank=True,
+                choices=[("MONTHLY", "Monthly"), ("HALF_YEARLY", "Every 6 months"), ("ANNUALLY", "Annually")],
+                help_text="The frequency at which the registry updates the publication, based on the frequency at which the publication is updated.",
+            ),
         ),
     ]

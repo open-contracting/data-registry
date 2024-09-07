@@ -4,11 +4,9 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('data_registry', '0043_collection_region'),
-        ('data_registry', '0044_alter_task_type'),
+        ("data_registry", "0043_collection_region"),
+        ("data_registry", "0044_alter_task_type"),
     ]
 
-    operations = [
-    ]
+    operations = []

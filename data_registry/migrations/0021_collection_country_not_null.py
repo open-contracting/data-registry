@@ -3,16 +3,15 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('data_registry', '0020_auto_20210525_1055'),
+        ("data_registry", "0020_auto_20210525_1055"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='collection',
-            name='country',
-            field=models.CharField(blank=False, max_length=2048, null=False, default='XX'),
+            model_name="collection",
+            name="country",
+            field=models.CharField(blank=False, max_length=2048, null=False, default="XX"),
             preserve_default=False,
         )
     ]

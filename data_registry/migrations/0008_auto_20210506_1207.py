@@ -4,30 +4,29 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('data_registry', '0007_auto_20210504_0825'),
+        ("data_registry", "0007_auto_20210504_0825"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='collection',
-            name='id',
-            field=models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
+            model_name="collection",
+            name="id",
+            field=models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID"),
         ),
         migrations.AlterField(
-            model_name='issue',
-            name='id',
-            field=models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
+            model_name="issue",
+            name="id",
+            field=models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID"),
         ),
         migrations.AlterField(
-            model_name='job',
-            name='id',
-            field=models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
+            model_name="job",
+            name="id",
+            field=models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID"),
         ),
         migrations.AlterField(
-            model_name='task',
-            name='id',
-            field=models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
+            model_name="task",
+            name="id",
+            field=models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID"),
         ),
     ]

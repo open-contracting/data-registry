@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("data_registry", "0045_merge_0043_collection_region_0044_alter_task_type"),
     ]

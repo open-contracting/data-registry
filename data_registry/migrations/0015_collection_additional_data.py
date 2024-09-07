@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('data_registry', '0014_auto_20210511_0902'),
+        ("data_registry", "0014_auto_20210511_0902"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='collection',
-            name='additional_data',
+            model_name="collection",
+            name="additional_data",
             field=models.TextField(blank=True, null=True),
         ),
     ]

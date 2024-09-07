@@ -4,35 +4,34 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('data_registry', '0013_auto_20210511_0846'),
+        ("data_registry", "0013_auto_20210511_0846"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='collection',
-            name='language',
+            model_name="collection",
+            name="language",
             field=models.CharField(blank=True, max_length=2048, null=True),
         ),
         migrations.AlterField(
-            model_name='collection',
-            name='ocds_label',
+            model_name="collection",
+            name="ocds_label",
             field=models.CharField(blank=True, max_length=2048, null=True),
         ),
         migrations.AlterField(
-            model_name='collection',
-            name='source_id',
+            model_name="collection",
+            name="source_id",
             field=models.CharField(max_length=2048),
         ),
         migrations.AlterField(
-            model_name='collection',
-            name='summary',
+            model_name="collection",
+            name="summary",
             field=models.TextField(blank=True, null=True),
         ),
         migrations.AlterField(
-            model_name='task',
-            name='note',
+            model_name="task",
+            name="note",
             field=models.TextField(blank=True, null=True),
         ),
     ]

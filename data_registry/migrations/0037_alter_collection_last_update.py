@@ -4,15 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('data_registry', '0036_auto_20220915_0214'),
+        ("data_registry", "0036_auto_20220915_0214"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='collection',
-            name='last_update',
-            field=models.DateField(blank=True, help_text="The date on which the most recent 'collect' job task completed.", null=True, verbose_name='last retrieved'),
+            model_name="collection",
+            name="last_update",
+            field=models.DateField(
+                blank=True,
+                help_text="The date on which the most recent 'collect' job task completed.",
+                null=True,
+                verbose_name="last retrieved",
+            ),
         ),
     ]

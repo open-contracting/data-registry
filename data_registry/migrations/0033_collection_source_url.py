@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('data_registry', '0032_auto_20210827_2224'),
+        ("data_registry", "0032_auto_20210827_2224"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='collection',
-            name='source_url',
-            field=models.TextField(blank=True, help_text='The URL of the publication.', verbose_name='source URL'),
+            model_name="collection",
+            name="source_url",
+            field=models.TextField(blank=True, help_text="The URL of the publication.", verbose_name="source URL"),
         ),
     ]

@@ -4,61 +4,64 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('data_registry', '0001_initial'),
+        ("data_registry", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='collection',
-            name='created',
+            model_name="collection",
+            name="created",
             field=models.DateTimeField(auto_now_add=True, db_index=True, null=True),
         ),
         migrations.AddField(
-            model_name='collection',
-            name='date_from',
+            model_name="collection",
+            name="date_from",
             field=models.DateField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='collection',
-            name='date_to',
+            model_name="collection",
+            name="date_to",
             field=models.DateField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='collection',
-            name='description',
+            model_name="collection",
+            name="description",
             field=models.TextField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='collection',
-            name='last_update',
+            model_name="collection",
+            name="last_update",
             field=models.DateField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='collection',
-            name='license',
+            model_name="collection",
+            name="license",
             field=models.CharField(blank=True, max_length=2048, null=True),
         ),
         migrations.AddField(
-            model_name='collection',
-            name='modified',
+            model_name="collection",
+            name="modified",
             field=models.DateTimeField(auto_now=True, db_index=True, null=True),
         ),
         migrations.AddField(
-            model_name='collection',
-            name='ocid_prefix',
+            model_name="collection",
+            name="ocid_prefix",
             field=models.CharField(blank=True, max_length=2048, null=True),
         ),
         migrations.AddField(
-            model_name='collection',
-            name='update_frequency',
-            field=models.CharField(blank=True, choices=[('MONTHLY', 'MONTHLY'), ('HALF_YEARLY', 'HALF_YEARLY'),
-                                                        ('ANNUALLY', 'ANNUALLY')], max_length=2048, null=True),
+            model_name="collection",
+            name="update_frequency",
+            field=models.CharField(
+                blank=True,
+                choices=[("MONTHLY", "MONTHLY"), ("HALF_YEARLY", "HALF_YEARLY"), ("ANNUALLY", "ANNUALLY")],
+                max_length=2048,
+                null=True,
+            ),
         ),
         migrations.AlterField(
-            model_name='collection',
-            name='country',
+            model_name="collection",
+            name="country",
             field=models.CharField(blank=True, max_length=2048, null=True),
         ),
     ]

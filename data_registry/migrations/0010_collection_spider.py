@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('data_registry', '0009_task_context'),
+        ("data_registry", "0009_task_context"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='collection',
-            name='spider',
+            model_name="collection",
+            name="spider",
             field=models.CharField(blank=True, max_length=2048, null=True),
         ),
     ]

@@ -4,15 +4,23 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('data_registry', '0043_alter_collection_update_frequency'),
+        ("data_registry", "0043_alter_collection_update_frequency"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='task',
-            name='type',
-            field=models.TextField(blank=True, choices=[('collect', 'Collect'), ('process', 'Process'), ('pelican', 'Pelican'), ('exporter', 'Exporter'), ('flattener', 'Flattener')]),
+            model_name="task",
+            name="type",
+            field=models.TextField(
+                blank=True,
+                choices=[
+                    ("collect", "Collect"),
+                    ("process", "Process"),
+                    ("pelican", "Pelican"),
+                    ("exporter", "Exporter"),
+                    ("flattener", "Flattener"),
+                ],
+            ),
         ),
     ]

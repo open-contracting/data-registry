@@ -54,8 +54,8 @@ def set_null_values_to_empty_strings(apps, schema_editor):
                     setattr(instance, field, "")
             instance.save()
 
-class Migration(migrations.Migration):
 
+class Migration(migrations.Migration):
     dependencies = [
         ("data_registry", "0030_alter_fields"),
     ]
