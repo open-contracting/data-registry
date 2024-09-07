@@ -47,7 +47,6 @@ def markdownify(content: str) -> str:
 
 # https://stackoverflow.com/a/38911383
 def partialclass(cls, *args, **kwargs):
-
     class NewCls(cls):
         __init__ = functools.partialmethod(cls.__init__, *args, **kwargs)
 
