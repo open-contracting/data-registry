@@ -7,7 +7,7 @@ line-length = 119
 target-version = "py311"
 
 [tool.ruff.lint]
-select = ["E", "F", "W"]
+select = ["E", "F", "I", "W"]
 
 [tool.coverage.run]
 omit = ['*/migrations/*']
