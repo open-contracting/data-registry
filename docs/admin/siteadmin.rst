@@ -77,7 +77,7 @@ A job's detail page:
 
 -  Displays the status, result and note (e.g. error messages) for each task, in the *Job tasks* section.
 
-   If a task's result is ``FAILED``, but :func:`~data_registry.process_manager.process` considers the failure to be :class:`temporary<data_registry.exceptions.RecoverableException>`, then the :ref:`cli-manageprocess` command retries the task until it succeeds or fails permanently. Read the *Note*, and judge whether the failure is permanent. If so, you can set the job's *Status* to *COMPLETED* to stop the retries. The :ref:`cli-manageprocess` command will then delete the job's temporary data. The next job will be scheduled according to the publication's retrieval status.
+   If a task's result is ``FAILED``, but :func:`~data_registry.process_manager.process` considers the failure to be :class:`temporary<data_registry.exceptions.RecoverableError>`, then the :ref:`cli-manageprocess` command retries the task until it succeeds or fails permanently. Read the *Note*, and judge whether the failure is permanent. If so, you can set the job's *Status* to *COMPLETED* to stop the retries. The :ref:`cli-manageprocess` command will then delete the job's temporary data. The next job will be scheduled according to the publication's retrieval status.
 
    .. attention::
 

@@ -2,7 +2,7 @@ import logging
 
 from django.core.management.base import BaseCommand
 
-from data_registry.exceptions import RecoverableException
+from data_registry.exceptions import RecoverableError
 from data_registry.models import Collection, Job
 from data_registry.process_manager import get_task_manager, process
 
@@ -23,7 +23,7 @@ class Command(BaseCommand):
                 if not task_manager.final_output:
                     try:
                         task_manager.wipe()
-                    except RecoverableException:
+                    except RecoverableError:
                         logger.exception("Recoverable exception when wiping task %s for job %s", task, job)
                         break
             else:

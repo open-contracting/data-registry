@@ -1,4 +1,4 @@
-def ContentEncodingMiddleware(get_response):
+def content_encoding_middleware(get_response):
     def middleware(request):
         response = get_response(request)
 

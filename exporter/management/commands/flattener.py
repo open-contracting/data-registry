@@ -110,7 +110,7 @@ def process_file(job_id, file_path):
     logger.debug("Done job_id=%s file_path=%s", job_id, file_path)
 
 
-def flatterer_flatten(file_path, infile, outdir, csv=False, xlsx=False, threads=0):
+def flatterer_flatten(file_path, infile, outdir, *, csv=False, xlsx=False, threads=0):
     """
     Convert the file from JSON to CSV and Excel.
 

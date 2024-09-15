@@ -112,9 +112,8 @@ def callback(state, channel, method, properties, input_message):
     for path, file in files.items():
         file.close()
 
-        with path.open("rb") as f_in:
-            with gzip.open(f"{path}.gz", "wb") as f_out:
-                shutil.copyfileobj(f_in, f_out)
+        with path.open("rb") as f_in, gzip.open(f"{path}.gz", "wb") as f_out:
+            shutil.copyfileobj(f_in, f_out)
         path.unlink()
 
     export.unlock()

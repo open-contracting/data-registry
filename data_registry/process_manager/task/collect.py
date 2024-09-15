@@ -6,7 +6,7 @@ import shutil
 from django.conf import settings
 from requests.exceptions import HTTPError
 
-from data_registry.exceptions import RecoverableException
+from data_registry.exceptions import ConfigurationError, RecoverableError, UnexpectedError
 from data_registry.models import Task
 from data_registry.process_manager.util import TaskManager, skip_if_not_started
 from data_registry.util import scrapyd_url
@@ -19,10 +19,10 @@ PROJECT = settings.SCRAPYD["project"]
 def scrapyd_data(response):
     data = response.json()
 
-    # *.json: {"node_name": "ocp42.open-contracting.org", "status": "error", "message": "..."}
-    # schedule.json: {"status": "error", "message": "spider 'nonexistent' not found"}
+    # *.json returns {"node_name": "ocp42.open-contracting.org", "status": "error", "message": "..."}
+    # schedule.json returns {"status": "error", "message": "spider 'nonexistent' not found"}
     if data["status"] == "error":
-        raise Exception(repr(data))
+        raise UnexpectedError(repr(data))
 
     return data
 
@@ -34,9 +34,9 @@ class Collect(TaskManager):
         super().__init__(task)
 
         if not settings.SCRAPYD["url"]:
-            raise Exception("SCRAPYD_URL is not set")
+            raise ConfigurationError("SCRAPYD_URL is not set")
         if not settings.SCRAPYD["project"]:
-            raise Exception("SCRAPYD_PROJECT is not set")
+            raise ConfigurationError("SCRAPYD_PROJECT is not set")
 
         self.spider = task.job.collection.source_id
 
@@ -81,10 +81,10 @@ class Collect(TaskManager):
         if "process_id" not in self.job.context:
             try:
                 response = self.request("get", scrapy_log_url, error_message="Unable to read Scrapy log")
-            except RecoverableException as e:
+            except RecoverableError as e:
                 # If the log file doesn't exist, the job can't continue.
                 if isinstance(e.__cause__, HTTPError) and e.__cause__.response.status_code == 404:
-                    raise Exception("Scrapy log doesn't exist") from e
+                    raise UnexpectedError("Scrapy log doesn't exist") from e
                 raise
 
             # Must match
@@ -100,11 +100,11 @@ class Collect(TaskManager):
         if any(j["id"] == scrapyd_job_id for j in data["finished"]):
             # If the collection ID or data version was irretrievable, the job can't continue.
             if "process_id" not in self.job.context or "data_version" not in self.job.context:
-                raise Exception("Unable to retrieve collection ID and data version from Scrapy log")
+                raise UnexpectedError("Unable to retrieve collection ID and data version from Scrapy log")
 
             return Task.Status.COMPLETED
 
-        raise RecoverableException(f"Unable to find status of Scrapyd job {scrapyd_job_id}")
+        raise RecoverableError(f"Unable to find status of Scrapyd job {scrapyd_job_id}")
 
     @skip_if_not_started
     def wipe(self):
@@ -155,5 +155,5 @@ class Collect(TaskManager):
                 with os.scandir(spider_path) as it:
                     if not any(it):
                         os.rmdir(spider_path)
-            except OSError:
-                raise RecoverableException(f"Unable to wipe the Scrapyd job {scrapyd_job_id} at {crawl_path}")
+            except OSError as e:
+                raise RecoverableError(f"Unable to wipe the Scrapyd job {scrapyd_job_id} at {crawl_path}") from e

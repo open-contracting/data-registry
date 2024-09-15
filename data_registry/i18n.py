@@ -26,9 +26,8 @@ def set_language(request):
     response = HttpResponseRedirect(next_url) if next_url else HttpResponse(status=204)
     if request.method == "POST":
         lang_code = request.POST.get("language")
-        if lang_code and check_for_language(lang_code):
-            if next_url:
-                next_trans = translate_url(next_url, lang_code)
-                if next_trans != next_url:
-                    response = HttpResponseRedirect(next_trans)
+        if lang_code and check_for_language(lang_code) and next_url:
+            next_trans = translate_url(next_url, lang_code)
+            if next_trans != next_url:
+                response = HttpResponseRedirect(next_trans)
     return response

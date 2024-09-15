@@ -2,7 +2,15 @@ class DataRegistryError(Exception):
     """Base class for exceptions from within this module"""
 
 
-class RecoverableException(DataRegistryError):
+class ConfigurationError(DataRegistryError):
+    """Raised if the project is misconfigured."""
+
+
+class UnexpectedError(DataRegistryError):
+    """Raised if the failure is unexpected."""
+
+
+class RecoverableError(DataRegistryError):
     """Raised if the failure is expected to be temporary."""
 
 

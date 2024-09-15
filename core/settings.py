@@ -36,7 +36,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", "72icl@l(^0qr$9z-5od3ooo&7qw0d4199k3(&kl+%y
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = not production
 
-ALLOWED_HOSTS = [".localhost", "127.0.0.1", "[::1]", "0.0.0.0"]
+ALLOWED_HOSTS = [".localhost", "127.0.0.1", "[::1]", "0.0.0.0"]  # noqa: S104 # Docker
 if "ALLOWED_HOSTS" in os.environ:
     ALLOWED_HOSTS.extend(os.getenv("ALLOWED_HOSTS").split(","))
 
@@ -61,7 +61,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     # Add before GZipMiddleware to modify its response.
-    "data_registry.middleware.ContentEncodingMiddleware",
+    "data_registry.middleware.content_encoding_middleware",
     # This site is not affected by BREACH.
     # https://docs.djangoproject.com/en/4.2/ref/middleware/#django.middleware.gzip.GZipMiddleware
     "django.middleware.gzip.GZipMiddleware",

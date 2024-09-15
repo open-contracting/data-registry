@@ -15,7 +15,7 @@ from django.utils.translation import gettext_lazy as _
 from markdownx.widgets import AdminMarkdownxWidget
 from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, TranslationTabularInline
 
-from data_registry.exceptions import RecoverableException
+from data_registry.exceptions import RecoverableError
 from data_registry.models import Collection, Issue, Job, License, Task
 from data_registry.util import partialclass, scrapyd_url
 
@@ -33,14 +33,14 @@ class CascadeTaskMixin:
     def delete_queryset(self, request, queryset):
         try:
             super().delete_queryset(request, queryset)
-        except RecoverableException as e:
+        except RecoverableError as e:
             messages.set_level(request, messages.WARNING)
             messages.error(request, f"Recoverable exception when wiping task: '{e}'. Please try again.")
 
     def delete_model(self, request, obj):
         try:
             super().delete_model(request, obj)
-        except RecoverableException as e:
+        except RecoverableError as e:
             messages.set_level(request, messages.WARNING)
             messages.error(request, f"Recoverable exception when wiping task {obj}: '{e}'. Please try again.")
 
@@ -72,7 +72,7 @@ class CollectionAdminForm(forms.ModelForm):
         if settings.SCRAPYD["url"]:
             try:
                 response = requests.get(
-                    scrapyd_url("listspiders.json"), params={"project": settings.SCRAPYD["project"]}
+                    scrapyd_url("listspiders.json"), params={"project": settings.SCRAPYD["project"]}, timeout=10
                 )
                 response.raise_for_status()
                 data = response.json()
@@ -129,6 +129,7 @@ class UnavailableFilter(admin.SimpleListFilter):
         if self.value() == "1":
             active_jobs = Job.objects.active().filter(collection=OuterRef("pk"))
             return queryset.exclude(Exists(active_jobs))
+        return None
 
 
 class IncompleteFilter(admin.SimpleListFilter):
@@ -150,6 +151,7 @@ class IncompleteFilter(admin.SimpleListFilter):
                 | Q(retrieval_frequency="")
                 | Q(additional_data_en="")
             )
+        return None
 
 
 class UntranslatedFilter(admin.SimpleListFilter):
@@ -171,6 +173,7 @@ class UntranslatedFilter(admin.SimpleListFilter):
                 | (~Q(summary_en="") & Q(summary_es=""))
                 | (~Q(additional_data_en="") & Q(additional_data_es=""))
             )
+        return None
 
 
 class CustomDateFieldListFilter(admin.DateFieldListFilter):
@@ -400,6 +403,7 @@ class FailedFilter(admin.SimpleListFilter):
                 result=Task.Result.FAILED,
             )
             return queryset.filter(Exists(failed_tasks))
+        return None
 
 
 class TaskInLine(admin.TabularInline):

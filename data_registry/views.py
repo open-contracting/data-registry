@@ -39,7 +39,7 @@ def search(request):
     letter AND date_range AND (frequency₁ OR frequency₂ OR …) AND parties_count AND plannings_count AND …
     """
 
-    def without_filter(qs, key="!", args=True):
+    def without_filter(qs, key="!", *, args=True):
         for lookup, value in exclude.items():
             if not lookup.startswith(key):
                 qs = qs.exclude(**{lookup: value})
@@ -181,7 +181,7 @@ def download_export(request, pk):
         export.path.open("rb"),
         as_attachment=True,
         filename=f"{collection.source_id}_{name}",
-        # Set Content-Encoding to skip GZipMiddleware. (ContentEncodingMiddleware removes the empty header.)
+        # Set Content-Encoding to skip GZipMiddleware. (content_encoding_middleware removes the empty header.)
         # https://docs.djangoproject.com/en/4.2/ref/middleware/#module-django.middleware.gzip
         headers={"Content-Encoding": ""},
     )
@@ -274,6 +274,7 @@ def excel_data(request, job_id, job_range=None):
         body,
         headers=headers,
         auth=(settings.SPOONBILL_API_USERNAME, settings.SPOONBILL_API_PASSWORD),
+        timeout=10,
     )
 
     logger.info(

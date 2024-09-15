@@ -133,8 +133,8 @@ class Export:
         try:
             with self.lockfile.open("x"):
                 pass
-        except FileExistsError:
-            raise LockFileError(self.lockfile.stat().st_mtime)
+        except FileExistsError as e:
+            raise LockFileError(self.lockfile.stat().st_mtime) from e
 
     def unlock(self) -> None:
         """

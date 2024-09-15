@@ -6,7 +6,7 @@ import requests
 from requests.exceptions import RequestException
 
 from data_registry import models
-from data_registry.exceptions import RecoverableException
+from data_registry.exceptions import RecoverableError
 from exporter.util import TaskStatus
 
 logger = logging.getLogger(__name__)
@@ -77,16 +77,16 @@ class TaskManager(ABC):
     def request(self, method, url, *, error_message, **kwargs):
         """
         Send a request to an application. If the application returns an error response or is temporarily unavailable,
-        raise :class:`~data_registry.exceptions.RecoverableException`.
+        raise :class:`~data_registry.exceptions.RecoverableError`.
 
-        :raises RecoverableException:
+        :raises RecoverableError:
         """
         try:
-            response = requests.request(method, url, **kwargs)
+            response = requests.request(method, url, **kwargs, timeout=10)
             response.raise_for_status()
-            return response
         except RequestException as e:
-            raise RecoverableException(f"{self}: {error_message} ({url})") from e
+            raise RecoverableError(f"{self}: {error_message} ({url})") from e
+        return response
 
     @abstractmethod
     def run(self) -> None:
@@ -95,7 +95,7 @@ class TaskManager(ABC):
 
         This method is called once.
 
-        :raises RecoverableException:
+        :raises RecoverableError:
         """
 
     @abstractmethod
@@ -108,7 +108,7 @@ class TaskManager(ABC):
         This method can write metadata about the task to the job. Since this method can be called many times, write
         metadata only when the metadata is missing or when the task is complete.
 
-        :raises RecoverableException:
+        :raises RecoverableError:
         """
 
     @abstractmethod
@@ -120,7 +120,7 @@ class TaskManager(ABC):
 
         This method must be idempotent. It is retried if any task failed to be wiped.
 
-        :raises RecoverableException:
+        :raises RecoverableError:
         """
 
     def __str__(self):

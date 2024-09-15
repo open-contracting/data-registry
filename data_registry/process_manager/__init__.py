@@ -5,7 +5,7 @@ from django.db import transaction
 from django.db.models import BooleanField, Case, When
 
 from data_registry import models
-from data_registry.exceptions import IrrecoverableError, RecoverableException
+from data_registry.exceptions import IrrecoverableError, RecoverableError
 from data_registry.process_manager.task.collect import Collect
 from data_registry.process_manager.task.exporter import Exporter
 from data_registry.process_manager.task.flattener import Flattener
@@ -32,7 +32,7 @@ def get_task_manager(task: models.Task) -> TaskManager:
         case models.Task.Type.FLATTENER:
             return Flattener(task)
         case _:
-            raise Exception("Unsupported task type")
+            raise NotImplementedError
 
 
 def process(collection: models.Collection) -> None:
@@ -92,7 +92,7 @@ def process(collection: models.Collection) -> None:
                                     task.complete(result=models.Task.Result.OK)
 
                                     # Do not break! Go onto the next task.
-                except RecoverableException as e:
+                except RecoverableError as e:
                     logger.exception("Recoverable exception during task %s (%s: %s)", task, country, collection)
                     task.progress(result=models.Task.Result.FAILED, note=str(e))  # The application is not responding.
 

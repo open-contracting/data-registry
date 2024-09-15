@@ -116,6 +116,12 @@ class Job(models.Model):
 
     objects = JobQuerySet.as_manager()
 
+    def __str__(self):
+        return f"{format_datetime(self.start)} .. {format_datetime(self.end)} ({self.id})"
+
+    def __repr__(self):
+        return f"{self.collection!r}: {self}"
+
     def initiate(self):
         """
         Mark the job as started.
@@ -132,12 +138,6 @@ class Job(models.Model):
         self.status = Job.Status.COMPLETED
         self.save()
 
-    def __str__(self):
-        return f"{format_datetime(self.start)} .. {format_datetime(self.end)} ({self.id})"
-
-    def __repr__(self):
-        return f"{repr(self.collection)}: {self}"
-
 
 class CollectionQuerySet(models.QuerySet):
     def visible(self):
@@ -150,9 +150,6 @@ class CollectionQuerySet(models.QuerySet):
 
 
 class Collection(models.Model):
-    class Meta:
-        verbose_name = "publication"
-
     title = models.TextField(
         help_text='The name of the publication, following the <a href="https://docs.google.com/document/d/'
         '14ZXlAB6GWeK4xwDUt9HGi0fTew4BahjZQ2owdLLVp6I/edit#heading=h.t81hzvffylry">naming conventions</a>, '
@@ -303,6 +300,15 @@ class Collection(models.Model):
 
     objects = CollectionQuerySet.as_manager()
 
+    class Meta:
+        verbose_name = "publication"
+
+    def __str__(self):
+        return f"{self.title} ({self.id})"
+
+    def __repr__(self):
+        return f"{self.country}: {self}"
+
     @property
     def active_job(self):
         return self.job_set.active().first()
@@ -337,17 +343,8 @@ class Collection(models.Model):
 
         return date.today() >= (most_recent_job.start + timedelta(days=days)).date()
 
-    def __str__(self):
-        return f"{self.title} ({self.id})"
-
-    def __repr__(self):
-        return f"{self.country}: {self}"
-
 
 class License(models.Model):
-    class Meta:
-        verbose_name = "data license"
-
     name = models.TextField(blank=True, help_text="The official name of the license.")
     description = MarkdownxField(
         blank=True,
@@ -358,25 +355,25 @@ class License(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        verbose_name = "data license"
+
     def __str__(self):
         return f"{self.name} ({self.id})"
 
 
 class Issue(models.Model):
-    class Meta:
-        verbose_name = "quality issue"
-
     description = MarkdownxField(help_text="A one-line description of the quality issue, as Markdown text.")
     collection = models.ForeignKey("Collection", on_delete=models.CASCADE, db_index=True)
 
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        verbose_name = "quality issue"
+
 
 class Task(models.Model):
-    class Meta:
-        verbose_name = "job task"
-
     job = models.ForeignKey("Job", on_delete=models.CASCADE, db_index=True)
     start = models.DateTimeField(blank=True, null=True)
     end = models.DateTimeField(blank=True, null=True)
@@ -422,6 +419,12 @@ class Task(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        verbose_name = "job task"
+
+    def __str__(self):
+        return f"#{self.id}({self.type})"
+
     def initiate(self):
         """
         Mark the task as started.
@@ -447,6 +450,3 @@ class Task(models.Model):
         self.result = result
         self.note = note
         self.save()
-
-    def __str__(self):
-        return f"#{self.id}({self.type})"

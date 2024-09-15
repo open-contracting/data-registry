@@ -86,7 +86,7 @@ class Pelican(TaskManager):
         }
         for key, value in mapping.items():
             setattr(self.job, key, counts.get(value))
-        self.job.save(update_fields=["modified"] + list(mapping))
+        self.job.save(update_fields=["modified", *mapping])
 
         return Task.Status.COMPLETED
 
