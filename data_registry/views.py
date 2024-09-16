@@ -34,6 +34,8 @@ def index(request):
 
 def search(request):
     """
+    Search publications.
+
     The filter logic is:
 
     letter AND date_range AND (frequency₁ OR frequency₂ OR …) AND parties_count AND plannings_count AND …
@@ -284,9 +286,9 @@ def excel_data(request, job_id, job_range=None):
         response.status_code,
     )
 
-    if response.status_code > 201 or "id" not in response.json():
+    if response.status_code > requests.codes.created or "id" not in response.json():
         logger.error("Invalid response from spoonbill %s.", response.text)
-        return HttpResponse(status=500)
+        return HttpResponse(status=requests.codes.internal_server_error)
 
     params = urlencode({"lang": language, "url": response.json()["id"]})
     return redirect(urljoin(settings.SPOONBILL_URL, f"/#/upload-file?{params}"))

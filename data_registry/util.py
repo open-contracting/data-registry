@@ -27,9 +27,7 @@ def collection_queryset(request):
 
 # https://markdown-it-py.readthedocs.io/en/latest/using.html#renderers
 def render_blank_link(self, tokens, idx, options, env) -> str:
-    """
-    Set the link to open in a new tab.
-    """
+    """Set the link to open in a new tab."""
     tokens[idx].attrSet("target", "_blank")
     return self.renderToken(tokens, idx, options, env)
 

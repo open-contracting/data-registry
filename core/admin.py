@@ -6,9 +6,7 @@ class CoreAdminSite(admin.AdminSite):
     site_title = "Data registry administration"
 
     def get_app_list(self, request):
-        """
-        Sorts the data registry's models in a logical order.
-        """
+        """Sorts the data registry's models in a logical order."""
         order = [
             "Collection",
             "Issue",

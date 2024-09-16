@@ -127,9 +127,7 @@ class Export:
         return self.directory / f"exporter_{self.basename}.lock"
 
     def lock(self) -> None:
-        """
-        Create the lock file.
-        """
+        """Create the lock file."""
         try:
             with self.lockfile.open("x"):
                 pass
@@ -137,37 +135,27 @@ class Export:
             raise LockFileError(self.lockfile.stat().st_mtime) from e
 
     def unlock(self) -> None:
-        """
-        Delete the lock file.
-        """
+        """Delete the lock file."""
         self.lockfile.unlink(missing_ok=True)
 
     def remove(self):
-        """
-        Delete the export directory recursively.
-        """
+        """Delete the export directory recursively."""
         if self.directory.exists():
             shutil.rmtree(self.directory)
 
     @property
     def running(self) -> bool:
-        """
-        Return whether the output file is being written.
-        """
+        """Return whether the output file is being written."""
         return self.lockfile.exists()
 
     @property
     def completed(self) -> bool:
-        """
-        Return whether the output file has been written.
-        """
+        """Return whether the output file has been written."""
         return self.path.exists()
 
     @property
     def status(self) -> Literal["RUNNING", "COMPLETED", "WAITING"]:
-        """
-        Return the status of the export.
-        """
+        """Return the status of the export."""
         if self.running:
             return TaskStatus.RUNNING
         if self.completed:
@@ -176,9 +164,7 @@ class Export:
 
     @property
     def files(self) -> dict:
-        """
-        Return all the available file formats and segments (by year or full).
-        """
+        """Return all the available file formats and segments (by year or full)."""
         files = self.default_files()
 
         for path in self.iterdir():
@@ -194,16 +180,12 @@ class Export:
         return files
 
     def iterdir(self):
-        """
-        Yield path objects of the directory contents.
-        """
+        """Yield path objects of the directory contents."""
         if self.directory.exists():
             yield from self.directory.iterdir()
 
     def get_convertible_paths(self):
-        """
-        Yield paths to ``.jsonl.gz`` files.
-        """
+        """Yield paths to ``.jsonl.gz`` files."""
         for path in self.iterdir():
             if path.name.endswith(".jsonl.gz") and "_" not in path.name:  # don't process YYYY_MM files
                 yield path

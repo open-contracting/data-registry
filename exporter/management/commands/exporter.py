@@ -41,7 +41,7 @@ def callback(state, channel, method, properties, input_message):
 
     export.lock()
 
-    id = 0
+    data_id = 0
     page = 1
     files = {}
 
@@ -50,7 +50,7 @@ def callback(state, channel, method, properties, input_message):
 
     while True:
         with connections["kingfisher_process"].cursor() as cursor:
-            logger.debug("Processing page %s with id > %s", page, id)
+            logger.debug("Processing page %s with data.id > %s", page, data_id)
             cursor.execute(
                 """
                     SELECT d.id, d.data, d.data->>'date'
@@ -61,7 +61,7 @@ def callback(state, channel, method, properties, input_message):
                     ORDER BY d.id
                     LIMIT %s
                 """,
-                [collection_id, id, settings.EXPORTER_PAGE_SIZE],
+                [collection_id, data_id, settings.EXPORTER_PAGE_SIZE],
             )
 
             records = cursor.fetchall()
@@ -73,7 +73,7 @@ def callback(state, channel, method, properties, input_message):
             files[dump_file] = full
 
             for r in records:
-                id = r[0]
+                data_id = r[0]
 
                 full.write(r[1])
                 full.write("\n")

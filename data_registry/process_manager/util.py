@@ -24,7 +24,7 @@ def exporter_status_to_task_status(status: TaskStatus) -> models.Task.Status:
 
 def skip_if_not_started(method):
     """
-    A decorator to return early from a :meth:`~data_registry.process_manager.util.TaskManager.wipe` method if the task
+    Decorate a :meth:`~data_registry.process_manager.util.TaskManager.wipe` method to return early if the task
     hadn't started.
     """
 
@@ -40,9 +40,7 @@ def skip_if_not_started(method):
 
 
 class TaskManager(ABC):
-    """
-    Task managers should only update the :class:`~data_registry.models.Job` context and metadata fields.
-    """
+    """Task managers should only update the :class:`~data_registry.models.Job` context and metadata fields."""
 
     def __init__(self, task: models.Task):
         """
@@ -55,28 +53,24 @@ class TaskManager(ABC):
 
     @property
     def job(self) -> models.Job:
-        """
-        The job of which the task is a part.
-        """
+        """The job of which the task is a part."""
         return self.task.job
 
     @property
     def collection(self) -> models.Collection:
-        """
-        The publication on which the task is performed.
-        """
+        """The publication on which the task is performed."""
         return self.task.job.collection
 
     @property
     @abstractmethod
     def final_output(self) -> bool:
-        """
-        Whether the task produces a final output, like a bulk download.
-        """
+        """Whether the task produces a final output, like a bulk download."""
 
     def request(self, method, url, *, error_message, **kwargs):
         """
-        Send a request to an application. If the application returns an error response or is temporarily unavailable,
+        Send a request to an application.
+
+        If the application returns an error response or is temporarily unavailable,
         raise :class:`~data_registry.exceptions.RecoverableError`.
 
         :raises RecoverableError:

@@ -80,9 +80,7 @@ def translate_url(context, language):
 
 @register.simple_tag(takes_context=True)
 def redirect_to(context):
-    """
-    Remove the ``letter`` query string parameter, to avoid zero results in the new language.
-    """
+    """Remove the ``letter`` query string parameter, to avoid zero results in the new language."""
     request = context["request"]
     if "letter" in request.GET:
         return request.build_absolute_uri(f"{request.path}?{remove_query_string_parameter(context, 'letter')}")

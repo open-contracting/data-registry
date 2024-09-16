@@ -14,21 +14,15 @@ def format_datetime(dt):
 
 class JobQuerySet(models.QuerySet):
     def active(self):
-        """
-        Return a query set of active jobs.
-        """
+        """Return a query set of active jobs."""
         return self.filter(active=True)
 
     def complete(self):
-        """
-        Return a query set of complete jobs.
-        """
+        """Return a query set of complete jobs."""
         return self.filter(status=Job.Status.COMPLETED)
 
     def incomplete(self):
-        """
-        Return a query set of incomplete jobs.
-        """
+        """Return a query set of incomplete jobs."""
         return self.exclude(status=Job.Status.COMPLETED)
 
 
@@ -123,17 +117,13 @@ class Job(models.Model):
         return f"{self.collection!r}: {self}"
 
     def initiate(self):
-        """
-        Mark the job as started.
-        """
+        """Mark the job as started."""
         self.start = Now()
         self.status = Job.Status.RUNNING
         self.save()
 
     def complete(self):
-        """
-        Mark the job as ended.
-        """
+        """Mark the job as ended."""
         self.end = Now()
         self.status = Job.Status.COMPLETED
         self.save()
@@ -141,9 +131,7 @@ class Job(models.Model):
 
 class CollectionQuerySet(models.QuerySet):
     def visible(self):
-        """
-        Return a query set of public collections with active jobs.
-        """
+        """Return a query set of public collections with active jobs."""
         # https://docs.djangoproject.com/en/4.2/ref/models/expressions/#some-examples
         active_jobs = Job.objects.active().filter(collection=models.OuterRef("pk"))
         return self.filter(models.Exists(active_jobs), public=True)
@@ -315,6 +303,8 @@ class Collection(models.Model):
 
     def is_out_of_date(self):
         """
+        Return whether the publication is out-of-date.
+
         A publication is out-of-date if it isn't frozen and has a retrieval frequency other than "never", and either
         has never been scheduled or was last scheduled longer ago than the retrieval frequency.
         """
@@ -372,6 +362,9 @@ class Issue(models.Model):
     class Meta:
         verbose_name = "quality issue"
 
+    def __str__(self):
+        return f"{self.description[:32]} ({self.id})"
+
 
 class Task(models.Model):
     job = models.ForeignKey("Job", on_delete=models.CASCADE, db_index=True)
@@ -426,25 +419,19 @@ class Task(models.Model):
         return f"#{self.id}({self.type})"
 
     def initiate(self):
-        """
-        Mark the task as started.
-        """
+        """Mark the task as started."""
         self.start = Now()
         self.status = Task.Status.RUNNING
         self.save()
 
     def progress(self, *, result="", note=""):
-        """
-        Update the task's progress. If called without arguments, reset the task's progress.
-        """
+        """Update the task's progress. If called without arguments, reset the task's progress."""
         self.result = result
         self.note = note
         self.save()
 
     def complete(self, *, result, note=""):
-        """
-        Mark the task as ended.
-        """
+        """Mark the task as ended."""
         self.end = Now()
         self.status = Task.Status.COMPLETED
         self.result = result

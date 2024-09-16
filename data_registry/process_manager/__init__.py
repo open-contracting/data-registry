@@ -17,9 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 def get_task_manager(task: models.Task) -> TaskManager:
-    """
-    Instantiate and return a task manager for the task.
-    """
+    """Instantiate and return a task manager for the task."""
     match task.type:
         case models.Task.Type.COLLECT:
             return Collect(task)

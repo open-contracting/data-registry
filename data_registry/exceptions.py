@@ -1,5 +1,5 @@
 class DataRegistryError(Exception):
-    """Base class for exceptions from within this module"""
+    """Base class for exceptions from within this module."""
 
 
 class ConfigurationError(DataRegistryError):
