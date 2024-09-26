@@ -104,7 +104,8 @@ def search(request):
         filter_kwargs["region__in"] = request.GET.getlist("region")
     if "counts" in request.GET:
         for count in request.GET.getlist("counts"):
-            exclude[count] = 0
+            if count in counts:
+                exclude[count] = 0
 
     facets = {
         "letters": dict.fromkeys(alphabets[language_code], 0),
