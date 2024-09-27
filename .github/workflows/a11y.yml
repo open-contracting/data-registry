@@ -38,7 +38,7 @@ jobs:
       - run: npx pa11y-ci -c pa11y.mobile.json -s http://127.0.0.1:8000/sitemap.xml
     services:
       postgres:
-        image: postgres:12
+        image: postgres:16
         env:
           POSTGRES_PASSWORD: postgres
         options: >-
