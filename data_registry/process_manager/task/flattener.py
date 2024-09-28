@@ -7,8 +7,7 @@ class Flattener(TaskManager):
     final_output = True
 
     def get_exports(self):
-        export = Export(self.job.id)
-        for path in export.get_convertible_paths():
+        for path in Export(self.job.id).get_convertible_paths():
             yield Export(self.job.id, basename=f"{path.name[:-9]}.csv.tar.gz")  # remove .jsonl.gz
 
     def run(self):
