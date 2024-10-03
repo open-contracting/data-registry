@@ -76,7 +76,7 @@ class TaskManager(ABC):
         :raises RecoverableError:
         """
         try:
-            response = requests.request(method, url, **kwargs, timeout=10)
+            response = requests.request(method, url, **kwargs, timeout=30)
             response.raise_for_status()
         except RequestException as e:
             raise RecoverableError(f"{self}: {error_message} ({url})") from e
