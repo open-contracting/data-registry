@@ -53,12 +53,18 @@ def callback(state, channel, method, properties, input_message):
             logger.debug("Processing page %s with data.id > %s", page, data_id)
             cursor.execute(
                 """
-                    SELECT d.id, d.data, d.data->>'date'
-                    FROM compiled_release c
-                    JOIN data d ON (c.data_id = d.id)
-                    WHERE collection_id = %s
-                    AND d.id > %s
-                    ORDER BY d.id
+                    SELECT
+                        data.id,
+                        data,
+                        data ->> 'date'
+                    FROM
+                        compiled_release
+                        JOIN data ON data.id = data_id
+                    WHERE
+                        collection_id = %s
+                        AND data.id > %s
+                    ORDER BY
+                        data.id
                     LIMIT %s
                 """,
                 [collection_id, data_id, settings.EXPORTER_PAGE_SIZE],
