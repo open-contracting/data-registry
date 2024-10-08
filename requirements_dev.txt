@@ -21,7 +21,7 @@ coverage==6.5.0
     # via -r requirements_dev.in
 dj-database-url==2.0.0
     # via -r requirements.txt
-django==4.2.15
+django==4.2.16
     # via
     #   -r requirements.txt
     #   dj-database-url
@@ -33,7 +33,7 @@ django-modeltranslation==0.18.10
     # via -r requirements.txt
 flatterer==0.19.16
     # via -r requirements.txt
-gunicorn==22.0.0
+gunicorn[setproctitle]==22.0.0
     # via -r requirements.txt
 idna==3.7
     # via
@@ -61,6 +61,7 @@ orjson==3.9.15
     # via
     #   -r requirements.txt
     #   flatterer
+    #   yapw
 packaging==24.0
     # via
     #   -r requirements.txt
@@ -94,7 +95,9 @@ requests==2.32.3
 sentry-sdk==2.8.0
     # via -r requirements.txt
 setproctitle==1.2.2
-    # via -r requirements.txt
+    # via
+    #   -r requirements.txt
+    #   gunicorn
 six==1.16.0
     # via
     #   -r requirements.txt
@@ -113,5 +116,5 @@ urllib3==2.2.2
     #   -r requirements.txt
     #   requests
     #   sentry-sdk
-yapw==0.1.4
+yapw[perf]==0.1.4
     # via -r requirements.txt
