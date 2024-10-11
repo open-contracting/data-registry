@@ -5,7 +5,6 @@ import shutil
 
 import requests
 from django.conf import settings
-from requests.exceptions import HTTPError
 
 from data_registry.exceptions import ConfigurationError, RecoverableError, UnexpectedError
 from data_registry.models import Task
@@ -84,7 +83,10 @@ class Collect(TaskManager):
                 response = self.request("get", scrapy_log_url, error_message="Unable to read Scrapy log")
             except RecoverableError as e:
                 # If the log file doesn't exist, the job can't continue.
-                if isinstance(e.__cause__, HTTPError) and e.__cause__.response.status_code == requests.codes.not_found:
+                if (
+                    isinstance(e.__cause__, requests.HTTPError)
+                    and e.__cause__.response.status_code == requests.codes.not_found
+                ):
                     raise UnexpectedError("Scrapy log doesn't exist") from e
                 raise
 

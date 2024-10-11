@@ -80,7 +80,7 @@ class CollectionAdminForm(forms.ModelForm):
                     choices += tuple((n, n) for n in data["spiders"])
                 else:
                     messages.warning(request, f"Couldn't populate Source ID, because Scrapyd returned error: {data!r}")
-            except requests.exceptions.ConnectionError as e:
+            except requests.ConnectionError as e:
                 messages.warning(request, f"Couldn't populate Source ID, because Scrapyd connection failed: {e}")
         else:
             messages.warning(request, "Couldn't populate Source ID, because Scrapyd is not configured.")

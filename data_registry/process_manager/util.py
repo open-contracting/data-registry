@@ -3,7 +3,6 @@ import logging
 from abc import ABC, abstractmethod
 
 import requests
-from requests.exceptions import RequestException
 
 from data_registry import models
 from data_registry.exceptions import RecoverableError
@@ -78,7 +77,7 @@ class TaskManager(ABC):
         try:
             response = requests.request(method, url, **kwargs, timeout=7200)  # 2h, until performance issues resolved
             response.raise_for_status()
-        except RequestException as e:
+        except requests.RequestException as e:
             raise RecoverableError(f"{self}: {error_message} ({url})") from e
         return response
 
