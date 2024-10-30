@@ -292,10 +292,11 @@ And, re-publish the messages, using the Django `shell <https://docs.djangoprojec
 Unpublish or freeze a publication
 ---------------------------------
 
-A publication is frozen if:
+A publication is frozen if the source is temporarily broken or otherwise unavailable. Unfreeze the publication when the source is fixed.
 
--  The spider is `removed from Kingfisher Collect <https://kingfisher-collect.readthedocs.io/en/latest/history.html>`__. The publication will never be updated.
--  The source is temporarily broken or otherwise unavailable. Unfreeze the publication when the source is fixed.
+.. note::
+
+   If the publication is no longer updated, or the spider is `removed from Kingfisher Collect <https://kingfisher-collect.readthedocs.io/en/latest/history.html>`__, set the retrieval frequency to ``NEVER``, instead of freezing the publication.
 
 #. `Find the publication <https://data.open-contracting.org/admin/data_registry/collection/>`__
 #. Uncheck *Public*, to hide the publication
