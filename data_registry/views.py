@@ -220,7 +220,11 @@ def publications_api(request):
         )
     )
     return JsonResponse(
-        list(publications), safe=False, json_dumps_params={"ensure_ascii": False, "separators": (",", ":")}
+        list(publications),
+        safe=False,  # safe=True requires dict
+        json_dumps_params={"ensure_ascii": False, "separators": (",", ":")},
+        content_type="application/json; charset=utf-8",  # some browsers assume incorrect charset
+        headers={"Access-Control-Allow-Origin": "*"},
     )
 
 
