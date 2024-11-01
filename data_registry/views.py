@@ -57,13 +57,16 @@ def search(request):
 
     date_ranges = {
         "": _("All"),
-        "1Y": _("Past year"),
+        "1M": _("Past month"),
         "6M": _("Past 6 months"),
+        "1Y": _("Past year"),
+        "5Y": _("Past 5 years"),
     }
-
     date_limits = {
+        "1M": now - timedelta(days=30),
+        "6M": now - timedelta(days=180),
         "1Y": now - timedelta(days=365),
-        "6M": now - timedelta(days=183),
+        "5Y": now - timedelta(days=1825),
     }
 
     counts = {

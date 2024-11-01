@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-19 16:11+0000\n"
+"POT-Creation-Date: 2024-11-01 21:44+0000\n"
 "PO-Revision-Date: 2021-08-04 17:44+0000\n"
 "Last-Translator: Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2023\n"
 "Language-Team: Russian (https://app.transifex.com/open-contracting-"
@@ -38,113 +38,113 @@ msgstr ""
 msgid "no active job"
 msgstr "недоступен"
 
-#: data_registry/admin.py:126 data_registry/admin.py:140
-#: data_registry/admin.py:161 data_registry/admin.py:392
+#: data_registry/admin.py:126 data_registry/admin.py:141
+#: data_registry/admin.py:163 data_registry/admin.py:395
 msgid "Yes"
 msgstr "Да"
 
-#: data_registry/admin.py:135
+#: data_registry/admin.py:136
 msgid "incomplete"
 msgstr "неполный"
 
-#: data_registry/admin.py:156
+#: data_registry/admin.py:158
 msgid "untranslated"
 msgstr "непереведенный"
 
-#: data_registry/admin.py:191
+#: data_registry/admin.py:194
 msgid "Previous year"
 msgstr "Предыдущий год"
 
-#: data_registry/admin.py:198
+#: data_registry/admin.py:201
 msgid "More than a year ago"
 msgstr "Больше года тому назад"
 
-#: data_registry/admin.py:287 data_registry/admin.py:432
+#: data_registry/admin.py:290 data_registry/admin.py:436
 msgid "Management"
 msgstr "Управление"
 
-#: data_registry/admin.py:293
+#: data_registry/admin.py:296
 msgid "Basics"
 msgstr "Основы"
 
-#: data_registry/admin.py:309 data_registry/admin.py:447
+#: data_registry/admin.py:312 data_registry/admin.py:451
 #: data_registry/templates/detail.html:117
 msgid "Overview"
 msgstr "Обзор"
 
-#: data_registry/admin.py:324
+#: data_registry/admin.py:327
 msgid "Details"
 msgstr "Подробности"
 
-#: data_registry/admin.py:458
+#: data_registry/admin.py:462
 msgid "Data availability"
 msgstr "Доступность данных"
 
-#: data_registry/models.py:169
+#: data_registry/models.py:154
 msgid "Africa and Middle East"
 msgstr "Африка и Средний Восток"
 
-#: data_registry/models.py:171
+#: data_registry/models.py:156
 msgid "Asia"
 msgstr "Азия"
 
-#: data_registry/models.py:173
+#: data_registry/models.py:158
 msgid "Eastern Europe & Central Asia"
 msgstr "Восточная Европа и Центральная Азия"
 
-#: data_registry/models.py:175
+#: data_registry/models.py:160
 msgid "Europe"
 msgstr "Европа"
 
-#: data_registry/models.py:177
+#: data_registry/models.py:162
 msgid "Latin America & Caribbean"
 msgstr "Латинская Америка и Карибский бассейн"
 
-#: data_registry/models.py:179
+#: data_registry/models.py:164
 msgid "North America"
 msgstr "Северная Америка"
 
-#: data_registry/models.py:181
+#: data_registry/models.py:166
 msgid "Oceania"
 msgstr "Океания"
 
-#: data_registry/models.py:227 data_registry/models.py:247
+#: data_registry/models.py:212 data_registry/models.py:232
 msgid "Monthly"
 msgstr "Ежемесячно"
 
-#: data_registry/models.py:229 data_registry/models.py:251
+#: data_registry/models.py:214 data_registry/models.py:236
 msgid "Every 6 months"
 msgstr "Каждые 6 месяцев"
 
-#: data_registry/models.py:231 data_registry/models.py:253
+#: data_registry/models.py:216 data_registry/models.py:238
 msgid "Annually"
 msgstr "Раз в год"
 
-#: data_registry/models.py:233
+#: data_registry/models.py:218
 msgid "This dataset is no longer updated by the publisher"
 msgstr "Этот набор данных больше не обновляется издателем."
 
-#: data_registry/models.py:237
+#: data_registry/models.py:222
 msgid "Unknown"
 msgstr "Неизвестный"
 
-#: data_registry/models.py:239
+#: data_registry/models.py:224
 msgid "Real time"
 msgstr "Реальное время"
 
-#: data_registry/models.py:241
+#: data_registry/models.py:226
 msgid "Hourly"
 msgstr "Ежечасно"
 
-#: data_registry/models.py:243
+#: data_registry/models.py:228
 msgid "Daily"
 msgstr "Ежедневно"
 
-#: data_registry/models.py:245
+#: data_registry/models.py:230
 msgid "Weekly"
 msgstr "Еженедельно"
 
-#: data_registry/models.py:249
+#: data_registry/models.py:234
 msgid "Every 3 months"
 msgstr "каждые 3 месяца"
 
@@ -651,55 +651,63 @@ msgstr "Смотреть детали"
 msgid "Back to Top"
 msgstr "вернуться наверх"
 
-#: data_registry/templatetags/registry.py:108
+#: data_registry/templatetags/registry.py:106
 #, python-format
 msgid "[data-registry] Re: %(collection)s"
 msgstr "[Реестр данных]: %(collection)s"
 
-#: data_registry/views.py:57 data_registry/views.py:228
+#: data_registry/views.py:59 data_registry/views.py:234
 msgid "All"
 msgstr "Все"
 
-#: data_registry/views.py:58
-msgid "Past year"
-msgstr "Прошлый год"
+#: data_registry/views.py:60
+msgid "Past month"
+msgstr "Прошлый месяц"
 
-#: data_registry/views.py:59
+#: data_registry/views.py:61
 msgid "Past 6 months"
 msgstr "Прошедшие 6 месяцев"
 
-#: data_registry/views.py:68
+#: data_registry/views.py:62
+msgid "Past year"
+msgstr "Прошлый год"
+
+#: data_registry/views.py:63
+msgid "Past 5 years"
+msgstr "Прошедшие 5 лет"
+
+#: data_registry/views.py:73
 msgid "Parties data"
 msgstr "Данные о сторонах"
 
-#: data_registry/views.py:69
+#: data_registry/views.py:74
 msgid "Plannings data"
 msgstr "Данные о планировании"
 
-#: data_registry/views.py:70
+#: data_registry/views.py:75
 msgid "Tenders data"
 msgstr "Данные о тендерах"
 
-#: data_registry/views.py:71
+#: data_registry/views.py:76
 msgid "Awards data"
 msgstr "Данные о присуждениях"
 
-#: data_registry/views.py:72
+#: data_registry/views.py:77
 msgid "Contracts data"
 msgstr "Данные о контрактах"
 
-#: data_registry/views.py:73
+#: data_registry/views.py:78
 msgid "Documents data"
 msgstr "Данные документов"
 
-#: data_registry/views.py:74
+#: data_registry/views.py:79
 msgid "Milestones data"
 msgstr "Данные о этапах"
 
-#: data_registry/views.py:75
+#: data_registry/views.py:80
 msgid "Amendments data"
 msgstr "Данные о изменениях"
 
-#: data_registry/views.py:268
+#: data_registry/views.py:274
 msgid "OCP Kingfisher Database"
 msgstr "База данных OCP Kingfisher"
