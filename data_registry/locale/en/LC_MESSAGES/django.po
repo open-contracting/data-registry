@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-01 21:44+0000\n"
+"POT-Creation-Date: 2024-11-01 22:18+0000\n"
 "PO-Revision-Date: 2021-08-04 17:44+0000\n"
 "Last-Translator: Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2023\n"
 "Language-Team: English (https://app.transifex.com/open-contracting-"
@@ -387,12 +387,14 @@ msgid ""
 "Excel files can have at most <a href=\"https://support.microsoft.com/en-us/"
 "office/excel-specifications-and-"
 "limits-1672b34d-7043-467e-8e27-269d656771c3\" target=\"_blank\">1,048,576 "
-"rows</a>. If a year is missing, it had too many rows."
+"rows</a>. If a year is missing, it had too many rows. Download the CSV "
+"files, instead."
 msgstr ""
 "Excel files can have at most <a href=\"https://support.microsoft.com/en-us/"
 "office/excel-specifications-and-"
 "limits-1672b34d-7043-467e-8e27-269d656771c3\" target=\"_blank\">1,048,576 "
-"rows</a>. If a year is missing, it had too many rows."
+"rows</a>. If a year is missing, it had too many rows. Download the CSV "
+"files, instead."
 
 #: data_registry/templates/detail.html:337
 msgid ""
@@ -643,7 +645,7 @@ msgstr "Back to Top"
 msgid "[data-registry] Re: %(collection)s"
 msgstr "[data-registry] Re: %(collection)s"
 
-#: data_registry/views.py:59 data_registry/views.py:234
+#: data_registry/views.py:59 data_registry/views.py:238
 msgid "All"
 msgstr "All"
 
@@ -695,6 +697,6 @@ msgstr "Milestones data"
 msgid "Amendments data"
 msgstr "Amendments data"
 
-#: data_registry/views.py:274
+#: data_registry/views.py:278
 msgid "OCP Kingfisher Database"
 msgstr "OCP Kingfisher Database"

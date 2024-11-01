@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-01 21:44+0000\n"
+"POT-Creation-Date: 2024-11-01 22:18+0000\n"
 "PO-Revision-Date: 2021-08-04 17:44+0000\n"
 "Last-Translator: Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2023\n"
 "Language-Team: Russian (https://app.transifex.com/open-contracting-"
@@ -30,9 +30,9 @@ msgid ""
 "<em>Remember to provide information in all languages. You can use the "
 "dropdown at the top of the page to toggle the language for all fields.</em>"
 msgstr ""
-"<em> Не забудьте предоставить информацию на всех языках. Вы можете "
+"<em>Не забудьте предоставить информацию на всех языках. Вы можете "
 "использовать выпадающий список в верхней части страницы, чтобы переключить "
-"язык для всех полей. </em>"
+"язык для всех полей.</em>"
 
 #: data_registry/admin.py:121
 msgid "no active job"
@@ -363,7 +363,7 @@ msgid ""
 "<code>.jsonl</code> file."
 msgstr ""
 "Каждый процесс заключения контракта представлен в виде одной строки текста "
-"JSON в <code> .jsonl </code> файле."
+"JSON в <code>.jsonl</code> файле."
 
 #: data_registry/templates/detail.html:314
 msgid ""
@@ -384,30 +384,31 @@ msgid ""
 "Each contracting process is represented as one row in the <code>main</code> "
 "sheet. Other sheets link to it via the <code>_link_main</code> column."
 msgstr ""
-"Каждый процесс заключения контракта представлен одной строкой на <code> "
-"основном </code> листе. Другие листы ссылаются на него через столбец <code> "
-"_link_main </code>."
+"Каждый процесс заключения контракта представлен одной строкой на <code>"
+"основном</code> листе. Другие листы ссылаются на него через столбец <code>"
+"_link_main</code>."
 
 #: data_registry/templates/detail.html:328
 msgid ""
 "Excel files can have at most <a href=\"https://support.microsoft.com/en-us/"
 "office/excel-specifications-and-"
 "limits-1672b34d-7043-467e-8e27-269d656771c3\" target=\"_blank\">1,048,576 "
-"rows</a>. If a year is missing, it had too many rows."
+"rows</a>. If a year is missing, it had too many rows. Download the CSV "
+"files, instead."
 msgstr ""
 "Файлы Excel могут содержать не более <a href=\"https://support.microsoft.com/"
 "en-us/office/excel-specifications-and-"
 "limits-1672b34d-7043-467e-8e27-269d656771c3\" target=\"_blank\">1,048,576 "
-"строк</a>. Если год отсутствует, в нем было слишком много строк."
+"строк</a>. Если год отсутствует, в нем было слишком много строк. Вместо этого загрузите CSV-файлы."
 
 #: data_registry/templates/detail.html:337
 msgid ""
 "Each contracting process is represented as one row in the <code>main.csv</"
 "code> file. Other files link to it via the <code>_link_main</code> column."
 msgstr ""
-"Каждый процесс заключения контракта представлен одной строкой в ​​файле <code> "
-"main.csv </code>. Другие файлы ссылаются на него через столбец <code> "
-"_link_main </code>."
+"Каждый процесс заключения контракта представлен одной строкой в файле <code>"
+"main.csv</code>. Другие файлы ссылаются на него через столбец <code>"
+"_link_main</code>."
 
 #: data_registry/templates/detail.html:342
 msgid ""
@@ -656,7 +657,7 @@ msgstr "вернуться наверх"
 msgid "[data-registry] Re: %(collection)s"
 msgstr "[Реестр данных]: %(collection)s"
 
-#: data_registry/views.py:59 data_registry/views.py:234
+#: data_registry/views.py:59 data_registry/views.py:238
 msgid "All"
 msgstr "Все"
 
@@ -708,6 +709,6 @@ msgstr "Данные о этапах"
 msgid "Amendments data"
 msgstr "Данные о изменениях"
 
-#: data_registry/views.py:274
+#: data_registry/views.py:278
 msgid "OCP Kingfisher Database"
 msgstr "База данных OCP Kingfisher"

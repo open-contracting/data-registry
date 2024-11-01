@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-01 21:44+0000\n"
+"POT-Creation-Date: 2024-11-01 22:18+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -360,7 +360,8 @@ msgid ""
 "Excel files can have at most <a href=\"https://support.microsoft.com/en-us/"
 "office/excel-specifications-and-"
 "limits-1672b34d-7043-467e-8e27-269d656771c3\" target=\"_blank\">1,048,576 "
-"rows</a>. If a year is missing, it had too many rows."
+"rows</a>. If a year is missing, it had too many rows. Download the CSV "
+"files, instead."
 msgstr ""
 
 #: data_registry/templates/detail.html:337
@@ -586,7 +587,7 @@ msgstr ""
 msgid "[data-registry] Re: %(collection)s"
 msgstr ""
 
-#: data_registry/views.py:59 data_registry/views.py:234
+#: data_registry/views.py:59 data_registry/views.py:238
 msgid "All"
 msgstr ""
 
@@ -638,6 +639,6 @@ msgstr ""
 msgid "Amendments data"
 msgstr ""
 
-#: data_registry/views.py:274
+#: data_registry/views.py:278
 msgid "OCP Kingfisher Database"
 msgstr ""
