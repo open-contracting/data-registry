@@ -512,12 +512,12 @@ msgstr "Data by country"
 
 #: data_registry/templates/index.html:43
 msgid ""
-"We've designed the Data Registry to help you find and access public "
+"We designed the Data Registry to help you find and access public "
 "procurement datasets that are available in the <a href=\"https://standard."
 "open-contracting.org/latest/en/primer/what/\" target=\"_blank\">OCDS format</"
 "a>."
 msgstr ""
-"We've designed the Data Registry to help you find and access public "
+"We designed the Data Registry to help you find and access public "
 "procurement datasets that are available in the <a href=\"https://standard."
 "open-contracting.org/latest/en/primer/what/\" target=\"_blank\">OCDS format</"
 "a>."
@@ -542,36 +542,24 @@ msgstr "Learn about the source"
 
 #: data_registry/templates/index.html:67
 msgid ""
-"Information about each data source is provided to help you to understand "
-"what fields are available or if there are any documents."
+"We describe each dataset's source and coverage, at both an administrative level (public bodies, systems and procedures covered) and technical level (fields covered and linked documents)."
 msgstr ""
-"Information about each data source is provided to help you to understand "
-"what fields are available or if there are any documents."
+"We describe each dataset's source and coverage, at both an administrative level (public bodies, systems and procedures covered) and technical level (fields covered and linked documents)."
 
 #: data_registry/templates/index.html:72
 msgid ""
-"Any known data quality issues and advice on how to access data is provided "
-"here too."
+"We include information on any known data quality issues."
 msgstr ""
-"We also included any known data quality issues and advice on how to access "
-"the data."
+"We include information on any known data quality issues."
 
 #: data_registry/templates/index.html:91
-msgid "Get Directed"
-msgstr "Get direct access to the source data"
+msgid "Get instant access to data"
+msgstr "Get instant access to data"
 
 #: data_registry/templates/index.html:94
 msgid ""
-"The registry links you directly to the data source for you to access data."
-msgstr "The OCDS data is available to download either in JSON or Excel/CSV."
-
-#: data_registry/templates/index.html:99
-msgid ""
-"If data is available from the OCP Kingfisher database you can download it "
-"directly in JSON or Excel using the Flatten Tool Interface."
-msgstr ""
-"You can also customize the data fields you need for a more manageable "
-"dataset."
+"Whole OCDS datasets are available to download in bulk, in JSON, Excel and CSV formats."
+msgstr "Whole OCDS datasets are available to download in bulk, in JSON, Excel and CSV formats."
 
 #: data_registry/templates/search.html:6
 msgid "Search for and download OCDS data"

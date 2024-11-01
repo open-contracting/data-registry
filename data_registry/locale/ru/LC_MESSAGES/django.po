@@ -518,7 +518,7 @@ msgstr "Данные по странам"
 
 #: data_registry/templates/index.html:43
 msgid ""
-"We've designed the Data Registry to help you find and access public "
+"We designed the Data Registry to help you find and access public "
 "procurement datasets that are available in the <a href=\"https://standard."
 "open-contracting.org/latest/en/primer/what/\" target=\"_blank\">OCDS format</"
 "a>."
@@ -548,36 +548,25 @@ msgstr "Узнать об источнике данных"
 
 #: data_registry/templates/index.html:67
 msgid ""
-"Information about each data source is provided to help you to understand "
-"what fields are available or if there are any documents."
+"We describe each dataset's source and coverage, at both an administrative level (public bodies, systems and procedures covered) and technical level (fields covered and linked documents)."
 msgstr ""
 "Предоставляется информация о каждом источнике данных, чтобы помочь вам "
 "понять, какие поля доступны или есть ли какие-либо документы."
 
 #: data_registry/templates/index.html:72
 msgid ""
-"Any known data quality issues and advice on how to access data is provided "
-"here too."
+"We include information on any known data quality issues."
 msgstr ""
-"Здесь также представлены все известные проблемы с качеством данных и советы "
-"о том, как получить доступ к данным."
+"Здесь также представлены все известные проблемы с качеством данных ."
 
 #: data_registry/templates/index.html:91
-msgid "Get Directed"
+msgid "Get instant access to data"
 msgstr "Получить инструкции"
 
 #: data_registry/templates/index.html:94
 msgid ""
-"The registry links you directly to the data source for you to access data."
+"Whole OCDS datasets are available to download in bulk, in JSON, Excel and CSV formats."
 msgstr "Реестр связывает вас напрямую с источником данных для доступа к ним."
-
-#: data_registry/templates/index.html:99
-msgid ""
-"If data is available from the OCP Kingfisher database you can download it "
-"directly in JSON or Excel using the Flatten Tool Interface."
-msgstr ""
-"Вы также можете настроить поля данных, которые вам нужны, для более "
-"управляемого набора данных."
 
 #: data_registry/templates/search.html:6
 msgid "Search for and download OCDS data"
