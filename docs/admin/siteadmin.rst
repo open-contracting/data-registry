@@ -298,6 +298,10 @@ A publication is frozen if the source is temporarily broken or otherwise unavail
 
    If the publication is no longer updated, or the spider is `removed from Kingfisher Collect <https://kingfisher-collect.readthedocs.io/en/latest/history.html>`__, set the retrieval frequency to ``NEVER``, instead of freezing the publication.
 
+.. tip::
+
+   To audit whether publications ought to be frozen, run `scrapy checkall <https://kingfisher-collect.readthedocs.io/en/latest/cli.html#checkall>`__ from Kingfisher Collect.
+
 #. `Find the publication <https://data.open-contracting.org/admin/data_registry/collection/>`__
 #. Uncheck *Public*, to hide the publication
 #. Check *Frozen*, to stop jobs from being scheduled
