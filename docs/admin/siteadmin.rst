@@ -279,7 +279,7 @@ Then, confirm that the messages corresponding to the remaining processing steps 
    55555
    (1 row)
 
-And, re-publish the messages, using the Django `shell <https://docs.djangoproject.com/en/5.0/ref/django-admin/#shell>`__ command, for example:
+And, re-publish the messages, using the Django `shell <https://docs.djangoproject.com/en/4.2/ref/django-admin/#shell>`__ command, for example:
 
 .. code-block:: python
 

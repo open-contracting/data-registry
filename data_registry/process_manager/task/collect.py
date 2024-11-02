@@ -66,15 +66,15 @@ class Collect(TaskManager):
 
         response = self.request(
             "GET",
-            scrapyd_url("listjobs.json"),
-            params={"project": PROJECT},
+            scrapyd_url("status.json"),
+            params={"job": scrapyd_job_id},
             error_message=f"Unable to get status of Scrapyd job {scrapyd_job_id}",
         )
 
-        data = scrapyd_data(response)
+        currstate = scrapyd_data(response)["currstate"]
 
         # If the job is pending, return early, because the log file will not exist yet.
-        if any(j["id"] == scrapyd_job_id for j in data["pending"]):
+        if currstate == "pending":
             return Task.Status.WAITING
 
         # Check early for the log file, so that we can error if Scrapyd somehow stalled without writing a log file.
@@ -97,10 +97,10 @@ class Collect(TaskManager):
                 self.job.context["data_version"] = m.group(2)
                 self.job.save(update_fields=["modified", "context"])
 
-        if any(j["id"] == scrapyd_job_id for j in data["running"]):
+        if currstate == "running":
             return Task.Status.RUNNING
 
-        if any(j["id"] == scrapyd_job_id for j in data["finished"]):
+        if currstate == "finished":
             # If the collection ID or data version was irretrievable, the job can't continue.
             if "process_id" not in self.job.context or "data_version" not in self.job.context:
                 raise UnexpectedError("Unable to retrieve collection ID and data version from Scrapy log")
