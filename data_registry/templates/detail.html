@@ -146,7 +146,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
                 {{ job.license|default:"-" }}
 {% endif %}
             </dd>
-            <dt>{% translate "Language:" %}</dt>
+            <dt>{% translate "Main language:" %}</dt>
             <dd>{{ collection.language }}</dd>
             <dt>{% translate "Retrieved from:" %}</dt>
             <dd class="text-break"><a href="{{ collection.source_url }}" target="_blank">{{ collection.source_url }}</a></dd>

@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-01 22:18+0000\n"
+"POT-Creation-Date: 2024-11-02 02:13+0000\n"
 "PO-Revision-Date: 2021-08-04 17:44+0000\n"
 "Last-Translator: Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2023\n"
 "Language-Team: Russian (https://app.transifex.com/open-contracting-"
@@ -206,8 +206,8 @@ msgid "License:"
 msgstr "Лицензия"
 
 #: data_registry/templates/detail.html:149
-msgid "Language:"
-msgstr "Язык"
+msgid "Main language:"
+msgstr "Основной язык:"
 
 #: data_registry/templates/detail.html:151
 msgid "Retrieved from:"
@@ -384,9 +384,9 @@ msgid ""
 "Each contracting process is represented as one row in the <code>main</code> "
 "sheet. Other sheets link to it via the <code>_link_main</code> column."
 msgstr ""
-"Каждый процесс заключения контракта представлен одной строкой на <code>"
-"основном</code> листе. Другие листы ссылаются на него через столбец <code>"
-"_link_main</code>."
+"Каждый процесс заключения контракта представлен одной строкой на "
+"<code>основном</code> листе. Другие листы ссылаются на него через столбец "
+"<code>_link_main</code>."
 
 #: data_registry/templates/detail.html:328
 msgid ""
@@ -399,16 +399,17 @@ msgstr ""
 "Файлы Excel могут содержать не более <a href=\"https://support.microsoft.com/"
 "en-us/office/excel-specifications-and-"
 "limits-1672b34d-7043-467e-8e27-269d656771c3\" target=\"_blank\">1,048,576 "
-"строк</a>. Если год отсутствует, в нем было слишком много строк. Вместо этого загрузите CSV-файлы."
+"строк</a>. Если год отсутствует, в нем было слишком много строк. Вместо "
+"этого загрузите CSV-файлы."
 
 #: data_registry/templates/detail.html:337
 msgid ""
 "Each contracting process is represented as one row in the <code>main.csv</"
 "code> file. Other files link to it via the <code>_link_main</code> column."
 msgstr ""
-"Каждый процесс заключения контракта представлен одной строкой в файле <code>"
-"main.csv</code>. Другие файлы ссылаются на него через столбец <code>"
-"_link_main</code>."
+"Каждый процесс заключения контракта представлен одной строкой в файле "
+"<code>main.csv</code>. Другие файлы ссылаются на него через столбец "
+"<code>_link_main</code>."
 
 #: data_registry/templates/detail.html:342
 msgid ""
@@ -518,10 +519,9 @@ msgstr "Данные по странам"
 
 #: data_registry/templates/index.html:43
 msgid ""
-"We designed the Data Registry to help you find and access public "
-"procurement datasets that are available in the <a href=\"https://standard."
-"open-contracting.org/latest/en/primer/what/\" target=\"_blank\">OCDS format</"
-"a>."
+"We designed the Data Registry to help you find and access public procurement "
+"datasets that are available in the <a href=\"https://standard.open-"
+"contracting.org/latest/en/primer/what/\" target=\"_blank\">OCDS format</a>."
 msgstr ""
 "Мы разработали Реестр данных, чтобы помочь вам найти и получить доступ к "
 "наборам данных о государственных закупках, доступных в <a href=\"https://"
@@ -548,16 +548,16 @@ msgstr "Узнать об источнике данных"
 
 #: data_registry/templates/index.html:67
 msgid ""
-"We describe each dataset's source and coverage, at both an administrative level (public bodies, systems and procedures covered) and technical level (fields covered and linked documents)."
+"We describe each dataset's source and coverage, at both an administrative "
+"level (public bodies, systems and procedures covered) and technical level "
+"(fields covered and linked documents)."
 msgstr ""
 "Предоставляется информация о каждом источнике данных, чтобы помочь вам "
 "понять, какие поля доступны или есть ли какие-либо документы."
 
 #: data_registry/templates/index.html:72
-msgid ""
-"We include information on any known data quality issues."
-msgstr ""
-"Здесь также представлены все известные проблемы с качеством данных ."
+msgid "We include information on any known data quality issues."
+msgstr "Здесь также представлены все известные проблемы с качеством данных ."
 
 #: data_registry/templates/index.html:91
 msgid "Get instant access to data"
@@ -565,7 +565,8 @@ msgstr "Получить инструкции"
 
 #: data_registry/templates/index.html:94
 msgid ""
-"Whole OCDS datasets are available to download in bulk, in JSON, Excel and CSV formats."
+"Whole OCDS datasets are available to download in bulk, in JSON, Excel and "
+"CSV formats."
 msgstr "Реестр связывает вас напрямую с источником данных для доступа к ним."
 
 #: data_registry/templates/search.html:6

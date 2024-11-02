@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-01 22:18+0000\n"
+"POT-Creation-Date: 2024-11-02 02:11+0000\n"
 "PO-Revision-Date: 2021-08-04 17:44+0000\n"
 "Last-Translator: Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2023\n"
 "Language-Team: Spanish (https://app.transifex.com/open-contracting-"
@@ -204,8 +204,8 @@ msgid "License:"
 msgstr "Licencia:"
 
 #: data_registry/templates/detail.html:149
-msgid "Language:"
-msgstr "Idioma:"
+msgid "Main language:"
+msgstr "Idioma principal:"
 
 #: data_registry/templates/detail.html:151
 msgid "Retrieved from:"
@@ -397,7 +397,8 @@ msgstr ""
 "Los archivos Excel pueden tener como máximo <a href=\"https://support."
 "microsoft.com/en-us/office/excel-specifications-and-"
 "limits-1672b34d-7043-467e-8e27-269d656771c3\" target=\"_blank\">1,048,576 "
-"filas</a>. Si un año no está, es que tiene demasiadas filas. Descargue los archivos CSV en su lugar."
+"filas</a>. Si un año no está, es que tiene demasiadas filas. Descargue los "
+"archivos CSV en su lugar."
 
 #: data_registry/templates/detail.html:337
 msgid ""
@@ -518,10 +519,9 @@ msgstr "Datos por país"
 
 #: data_registry/templates/index.html:43
 msgid ""
-"We designed the Data Registry to help you find and access public "
-"procurement datasets that are available in the <a href=\"https://standard."
-"open-contracting.org/latest/en/primer/what/\" target=\"_blank\">OCDS format</"
-"a>."
+"We designed the Data Registry to help you find and access public procurement "
+"datasets that are available in the <a href=\"https://standard.open-"
+"contracting.org/latest/en/primer/what/\" target=\"_blank\">OCDS format</a>."
 msgstr ""
 "Hemos diseñado el Registro de Datos para ayudarte a encontrar y acceder a "
 "conjuntos de datos de procesos de contratación pública que están disponibles "
@@ -548,15 +548,19 @@ msgstr "Aprenda más sobre la fuente"
 
 #: data_registry/templates/index.html:67
 msgid ""
-"We describe each dataset's source and coverage, at both an administrative level (public bodies, systems and procedures covered) and technical level (fields covered and linked documents)."
+"We describe each dataset's source and coverage, at both an administrative "
+"level (public bodies, systems and procedures covered) and technical level "
+"(fields covered and linked documents)."
 msgstr ""
-"Describimos la fuente y la cobertura de cada conjunto de datos, tanto a nivel administrativo (organismos públicos, sistemas y procedimientos cubiertos) como a nivel técnico (campos cubiertos y documentos vinculados)."
+"Describimos la fuente y la cobertura de cada conjunto de datos, tanto a "
+"nivel administrativo (organismos públicos, sistemas y procedimientos "
+"cubiertos) como a nivel técnico (campos cubiertos y documentos vinculados)."
 
 #: data_registry/templates/index.html:72
-msgid ""
-"We include information on any known data quality issues."
+msgid "We include information on any known data quality issues."
 msgstr ""
-"Incluimos información sobre cualquier problema conocido de calidad de los datos."
+"Incluimos información sobre cualquier problema conocido de calidad de los "
+"datos."
 
 #: data_registry/templates/index.html:91
 msgid "Get instant access to data"
@@ -564,9 +568,11 @@ msgstr "Obtenga acceso instantáneo a los datos"
 
 #: data_registry/templates/index.html:94
 msgid ""
-"Whole OCDS datasets are available to download in bulk, in JSON, Excel and CSV formats."
+"Whole OCDS datasets are available to download in bulk, in JSON, Excel and "
+"CSV formats."
 msgstr ""
-"Los conjuntos de datos completos de OCDS están disponibles para descargar en forma masiva, en formatos JSON, Excel y CSV."
+"Los conjuntos de datos completos de OCDS están disponibles para descargar en "
+"forma masiva, en formatos JSON, Excel y CSV."
 
 #: data_registry/templates/search.html:6
 msgid "Search for and download OCDS data"
