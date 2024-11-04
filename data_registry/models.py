@@ -27,10 +27,6 @@ class JobQuerySet(models.QuerySet):
 
 
 class Job(models.Model):
-    collection = models.ForeignKey("Collection", on_delete=models.CASCADE, db_index=True, verbose_name="publication")
-    start = models.DateTimeField(blank=True, null=True, verbose_name="job started at")
-    end = models.DateTimeField(blank=True, null=True, verbose_name="job ended at")
-
     class Status(models.TextChoices):
         #: Not in use.
         WAITING = "WAITING", "WAITING"
@@ -41,8 +37,12 @@ class Job(models.Model):
         #: The job has ended (either successfully or unsuccessfully).
         COMPLETED = "COMPLETED", "COMPLETED"
 
-    status = models.TextField(choices=Status.choices, blank=True, default=Status.PLANNED)
+    collection = models.ForeignKey("Collection", on_delete=models.CASCADE, db_index=True, verbose_name="publication")
 
+    # Job metadata
+    start = models.DateTimeField(blank=True, null=True, verbose_name="job started at")
+    end = models.DateTimeField(blank=True, null=True, verbose_name="job ended at")
+    status = models.TextField(choices=Status.choices, blank=True, default=Status.PLANNED)
     context = models.JSONField(
         blank=True,
         default=dict,
@@ -66,16 +66,15 @@ class Job(models.Model):
         "</dl>",
     )
 
+    # Job logic
     active = models.BooleanField(
         default=False, help_text="Set this as the active job for the publication from the publication's page."
     )
-
     archived = models.BooleanField(
         default=False,
         verbose_name="temporary data deleted",
         help_text="Whether the temporary data created by job tasks has been deleted.",
     )
-
     keep_all_data = models.BooleanField(
         default=False,
         verbose_name="preserve temporary data",
@@ -85,6 +84,7 @@ class Job(models.Model):
         'when ready, uncheck this box and run the "manageprocess" management command.',
     )
 
+    # Field coverage
     tenders_count = models.IntegerField(default=0)
     tenderers_count = models.IntegerField(default=0)
     tenders_items_count = models.IntegerField(default=0)
@@ -100,11 +100,13 @@ class Job(models.Model):
     milestones_count = models.IntegerField(default=0)
     amendments_count = models.IntegerField(default=0)
 
+    # Collection metadata
     date_from = models.DateField(blank=True, null=True, verbose_name="minimum release date")
     date_to = models.DateField(blank=True, null=True, verbose_name="maximum release date")
     ocid_prefix = models.TextField(blank=True, verbose_name="OCID prefix")
     license = models.TextField(blank=True)
 
+    # Timestamps
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
@@ -138,17 +140,6 @@ class CollectionQuerySet(models.QuerySet):
 
 
 class Collection(models.Model):
-    title = models.TextField(
-        help_text='The name of the publication, following the <a href="https://docs.google.com/document/d/'
-        '14ZXlAB6GWeK4xwDUt9HGi0fTew4BahjZQ2owdLLVp6I/edit#heading=h.t81hzvffylry">naming conventions</a>, '
-        "and omitting the country name."
-    )
-
-    country = models.TextField(
-        blank=True, help_text="The official name of the country from which the data originates."
-    )
-    country_flag = models.TextField(blank=True)
-
     class Region(models.TextChoices):
         #: Africa and Middle East
         MEA = "MEA", _("Africa and Middle East")
@@ -164,48 +155,6 @@ class Collection(models.Model):
         NA = "NA", _("North America")
         #: Oceania
         OC = "OC", _("Oceania")
-
-    region = models.TextField(
-        choices=Region.choices,
-        blank=True,
-        help_text="The name of the region to which the country belongs.",
-    )
-
-    language = models.TextField(blank=True, help_text='The languages used within data fields: for example, "Spanish".')
-    description = MarkdownxField(
-        blank=True,
-        help_text="The first paragraph of the description of the publication, as Markdown text, following the <a "
-        'href="https://docs.google.com/document/d/1Pr87zDrs9YY7BEvr_e6QjOy0gexs06dU9ES2_-V7Lzw/edit#'
-        'heading=h.fksp8fxgoi7v">template and guidance</a>.',
-    )
-    description_long = MarkdownxField(
-        blank=True,
-        help_text="The remaining paragraphs of the description of the publication, as "
-        'Markdown text, which will appear under "Show more".',
-    )
-    last_retrieved = models.DateField(
-        blank=True,
-        null=True,
-        help_text="The date on which the most recent 'collect' job task completed.",
-    )
-
-    license_custom = models.ForeignKey(
-        "License",
-        on_delete=models.CASCADE,
-        blank=True,
-        null=True,
-        db_index=True,
-        verbose_name="data license",
-        help_text="If not set, the Overview section will display the license URL within the OCDS package.",
-    )
-
-    source_id = models.TextField(
-        verbose_name="source ID",
-        help_text="The name of the spider in Kingfisher Collect. If a new spider is not listed, "
-        "Kingfisher Collect needs to be re-deployed to the registry's server.",
-    )
-
-    source_url = models.TextField(blank=True, verbose_name="source URL", help_text="The URL of the publication.")
 
     class RetrievalFrequency(models.TextChoices):
         #: Monthly
@@ -237,13 +186,47 @@ class Collection(models.Model):
         #: Annually
         ANNUALLY = "ANNUALLY", _("Annually")
 
-    retrieval_frequency = models.TextField(
-        choices=RetrievalFrequency.choices,
-        blank=True,
-        help_text="The frequency at which the registry updates the publication, based on the "
-        "frequency at which the publication is updated.",
+    # Identification
+    title = models.TextField(
+        help_text='The name of the publication, following the <a href="https://docs.google.com/document/d/'
+        '14ZXlAB6GWeK4xwDUt9HGi0fTew4BahjZQ2owdLLVp6I/edit#heading=h.t81hzvffylry">naming conventions</a>, '
+        "and omitting the country name."
     )
 
+    # Description
+    description = MarkdownxField(
+        blank=True,
+        help_text="The first paragraph of the description of the publication, as Markdown text, following the "
+        '<a href="https://docs.google.com/document/d/1Pr87zDrs9YY7BEvr_e6QjOy0gexs06dU9ES2_-V7Lzw/edit#heading='
+        'h.fksp8fxgoi7v">template and guidance</a>.',
+    )
+    description_long = MarkdownxField(
+        blank=True,
+        help_text="The remaining paragraphs of the description of the publication, as Markdown text, "
+        'which will appear under "Show more".',
+    )
+
+    # Spatial coverage
+    country_flag = models.TextField(blank=True)
+    country = models.TextField(
+        blank=True, help_text="The official name of the country from which the data originates."
+    )
+    region = models.TextField(
+        choices=Region.choices, blank=True, help_text="The name of the region to which the country belongs."
+    )
+
+    # Field coverage
+    additional_data = MarkdownxField(
+        blank=True,
+        verbose_name="data availability",
+        help_text="Any notable highlights about the available data, such as extensions used or additional fields,"
+        " as Markdown text.",
+    )
+
+    # Language
+    language = models.TextField(blank=True, help_text='The languages used within data fields: for example, "Spanish".')
+
+    # Accrual periodicity
     update_frequency = models.TextField(
         choices=UpdateFrequency.choices,
         blank=True,
@@ -251,13 +234,13 @@ class Collection(models.Model):
         help_text="The frequency at which the source updates the publication.",
     )
 
+    # Data quality
     summary = MarkdownxField(
         blank=True,
         verbose_name="quality summary",
-        help_text="A short summary of quality issues, as Markdown text. Individual issues can be "
-        "described below, which will be rendered as a bullet list.",
+        help_text="A short summary of quality issues, as Markdown text. Individual issues can be described below, "
+        "which will be rendered as a bullet list.",
     )
-
     last_reviewed = models.DateField(
         blank=True,
         null=True,
@@ -266,23 +249,50 @@ class Collection(models.Model):
         "Only the year and month are published.",
     )
 
-    additional_data = MarkdownxField(
+    # License
+    license_custom = models.ForeignKey(
+        "License",
+        on_delete=models.CASCADE,
         blank=True,
-        verbose_name="data availability",
-        help_text="Any notable highlights about the available data, such as extensions "
-        "used or additional fields, as Markdown text.",
+        null=True,
+        db_index=True,
+        verbose_name="data license",
+        help_text="If not set, the Overview section will display the license URL within the OCDS package.",
     )
 
-    public = models.BooleanField(
-        default=False,
-        help_text="If the active job's tasks completed without errors and all the fields below in "
-        "all languages are filled in, check this box to make the publication visible to "
-        "anonymous users. Otherwise, it is visible to administrators only.",
-    )
+    # Provenance
+    source_url = models.TextField(blank=True, verbose_name="source URL", help_text="The URL of the publication.")
+
+    # Job logic
     frozen = models.BooleanField(
         default=False, help_text="If the spider is broken, check this box to prevent the scheduling of new jobs."
     )
+    source_id = models.TextField(
+        verbose_name="source ID",
+        help_text="The name of the spider in Kingfisher Collect. If a new spider is not listed, "
+        "Kingfisher Collect needs to be re-deployed to the registry's server.",
+    )
+    retrieval_frequency = models.TextField(
+        choices=RetrievalFrequency.choices,
+        blank=True,
+        help_text="The frequency at which the registry updates the publication, based on the frequency at which "
+        "the publication is updated.",
+    )
+    last_retrieved = models.DateField(
+        blank=True,
+        null=True,
+        help_text="The date on which the most recent 'collect' job task completed.",
+    )
 
+    # Visibility logic
+    public = models.BooleanField(
+        default=False,
+        help_text="If the active job's tasks completed without errors and all the fields below in all languages are "
+        "filled in, check this box to make the publication visible to anonymous users. "
+        "Otherwise, it is visible to administrators only.",
+    )
+
+    # Timestamps
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
@@ -337,11 +347,11 @@ class Collection(models.Model):
 class License(models.Model):
     name = models.TextField(blank=True, help_text="The official name of the license.")
     description = MarkdownxField(
-        blank=True,
-        help_text="A brief description of the permissions, conditions and limitations, as Markdown text.",
+        blank=True, help_text="A brief description of the permissions, conditions and limitations, as Markdown text."
     )
     url = models.TextField(blank=True, verbose_name="URL", help_text="The canonical URL of the license.")
 
+    # Timestamps
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
@@ -356,6 +366,7 @@ class Issue(models.Model):
     description = MarkdownxField(help_text="A one-line description of the quality issue, as Markdown text.")
     collection = models.ForeignKey("Collection", on_delete=models.CASCADE, db_index=True)
 
+    # Timestamps
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
@@ -367,10 +378,6 @@ class Issue(models.Model):
 
 
 class Task(models.Model):
-    job = models.ForeignKey("Job", on_delete=models.CASCADE, db_index=True)
-    start = models.DateTimeField(blank=True, null=True)
-    end = models.DateTimeField(blank=True, null=True)
-
     class Status(models.TextChoices):
         #: The task has started, but work has not yet started in the application.
         #: (This status is never saved to the database.)
@@ -382,17 +389,11 @@ class Task(models.Model):
         #: The task has ended (either successfully or unsuccessfully).
         COMPLETED = "COMPLETED", "COMPLETED"
 
-    status = models.TextField(choices=Status.choices, blank=True, default=Status.PLANNED)
-
     class Result(models.TextChoices):
         #: The task ended successfully.
         OK = "OK", "OK"
         #: The task ended unsuccessfully.
         FAILED = "FAILED", "FAILED"
-
-    result = models.TextField(choices=Result.choices, blank=True)
-    note = models.TextField(blank=True, help_text="Metadata about any failure.")
-    context = models.JSONField(blank=True, default=dict)
 
     class Type(models.TextChoices):
         #: Kingfisher Collect
@@ -406,9 +407,21 @@ class Task(models.Model):
         #: Flattener
         FLATTENER = "flattener"
 
+    job = models.ForeignKey("Job", on_delete=models.CASCADE, db_index=True)
+
+    # Task metadata
+    start = models.DateTimeField(blank=True, null=True)
+    end = models.DateTimeField(blank=True, null=True)
+    status = models.TextField(choices=Status.choices, blank=True, default=Status.PLANNED)
+
+    # Task result
+    result = models.TextField(choices=Result.choices, blank=True)
+    note = models.TextField(blank=True, help_text="Metadata about any failure.")
+    context = models.JSONField(blank=True, default=dict)
     type = models.TextField(choices=Type.choices, blank=True)
     order = models.IntegerField(blank=True, null=True)
 
+    # Timestamps
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
