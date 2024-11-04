@@ -399,8 +399,7 @@ msgstr ""
 "Файлы Excel могут содержать не более <a href=\"https://support.microsoft.com/"
 "en-us/office/excel-specifications-and-"
 "limits-1672b34d-7043-467e-8e27-269d656771c3\" target=\"_blank\">1,048,576 "
-"строк</a>. Если год отсутствует, в нем было слишком много строк. Вместо "
-"этого загрузите CSV-файлы."
+"строк</a>. Если год отсутствует, в нем было слишком много строк. В таком случае загрузите файлы в формате CSV."
 
 #: data_registry/templates/detail.html:337
 msgid ""
@@ -552,22 +551,21 @@ msgid ""
 "level (public bodies, systems and procedures covered) and technical level "
 "(fields covered and linked documents)."
 msgstr ""
-"Предоставляется информация о каждом источнике данных, чтобы помочь вам "
-"понять, какие поля доступны или есть ли какие-либо документы."
+"Для каждого набора данных мы описываем его источник и охват как на административном (государственные органы, системы и процедуры), так и на техническом уровне (доступные поля и связанные документы)."
 
 #: data_registry/templates/index.html:72
 msgid "We include information on any known data quality issues."
-msgstr "Здесь также представлены все известные проблемы с качеством данных ."
+msgstr "Мы включаем информацию о любых известных проблемах с качеством данных."
 
 #: data_registry/templates/index.html:91
 msgid "Get instant access to data"
-msgstr "Получить инструкции"
+msgstr "Получите мгновенный доступ к данным"
 
 #: data_registry/templates/index.html:94
 msgid ""
 "Whole OCDS datasets are available to download in bulk, in JSON, Excel and "
 "CSV formats."
-msgstr "Реестр связывает вас напрямую с источником данных для доступа к ним."
+msgstr "Полные наборы данных OCDS доступны для массовой загрузки в форматах JSON, Excel и CSV."
 
 #: data_registry/templates/search.html:6
 msgid "Search for and download OCDS data"
