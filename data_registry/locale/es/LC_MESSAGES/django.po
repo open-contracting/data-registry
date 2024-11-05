@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-02 02:11+0000\n"
+"POT-Creation-Date: 2024-11-05 20:23+0000\n"
 "PO-Revision-Date: 2021-08-04 17:44+0000\n"
 "Last-Translator: Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2023\n"
 "Language-Team: Spanish (https://app.transifex.com/open-contracting-"
@@ -33,117 +33,117 @@ msgstr ""
 "lista desplegable de arriba de la página para cambiar el idioma para todos "
 "los campos</em>"
 
-#: data_registry/admin.py:121
-msgid "no active job"
-msgstr "no disponible"
-
-#: data_registry/admin.py:126 data_registry/admin.py:141
-#: data_registry/admin.py:163 data_registry/admin.py:395
-msgid "Yes"
-msgstr "Sí"
-
-#: data_registry/admin.py:136
+#: data_registry/admin.py:102
 msgid "incomplete"
 msgstr "incompleto"
 
-#: data_registry/admin.py:158
+#: data_registry/admin.py:106 data_registry/admin.py:127
+#: data_registry/admin.py:278
+msgid "Yes"
+msgstr "Sí"
+
+#: data_registry/admin.py:123
 msgid "untranslated"
 msgstr "sin traducir"
 
-#: data_registry/admin.py:194
+#: data_registry/admin.py:158
 msgid "Previous year"
 msgstr "Año anterior"
 
-#: data_registry/admin.py:201
+#: data_registry/admin.py:165
 msgid "More than a year ago"
 msgstr "Hace más de un año"
 
-#: data_registry/admin.py:290 data_registry/admin.py:436
+#: data_registry/admin.py:203 data_registry/admin.py:319
 msgid "Management"
 msgstr "Administración"
 
-#: data_registry/admin.py:296
+#: data_registry/admin.py:209
 msgid "Basics"
 msgstr "Básicos"
 
-#: data_registry/admin.py:312 data_registry/admin.py:451
+#: data_registry/admin.py:225 data_registry/admin.py:334
 #: data_registry/templates/detail.html:117
 msgid "Overview"
 msgstr "Resumen"
 
-#: data_registry/admin.py:327
+#: data_registry/admin.py:240
 msgid "Details"
 msgstr "Detalles"
 
-#: data_registry/admin.py:462
+#: data_registry/admin.py:274
+msgid "failed"
+msgstr "fallido"
+
+#: data_registry/admin.py:345
 msgid "Data availability"
 msgstr "Disponibilidad de datos"
 
-#: data_registry/models.py:154
+#: data_registry/models.py:139
 msgid "Africa and Middle East"
 msgstr "África y Medio Oriente"
 
-#: data_registry/models.py:156
+#: data_registry/models.py:141
 msgid "Asia"
 msgstr "Asia"
 
-#: data_registry/models.py:158
+#: data_registry/models.py:143
 msgid "Eastern Europe & Central Asia"
 msgstr "Europa del Este & Asia Central"
 
-#: data_registry/models.py:160
+#: data_registry/models.py:145
 msgid "Europe"
 msgstr "Europa"
 
-#: data_registry/models.py:162
+#: data_registry/models.py:147
 msgid "Latin America & Caribbean"
 msgstr "América Latina y el Caribe"
 
-#: data_registry/models.py:164
+#: data_registry/models.py:149
 msgid "North America"
 msgstr "Norteamérica"
 
-#: data_registry/models.py:166
+#: data_registry/models.py:151
 msgid "Oceania"
 msgstr "Oceanía"
 
-#: data_registry/models.py:212 data_registry/models.py:232
+#: data_registry/models.py:155 data_registry/models.py:175
 msgid "Monthly"
 msgstr "Mensual"
 
-#: data_registry/models.py:214 data_registry/models.py:236
+#: data_registry/models.py:157 data_registry/models.py:179
 msgid "Every 6 months"
 msgstr "Cada 6 meses"
 
-#: data_registry/models.py:216 data_registry/models.py:238
+#: data_registry/models.py:159 data_registry/models.py:181
 msgid "Annually"
 msgstr "Anual"
 
-#: data_registry/models.py:218
+#: data_registry/models.py:161
 msgid "This dataset is no longer updated by the publisher"
 msgstr "Los datos ya no son actualizados por el publicador"
 
-#: data_registry/models.py:222
+#: data_registry/models.py:165
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: data_registry/models.py:224
+#: data_registry/models.py:167
 msgid "Real time"
 msgstr "En tiempo real"
 
-#: data_registry/models.py:226
+#: data_registry/models.py:169
 msgid "Hourly"
 msgstr "Cada hora"
 
-#: data_registry/models.py:228
+#: data_registry/models.py:171
 msgid "Daily"
 msgstr "Diaria"
 
-#: data_registry/models.py:230
+#: data_registry/models.py:173
 msgid "Weekly"
 msgstr "Semanal"
 
-#: data_registry/models.py:234
+#: data_registry/models.py:177
 msgid "Every 3 months"
 msgstr "Cada 3 meses"
 
@@ -706,3 +706,6 @@ msgstr "Datos de enmiendas"
 #: data_registry/views.py:278
 msgid "OCP Kingfisher Database"
 msgstr "Base de datos Kingfisher de OCP"
+
+#~ msgid "no active job"
+#~ msgstr "no disponible"

@@ -45,11 +45,6 @@ class CascadeTaskMixin:
             messages.error(request, f"Recoverable exception when wiping task {obj}: '{e}'. Please try again.")
 
 
-class IssueInLine(TranslationTabularInline):
-    model = Issue
-    extra = 0
-
-
 class CollectionAdminForm(forms.ModelForm):
     source_id = forms.ChoiceField(
         choices=[],
@@ -105,7 +100,6 @@ class CollectionAdminForm(forms.ModelForm):
 
 class IncompleteFilter(admin.SimpleListFilter):
     title = _("incomplete")
-
     parameter_name = "incomplete"
 
     def lookups(self, request, model_admin):
@@ -127,7 +121,6 @@ class IncompleteFilter(admin.SimpleListFilter):
 
 class UntranslatedFilter(admin.SimpleListFilter):
     title = _("untranslated")
-
     parameter_name = "untranslated"
 
     def lookups(self, request, model_admin):
@@ -151,7 +144,7 @@ class CustomDateFieldListFilter(admin.DateFieldListFilter):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # https://github.com/django/django/blob/3.2/django/contrib/admin/filters.py#L312-L316
+        # https://github.com/django/django/blob/4.2/django/contrib/admin/filters.py#L355-L359
         now = timezone.now()
         # When time zone support is enabled, convert "now" to the user's time
         # zone so Django's definition of "Today" matches what the user expects.
@@ -177,65 +170,14 @@ class CustomDateFieldListFilter(admin.DateFieldListFilter):
         )
 
 
-# https://docs.djangoproject.com/en/4.2/ref/contrib/admin/#logentry-objects
-@admin.register(admin.models.LogEntry)
-class LogEntryAdmin(admin.ModelAdmin):
-    list_display_links = None
-    search_fields = [
-        "object_repr",
-        "change_message",
-    ]
-    list_display = [
-        "action_time",
-        "user",
-        "content_type",
-        "object_link",
-        "action_flag",
-        "get_change_message",
-    ]
-    list_filter = [
-        "content_type",
-        "action_flag",
-        "action_time",
-    ]
+class IssueAdminForm(forms.ModelForm):
+    class Meta:
+        widgets = {"description": AdminMarkdownxWidget(attrs={"cols": 100, "rows": 3})}
 
-    # https://github.com/liangliangyy/DjangoBlog/blob/master/djangoblog/logentryadmin.py
-    @admin.display(ordering="object_repr", description="object")
-    def object_link(self, obj):
-        object_link = escape(obj.object_repr)
-        content_type = obj.content_type  # nullable
 
-        if content_type and obj.action_flag != admin.models.DELETION:
-            try:
-                # https://docs.djangoproject.com/en/4.2/ref/contrib/admin/#reversing-admin-urls
-                url = reverse(f"admin:{content_type.app_label}_{content_type.model}_change", args=[obj.object_id])
-                object_link = f'<a href="{url}">{object_link}</a>'
-            except NoReverseMatch:
-                pass
-
-        return mark_safe(object_link)
-
-    # Avoid N+1 query.
-    def get_queryset(self, request):
-        queryset = super().get_queryset(request)
-        return queryset.prefetch_related("content_type")
-
-    # Make it read-only.
-
-    def has_add_permission(self, request):
-        return False
-
-    def has_change_permission(self, request, obj=None):
-        return False
-
-    def has_delete_permission(self, request, obj=None):
-        return False
-
-    def get_actions(self, request):
-        actions = super().get_actions(request)
-        if "delete_selected" in actions:
-            del actions["delete_selected"]
-        return actions
+class IssueInLine(TranslationTabularInline):
+    model = Issue
+    extra = 0
 
 
 @admin.register(Collection)
@@ -328,40 +270,8 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
         return form
 
 
-class LicenseAdminForm(forms.ModelForm):
-    class Meta:
-        widgets = {"description": AdminMarkdownxWidget(attrs={"cols": 100, "rows": 3})}
-
-
-@admin.register(License)
-class LicenseAdmin(TabbedDjangoJqueryTranslationAdmin):
-    fieldsets = (
-        (
-            None,
-            {
-                "description": TRANSLATION_REMINDER,
-                "fields": (
-                    "name_en",
-                    "name_es",
-                    "name_ru",
-                    "description_en",
-                    "description_es",
-                    "description_ru",
-                    "url",
-                ),
-            },
-        ),
-    )
-
-
-class IssueAdminForm(forms.ModelForm):
-    class Meta:
-        widgets = {"description": AdminMarkdownxWidget(attrs={"cols": 100, "rows": 3})}
-
-
 class FailedFilter(admin.SimpleListFilter):
-    title = "failed"
-
+    title = _("failed")
     parameter_name = "failed"
 
     def lookups(self, request, model_admin):
@@ -503,3 +413,90 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
             return f"{last_completed_task['type']} ({last_completed_task['order']}/{len(settings.JOB_TASKS_PLAN)})"
 
         return None
+
+
+class LicenseAdminForm(forms.ModelForm):
+    class Meta:
+        widgets = {"description": AdminMarkdownxWidget(attrs={"cols": 100, "rows": 3})}
+
+
+@admin.register(License)
+class LicenseAdmin(TabbedDjangoJqueryTranslationAdmin):
+    fieldsets = (
+        (
+            None,
+            {
+                "description": TRANSLATION_REMINDER,
+                "fields": (
+                    "name_en",
+                    "name_es",
+                    "name_ru",
+                    "description_en",
+                    "description_es",
+                    "description_ru",
+                    "url",
+                ),
+            },
+        ),
+    )
+
+
+# https://docs.djangoproject.com/en/4.2/ref/contrib/admin/#logentry-objects
+@admin.register(admin.models.LogEntry)
+class LogEntryAdmin(admin.ModelAdmin):
+    list_display_links = None
+    search_fields = [
+        "object_repr",
+        "change_message",
+    ]
+    list_display = [
+        "action_time",
+        "user",
+        "content_type",
+        "object_link",
+        "action_flag",
+        "get_change_message",
+    ]
+    list_filter = [
+        "content_type",
+        "action_flag",
+        "action_time",
+    ]
+
+    # https://github.com/liangliangyy/DjangoBlog/blob/master/djangoblog/logentryadmin.py
+    @admin.display(ordering="object_repr", description="object")
+    def object_link(self, obj):
+        object_link = escape(obj.object_repr)
+        content_type = obj.content_type  # nullable
+
+        if content_type and obj.action_flag != admin.models.DELETION:
+            try:
+                # https://docs.djangoproject.com/en/4.2/ref/contrib/admin/#reversing-admin-urls
+                url = reverse(f"admin:{content_type.app_label}_{content_type.model}_change", args=[obj.object_id])
+                object_link = f'<a href="{url}">{object_link}</a>'
+            except NoReverseMatch:
+                pass
+
+        return mark_safe(object_link)
+
+    # Avoid N+1 query.
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        return queryset.prefetch_related("content_type")
+
+    # Make it read-only.
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if "delete_selected" in actions:
+            del actions["delete_selected"]
+        return actions

@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-02 02:13+0000\n"
+"POT-Creation-Date: 2024-11-05 20:23+0000\n"
 "PO-Revision-Date: 2021-08-04 17:44+0000\n"
 "Last-Translator: Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2023\n"
 "Language-Team: Russian (https://app.transifex.com/open-contracting-"
@@ -34,117 +34,117 @@ msgstr ""
 "использовать выпадающий список в верхней части страницы, чтобы переключить "
 "язык для всех полей.</em>"
 
-#: data_registry/admin.py:121
-msgid "no active job"
-msgstr "недоступен"
-
-#: data_registry/admin.py:126 data_registry/admin.py:141
-#: data_registry/admin.py:163 data_registry/admin.py:395
-msgid "Yes"
-msgstr "Да"
-
-#: data_registry/admin.py:136
+#: data_registry/admin.py:102
 msgid "incomplete"
 msgstr "неполный"
 
-#: data_registry/admin.py:158
+#: data_registry/admin.py:106 data_registry/admin.py:127
+#: data_registry/admin.py:278
+msgid "Yes"
+msgstr "Да"
+
+#: data_registry/admin.py:123
 msgid "untranslated"
 msgstr "непереведенный"
 
-#: data_registry/admin.py:194
+#: data_registry/admin.py:158
 msgid "Previous year"
 msgstr "Предыдущий год"
 
-#: data_registry/admin.py:201
+#: data_registry/admin.py:165
 msgid "More than a year ago"
 msgstr "Больше года тому назад"
 
-#: data_registry/admin.py:290 data_registry/admin.py:436
+#: data_registry/admin.py:203 data_registry/admin.py:319
 msgid "Management"
 msgstr "Управление"
 
-#: data_registry/admin.py:296
+#: data_registry/admin.py:209
 msgid "Basics"
 msgstr "Основы"
 
-#: data_registry/admin.py:312 data_registry/admin.py:451
+#: data_registry/admin.py:225 data_registry/admin.py:334
 #: data_registry/templates/detail.html:117
 msgid "Overview"
 msgstr "Обзор"
 
-#: data_registry/admin.py:327
+#: data_registry/admin.py:240
 msgid "Details"
 msgstr "Подробности"
 
-#: data_registry/admin.py:462
+#: data_registry/admin.py:274
+msgid "failed"
+msgstr "Провалена"
+
+#: data_registry/admin.py:345
 msgid "Data availability"
 msgstr "Доступность данных"
 
-#: data_registry/models.py:154
+#: data_registry/models.py:139
 msgid "Africa and Middle East"
 msgstr "Африка и Средний Восток"
 
-#: data_registry/models.py:156
+#: data_registry/models.py:141
 msgid "Asia"
 msgstr "Азия"
 
-#: data_registry/models.py:158
+#: data_registry/models.py:143
 msgid "Eastern Europe & Central Asia"
 msgstr "Восточная Европа и Центральная Азия"
 
-#: data_registry/models.py:160
+#: data_registry/models.py:145
 msgid "Europe"
 msgstr "Европа"
 
-#: data_registry/models.py:162
+#: data_registry/models.py:147
 msgid "Latin America & Caribbean"
 msgstr "Латинская Америка и Карибский бассейн"
 
-#: data_registry/models.py:164
+#: data_registry/models.py:149
 msgid "North America"
 msgstr "Северная Америка"
 
-#: data_registry/models.py:166
+#: data_registry/models.py:151
 msgid "Oceania"
 msgstr "Океания"
 
-#: data_registry/models.py:212 data_registry/models.py:232
+#: data_registry/models.py:155 data_registry/models.py:175
 msgid "Monthly"
 msgstr "Ежемесячно"
 
-#: data_registry/models.py:214 data_registry/models.py:236
+#: data_registry/models.py:157 data_registry/models.py:179
 msgid "Every 6 months"
 msgstr "Каждые 6 месяцев"
 
-#: data_registry/models.py:216 data_registry/models.py:238
+#: data_registry/models.py:159 data_registry/models.py:181
 msgid "Annually"
 msgstr "Раз в год"
 
-#: data_registry/models.py:218
+#: data_registry/models.py:161
 msgid "This dataset is no longer updated by the publisher"
 msgstr "Этот набор данных больше не обновляется издателем."
 
-#: data_registry/models.py:222
+#: data_registry/models.py:165
 msgid "Unknown"
 msgstr "Неизвестный"
 
-#: data_registry/models.py:224
+#: data_registry/models.py:167
 msgid "Real time"
 msgstr "Реальное время"
 
-#: data_registry/models.py:226
+#: data_registry/models.py:169
 msgid "Hourly"
 msgstr "Ежечасно"
 
-#: data_registry/models.py:228
+#: data_registry/models.py:171
 msgid "Daily"
 msgstr "Ежедневно"
 
-#: data_registry/models.py:230
+#: data_registry/models.py:173
 msgid "Weekly"
 msgstr "Еженедельно"
 
-#: data_registry/models.py:234
+#: data_registry/models.py:177
 msgid "Every 3 months"
 msgstr "каждые 3 месяца"
 
@@ -399,7 +399,8 @@ msgstr ""
 "Файлы Excel могут содержать не более <a href=\"https://support.microsoft.com/"
 "en-us/office/excel-specifications-and-"
 "limits-1672b34d-7043-467e-8e27-269d656771c3\" target=\"_blank\">1,048,576 "
-"строк</a>. Если год отсутствует, в нем было слишком много строк. В таком случае загрузите файлы в формате CSV."
+"строк</a>. Если год отсутствует, в нем было слишком много строк. В таком "
+"случае загрузите файлы в формате CSV."
 
 #: data_registry/templates/detail.html:337
 msgid ""
@@ -551,7 +552,9 @@ msgid ""
 "level (public bodies, systems and procedures covered) and technical level "
 "(fields covered and linked documents)."
 msgstr ""
-"Для каждого набора данных мы описываем его источник и охват как на административном (государственные органы, системы и процедуры), так и на техническом уровне (доступные поля и связанные документы)."
+"Для каждого набора данных мы описываем его источник и охват как на "
+"административном (государственные органы, системы и процедуры), так и на "
+"техническом уровне (доступные поля и связанные документы)."
 
 #: data_registry/templates/index.html:72
 msgid "We include information on any known data quality issues."
@@ -565,7 +568,9 @@ msgstr "Получите мгновенный доступ к данным"
 msgid ""
 "Whole OCDS datasets are available to download in bulk, in JSON, Excel and "
 "CSV formats."
-msgstr "Полные наборы данных OCDS доступны для массовой загрузки в форматах JSON, Excel и CSV."
+msgstr ""
+"Полные наборы данных OCDS доступны для массовой загрузки в форматах JSON, "
+"Excel и CSV."
 
 #: data_registry/templates/search.html:6
 msgid "Search for and download OCDS data"
@@ -700,3 +705,6 @@ msgstr "Данные о изменениях"
 #: data_registry/views.py:278
 msgid "OCP Kingfisher Database"
 msgstr "База данных OCP Kingfisher"
+
+#~ msgid "no active job"
+#~ msgstr "недоступен"
