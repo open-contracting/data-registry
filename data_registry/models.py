@@ -13,10 +13,6 @@ def format_datetime(dt):
 
 
 class JobQuerySet(models.QuerySet):
-    def active(self):
-        """Return a query set of active jobs."""
-        return self.filter(active=True)
-
     def complete(self):
         """Return a query set of complete jobs."""
         return self.filter(status=Job.Status.COMPLETED)
@@ -134,9 +130,7 @@ class Job(models.Model):
 class CollectionQuerySet(models.QuerySet):
     def visible(self):
         """Return a query set of public collections with active jobs."""
-        # https://docs.djangoproject.com/en/4.2/ref/models/expressions/#some-examples
-        active_jobs = Job.objects.active().filter(collection=models.OuterRef("pk"))
-        return self.filter(models.Exists(active_jobs), public=True)
+        return self.filter(public=True, active_job__isnull=False)
 
 
 class Collection(models.Model):
@@ -279,9 +273,18 @@ class Collection(models.Model):
         "the publication is updated.",
     )
     last_retrieved = models.DateField(
+        blank=True, null=True, help_text="The date on which the most recent 'collect' job task completed."
+    )
+    active_job = models.ForeignKey(
+        "Job",
+        on_delete=models.RESTRICT,
         blank=True,
         null=True,
-        help_text="The date on which the most recent 'collect' job task completed.",
+        db_index=True,
+        verbose_name="active job",
+        related_name="+",
+        help_text="A job is a set of tasks to collect and process data from a publication. "
+        "A job can be selected once it is completed. If a new job completes, it becomes the active job.",
     )
 
     # Visibility logic
@@ -306,10 +309,6 @@ class Collection(models.Model):
 
     def __repr__(self):
         return f"{self.country}: {self}"
-
-    @property
-    def active_job(self):
-        return self.job_set.active().first()
 
     def is_out_of_date(self):
         """
@@ -417,7 +416,8 @@ class Task(models.Model):
     # Task result
     result = models.TextField(choices=Result.choices, blank=True)
     note = models.TextField(blank=True, help_text="Metadata about any failure.")
-    context = models.JSONField(blank=True, default=dict)
+
+    # Job logic (see `create_tasks`)
     type = models.TextField(choices=Type.choices, blank=True)
     order = models.IntegerField(blank=True, null=True)
 

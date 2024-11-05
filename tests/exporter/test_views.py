@@ -9,61 +9,63 @@ from data_registry.models import Collection
 @override_settings(EXPORTER_DIR=os.path.join("tests", "fixtures"))
 class ViewsTests(TestCase):
     @classmethod
-    def setUp(cls):
+    def setUpTestData(cls):
         cls.collection = Collection.objects.create(
             id=2,
             title="Dirección Nacional de Contrataciones Públicas (DNCP)",
             source_id="abc",
             public=True,
         )
-        cls.job = cls.collection.job_set.create(
-            active=True,
+        cls.job = cls.collection.active_job = cls.collection.job_set.create(
             id=2,
         )
+        cls.collection.save()
+
         cls.collection_no_job = Collection.objects.create(
             id=3,
             title="Test",
             source_id="abc",
             public=True,
         )
-        cls.collection_no_job.job_set.create(
-            active=True,
+        cls.collection_no_job.active_job = cls.collection_no_job.job_set.create(
             id=4,
         )
+        cls.collection_no_job.save()
 
     def test_collection_not_found(self):
         with self.assertNumQueries(1):
             response = Client().get("/en/publication/10/download?name=2000.jsonl.gz")
 
-        self.assertEqual(response.status_code, 404)
+            self.assertEqual(response.status_code, 404)
 
     def test_download_export_invalid_suffix(self):
         with self.assertNumQueries(0):
             response = Client().get(f"/en/publication/{self.collection.id}/download?name=invalid")
 
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.content, b"The name query string parameter is invalid")
+            self.assertEqual(response.status_code, 400)
+            self.assertEqual(response.content, b"The name query string parameter is invalid")
 
     def test_download_export_empty_parameter(self):
         with self.assertNumQueries(0):
             response = Client().get(f"/en/publication/{self.collection.id}/download?name=")
 
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.content, b"The name query string parameter is invalid")
+            self.assertEqual(response.status_code, 400)
+            self.assertEqual(response.content, b"The name query string parameter is invalid")
 
     def test_download_export_waiting(self):
-        with self.assertNumQueries(2):
+        with self.assertNumQueries(1):
             response = Client().get(f"/en/publication/{self.collection_no_job.id}/download?name=2000.jsonl.gz")
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.content, b"File not found")
+
+            self.assertEqual(response.status_code, 404)
+            self.assertEqual(response.content, b"File not found")
 
     @patch("exporter.util.Export.lockfile", new_callable=PropertyMock)
     def test_download_export_running(self, exists):
-        with self.assertNumQueries(2):
+        with self.assertNumQueries(1):
             response = Client().get(f"/en/publication/{self.collection.id}/download?name=2000.jsonl.gz")
 
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.content, b"File not found")
+            self.assertEqual(response.status_code, 404)
+            self.assertEqual(response.content, b"File not found")
 
     def test_download_export_completed(self):
         for suffix, content_type in (
@@ -71,14 +73,15 @@ class ViewsTests(TestCase):
             ("csv.tar.gz", "application/gzip"),
             ("xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"),
         ):
-            with self.subTest(suffix=suffix):
-                with self.assertNumQueries(2):
-                    response = Client().get(
-                        f"/en/publication/{self.collection.id}/download?name=2000.{suffix}",
-                        HTTP_ACCEPT_ENCODING="gzip",
-                    )
-                self.assertEqual(response.status_code, 200)
+            with self.subTest(suffix=suffix), self.assertNumQueries(1):
+                response = Client().get(
+                    f"/en/publication/{self.collection.id}/download?name=2000.{suffix}",
+                    HTTP_ACCEPT_ENCODING="gzip",
+                )
+
                 response.headers.pop("Content-Length")
+
+                self.assertEqual(response.status_code, 200)
                 self.assertDictEqual(
                     dict(response.headers),
                     {

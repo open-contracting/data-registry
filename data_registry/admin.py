@@ -5,7 +5,7 @@ import requests
 from django import forms
 from django.conf import settings
 from django.contrib import admin, messages
-from django.db.models import BooleanField, Case, Exists, OuterRef, Q, When
+from django.db.models import Exists, F, OuterRef, Q
 from django.forms.widgets import TextInput
 from django.urls import NoReverseMatch, reverse
 from django.utils import timezone
@@ -57,12 +57,6 @@ class CollectionAdminForm(forms.ModelForm):
         help_text="The name of the spider in Kingfisher Collect. If a new spider is not listed, Kingfisher Collect "
         "needs to be re-deployed to the registry's server.",
     )
-    active_job = forms.ModelChoiceField(
-        queryset=None,
-        required=False,
-        help_text="A job is a set of tasks to collect and process data from a publication. A job can be selected once "
-        "it is completed. If a new job completes, it becomes the active job.",
-    )
     country_flag = forms.ChoiceField(choices=[(None, "---------")], required=False)
 
     def __init__(self, *args, request=None, **kwargs):
@@ -89,23 +83,15 @@ class CollectionAdminForm(forms.ModelForm):
 
         # https://docs.djangoproject.com/en/4.2/ref/forms/fields/#fields-which-handle-relationships
         # `self.instance.job_set` doesn't work, because `self.instance` might be an unsaved publication.
-        self.fields["active_job"].queryset = Job.objects.filter(collection=self.instance).complete()
-        self.fields["active_job"].initial = Job.objects.filter(collection=self.instance).active().first()
+        #
+        # It's not obvious how to use limit_choices_to to filter jobs by collection.
+        # https://docs.djangoproject.com/en/4.2/ref/models/fields/#django.db.models.ForeignKey.limit_choices_to
+        self.fields["active_job"].queryset = (
+            Job.objects.filter(collection=self.instance).complete().order_by(F("id").desc())
+        )
 
         # Populate choices in the form, not the model, for easier migration between icon sets.
         self.fields["country_flag"].choices += sorted((f.name, f.name) for f in FLAGS_DIR.iterdir() if f.is_file())
-
-    def save(self, *args, **kwargs):
-        jobs = self.instance.job_set
-
-        active_job = self.cleaned_data["active_job"]
-        if active_job:
-            if not active_job.active:
-                jobs.update(active=Case(When(id=active_job.id, then=True), default=False, output_field=BooleanField()))
-        elif self.instance.pk:
-            jobs.update(active=False)
-
-        return super().save(*args, **kwargs)
 
     class Meta:
         widgets = {
@@ -115,21 +101,6 @@ class CollectionAdminForm(forms.ModelForm):
             "summary": AdminMarkdownxWidget(attrs={"cols": 100, "rows": 6}),
             "additional_data": AdminMarkdownxWidget(attrs={"cols": 100, "rows": 6}),
         }
-
-
-class UnavailableFilter(admin.SimpleListFilter):
-    title = _("no active job")
-
-    parameter_name = "unavailable"
-
-    def lookups(self, request, model_admin):
-        return (("1", _("Yes")),)
-
-    def queryset(self, request, queryset):
-        if self.value() == "1":
-            active_jobs = Job.objects.active().filter(collection=OuterRef("pk"))
-            return queryset.exclude(Exists(active_jobs))
-        return None
 
 
 class IncompleteFilter(admin.SimpleListFilter):
@@ -279,7 +250,7 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
         "retrieval_frequency",
         ("license_custom", admin.EmptyFieldListFilter),
         ("summary_en", admin.EmptyFieldListFilter),
-        UnavailableFilter,
+        ("active_job", admin.EmptyFieldListFilter),
         IncompleteFilter,
         UntranslatedFilter,
         ("last_reviewed", CustomDateFieldListFilter),
@@ -352,7 +323,9 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
 
     def get_form(self, request, obj=None, **kwargs):
         kwargs["form"] = partialclass(self.form, request=request)
-        return super().get_form(request, obj, **kwargs)
+        form = super().get_form(request, obj, **kwargs)
+        form.base_fields["active_job"].widget.can_add_related = False
+        return form
 
 
 class LicenseAdminForm(forms.ModelForm):
@@ -515,6 +488,10 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
     @admin.display(description="Country")
     def country(self, obj):
         return obj.collection.country
+
+    @admin.display(description="Active")
+    def active(self, obj):
+        return obj.id == obj.collection.active_job_id
 
     @admin.display(description="Last completed task")
     def last_task(self, obj):

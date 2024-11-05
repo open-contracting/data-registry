@@ -2,7 +2,6 @@ import logging
 
 from django.conf import settings
 from django.db import transaction
-from django.db.models import BooleanField, Case, When
 
 from data_registry import models
 from data_registry.exceptions import IrrecoverableError, RecoverableError
@@ -116,10 +115,7 @@ def process(collection: models.Collection) -> None:
                 job.complete()
 
                 collection.last_retrieved = job.task_set.get(type=settings.JOB_TASKS_PLAN[0]).end
+                collection.active_job = job
                 collection.save()
-
-                collection.job_set.update(
-                    active=Case(When(id=job.id, then=True), default=False, output_field=BooleanField())
-                )
 
                 logger.debug("Job %s has succeeded (%s: %s)", job, country, collection)

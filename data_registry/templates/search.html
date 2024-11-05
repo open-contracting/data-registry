@@ -147,7 +147,7 @@ observer.observe(document.querySelector('.toppable'))
                     <dl class="mb-0 mb-md-n2 list-desc-inline">
                         <dt>{% translate "Data date range:" %}</dt>
                         <dd>
-                            {{ collection.date_from|date:"M Y" }} - {{ collection.date_to|date:"M Y" }}
+                            {{ collection.active_job.date_from|date:"M Y" }} - {{ collection.active_job.date_to|date:"M Y" }}
                             {% if collection.retrieval_frequency == never %}
                                 ({{ collection.get_retrieval_frequency_display }})
                             {% endif %}

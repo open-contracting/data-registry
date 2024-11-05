@@ -9,7 +9,7 @@ import requests
 from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.contrib.postgres.aggregates import ArrayAgg
-from django.db.models import Count, OuterRef, Q, Subquery
+from django.db.models import Count, F, Q
 from django.db.models.functions import Substr
 from django.http.response import FileResponse, HttpResponse, HttpResponseBadRequest, HttpResponseNotFound, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -80,16 +80,13 @@ def search(request):
         "amendments_count": _("Amendments data"),
     }
 
-    # https://docs.djangoproject.com/en/4.2/ref/models/expressions/#subquery-expressions
-    active_job = Job.objects.active().filter(collection=OuterRef("pk"))[:1]
-    qs = collection_queryset(request).annotate(
-        job_id=Subquery(active_job.values("pk")),
-        # Display
-        date_from=Subquery(active_job.values("date_from")),
-        date_to=Subquery(active_job.values("date_to")),
-        # Filter
-        letter=Substr(f"country_{language_code}", 1, 1),
-        **{count: Subquery(active_job.values(count)) for count in counts},
+    qs = (
+        collection_queryset(request)
+        .select_related("active_job")
+        .annotate(
+            letter=Substr(f"country_{language_code}", 1, 1),
+            **{count: F(f"active_job__{count}") for count in counts},
+        )
     )
 
     filter_args = []
@@ -100,7 +97,7 @@ def search(request):
     if "date_range" in request.GET:
         date_limit = date_limits.get(request.GET["date_range"])
         if date_limit:
-            filter_args.append(Q(date_from__gte=date_limit) | Q(date_to__gte=date_limit))
+            filter_args.append(Q(active_job__date_from__gte=date_limit) | Q(active_job__date_to__gte=date_limit))
     if "update_frequency" in request.GET:
         filter_kwargs["update_frequency__in"] = request.GET.getlist("update_frequency")
     if "region" in request.GET:
@@ -123,10 +120,15 @@ def search(request):
         facets["frequencies"][value] = n
     for value, n in facet_counts(qs, "region"):
         facets["regions"][value] = n
-    for row in without_filter(qs, args=False).values("date_from", "date_to"):
+    for row in without_filter(qs, args=False).values("active_job__date_from", "active_job__date_to"):
         facets["date_ranges"][""] += 1
         for value, limit in date_limits.items():
-            if row["date_from"] and row["date_from"] >= limit or row["date_to"] and row["date_to"] >= limit:
+            if (
+                row["active_job__date_from"]
+                and row["active_job__date_from"] >= limit
+                or row["active_job__date_to"]
+                and row["active_job__date_to"] >= limit
+            ):
                 facets["date_ranges"][value] += 1
 
     for lookup, value in exclude.items():
@@ -134,7 +136,7 @@ def search(request):
     qs = qs.filter(*filter_args, **filter_kwargs).order_by("country", "title")
 
     for collection in qs:
-        collection.files = Export.get_files(collection.job_id)
+        collection.files = Export.get_files(collection.active_job_id)
         for value in counts:
             if getattr(collection, value):
                 facets["counts"][value] += 1
@@ -160,7 +162,7 @@ def detail(request, pk):
     )
 
     job = collection.active_job
-    files = Export.get_files(job and job.id)
+    files = Export.get_files(collection.active_job_id)
 
     return render(
         request,
@@ -177,9 +179,8 @@ def download_export(request, pk):
         return HttpResponseBadRequest("The name query string parameter is invalid")
 
     collection = get_object_or_404(collection_queryset(request), pk=pk)
-    active_job = get_object_or_404(collection.job_set.active())
 
-    export = Export(active_job.id, basename=name)
+    export = Export(collection.active_job_id, basename=name)
     if export.status != TaskStatus.COMPLETED:
         return HttpResponseNotFound("File not found")
 
@@ -194,30 +195,29 @@ def download_export(request, pk):
 
 
 def publications_api(request):
-    active_job = Job.objects.active().filter(collection=OuterRef("pk"))[:1]
     publications = (
         collection_queryset(request)
+        .select_related("active_job")
         .values(
             # Identification
             "id",
             "title",
+            # Spatial coverage
             "country",
-            # Accrual periodicity
-            "last_retrieved",
-            "retrieval_frequency",
-            "update_frequency",
-            "frozen",
-            # Provenance
-            "source_id",
-            "source_url",
-            # Other details
             "region",
+            # Language
             "language",
+            # Accrual periodicity
+            "update_frequency",
+            # Provenance
+            "source_url",
+            # Job logic
+            "frozen",
+            "source_id",
+            "retrieval_frequency",
+            "last_retrieved",
         )
-        .annotate(
-            date_from=Subquery(active_job.values("date_from")),
-            date_to=Subquery(active_job.values("date_to")),
-        )
+        .annotate(date_from=F("active_job__date_from"), date_to=F("active_job__date_to"))
     )
     return JsonResponse(
         list(publications),
