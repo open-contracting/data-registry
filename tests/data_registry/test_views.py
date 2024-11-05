@@ -1,12 +1,16 @@
 import datetime
-from unittest.mock import patch
+import os.path
+from unittest.mock import PropertyMock, patch
 
 from django.test import Client, TestCase, override_settings
 
 from data_registry import models
 
 
-@override_settings(STORAGES={"staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"}})
+@override_settings(
+    STORAGES={"staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"}},
+    EXPORTER_DIR=os.path.join("tests", "fixtures"),
+)
 class ViewsTests(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -34,6 +38,7 @@ class ViewsTests(TestCase):
             public=True,
         )
         cls.job = cls.collection1.active_job = cls.collection1.job_set.create(
+            id=99,  # to match tests/fixtures directory
             date_from=datetime.date(2010, 2, 1),
             date_to=datetime.date(2023, 9, 30),
         )
@@ -68,6 +73,10 @@ class ViewsTests(TestCase):
         )
         cls.collection2.save()
 
+        cls.collection_no_files = models.Collection.objects.create(title="Test", source_id="test", public=True)
+        cls.collection_no_files.active_job = cls.collection_no_files.job_set.create()
+        cls.collection_no_files.save()
+
     def test_search(self):
         # letter, update_frequency, region, dates, results
         with self.assertNumQueries(5):
@@ -87,6 +96,72 @@ class ViewsTests(TestCase):
 
             self.assertTemplateUsed("detail.html")
             self.assertContains(response, f"""<a href="{url}" rel="nofollow" download>2022</a>""", html=True)
+
+    def test_collection_not_found(self):
+        with self.assertNumQueries(1):
+            response = Client().get("/en/publication/10/download?name=2000.jsonl.gz")
+
+            self.assertEqual(response.status_code, 404)
+
+    def test_download_export_invalid_suffix(self):
+        with self.assertNumQueries(0):
+            response = Client().get(f"/en/publication/{self.collection1.id}/download?name=invalid")
+
+            self.assertEqual(response.status_code, 400)
+            self.assertEqual(response.content, b"The name query string parameter is invalid")
+
+    def test_download_export_empty_parameter(self):
+        with self.assertNumQueries(0):
+            response = Client().get(f"/en/publication/{self.collection1.id}/download?name=")
+
+            self.assertEqual(response.status_code, 400)
+            self.assertEqual(response.content, b"The name query string parameter is invalid")
+
+    def test_download_export_waiting(self):
+        with self.assertNumQueries(1):
+            response = Client().get(f"/en/publication/{self.collection_no_files.id}/download?name=2000.jsonl.gz")
+
+            self.assertEqual(response.status_code, 404)
+            self.assertEqual(response.content, b"File not found")
+
+    @patch("exporter.util.Export.lockfile", new_callable=PropertyMock)
+    def test_download_export_running(self, exists):
+        with self.assertNumQueries(1):
+            response = Client().get(f"/en/publication/{self.collection1.id}/download?name=2000.jsonl.gz")
+
+            self.assertEqual(response.status_code, 404)
+            self.assertEqual(response.content, b"File not found")
+
+    def test_download_export_completed(self):
+        for suffix, content_type in (
+            ("jsonl.gz", "application/gzip"),
+            ("csv.tar.gz", "application/gzip"),
+            ("xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"),
+        ):
+            with self.subTest(suffix=suffix), self.assertNumQueries(1):
+                response = Client().get(
+                    f"/en/publication/{self.collection1.id}/download?name=2000.{suffix}",
+                    HTTP_ACCEPT_ENCODING="gzip",
+                )
+
+                response.headers.pop("Content-Length")
+
+                self.assertEqual(response.status_code, 200)
+                self.assertDictEqual(
+                    dict(response.headers),
+                    {
+                        "Content-Disposition": f'attachment; filename="paraguay_dncp_records_2000.{suffix}"',
+                        "Content-Language": "en",
+                        "Content-Type": content_type,
+                        "Cross-Origin-Opener-Policy": "same-origin",
+                        "Referrer-Policy": "same-origin",
+                        "Vary": "Cookie",
+                        "X-Content-Type-Options": "nosniff",
+                        "X-Frame-Options": "DENY",
+                    },
+                )
+                with open(os.path.join("tests", "fixtures", "99", f"2000.{suffix}"), "rb") as f:
+                    self.assertEqual(b"".join(response.streaming_content), f.read())
 
     @override_settings(SCRAPYD={"url": "http://127.0.0.1", "project": "kingfisher"})
     def test_publications_api(self):
@@ -123,6 +198,21 @@ class ViewsTests(TestCase):
                 "last_retrieved": "2001-02-03",
                 "date_from": "2010-02-01",
                 "date_to": "2023-09-30",
+            },
+            {
+                "id": self.collection_no_files.id,
+                "title": "Test",
+                "country": "",
+                "region": "",
+                "language": "",
+                "update_frequency": "UNKNOWN",
+                "source_url": "",
+                "frozen": False,
+                "source_id": "test",
+                "retrieval_frequency": "",
+                "last_retrieved": None,
+                "date_from": None,
+                "date_to": None,
             },
         ]
 
