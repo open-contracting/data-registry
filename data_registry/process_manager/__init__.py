@@ -30,7 +30,7 @@ def get_task_manager(task: models.Task) -> TaskManager:
         case models.Task.Type.FLATTENER:
             return Flattener(task)
         case _:
-            raise NotImplementedError
+            raise NotImplementedError(repr(task.type))
 
 
 def process(collection: models.Collection) -> None:
