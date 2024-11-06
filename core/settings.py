@@ -191,11 +191,6 @@ LOGGING = {
             "handlers": ["console"],
             "level": os.getenv("LOG_LEVEL", "INFO"),
         },
-        "urllib3.connectionpool": {
-            "handlers": ["console"],
-            "level": "INFO",
-            "propagate": False,
-        },
         "django": {
             "handlers": ["console"],
             "level": os.getenv("LOG_LEVEL", "INFO"),
@@ -210,6 +205,7 @@ LOGGING = {
             "handlers": ["null"],
             "propagate": False,
         },
+        # Never show DEBUG messages.
         "django.template": {
             "handlers": ["console"],
             "level": "INFO",
@@ -221,6 +217,11 @@ LOGGING = {
             "propagate": False,
         },
         "markdown_it.rules_block": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "urllib3.connectionpool": {
             "handlers": ["console"],
             "level": "INFO",
             "propagate": False,
