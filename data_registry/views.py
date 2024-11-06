@@ -176,7 +176,6 @@ def detail(request, pk):
     files = Export.get_files(collection.active_job_id)
 
     url = request.build_absolute_uri()
-    host = request.get_host()
 
     # https://developers.google.com/search/docs/appearance/structured-data/dataset
     dataset = {
@@ -185,7 +184,7 @@ def detail(request, pk):
         "name": _("OCDS data for %(country)s: %(title)s") % {"country": collection.country, "title": collection.title},
         "description": f"{collection.description}\n\n{collection.description_long}",
         "url": url,
-        "image": f"{request.scheme}://{host}/{static(f'img/flags/{collection.country_flag}')}",
+        "image": request.build_absolute_uri(static(f"img/flags/{collection.country_flag}")),
         # Compare to Google Ads campaign.
         "keywords": [
             "public procurement",
@@ -209,7 +208,7 @@ def detail(request, pk):
             "@type": "DataCatalog",
             "name": _("OCP Data Registry"),
             "description": _("Search for and access datasets by country"),
-            "url": f"{request.scheme}://{host}/",
+            "url": request.build_absolute_uri("/"),
         },
         "dateModified": collection.modified.isoformat(),
     }
@@ -239,7 +238,9 @@ def detail(request, pk):
                     "@type": "DataDownload",
                     "encodingFormat": ENCODING_FORMATS[file_type],
                     "contentSize": filesizeformat(groups["full"]),
-                    "contentUrl": f"{reverse('download', kwargs={'pk': pk})}?name=full.{FILE_SUFFIXES[file_type]}",
+                    "contentUrl": request.build_absolute_uri(
+                        f"{reverse('download', kwargs={'pk': pk})}?name=full.{FILE_SUFFIXES[file_type]}"
+                    ),
                     "dateModified": collection.last_retrieved.isoformat(),
                 }
             )
