@@ -11,7 +11,7 @@ from tests import TestTask
 class ProcessTests(TransactionTestCase):
     fixtures = ["tests/fixtures/fixtures.json"]
 
-    def test(self):
+    def test_task_progress(self):
         collection = Collection.objects.get(pk=1)
 
         with patch("data_registry.process_manager.get_task_manager") as mock_get_task_manager:

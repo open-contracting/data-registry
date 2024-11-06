@@ -105,7 +105,7 @@ class Job(models.Model):
     objects = JobQuerySet.as_manager()
 
     def __str__(self):
-        return f"{format_datetime(self.start)} .. {format_datetime(self.end)} ({self.id})"
+        return f"{format_datetime(self.start)} .. {format_datetime(self.end)} ({self.pk})"
 
     def __repr__(self):
         return f"{self.collection!r}: {self}"
@@ -300,7 +300,7 @@ class Collection(models.Model):
         verbose_name = "publication"
 
     def __str__(self):
-        return f"{self.title} ({self.id})"
+        return f"{self.title} ({self.pk})"
 
     def __repr__(self):
         return f"{self.country}: {self}"
@@ -353,7 +353,7 @@ class License(models.Model):
         verbose_name = "data license"
 
     def __str__(self):
-        return f"{self.name} ({self.id})"
+        return f"{self.name} ({self.pk})"
 
 
 class Task(models.Model):
@@ -409,7 +409,7 @@ class Task(models.Model):
         verbose_name = "job task"
 
     def __str__(self):
-        return f"#{self.id}({self.type})"
+        return f"#{self.pk}({self.type})"
 
     def initiate(self):
         """Mark the task as started."""

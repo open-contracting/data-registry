@@ -336,7 +336,7 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
 
     @admin.display(description="Active", boolean=True)
     def active(self, obj):
-        return obj.id == obj.collection.active_job_id
+        return obj.pk == obj.collection.active_job_id
 
     @admin.display(description="Last completed task")
     def last_task(self, obj):
