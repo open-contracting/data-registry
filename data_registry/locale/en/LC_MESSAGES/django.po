@@ -638,7 +638,7 @@ msgstr "All"
 
 #: data_registry/views.py:60
 msgid "Past month"
-msgstr "Past momth"
+msgstr "Past month"
 
 #: data_registry/views.py:61
 msgid "Past 6 months"

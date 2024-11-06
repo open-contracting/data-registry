@@ -62,9 +62,6 @@ class Job(models.Model):
     )
 
     # Job logic
-    active = models.BooleanField(
-        default=False, help_text="Set this as the active job for the publication from the publication's page."
-    )
     archived = models.BooleanField(
         default=False,
         verbose_name="temporary data deleted",
@@ -274,7 +271,7 @@ class Collection(models.Model):
         null=True,
         db_index=True,
         verbose_name="active job",
-        related_name="+",
+        related_name="active_collection",
         help_text="A job is a set of tasks to collect and process data from a publication. "
         "A job can be selected once it is completed. If a new job completes, it becomes the active job.",
     )
