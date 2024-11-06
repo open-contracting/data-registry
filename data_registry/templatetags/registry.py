@@ -53,14 +53,14 @@ def catalog_str():
 
 
 @register.simple_tag(takes_context=True)
-def canonical_url(context, language=None):
+def canonical_url(context, language_code=None):
     request = context["request"]
     name = urls.resolve(request.path).url_name
 
-    if language is None:
-        language = get_language()
+    if language_code is None:
+        language_code = get_language()
 
-    match (name, language):
+    match (name, language_code):
         case ("index", "en"):
             # / is the canonical of /en/.
             args = ["/"]
@@ -73,15 +73,15 @@ def canonical_url(context, language=None):
 
 
 @register.simple_tag(takes_context=True)
-def translate_url(context, language):
+def translate_url(context, language_code):
     request = context["request"]
     name = urls.resolve(request.path).url_name
 
-    url = canonical_url(context, language)
-    if name == "index" and language == "en":
+    url = canonical_url(context, language_code)
+    if name == "index" and language_code == "en":
         # Translating "/es/" to "en" would return "/en/", which is not canonical.
         return url
-    return urls.translate_url(url, language)
+    return urls.translate_url(url, language_code)
 
 
 @register.simple_tag(takes_context=True)
@@ -114,6 +114,11 @@ def feedback_query_string_parameters(context):
 
 
 @register.filter
+def tojson(obj) -> str:
+    return mark_safe(json.dumps(obj, indent=4))
+
+
+@register.filter
 def markdownify(value: str) -> str:
     """
     :param value: Markdown text
@@ -126,7 +131,12 @@ def markdownify(value: str) -> str:
 
 
 @register.filter
-def get_item(dictionary, key):
+def nonempty(query_dict):
+    return any(query_dict.values())
+
+
+@register.filter
+def getitem(dictionary, key):
     return dictionary.get(key)
 
 

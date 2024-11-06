@@ -1,5 +1,15 @@
 @import 'custom';
 
+// https://stackoverflow.com/a/69212560/244258
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+footer {
+    margin-top: auto;
+}
+
 // Grid description list
 
 .list-desc-grid {

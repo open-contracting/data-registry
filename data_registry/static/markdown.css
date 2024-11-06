@@ -24,6 +24,10 @@
   overflow: hidden;
 }
 
+.markdownable {
+  width: 100%;
+}
+
 .markdownable-textarea {
   flex: 3;
   margin-right: 1rem;

@@ -69,7 +69,7 @@ observer.observe(document.querySelector('.toppable'))
         <h2 class="h4 mb-4">{% translate "Filters" %}</h2>
 
         <div class="d-none d-md-block" id="filters">
-            <a rel="nofollow" href="?" class="{% if request.GET %}d-block{% else %}d-none{% endif %} mb-4">
+            <a rel="nofollow" href="?" class="{% if request.GET|nonempty %}d-block{% else %}d-none{% endif %} mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" class="bi b-iconstack b-icon" width="1em" height="1em" viewBox="0 0 16 16" role="img" focusable="false" aria-hidden="true" fill="currentColor">
                     <g>
                         {# https://icons.getbootstrap.com/icons/slash/ #}
@@ -91,8 +91,8 @@ observer.observe(document.querySelector('.toppable'))
             <ul class="mb-4 list-inline letters">
 {% for letter in facets.letters %}
                 <li class="list-inline-item mb-1 me-0 text-center">
-    {% if facets.letters|get_item:letter %}
-                    <a rel="nofollow" href="?{% if letter == request.GET|get_item:'letter' %}{% remove_query_string_parameter 'letter' %}{% else %}{% replace_query_string_parameter 'letter' letter %}{% endif %}" title="{% blocktranslate count counter=facets.letters|get_item:letter %}1 dataset{% plural %}{{ counter }} datasets{% endblocktranslate %}" class="d-inline-block text-decoration-underline{% if letter == request.GET|get_item:'letter' %} bg-primary bg-opacity-25 fw-bold{% elif facets.letters|get_item:letter %} border border-secondary{% endif %}">
+    {% if facets.letters|getitem:letter %}
+                    <a rel="nofollow" href="?{% if letter == request.GET|getitem:'letter' %}{% remove_query_string_parameter 'letter' %}{% else %}{% replace_query_string_parameter 'letter' letter %}{% endif %}" title="{% blocktranslate count counter=facets.letters|getitem:letter %}1 dataset{% plural %}{{ counter }} datasets{% endblocktranslate %}" class="d-inline-block text-decoration-underline{% if letter == request.GET|getitem:'letter' %} bg-primary bg-opacity-25 fw-bold{% elif facets.letters|getitem:letter %} border border-secondary{% endif %}">
                         {{ letter }}
                     </a>
     {% else %}
