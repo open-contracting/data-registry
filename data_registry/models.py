@@ -231,8 +231,7 @@ class Collection(models.Model):
     summary = models.TextField(
         blank=True,
         verbose_name="quality summary",
-        help_text="A short summary of quality issues, as Markdown text. Individual issues can be described below, "
-        "which will be rendered as a bullet list.",
+        help_text="A short summary of quality issues, as Markdown text.",
     )
     last_reviewed = models.DateField(
         blank=True,
@@ -358,21 +357,6 @@ class License(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.id})"
-
-
-class Issue(models.Model):
-    description = models.TextField(help_text="A one-line description of the quality issue, as Markdown text.")
-    collection = models.ForeignKey("Collection", on_delete=models.CASCADE, db_index=True)
-
-    # Timestamps
-    created = models.DateTimeField(auto_now_add=True)
-    modified = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        verbose_name = "quality issue"
-
-    def __str__(self):
-        return f"{self.description[:32]} ({self.id})"
 
 
 class Task(models.Model):

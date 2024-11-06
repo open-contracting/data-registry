@@ -9,7 +9,6 @@ class CoreAdminSite(admin.AdminSite):
         """Sorts the data registry's models in a logical order."""
         order = [
             "Collection",
-            "Issue",
             "License",
             "Job",
             "Task",

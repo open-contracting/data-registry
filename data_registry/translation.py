@@ -17,13 +17,6 @@ class CollectionTranslation(TranslationOptions):
     fallback_undefined = ""
 
 
-@register(models.Issue)
-class IssueTranslation(TranslationOptions):
-    fields = ["description"]
-    required_languages = {language: ("description",) for language, _ in settings.LANGUAGES}
-    fallback_undefined = ""
-
-
 @register(models.License)
 class LicenseTranslation(TranslationOptions):
     fields = ["name", "description"]

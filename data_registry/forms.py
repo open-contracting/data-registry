@@ -77,11 +77,6 @@ class CollectionAdminForm(forms.ModelForm):
         self.fields["country_flag"].choices += sorted((f.name, f.name) for f in FLAGS_DIR.iterdir() if f.is_file())
 
 
-class IssueAdminForm(forms.ModelForm):
-    class Meta:
-        widgets = {"description": MarkdownWidget(attrs={"rows": 1})}
-
-
 class LicenseAdminForm(forms.ModelForm):
     class Meta:
         widgets = {

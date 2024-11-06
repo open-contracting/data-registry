@@ -8,11 +8,11 @@ from django.utils import timezone
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
-from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, TranslationTabularInline
+from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin
 
 from data_registry import forms
 from data_registry.exceptions import RecoverableError
-from data_registry.models import Collection, Issue, Job, License, Task
+from data_registry.models import Collection, Job, License, Task
 from data_registry.util import partialclass
 
 logger = logging.getLogger(__name__)
@@ -111,11 +111,6 @@ class CustomDateFieldListFilter(admin.DateFieldListFilter):
         )
 
 
-class IssueInLine(TranslationTabularInline):
-    model = Issue
-    extra = 0
-
-
 @admin.register(Collection)
 class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
     form = forms.CollectionAdminForm
@@ -202,8 +197,6 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
     )
 
     readonly_fields = ["last_retrieved"]
-
-    inlines = [IssueInLine]
 
     def get_form(self, request, obj=None, **kwargs):
         kwargs["form"] = partialclass(self.form, request=request)

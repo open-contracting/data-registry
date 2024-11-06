@@ -323,9 +323,9 @@ On the next form:
 #. Assign *Groups* (multiple can be selected, as they have non-overlapping permissions)
 
    Viewer
-     Can view publications, quality issues, licenses, jobs and job tasks
+     Can view publications, licenses, jobs and job tasks
    Contributor
-     Can add/change publications, quality issues and licenses
+     Can add/change publications and licenses
 
 #. Click *SAVE*
 

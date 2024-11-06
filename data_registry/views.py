@@ -8,7 +8,6 @@ from urllib.parse import urlencode, urljoin
 import requests
 from dateutil.relativedelta import relativedelta
 from django.conf import settings
-from django.contrib.postgres.aggregates import ArrayAgg
 from django.db.models import Count, F, Q
 from django.db.models.functions import Substr
 from django.http.response import FileResponse, HttpResponse, HttpResponseBadRequest, HttpResponseNotFound, JsonResponse
@@ -154,12 +153,7 @@ def search(request):
 
 
 def detail(request, pk):
-    collection = get_object_or_404(
-        collection_queryset(request)
-        .select_related("license_custom")
-        .annotate(issues=ArrayAgg("issue__description", filter=Q(issue__isnull=False), default=None)),
-        pk=pk,
-    )
+    collection = get_object_or_404(collection_queryset(request).select_related("license_custom"), pk=pk)
 
     job = collection.active_job
     files = Export.get_files(collection.active_job_id)

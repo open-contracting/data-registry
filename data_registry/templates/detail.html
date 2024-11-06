@@ -243,7 +243,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
 {% if collection.additional_data %}
         <div class="d-flex p-4 rounded-3 bg-primary bg-opacity-10 text-primary">
             {# https://icons.getbootstrap.com/icons/gem/ #}
-            <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-gem b-icon mt-1 me-2" width="1.5em" height="1.5em" viewBox="0 0 16 16" role="img" focusable="false" aria-hidden="true" fill="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-gem b-icon me-2" width="1.5em" height="1.5em" viewBox="0 0 16 16" role="img" focusable="false" aria-hidden="true" fill="currentColor">
                 <path d="M3.1.7a.5.5 0 0 1 .4-.2h9a.5.5 0 0 1 .4.2l2.976 3.974c.149.185.156.45.01.644L8.4 15.3a.5.5 0 0 1-.8 0L.1 5.3a.5.5 0 0 1 0-.6l3-4zm11.386 3.785-1.806-2.41-.776 2.413 2.582-.003zm-3.633.004.961-2.989H4.186l.963 2.995 5.704-.006zM5.47 5.495 8 13.366l2.532-7.876-5.062.005zm-1.371-.999-.78-2.422-1.818 2.425 2.598-.003zM1.499 5.5l5.113 6.817-2.192-6.82L1.5 5.5zm7.889 6.817 5.123-6.83-2.928.002-2.195 6.828z"/>
             </svg>
             <div class="mb-n3">
@@ -260,8 +260,13 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
     </div>
     <div class="col-sm">
         <h3 class="h5 mb-3">{% translate "Summary" %}</h3>
-        <div class="p-4 rounded-3 text-bg-light">
+        <div class="d-flex p-4 rounded-3 text-bg-light">
 {% if collection.summary %}
+            {# https://icons.getbootstrap.com/icons/exclamation-circle/ #}
+            <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-exclamation-circle b-icon me-2" width="1.5em" height="1.5em" viewBox="0 0 16 16" role="img" focusable="false" aria-hidden="true" fill="currentColor">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+            </svg>
             <div class="mb-n3">
                 {{ collection.summary|markdownify }}
             </div>
@@ -275,24 +280,6 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
             {% translate "Last reviewed:" %} {{ collection.last_reviewed|date:"M Y" }}
         </p>
 {% endif %}
-
-{% if collection.issues %}
-        <h3 class="h5">{% translate "Issues found" %}</h3>
-
-        <ul class="list-unstyled">
-{% for issue in collection.issues %}
-            <li class="d-flex mb-n3">
-                {# https://icons.getbootstrap.com/icons/exclamation-circle/ #}
-                <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-exclamation-circle b-icon mt-1 me-2" width="1em" height="1em" viewBox="0 0 16 16" role="img" focusable="false" aria-hidden="true" fill="currentColor">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                    <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
-                </svg>
-                {{ issue|markdownify }}
-            </li>
-{% endfor %}
-        </ul>
-{% endif %}
-    </div>
 </div>
 
 <div class="py-5 border-top" id="access">
