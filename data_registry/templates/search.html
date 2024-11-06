@@ -69,7 +69,7 @@ observer.observe(document.querySelector('.toppable'))
         <h2 class="h4 mb-4">{% translate "Filters" %}</h2>
 
         <div class="d-none d-md-block" id="filters">
-            <a rel="nofollow" href="?" class="{% if request.GET %}d-block{% else %}d-none{% endif %} mb-4">
+            <a rel="nofollow" href="?" class="{% if request.GET|nonempty %}d-block{% else %}d-none{% endif %} mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" class="bi b-iconstack b-icon" width="1em" height="1em" viewBox="0 0 16 16" role="img" focusable="false" aria-hidden="true" fill="currentColor">
                     <g>
                         {# https://icons.getbootstrap.com/icons/slash/ #}
