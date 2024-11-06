@@ -126,7 +126,7 @@ def markdownify(value: str) -> str:
 
 
 @register.filter
-def get_item(dictionary, key):
+def getitem(dictionary, key):
     return dictionary.get(key)
 
 
