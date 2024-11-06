@@ -7,11 +7,15 @@ from urllib.parse import urlencode, urljoin
 
 import requests
 from dateutil.relativedelta import relativedelta
+from django import urls
 from django.conf import settings
 from django.db.models import Count, F, Q
 from django.db.models.functions import Substr
 from django.http.response import FileResponse, HttpResponse, HttpResponseBadRequest, HttpResponseNotFound, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.template.defaultfilters import filesizeformat
+from django.templatetags.static import static
+from django.urls import reverse
 from django.utils.translation import get_language, get_language_from_request
 from django.utils.translation import gettext as _
 
@@ -21,10 +25,18 @@ from exporter.util import Export, TaskStatus
 
 logger = logging.getLogger(__name__)
 
-alphabets = defaultdict(lambda: string.ascii_uppercase)
+ALPHABETS = defaultdict(lambda: string.ascii_uppercase)
 # https://en.wikipedia.org/wiki/Cyrillic_script_in_Unicode#Basic_Cyrillic_alphabet
-alphabets["ru"] = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
+ALPHABETS["ru"] = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
+
 EXPORT_PATTERN = re.compile(r"\A(full|\d{4})\.(jsonl\.gz|csv\.tar\.gz|xlsx)\Z")
+
+ENCODING_FORMATS = {
+    # https://docs.aws.amazon.com/sagemaker/latest/dg/cdf-inference.html#cm-batch
+    "jsonl": "application/jsonlines",
+    "csv": "text/csv",
+    "xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+}
 
 
 def index(request):
@@ -107,7 +119,7 @@ def search(request):
                 exclude[count] = 0
 
     facets = {
-        "letters": dict.fromkeys(alphabets[language_code], 0),
+        "letters": dict.fromkeys(ALPHABETS[language_code], 0),
         "date_ranges": dict.fromkeys(date_ranges, 0),
         "frequencies": dict.fromkeys(Collection.UpdateFrequency.values, 0),
         "regions": dict.fromkeys(Collection.Region.values, 0),
@@ -158,10 +170,85 @@ def detail(request, pk):
     job = collection.active_job
     files = Export.get_files(collection.active_job_id)
 
+    url = request.build_absolute_uri()
+    host = request.get_host()
+
+    # https://developers.google.com/search/docs/appearance/structured-data/dataset
+    dataset = {
+        "@context": "https://schema.org/",
+        "@type": "Dataset",
+        "name": _("OCDS data for %(country)s: %(title)s") % {"country": collection.country, "title": collection.title},
+        "description": f"{collection.description}\n\n{collection.description_long}",
+        "url": url,
+        "image": f"{request.scheme}://{host}/{static(f'img/flags/{collection.country_flag}')}",
+        # Compare to Google Ads campaign.
+        "keywords": [
+            "public procurement",
+            "government contract",
+            "tender notices",
+            "contract awards",
+            "Open Contracting Data Standard",
+        ],
+        "isAccessibleForFree": True,
+        "creator": {
+            "@type": "Organization",
+            "name": _("Open Contracting Partnership"),
+            "url": "https://www.open-contracting.org/",
+            "contactPoint": {
+                "@type": "ContactPoint",
+                "contactType": "customer service",
+                "email": "data@open-contracting.org",
+            },
+        },
+        "includedInDataCatalog": {
+            "@type": "DataCatalog",
+            "name": _("OCP Data Registry"),
+            "description": _("Search for and access datasets by country"),
+            "url": f"{request.scheme}://{host}/",
+        },
+        "dateModified": collection.modified.isoformat(),
+    }
+
+    if job:
+        dataset["temporalCoverage"] = f"{job.date_from.strftime('%Y-%m-%d')}/{job.date_to.strftime('%Y-%m-%d')}"
+
+    if language := collection.language:
+        dataset["inLanguage"] = language
+
+    license_custom = collection.license_custom
+    if license_custom and license_custom.url:
+        dataset["license"] = license_custom.url
+    elif job and job.license:
+        dataset["license"] = license
+
+    language_code = get_language_from_request(request, check_path=True)
+    if language_code != "en":
+        dataset["sameAs"] = urls.translate_url(url, "en")
+
+    for suffix, groups in files.items():
+        # Segmented files can be added using "hasPart".
+        if groups["full"]:
+            dataset.setdefault("distribution", [])
+            dataset["distribution"].append(
+                {
+                    "@type": "DataDownload",
+                    "encodingFormat": ENCODING_FORMATS[suffix],
+                    "contentSize": filesizeformat(groups["full"]),
+                    "contentUrl": f"{reverse('download', kwargs={'pk': pk})}?name=full.{suffix}",
+                    "dateModified": collection.last_retrieved.isoformat(),
+                }
+            )
+
     return render(
         request,
         "detail.html",
-        {"collection": collection, "job": job, "files": files, "never": Collection.RetrievalFrequency.NEVER},
+        {
+            "collection": collection,
+            "job": job,
+            "files": files,
+            "dataset": dataset,
+            "never": Collection.RetrievalFrequency.NEVER,
+        },
     )
 
 
