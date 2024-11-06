@@ -5,7 +5,6 @@ from django.urls import include, path
 urlpatterns = [
     path("", include("data_registry.urls"), name="data-registry"),
     path("admin/", admin.site.urls),
-    path("markdownx/", include("markdownx.urls")),
 ]
 
 urlpatterns += i18n_patterns(path("", include("data_registry.urls"), name="data-registry"))

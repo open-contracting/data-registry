@@ -1,27 +1,21 @@
 import logging
-from pathlib import Path
 
-import requests
-from django import forms
 from django.conf import settings
 from django.contrib import admin, messages
-from django.db.models import Exists, F, OuterRef, Q
-from django.forms.widgets import TextInput
+from django.db.models import Exists, OuterRef, Q
 from django.urls import NoReverseMatch, reverse
 from django.utils import timezone
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
-from markdownx.widgets import AdminMarkdownxWidget
 from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, TranslationTabularInline
 
+from data_registry import forms
 from data_registry.exceptions import RecoverableError
 from data_registry.models import Collection, Issue, Job, License, Task
-from data_registry.util import partialclass, scrapyd_url
+from data_registry.util import partialclass
 
 logger = logging.getLogger(__name__)
-
-FLAGS_DIR = Path("data_registry/static/img/flags")
 
 TRANSLATION_REMINDER = _(
     "<em>Remember to provide information in all languages. You can use the dropdown at the top "
@@ -43,59 +37,6 @@ class CascadeTaskMixin:
         except RecoverableError as e:
             messages.set_level(request, messages.WARNING)
             messages.error(request, f"Recoverable exception when wiping task {obj}: '{e}'. Please try again.")
-
-
-class CollectionAdminForm(forms.ModelForm):
-    source_id = forms.ChoiceField(
-        choices=[],
-        label="Source ID",
-        help_text="The name of the spider in Kingfisher Collect. If a new spider is not listed, Kingfisher Collect "
-        "needs to be re-deployed to the registry's server.",
-    )
-    country_flag = forms.ChoiceField(choices=[(None, "---------")], required=False)
-
-    def __init__(self, *args, request=None, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        choices = ((self.instance.source_id, self.instance.source_id),)
-        if settings.SCRAPYD["url"]:
-            try:
-                response = requests.get(
-                    scrapyd_url("listspiders.json"), params={"project": settings.SCRAPYD["project"]}, timeout=10
-                )
-                response.raise_for_status()
-                data = response.json()
-                if data["status"] == "ok":
-                    choices += tuple((n, n) for n in data["spiders"])
-                else:
-                    messages.warning(request, f"Couldn't populate Source ID, because Scrapyd returned error: {data!r}")
-            except requests.ConnectionError as e:
-                messages.warning(request, f"Couldn't populate Source ID, because Scrapyd connection failed: {e}")
-        else:
-            messages.warning(request, "Couldn't populate Source ID, because Scrapyd is not configured.")
-
-        self.fields["source_id"].choices += choices
-
-        # https://docs.djangoproject.com/en/4.2/ref/forms/fields/#fields-which-handle-relationships
-        # `self.instance.job_set` doesn't work, because `self.instance` might be an unsaved publication.
-        #
-        # It's not obvious how to use limit_choices_to to filter jobs by collection.
-        # https://docs.djangoproject.com/en/4.2/ref/models/fields/#django.db.models.ForeignKey.limit_choices_to
-        self.fields["active_job"].queryset = (
-            Job.objects.filter(collection=self.instance).complete().order_by(F("id").desc())
-        )
-
-        # Populate choices in the form, not the model, for easier migration between icon sets.
-        self.fields["country_flag"].choices += sorted((f.name, f.name) for f in FLAGS_DIR.iterdir() if f.is_file())
-
-    class Meta:
-        widgets = {
-            "title": TextInput(attrs={"class": "vTextField"}),
-            "description": AdminMarkdownxWidget(attrs={"cols": 100, "rows": 3}),
-            "description_long": AdminMarkdownxWidget(attrs={"cols": 100, "rows": 6}),
-            "summary": AdminMarkdownxWidget(attrs={"cols": 100, "rows": 6}),
-            "additional_data": AdminMarkdownxWidget(attrs={"cols": 100, "rows": 6}),
-        }
 
 
 class IncompleteFilter(admin.SimpleListFilter):
@@ -170,11 +111,6 @@ class CustomDateFieldListFilter(admin.DateFieldListFilter):
         )
 
 
-class IssueAdminForm(forms.ModelForm):
-    class Meta:
-        widgets = {"description": AdminMarkdownxWidget(attrs={"cols": 100, "rows": 3})}
-
-
 class IssueInLine(TranslationTabularInline):
     model = Issue
     extra = 0
@@ -182,17 +118,17 @@ class IssueInLine(TranslationTabularInline):
 
 @admin.register(Collection)
 class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
-    form = CollectionAdminForm
+    form = forms.CollectionAdminForm
     search_fields = ["title_en", "country_en"]
     list_display = ["__str__", "country", "public", "frozen", "active_job", "last_reviewed"]
     list_editable = ["public", "frozen"]
     list_filter = [
         "public",
         "frozen",
+        ("active_job", admin.EmptyFieldListFilter),
         "retrieval_frequency",
         ("license_custom", admin.EmptyFieldListFilter),
         ("summary_en", admin.EmptyFieldListFilter),
-        ("active_job", admin.EmptyFieldListFilter),
         IncompleteFilter,
         UntranslatedFilter,
         ("last_reviewed", CustomDateFieldListFilter),
@@ -202,7 +138,14 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
         (
             _("Management"),
             {
-                "fields": ("source_id", "active_job", "public", "frozen", "last_retrieved"),
+                "fields": (
+                    "source_id",
+                    "retrieval_frequency",
+                    "active_job",
+                    "last_retrieved",
+                    "frozen",
+                    "public",
+                ),
             },
         ),
         (
@@ -210,14 +153,14 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
             {
                 "description": TRANSLATION_REMINDER,
                 "fields": (
-                    "country_flag",
-                    "country_en",
-                    "country_es",
-                    "country_ru",
-                    "region",
                     "title_en",
                     "title_es",
                     "title_ru",
+                    "country_en",
+                    "country_es",
+                    "country_ru",
+                    "country_flag",
+                    "region",
                 ),
             },
         ),
@@ -226,13 +169,12 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
             {
                 "description": TRANSLATION_REMINDER,
                 "fields": (
-                    "retrieval_frequency",
-                    "update_frequency",
-                    "license_custom",
-                    "source_url",
                     "language_en",
                     "language_es",
                     "language_ru",
+                    "update_frequency",
+                    "license_custom",
+                    "source_url",
                 ),
             },
         ),
@@ -415,13 +357,10 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
         return None
 
 
-class LicenseAdminForm(forms.ModelForm):
-    class Meta:
-        widgets = {"description": AdminMarkdownxWidget(attrs={"cols": 100, "rows": 3})}
-
-
 @admin.register(License)
 class LicenseAdmin(TabbedDjangoJqueryTranslationAdmin):
+    form = forms.LicenseAdminForm
+
     fieldsets = (
         (
             None,

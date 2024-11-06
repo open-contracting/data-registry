@@ -1,0 +1,52 @@
+/* https://til.simonwillison.net/css/resizing-textarea  */
+.grow {
+  display: grid;
+}
+
+.grow::after {
+  content: attr(data-replicated-value) " ";
+  white-space: pre-wrap;
+  word-break: break-word;
+  visibility: hidden;
+  /* must match textarea */
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 5px 6px;
+}
+
+.grow::after,
+.grow textarea {
+  grid-area: 1 / 1 / 2 / 2;
+}
+
+.grow textarea {
+  resize: none;
+  overflow: hidden;
+}
+
+.markdownable-textarea {
+  flex: 3;
+  margin-right: 1rem;
+}
+.aligned .markdownable-textarea .vLargeTextField {
+  width: auto;
+}
+
+.markdownable-preview {
+  flex: 2;
+  padding: .625rem .875rem;
+  background: #f8f8f8;
+  color: #000000;
+}
+@media (prefers-color-scheme: dark) {
+  .markdownable-preview {
+    background: #202020;
+    color: #d0d0d0;
+  }
+}
+.aligned .markdownable-preview ul {
+  margin-left: 1.5em;
+}
+.aligned .markdownable-preview li {
+  list-style-type: square;
+}

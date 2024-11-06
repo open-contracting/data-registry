@@ -3,7 +3,6 @@ from datetime import date, timedelta
 from django.db import models
 from django.db.models.functions import Now
 from django.utils.translation import gettext_lazy as _
-from markdownx.models import MarkdownxField
 
 
 def format_datetime(dt):
@@ -188,29 +187,29 @@ class Collection(models.Model):
     )
 
     # Description
-    description = MarkdownxField(
+    description = models.TextField(
         blank=True,
         help_text="The first paragraph of the description of the publication, as Markdown text, following the "
         '<a href="https://docs.google.com/document/d/1Pr87zDrs9YY7BEvr_e6QjOy0gexs06dU9ES2_-V7Lzw/edit#heading='
         'h.fksp8fxgoi7v">template and guidance</a>.',
     )
-    description_long = MarkdownxField(
+    description_long = models.TextField(
         blank=True,
         help_text="The remaining paragraphs of the description of the publication, as Markdown text, "
         'which will appear under "Show more".',
     )
 
     # Spatial coverage
-    country_flag = models.TextField(blank=True)
     country = models.TextField(
         blank=True, help_text="The official name of the country from which the data originates."
     )
+    country_flag = models.TextField(blank=True)
     region = models.TextField(
         choices=Region.choices, blank=True, help_text="The name of the region to which the country belongs."
     )
 
     # Field coverage
-    additional_data = MarkdownxField(
+    additional_data = models.TextField(
         blank=True,
         verbose_name="data availability",
         help_text="Any notable highlights about the available data, such as extensions used or additional fields,"
@@ -229,7 +228,7 @@ class Collection(models.Model):
     )
 
     # Data quality
-    summary = MarkdownxField(
+    summary = models.TextField(
         blank=True,
         verbose_name="quality summary",
         help_text="A short summary of quality issues, as Markdown text. Individual issues can be described below, "
@@ -258,9 +257,6 @@ class Collection(models.Model):
     source_url = models.TextField(blank=True, verbose_name="source URL", help_text="The URL of the publication.")
 
     # Job logic
-    frozen = models.BooleanField(
-        default=False, help_text="If the spider is broken, check this box to prevent the scheduling of new jobs."
-    )
     source_id = models.TextField(
         verbose_name="source ID",
         help_text="The name of the spider in Kingfisher Collect. If a new spider is not listed, "
@@ -272,9 +268,6 @@ class Collection(models.Model):
         help_text="The frequency at which the registry updates the publication, based on the frequency at which "
         "the publication is updated.",
     )
-    last_retrieved = models.DateField(
-        blank=True, null=True, help_text="The date on which the most recent 'collect' job task completed."
-    )
     active_job = models.ForeignKey(
         "Job",
         on_delete=models.RESTRICT,
@@ -285,6 +278,12 @@ class Collection(models.Model):
         related_name="+",
         help_text="A job is a set of tasks to collect and process data from a publication. "
         "A job can be selected once it is completed. If a new job completes, it becomes the active job.",
+    )
+    last_retrieved = models.DateField(
+        blank=True, null=True, help_text="The date on which the most recent 'collect' job task completed."
+    )
+    frozen = models.BooleanField(
+        default=False, help_text="If the spider is broken, check this box to prevent the scheduling of new jobs."
     )
 
     # Visibility logic
@@ -345,7 +344,7 @@ class Collection(models.Model):
 
 class License(models.Model):
     name = models.TextField(blank=True, help_text="The official name of the license.")
-    description = MarkdownxField(
+    description = models.TextField(
         blank=True, help_text="A brief description of the permissions, conditions and limitations, as Markdown text."
     )
     url = models.TextField(blank=True, verbose_name="URL", help_text="The canonical URL of the license.")
@@ -362,7 +361,7 @@ class License(models.Model):
 
 
 class Issue(models.Model):
-    description = MarkdownxField(help_text="A one-line description of the quality issue, as Markdown text.")
+    description = models.TextField(help_text="A one-line description of the quality issue, as Markdown text.")
     collection = models.ForeignKey("Collection", on_delete=models.CASCADE, db_index=True)
 
     # Timestamps

@@ -1,6 +1,5 @@
 dj-database-url
 django<5
-django-markdownx
 django-modeltranslation
 flatterer
 gunicorn[setproctitle]

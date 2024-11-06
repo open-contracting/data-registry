@@ -212,10 +212,10 @@ def publications_api(request):
             # Provenance
             "source_url",
             # Job logic
-            "frozen",
             "source_id",
             "retrieval_frequency",
             "last_retrieved",
+            "frozen",
         )
         .annotate(date_from=F("active_job__date_from"), date_to=F("active_job__date_to"))
     )

@@ -9,8 +9,7 @@ from django.utils.translation import get_language
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation.trans_real import DjangoTranslation
 from django.views.i18n import JavaScriptCatalog
-
-from data_registry.util import markdownify as render
+from markdown_it import MarkdownIt
 
 register = template.Library()
 
@@ -23,6 +22,13 @@ class CaptureNode(template.Node):
     def render(self, context):
         context[self.varname] = self.nodelist.render(context)
         return ""
+
+
+# https://markdown-it-py.readthedocs.io/en/latest/using.html#renderers
+def render_blank_link(self, tokens, idx, options, env) -> str:
+    """Set the link to open in a new tab."""
+    tokens[idx].attrSet("target", "_blank")
+    return self.renderToken(tokens, idx, options, env)
 
 
 @register.tag(name="capture")
@@ -108,8 +114,15 @@ def feedback_query_string_parameters(context):
 
 
 @register.filter
-def markdownify(value):
-    return mark_safe(render(value))
+def markdownify(value: str) -> str:
+    """
+    :param value: Markdown text
+    :return: HTML text, with smartquotes, and setting all links to open in new tabs
+    """
+    md = MarkdownIt("commonmark", {"typographer": True})
+    md.enable(["smartquotes"])
+    md.add_render_rule("link_open", render_blank_link)
+    return mark_safe(md.render(value))
 
 
 @register.filter
