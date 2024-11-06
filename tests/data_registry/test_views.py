@@ -88,7 +88,7 @@ class ViewsTests(TestCase):
 
     @patch("exporter.util.Export.get_files")
     def test_detail(self, get_files):
-        get_files.return_value = {"jsonl": {"by_year": [{"year": 2022, "size": 1}]}}
+        get_files.return_value = {"jsonl": {"full": 123, "by_year": [{"year": 2022, "size": 1}]}}
         url = f"/en/publication/{self.collection1.id}/download?name=2022.jsonl.gz"
 
         with self.assertNumQueries(2):
