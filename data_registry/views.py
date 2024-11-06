@@ -31,11 +31,16 @@ ALPHABETS["ru"] = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬ�
 
 EXPORT_PATTERN = re.compile(r"\A(full|\d{4})\.(jsonl\.gz|csv\.tar\.gz|xlsx)\Z")
 
+FILE_SUFFIXES = {
+    "jsonl": "jsonl.gz",
+    "xlsx": "xlsx",
+    "csv": "csv.tar.gz",
+}
 ENCODING_FORMATS = {
     # https://docs.aws.amazon.com/sagemaker/latest/dg/cdf-inference.html#cm-batch
     "jsonl": "application/jsonlines",
-    "csv": "text/csv",
     "xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "csv": "text/csv",
 }
 
 
@@ -225,16 +230,16 @@ def detail(request, pk):
     if language_code != "en":
         dataset["sameAs"] = urls.translate_url(url, "en")
 
-    for suffix, groups in files.items():
+    for file_type, groups in files.items():
         # Segmented files can be added using "hasPart".
         if groups["full"]:
             dataset.setdefault("distribution", [])
             dataset["distribution"].append(
                 {
                     "@type": "DataDownload",
-                    "encodingFormat": ENCODING_FORMATS[suffix],
+                    "encodingFormat": ENCODING_FORMATS[file_type],
                     "contentSize": filesizeformat(groups["full"]),
-                    "contentUrl": f"{reverse('download', kwargs={'pk': pk})}?name=full.{suffix}",
+                    "contentUrl": f"{reverse('download', kwargs={'pk': pk})}?name=full.{FILE_SUFFIXES[file_type]}",
                     "dateModified": collection.last_retrieved.isoformat(),
                 }
             )
