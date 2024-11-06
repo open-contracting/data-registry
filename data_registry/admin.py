@@ -2,7 +2,7 @@ import logging
 
 from django.conf import settings
 from django.contrib import admin, messages
-from django.db.models import Exists, OuterRef, Q
+from django.db.models import Q
 from django.urls import NoReverseMatch, reverse
 from django.utils import timezone
 from django.utils.html import escape
@@ -205,22 +205,16 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
         return form
 
 
-class FailedFilter(admin.SimpleListFilter):
-    title = _("failed")
-    parameter_name = "failed"
+class UnsuccessfulFilter(admin.SimpleListFilter):
+    title = _("unsuccessful")
+    parameter_name = "unsuccessful"
 
     def lookups(self, request, model_admin):
         return (("1", _("Yes")),)
 
     def queryset(self, request, queryset):
         if self.value() == "1":
-            # https://docs.djangoproject.com/en/4.2/ref/models/expressions/#some-examples
-            failed_tasks = Task.objects.filter(
-                job=OuterRef("pk"),
-                status=Task.Status.COMPLETED,
-                result=Task.Result.FAILED,
-            )
-            return queryset.filter(Exists(failed_tasks))
+            return queryset.unsuccessful()
         return None
 
 
@@ -247,7 +241,7 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
     list_display = ["__str__", "country", "collection", "status", "last_task", "active", "archived", "keep_all_data"]
     # "active" is read-only and uneditable, because at most one job must be set as active for a given collection.
     list_editable = ["status", "keep_all_data"]
-    list_filter = ["status", ("active_collection", admin.EmptyFieldListFilter), "archived", FailedFilter]
+    list_filter = ["status", ("active_collection", admin.EmptyFieldListFilter), "archived", UnsuccessfulFilter]
 
     fieldsets = (
         (

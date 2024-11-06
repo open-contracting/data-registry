@@ -12,6 +12,14 @@ def format_datetime(dt):
 
 
 class JobQuerySet(models.QuerySet):
+    def successful(self):
+        """Return a query set of successfully completed jobs."""
+        return self.complete().exclude(models.Exists(Task.objects.failed()))
+
+    def unsuccessful(self):
+        """Return a query set of unsuccessfully completed jobs."""
+        return self.complete().filter(models.Exists(Task.objects.failed()))
+
     def complete(self):
         """Return a query set of complete jobs."""
         return self.filter(status=Job.Status.COMPLETED)
@@ -356,6 +364,16 @@ class License(models.Model):
         return f"{self.name} ({self.pk})"
 
 
+class TaskQuerySet(models.QuerySet):
+    def failed(self):
+        # https://docs.djangoproject.com/en/4.2/ref/models/expressions/#some-examples
+        return Task.objects.filter(
+            job=models.OuterRef("pk"),
+            status=Task.Status.COMPLETED,
+            result=Task.Result.FAILED,
+        )
+
+
 class Task(models.Model):
     class Status(models.TextChoices):
         #: The task has started, but work has not yet started in the application.
@@ -404,6 +422,8 @@ class Task(models.Model):
     # Timestamps
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
+
+    objects = TaskQuerySet.as_manager()
 
     class Meta:
         verbose_name = "job task"
