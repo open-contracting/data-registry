@@ -30,7 +30,7 @@ class JobTests(TransactionTestCase):
             self.active_job.delete()
 
         # Mock get_task_manager() to avoid NotImplementedError.
-        with patch("data_registry.signals.get_task_manager") as mock_get_task_manager:
-            mock_get_task_manager.return_value = TestTask()
+        with patch("data_registry.signals.get_task_manager") as mock_signals:
+            mock_signals.return_value = TestTask()
 
             self.inactive_job.delete()

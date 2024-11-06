@@ -5,7 +5,6 @@ flatterer
 gunicorn[setproctitle]
 markdown-it-py
 psycopg2
-python-dateutil
 requests
 sentry-sdk
 yapw[perf]

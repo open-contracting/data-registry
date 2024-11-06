@@ -70,7 +70,7 @@ class CollectionAdminForm(forms.ModelForm):
         # It's not obvious how to use limit_choices_to to filter jobs by collection.
         # https://docs.djangoproject.com/en/4.2/ref/models/fields/#django.db.models.ForeignKey.limit_choices_to
         self.fields["active_job"].queryset = (
-            models.Job.objects.filter(collection=self.instance).complete().order_by(F("id").desc())
+            models.Job.objects.filter(collection=self.instance).complete().order_by(F("pk").desc())
         )
 
         # Populate choices in the form, not the model, for easier migration between icon sets.
