@@ -68,7 +68,7 @@ class ViewsTests(TestCase):
             public=True,
         )
         cls.collection2.active_job = cls.collection2.job_set.create(
-            date_from=datetime.date(2010, 2, 1),
+            date_from=None,
             date_to=None,
         )
         cls.collection2.save()
@@ -104,7 +104,7 @@ class ViewsTests(TestCase):
             response = Client().get(f"/en/publication/{self.collection2.id}")
 
             self.assertTemplateUsed("detail.html")
-            self.assertContains(response, '"temporalCoverage": "2010-02-01/..",')
+            self.assertNotContains(response, "temporalCoverage")
 
     def test_collection_not_found(self):
         with self.assertNumQueries(1):
@@ -205,7 +205,7 @@ class ViewsTests(TestCase):
                 "retrieval_frequency": "MONTHLY",
                 "last_retrieved": "2001-02-03",
                 "frozen": False,
-                "date_from": "2010-02-01",
+                "date_from": None,
                 "date_to": None,
             },
             {
