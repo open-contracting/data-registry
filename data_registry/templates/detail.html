@@ -138,7 +138,7 @@ document.querySelectorAll('a[download]').forEach(trackable => {
                 {% endif %}
             </dd>
             <dt>{% translate "Update frequency:" %}</dt>
-            <dd>{{ collection.get_update_frequency_display }}</dd>
+            <dd>{% if collection.update_frequency == "UNKNOWN" %}-{% else %}{{ collection.get_update_frequency_display }}{% endif %}</dd>
             <dt>{% translate "Main language:" %}</dt>
             <dd>{{ collection.language }}</dd>
             <dt>{% translate "OCID prefix:" %}</dt>
