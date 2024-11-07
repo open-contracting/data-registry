@@ -95,7 +95,9 @@ class ViewsTests(TestCase):
             response = Client().get(f"/en/publication/{self.collection1.id}")
 
             self.assertTemplateUsed("detail.html")
-            self.assertContains(response, f"""<a href="{url}" rel="nofollow" download>2022</a>""", html=True)
+            self.assertContains(
+                response, f"""<a href="{url}" rel="nofollow" data-event="jsonl.gz year" download>2022</a>""", html=True
+            )
 
     def test_collection_not_found(self):
         with self.assertNumQueries(1):

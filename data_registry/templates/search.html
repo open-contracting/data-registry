@@ -16,7 +16,7 @@ document.querySelectorAll('.clickable').forEach(div => {
   div.addEventListener('click', event => {
     // Stop "See details" from triggering a second event.
     event.preventDefault()
-    open(div.querySelector('.click').href, event.ctrlKey || event.metaKey || event.shiftKey ? '_blank' : '_self')
+    window.open(div.querySelector('.click').href, event.ctrlKey || event.metaKey || event.shiftKey ? '_blank' : '_self')
   })
 })
 

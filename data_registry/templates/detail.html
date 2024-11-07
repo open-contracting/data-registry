@@ -60,9 +60,9 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
 })
 
 document.querySelectorAll('a[download]').forEach(trackable => {
-    trackable.addEventListener('click', event => {
-        fathom.trackEvent(`download ${trackable.dataset.event}`)
-    })
+  trackable.addEventListener('click', event => {
+    fathom.trackEvent(`download ${trackable.dataset.event}`) // eslint-disable-line no-undef
+  })
 })
 </script>
 {% endblock %}
