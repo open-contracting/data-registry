@@ -213,7 +213,7 @@ def detail(request, pk):
         "dateModified": collection.modified.isoformat(),
     }
 
-    if job:
+    if job and (job.date_from or job.date_to):
         dataset["temporalCoverage"] = "/".join(
             date.strftime("%Y-%m-%d") if date else ".." for date in (job.date_from, job.date_to)
         )
