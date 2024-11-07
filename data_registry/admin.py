@@ -169,6 +169,7 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
                     "language_ru",
                     "update_frequency",
                     "license_custom",
+                    "publication_policy",
                     "source_url",
                 ),
             },

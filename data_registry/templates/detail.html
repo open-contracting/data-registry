@@ -153,7 +153,8 @@ document.querySelectorAll('a[download]').forEach(trackable => {
 {% endif %}
             </dd>
             <dt>{% translate "Publication policy:" %}</dt>
-            <dd>{{ job.publication_policy|urlize|default:"-" }}</dd>
+            <dd>{% firstof collection.publication_policy|urlize job.publication_policy|urlize "-" %}
+            </dd>
             <dt>{% translate "Last retrieved:" %}</dt>
             <dd>
                 {{ collection.last_retrieved|date:"M Y" }}

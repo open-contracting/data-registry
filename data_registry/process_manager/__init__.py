@@ -116,6 +116,8 @@ def process(collection: models.Collection) -> None:
 
                 collection.last_retrieved = job.task_set.get(type=settings.JOB_TASKS_PLAN[0]).end
                 collection.active_job = job
+                if not collection.publication_policy:
+                    collection.publication_policy = job.publication_policy
                 collection.save()
 
                 logger.debug("Job %s has succeeded (%s: %s)", job, country, collection)

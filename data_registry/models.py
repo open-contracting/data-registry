@@ -249,6 +249,7 @@ class Collection(models.Model):
         verbose_name="data license",
         help_text="If not set, the Overview section will display the license URL within the OCDS package.",
     )
+    publication_policy = models.TextField(blank=True, verbose_name="publication policy")
 
     # Provenance
     source_url = models.TextField(blank=True, verbose_name="source URL", help_text="The URL of the publication.")
