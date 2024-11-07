@@ -1,6 +1,6 @@
+import datetime
 import logging
 
-from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.db import transaction
 from django.utils.timezone import now
@@ -49,8 +49,11 @@ def process(collection: models.Collection) -> None:
        -  If it failed temporarily, log the reason
        -  If it failed permanently, fail the task and end the job
 
-    -  If all tasks succeeded, end the job, update the collection's active job and last retrieved date and delete jobs
-       that are more than a year older than the active job.
+    -  If all tasks succeeded:
+
+       - End the job
+       - Update the collection's active job and last retrieved date
+       - Delete jobs that are more than a year older than the active job, but keep one other complete job
 
     In other words, this function advances each job by at most one task. As such, for all tasks of a job to succeed,
     this function needs to run at least as many times are there are tasks in the ``JOB_TASKS_PLAN`` setting.
@@ -123,18 +126,13 @@ def process(collection: models.Collection) -> None:
 
                 logger.debug("Job %s has succeeded (%s: %s)", job, country, collection)
 
-                jobs_to_delete = (
-                    collection.job_set.exclude(id=job.id)
-                    .filter(
-                        end__lt=now() - relativedelta(years=1),
-                        status=models.Job.Status.COMPLETED,
-                    )
-                    .order_by("end")
-                )
+                other_jobs = collection.job_set.exclude(pk=job.pk)
+                # Keep the other most recent successful job as backup.
+                backup_job = other_jobs.successful().order_by("start").values_list("pk", flat=True).last()
+                if backup_job:
+                    other_jobs = other_jobs.exclude(pk=backup_job)
 
-                # Keep the most recent complete job
-                jobs_to_delete = jobs_to_delete[-1] if len(jobs_to_delete) > 1 else []
-
-                for job_to_delete in jobs_to_delete:
-                    job_to_delete.delete()
-                    logger.debug("Old job %s has been deleted (%s: %s)", job_to_delete, country, collection)
+                # There must be at most one incomplete job per collection, for deletion to not conflict with iteration.
+                for old_job in other_jobs.filter(start__lt=now() - datetime.timedelta(days=365)):
+                    old_job.delete()
+                    logger.debug("Old job %s has been deleted (%s: %s)", old_job, country, collection)
