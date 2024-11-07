@@ -60,17 +60,32 @@ class ProcessTests(TransactionTestCase):
 
             for delete, keep in (([], []), ([], [500]), ([], [100]), ([500, 400], [200, 100])):
                 with self.subTest(delete=delete, keep=keep):
+                    expected = []
+
                     # Create a new job that will complete after processing.
                     job = job_set.create(status=Job.Status.RUNNING, start=now())
-                    job.task_set.update(status=Task.Status.COMPLETED)
+                    job.task_set.update(status=Task.Status.RUNNING)
+                    expected.append(job)
 
-                    # Create old jobs that have completed.
-                    expected = [job] + [
-                        job_set.create(status=Job.Status.COMPLETED, start=now() - timedelta(days=days))
-                        for days in keep
-                    ]
+                    # Create some jobs that completed successfully and unsuccessfully.
+                    for days in keep:
+                        successful = job_set.create(status=Job.Status.COMPLETED, start=now() - timedelta(days=days))
+                        successful.task_set.update(status=Task.Status.COMPLETED, result=Task.Result.OK)
+                        # An old, successful job is kept, if it is the other most recent successful job.
+                        expected.append(successful)
+
+                        unsuccessful = job_set.create(status=Job.Status.COMPLETED, start=now() - timedelta(days=days))
+                        unsuccessful.task_set.update(status=Task.Status.COMPLETED, result=Task.Result.FAILED)
+                        if days <= 365:  # An old, unsuccessful job is deleted, unconditionally.
+                            expected.append(unsuccessful)
+
+                    # Create old jobs that completed successfully and unsuccessfully.
                     for days in delete:
-                        job_set.create(status=Job.Status.COMPLETED, start=now() - timedelta(days=days))
+                        successful = job_set.create(status=Job.Status.COMPLETED, start=now() - timedelta(days=days))
+                        successful.task_set.update(status=Task.Status.COMPLETED, result=Task.Result.OK)
+
+                        unsuccessful = job_set.create(status=Job.Status.COMPLETED, start=now() - timedelta(days=days))
+                        unsuccessful.task_set.update(status=Task.Status.COMPLETED, result=Task.Result.FAILED)
 
                     process(collection)
 
