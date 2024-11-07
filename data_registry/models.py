@@ -158,7 +158,7 @@ class Collection(models.Model):
 
     class UpdateFrequency(models.TextChoices):
         #: Unknown
-        UNKNOWN = "UNKNOWN", _("Unknown")
+        UNKNOWN = "UNKNOWN", "-"
         #: Real time
         REAL_TIME = "REAL_TIME", _("Real time")
         #: Hourly
