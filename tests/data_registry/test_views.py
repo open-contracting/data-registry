@@ -69,7 +69,7 @@ class ViewsTests(TestCase):
         )
         cls.collection2.active_job = cls.collection2.job_set.create(
             date_from=datetime.date(2010, 2, 1),
-            date_to=datetime.date(2023, 9, 30),
+            date_to=None,
         )
         cls.collection2.save()
 
@@ -98,6 +98,13 @@ class ViewsTests(TestCase):
             self.assertContains(
                 response, f"""<a href="{url}" rel="nofollow" data-event="jsonl.gz year" download>2022</a>""", html=True
             )
+
+    def test_detail_missing_date(self):
+        with self.assertNumQueries(2):
+            response = Client().get(f"/en/publication/{self.collection2.id}")
+
+            self.assertTemplateUsed("detail.html")
+            self.assertContains(response, '"temporalCoverage": "2010-02-01/..",')
 
     def test_collection_not_found(self):
         with self.assertNumQueries(1):
@@ -199,7 +206,7 @@ class ViewsTests(TestCase):
                 "last_retrieved": "2001-02-03",
                 "frozen": False,
                 "date_from": "2010-02-01",
-                "date_to": "2023-09-30",
+                "date_to": None,
             },
             {
                 "id": self.collection_no_files.id,

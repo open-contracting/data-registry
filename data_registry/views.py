@@ -214,7 +214,9 @@ def detail(request, pk):
     }
 
     if job:
-        dataset["temporalCoverage"] = f"{job.date_from.strftime('%Y-%m-%d')}/{job.date_to.strftime('%Y-%m-%d')}"
+        dataset["temporalCoverage"] = "/".join(
+            date.strftime("%Y-%m-%d") if date else ".." for date in (job.date_from, job.date_to)
+        )
 
     if language := collection.language:
         dataset["inLanguage"] = language

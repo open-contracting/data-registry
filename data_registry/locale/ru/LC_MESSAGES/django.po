@@ -196,7 +196,7 @@ msgstr "Лицензия"
 
 #: data_registry/templates/detail.html:155
 msgid "Publication policy:"
-msgstr "Политика публикации:"
+msgstr "Политика публикации данных:"
 
 #: data_registry/templates/detail.html:163
 #: data_registry/templates/search.html:159
