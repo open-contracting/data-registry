@@ -38,7 +38,7 @@ class ViewsTests(TestCase):
             public=True,
         )
         cls.job = cls.collection1.active_job = cls.collection1.job_set.create(
-            id=99,  # to match tests/fixtures directory
+            pk=99,  # to match tests/fixtures directory
             date_from=datetime.date(2010, 2, 1),
             date_to=datetime.date(2023, 9, 30),
         )
@@ -83,16 +83,16 @@ class ViewsTests(TestCase):
             response = Client().get("/en/search/")
 
             self.assertTemplateUsed("search.html")
-            self.assertContains(response, f'"/en/publication/{self.collection1.id}"')
-            self.assertContains(response, f'"/en/publication/{self.collection2.id}"')
+            self.assertContains(response, f'"/en/publication/{self.collection1.pk}"')
+            self.assertContains(response, f'"/en/publication/{self.collection2.pk}"')
 
     @patch("exporter.util.Export.get_files")
     def test_detail(self, get_files):
         get_files.return_value = {"jsonl": {"full": 123, "by_year": [{"year": 2022, "size": 1}]}}
-        url = f"/en/publication/{self.collection1.id}/download?name=2022.jsonl.gz"
+        url = f"/en/publication/{self.collection1.pk}/download?name=2022.jsonl.gz"
 
         with self.assertNumQueries(2):
-            response = Client().get(f"/en/publication/{self.collection1.id}")
+            response = Client().get(f"/en/publication/{self.collection1.pk}")
 
             self.assertTemplateUsed("detail.html")
             self.assertContains(
@@ -114,21 +114,21 @@ class ViewsTests(TestCase):
 
     def test_download_export_invalid_suffix(self):
         with self.assertNumQueries(0):
-            response = Client().get(f"/en/publication/{self.collection1.id}/download?name=invalid")
+            response = Client().get(f"/en/publication/{self.collection1.pk}/download?name=invalid")
 
             self.assertEqual(response.status_code, 400)
             self.assertEqual(response.content, b"The name query string parameter is invalid")
 
     def test_download_export_empty_parameter(self):
         with self.assertNumQueries(0):
-            response = Client().get(f"/en/publication/{self.collection1.id}/download?name=")
+            response = Client().get(f"/en/publication/{self.collection1.pk}/download?name=")
 
             self.assertEqual(response.status_code, 400)
             self.assertEqual(response.content, b"The name query string parameter is invalid")
 
     def test_download_export_waiting(self):
         with self.assertNumQueries(1):
-            response = Client().get(f"/en/publication/{self.collection_no_files.id}/download?name=2000.jsonl.gz")
+            response = Client().get(f"/en/publication/{self.collection_no_files.pk}/download?name=2000.jsonl.gz")
 
             self.assertEqual(response.status_code, 404)
             self.assertEqual(response.content, b"File not found")
@@ -136,7 +136,7 @@ class ViewsTests(TestCase):
     @patch("exporter.util.Export.lockfile", new_callable=PropertyMock)
     def test_download_export_running(self, exists):
         with self.assertNumQueries(1):
-            response = Client().get(f"/en/publication/{self.collection1.id}/download?name=2000.jsonl.gz")
+            response = Client().get(f"/en/publication/{self.collection1.pk}/download?name=2000.jsonl.gz")
 
             self.assertEqual(response.status_code, 404)
             self.assertEqual(response.content, b"File not found")
@@ -149,7 +149,7 @@ class ViewsTests(TestCase):
         ):
             with self.subTest(suffix=suffix), self.assertNumQueries(1):
                 response = Client().get(
-                    f"/en/publication/{self.collection1.id}/download?name=2000.{suffix}",
+                    f"/en/publication/{self.collection1.pk}/download?name=2000.{suffix}",
                     HTTP_ACCEPT_ENCODING="gzip",
                 )
 
@@ -179,7 +179,7 @@ class ViewsTests(TestCase):
 
         expected = [
             {
-                "id": self.collection1.id,
+                "id": self.collection1.pk,
                 "title": "National Directorate of Public Procurement (DNCP)",
                 "country": "Paraguay (EN)",
                 "region": "LAC",
@@ -194,7 +194,7 @@ class ViewsTests(TestCase):
                 "date_to": "2023-09-30",
             },
             {
-                "id": self.collection2.id,
+                "id": self.collection2.pk,
                 "title": "Title",
                 "country": "Canada (EN)",
                 "region": "LAC",
@@ -209,7 +209,7 @@ class ViewsTests(TestCase):
                 "date_to": None,
             },
             {
-                "id": self.collection_no_files.id,
+                "id": self.collection_no_files.pk,
                 "title": "Test",
                 "country": "",
                 "region": "",

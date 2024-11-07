@@ -12,6 +12,14 @@ def format_datetime(dt):
 
 
 class JobQuerySet(models.QuerySet):
+    def successful(self):
+        """Return a query set of successfully completed jobs."""
+        return self.complete().exclude(models.Exists(Task.objects.failed()))
+
+    def unsuccessful(self):
+        """Return a query set of unsuccessfully completed jobs."""
+        return self.complete().filter(models.Exists(Task.objects.failed()))
+
     def complete(self):
         """Return a query set of complete jobs."""
         return self.filter(status=Job.Status.COMPLETED)
@@ -106,7 +114,7 @@ class Job(models.Model):
     objects = JobQuerySet.as_manager()
 
     def __str__(self):
-        return f"{format_datetime(self.start)} .. {format_datetime(self.end)} ({self.id})"
+        return f"{format_datetime(self.start)} .. {format_datetime(self.end)} ({self.pk})"
 
     def __repr__(self):
         return f"{self.collection!r}: {self}"
@@ -302,7 +310,7 @@ class Collection(models.Model):
         verbose_name = "publication"
 
     def __str__(self):
-        return f"{self.title} ({self.id})"
+        return f"{self.title} ({self.pk})"
 
     def __repr__(self):
         return f"{self.country}: {self}"
@@ -355,7 +363,17 @@ class License(models.Model):
         verbose_name = "data license"
 
     def __str__(self):
-        return f"{self.name} ({self.id})"
+        return f"{self.name} ({self.pk})"
+
+
+class TaskQuerySet(models.QuerySet):
+    def failed(self):
+        # https://docs.djangoproject.com/en/4.2/ref/models/expressions/#some-examples
+        return Task.objects.filter(
+            job=models.OuterRef("pk"),
+            status=Task.Status.COMPLETED,
+            result=Task.Result.FAILED,
+        )
 
 
 class Task(models.Model):
@@ -407,11 +425,13 @@ class Task(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
+    objects = TaskQuerySet.as_manager()
+
     class Meta:
         verbose_name = "job task"
 
     def __str__(self):
-        return f"#{self.id}({self.type})"
+        return f"#{self.pk}({self.type})"
 
     def initiate(self):
         """Mark the task as started."""

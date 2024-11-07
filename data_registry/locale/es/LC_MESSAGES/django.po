@@ -54,7 +54,7 @@ msgstr "Año anterior"
 msgid "More than a year ago"
 msgstr "Hace más de un año"
 
-#: data_registry/admin.py:134 data_registry/admin.py:254
+#: data_registry/admin.py:134 data_registry/admin.py:248
 msgid "Management"
 msgstr "Administración"
 
@@ -72,7 +72,7 @@ msgid "Details"
 msgstr "Detalles"
 
 #: data_registry/admin.py:209
-msgid "failed"
+msgid "unsuccessful"
 msgstr "fallido"
 
 #: data_registry/admin.py:281
@@ -648,59 +648,59 @@ msgstr "Volver arriba"
 msgid "[data-registry] Re: %(collection)s"
 msgstr "[data-registry] Re: %(collection)s"
 
-#: data_registry/views.py:75 data_registry/views.py:325
+#: data_registry/views.py:74 data_registry/views.py:324
 msgid "All"
 msgstr "Todos"
 
-#: data_registry/views.py:76
+#: data_registry/views.py:75
 msgid "Past month"
 msgstr "Mes pasado"
 
-#: data_registry/views.py:77
+#: data_registry/views.py:76
 msgid "Past 6 months"
 msgstr "Últimos 6 meses"
 
-#: data_registry/views.py:78
+#: data_registry/views.py:77
 msgid "Past year"
 msgstr "Año pasado"
 
-#: data_registry/views.py:79
+#: data_registry/views.py:78
 msgid "Past 5 years"
 msgstr "Últimos 5 años"
 
-#: data_registry/views.py:89
+#: data_registry/views.py:88
 msgid "Parties data"
 msgstr "Datos de las partes involucradas"
 
-#: data_registry/views.py:90
+#: data_registry/views.py:89
 msgid "Plannings data"
 msgstr "Datos de planeación"
 
-#: data_registry/views.py:91
+#: data_registry/views.py:90
 msgid "Tenders data"
 msgstr "Datos de licitación"
 
-#: data_registry/views.py:92
+#: data_registry/views.py:91
 msgid "Awards data"
 msgstr "Datos de adjudicación"
 
-#: data_registry/views.py:93
+#: data_registry/views.py:92
 msgid "Contracts data"
 msgstr "Datos de contratos"
 
-#: data_registry/views.py:94
+#: data_registry/views.py:93
 msgid "Documents data"
 msgstr "Datos de documentos"
 
-#: data_registry/views.py:95
+#: data_registry/views.py:94
 msgid "Milestones data"
 msgstr "Datos de hitos"
 
-#: data_registry/views.py:96
+#: data_registry/views.py:95
 msgid "Amendments data"
 msgstr "Datos de enmiendas"
 
-#: data_registry/views.py:184
+#: data_registry/views.py:183
 #, python-format
 msgid "OCDS data for %(country)s: %(title)s"
 msgstr "Datos OCDS de %(country)s: %(title)s"

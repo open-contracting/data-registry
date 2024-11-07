@@ -21,7 +21,7 @@ class Pelican(TaskManager):
         data_version = self.job.context["data_version"]  # set in Collect.get_status()
         compiled_collection_id = self.job.context["process_id_pelican"]  # set in Process.get_status()
 
-        name = f"{spider}_{data_version}_{self.job.id}"
+        name = f"{spider}_{data_version}_{self.job.pk}"
 
         self.request(
             "POST",

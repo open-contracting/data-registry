@@ -55,7 +55,7 @@ msgstr "Предыдущий год"
 msgid "More than a year ago"
 msgstr "Больше года тому назад"
 
-#: data_registry/admin.py:134 data_registry/admin.py:254
+#: data_registry/admin.py:134 data_registry/admin.py:248
 msgid "Management"
 msgstr "Управление"
 
@@ -73,8 +73,8 @@ msgid "Details"
 msgstr "Подробности"
 
 #: data_registry/admin.py:209
-msgid "failed"
-msgstr "Провалена"
+msgid "unsuccessful"
+msgstr "неудачная"
 
 #: data_registry/admin.py:281
 msgid "Data availability"

@@ -1,7 +1,9 @@
+import datetime
 import logging
 
 from django.conf import settings
 from django.db import transaction
+from django.utils.timezone import now
 
 from data_registry import models
 from data_registry.exceptions import IrrecoverableError, RecoverableError
@@ -47,7 +49,11 @@ def process(collection: models.Collection) -> None:
        -  If it failed temporarily, log the reason
        -  If it failed permanently, fail the task and end the job
 
-    -  If all tasks succeeded, end the job and update the collection's active job and last retrieved date.
+    -  If all tasks succeeded:
+
+       - End the job
+       - Update the collection's active job and last retrieved date
+       - Delete jobs that are more than a year older than the active job, but keep one other complete job
 
     In other words, this function advances each job by at most one task. As such, for all tasks of a job to succeed,
     this function needs to run at least as many times are there are tasks in the ``JOB_TASKS_PLAN`` setting.
@@ -121,3 +127,15 @@ def process(collection: models.Collection) -> None:
                 collection.save()
 
                 logger.debug("Job %s has succeeded (%s: %s)", job, country, collection)
+
+                # Keep the other most recent successful job as backup.
+                other_jobs = collection.job_set.exclude(pk=job.pk)
+                backup_job = other_jobs.successful().order_by("start").values_list("pk", flat=True).last()
+                if backup_job:
+                    other_jobs = other_jobs.exclude(pk=backup_job)
+
+                # There must be at most one incomplete job per collection, for deletion to not conflict with iteration.
+                for old_job in other_jobs.filter(start__lt=now() - datetime.timedelta(days=365)):
+                    # Note: The Collect task's wipe() method can be slow.
+                    old_job.delete()
+                    logger.debug("Old job %s has been deleted (%s: %s)", old_job, country, collection)

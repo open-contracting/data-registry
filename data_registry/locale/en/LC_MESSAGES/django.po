@@ -53,7 +53,7 @@ msgstr "Past year"
 msgid "More than a year ago"
 msgstr "More than a year ago"
 
-#: data_registry/admin.py:134 data_registry/admin.py:254
+#: data_registry/admin.py:134 data_registry/admin.py:248
 msgid "Management"
 msgstr "Management"
 
@@ -71,8 +71,8 @@ msgid "Details"
 msgstr "Details"
 
 #: data_registry/admin.py:209
-msgid "failed"
-msgstr "failed"
+msgid "unsuccessful"
+msgstr "unsuccessful"
 
 #: data_registry/admin.py:281
 msgid "Data availability"

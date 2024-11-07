@@ -6,7 +6,6 @@ from datetime import date, datetime, timedelta
 from urllib.parse import urlencode, urljoin
 
 import requests
-from dateutil.relativedelta import relativedelta
 from django import urls
 from django.conf import settings
 from django.db.models import Count, F, Q
@@ -326,10 +325,10 @@ def excel_data(request, job_id, job_range=None):
     else:
         if job_range == "6M":
             end_date = date.today()
-            start_date = date.today() + relativedelta(months=-6)
+            start_date = date.today() - timedelta(days=180)
         if job_range == "1Y":
             end_date = date.today()
-            start_date = date.today() + relativedelta(months=-12)
+            start_date = date.today() - timedelta(days=365)
         if "|" in job_range:
             d_from, d_to = job_range.split("|")
             if d_from and d_to:
@@ -354,7 +353,7 @@ def excel_data(request, job_id, job_range=None):
             else:
                 logger.debug("File %s does not found. Excluding from export.", file_path)
 
-            start_date = start_date + relativedelta(months=+1)
+            start_date = start_date + timedelta(days=30)
 
     language = get_language()
 

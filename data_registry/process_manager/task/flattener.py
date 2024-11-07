@@ -7,15 +7,15 @@ class Flattener(TaskManager):
     final_output = True
 
     def get_exports(self):
-        for path in Export(self.job.id).get_convertible_paths():
-            yield Export(self.job.id, basename=f"{path.name[:-9]}.csv.tar.gz")  # remove .jsonl.gz
+        for path in Export(self.job.pk).get_convertible_paths():
+            yield Export(self.job.pk, basename=f"{path.name[:-9]}.csv.tar.gz")  # remove .jsonl.gz
 
     def run(self):
         for export in self.get_exports():
             if export.running:
                 export.unlock()
 
-        publish({"job_id": self.job.id}, "flattener_init")
+        publish({"job_id": self.job.pk}, "flattener_init")
 
     def get_status(self):
         for export in self.get_exports():
