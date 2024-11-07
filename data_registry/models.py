@@ -97,6 +97,7 @@ class Job(models.Model):
     date_to = models.DateField(blank=True, null=True, verbose_name="maximum release date")
     ocid_prefix = models.TextField(blank=True, verbose_name="OCID prefix")
     license = models.TextField(blank=True)
+    publication_policy = models.TextField(blank=True)
 
     # Timestamps
     created = models.DateTimeField(auto_now_add=True)

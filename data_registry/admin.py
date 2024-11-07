@@ -273,6 +273,7 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
                     "date_to",
                     "ocid_prefix",
                     "license",
+                    "publication_policy",
                 ),
             },
         ),
@@ -311,6 +312,7 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
         "date_to",
         "ocid_prefix",
         "license",
+        "publication_policy",
         # Data availability
         "parties_count",
         "plannings_count",
