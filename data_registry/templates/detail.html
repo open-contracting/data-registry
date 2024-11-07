@@ -154,7 +154,7 @@ document.querySelectorAll('a[download]').forEach(trackable => {
                     {{ collection.license_custom.description|markdownify }}
                 </div>
 {% else %}
-                {{ job.license|default:"-" }}
+                {{ job.license|urlize|default:"-" }}
 {% endif %}
             </dd>
             <dt>{% translate "Main language:" %}</dt>
