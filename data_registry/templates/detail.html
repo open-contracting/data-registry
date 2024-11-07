@@ -60,9 +60,11 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
 })
 
 document.querySelectorAll('a[download]').forEach(trackable => {
-  trackable.addEventListener('click', event => {
-    fathom.trackEvent(`download ${trackable.dataset.event}`) // eslint-disable-line no-undef
-  })
+  if (typeof fathom !== 'undefined') {
+    trackable.addEventListener('click', event => {
+      fathom.trackEvent(`download ${trackable.dataset.event}`) // eslint-disable-line no-undef
+    })
+  }
 })
 </script>
 {% endblock %}
@@ -363,7 +365,7 @@ document.querySelectorAll('a[download]').forEach(trackable => {
             </div>
         </div>
         <div class="col-md-auto">
-            <a href="mailto:data@open-contracting.org?{% feedback_query_string_parameters %}" onclick="fathom.trackEvent('contact')" target="_blank" class="hstack link-white">
+            <a href="mailto:data@open-contracting.org?{% feedback_query_string_parameters %}" onclick="typeof fathom !== 'undefined' && fathom.trackEvent('contact')" target="_blank" class="hstack link-white">
                 {% include "includes/chevron_icon.html" with direction="right" classes="me-2" size="24" only %}{% translate "Contact Data Support Team" %}
             </a>
         </div>
