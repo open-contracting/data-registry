@@ -126,13 +126,14 @@ def process(collection: models.Collection) -> None:
 
                 logger.debug("Job %s has succeeded (%s: %s)", job, country, collection)
 
-                other_jobs = collection.job_set.exclude(pk=job.pk)
                 # Keep the other most recent successful job as backup.
+                other_jobs = collection.job_set.exclude(pk=job.pk)
                 backup_job = other_jobs.successful().order_by("start").values_list("pk", flat=True).last()
                 if backup_job:
                     other_jobs = other_jobs.exclude(pk=backup_job)
 
                 # There must be at most one incomplete job per collection, for deletion to not conflict with iteration.
                 for old_job in other_jobs.filter(start__lt=now() - datetime.timedelta(days=365)):
+                    # Note: The Collect task's wipe() method can be slow.
                     old_job.delete()
                     logger.debug("Old job %s has been deleted (%s: %s)", old_job, country, collection)
