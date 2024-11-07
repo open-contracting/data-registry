@@ -105,6 +105,7 @@ class Job(models.Model):
     date_to = models.DateField(blank=True, null=True, verbose_name="maximum release date")
     ocid_prefix = models.TextField(blank=True, verbose_name="OCID prefix")
     license = models.TextField(blank=True)
+    publication_policy = models.TextField(blank=True)
 
     # Timestamps
     created = models.DateTimeField(auto_now_add=True)
@@ -166,7 +167,7 @@ class Collection(models.Model):
 
     class UpdateFrequency(models.TextChoices):
         #: Unknown
-        UNKNOWN = "UNKNOWN", _("Unknown")
+        UNKNOWN = "UNKNOWN", "-"
         #: Real time
         REAL_TIME = "REAL_TIME", _("Real time")
         #: Hourly
@@ -256,6 +257,7 @@ class Collection(models.Model):
         verbose_name="data license",
         help_text="If not set, the Overview section will display the license URL within the OCDS package.",
     )
+    publication_policy = models.TextField(blank=True, verbose_name="publication policy")
 
     # Provenance
     source_url = models.TextField(blank=True, verbose_name="source URL", help_text="The URL of the publication.")

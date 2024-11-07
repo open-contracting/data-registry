@@ -222,7 +222,7 @@ def detail(request, pk):
     if license_custom and license_custom.url:
         dataset["license"] = license_custom.url
     elif job and job.license:
-        dataset["license"] = license
+        dataset["license"] = job.license
 
     language_code = get_language_from_request(request, check_path=True)
     if language_code != "en":

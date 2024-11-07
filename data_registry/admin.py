@@ -169,6 +169,7 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
                     "language_ru",
                     "update_frequency",
                     "license_custom",
+                    "publication_policy",
                     "source_url",
                 ),
             },
@@ -267,6 +268,7 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
                     "date_to",
                     "ocid_prefix",
                     "license",
+                    "publication_policy",
                 ),
             },
         ),
@@ -305,6 +307,7 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
         "date_to",
         "ocid_prefix",
         "license",
+        "publication_policy",
         # Data availability
         "parties_count",
         "plannings_count",

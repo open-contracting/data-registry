@@ -4,13 +4,13 @@
 <ul>
 {% if files.full %}
     <li>
-        <a href="{% url 'download' collection.id %}?name=full.{{ suffix }}" rel="nofollow" download>{% translate "All time" %}</a>
+        <a href="{% url 'download' collection.id %}?name=full.{{ suffix }}" rel="nofollow" data-event="{{ suffix }} full" download>{% translate "All time" %}</a>
         <span class="text-muted small">{{ files.full|humanfilesize }}</span>
     </li>
 {% endif %}
 {% for file in files.by_year|dictsortreversed:"year" %}
     <li>
-        <a href="{% url 'download' collection.id %}?name={{ file.year }}.{{ suffix }}" rel="nofollow" download>{{ file.year }}</a>
+        <a href="{% url 'download' collection.id %}?name={{ file.year }}.{{ suffix }}" rel="nofollow" data-event="{{ suffix }} year" download>{{ file.year }}</a>
         <span class="text-muted small">{{ file.size|humanfilesize }}</span>
     </li>
 {% empty %}

@@ -58,6 +58,14 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
   toggleable.insertAdjacentElement('beforebegin', insert)
   toggleable.setAttribute('hidden', '')
 })
+
+document.querySelectorAll('a[download]').forEach(trackable => {
+  if (typeof fathom !== 'undefined') {
+    trackable.addEventListener('click', event => {
+      fathom.trackEvent(`download ${trackable.dataset.event}`) // eslint-disable-line no-undef
+    })
+  }
+})
 </script>
 {% endblock %}
 
@@ -131,13 +139,8 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
             </dd>
             <dt>{% translate "Update frequency:" %}</dt>
             <dd>{{ collection.get_update_frequency_display }}</dd>
-            <dt>{% translate "Last retrieved:" %}</dt>
-            <dd>
-                {{ collection.last_retrieved|date:"M Y" }}
-                {% if collection.retrieval_frequency != never %}
-                    ({% blocktranslate with retrieval_frequency=collection.get_retrieval_frequency_display.lower %}retrieved {{ retrieval_frequency }}{% endblocktranslate %})
-                {% endif %}
-            </dd>
+            <dt>{% translate "Main language:" %}</dt>
+            <dd>{{ collection.language }}</dd>
             <dt>{% translate "OCID prefix:" %}</dt>
             <dd>{{ job.ocid_prefix|default:"-" }}</dd>
             <dt>{% translate "License:" %}</dt>
@@ -148,11 +151,19 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
                     {{ collection.license_custom.description|markdownify }}
                 </div>
 {% else %}
-                {{ job.license|default:"-" }}
+                {{ job.license|urlize|default:"-" }}
 {% endif %}
             </dd>
-            <dt>{% translate "Main language:" %}</dt>
-            <dd>{{ collection.language }}</dd>
+            <dt>{% translate "Publication policy:" %}</dt>
+            <dd>{% firstof collection.publication_policy|urlize job.publication_policy|urlize "-" %}
+            </dd>
+            <dt>{% translate "Last retrieved:" %}</dt>
+            <dd>
+                {{ collection.last_retrieved|date:"M Y" }}
+                {% if collection.retrieval_frequency != never %}
+                    ({% blocktranslate with retrieval_frequency=collection.get_retrieval_frequency_display.lower %}retrieved {{ retrieval_frequency }}{% endblocktranslate %})
+                {% endif %}
+            </dd>
             <dt>{% translate "Retrieved from:" %}</dt>
             <dd class="text-break"><a href="{{ collection.source_url }}" target="_blank">{{ collection.source_url }}</a></dd>
         </dl>
@@ -354,7 +365,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
             </div>
         </div>
         <div class="col-md-auto">
-            <a href="mailto:data@open-contracting.org?{% feedback_query_string_parameters %}" target="_blank" class="hstack link-white">
+            <a href="mailto:data@open-contracting.org?{% feedback_query_string_parameters %}" onclick="typeof fathom !== 'undefined' && fathom.trackEvent('contact')" target="_blank" class="hstack link-white">
                 {% include "includes/chevron_icon.html" with direction="right" classes="me-2" size="24" only %}{% translate "Contact Data Support Team" %}
             </a>
         </div>

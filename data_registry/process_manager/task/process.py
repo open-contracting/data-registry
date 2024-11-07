@@ -71,11 +71,22 @@ class Process(TaskManager):
         if meta:
             self.job.date_from = parse_date(meta.get("published_from"))
             self.job.date_to = parse_date(meta.get("published_to"))
-            self.job.license = meta.get("data_license") or ""
+            self.job.license = meta.get("license") or ""
+            self.job.publication_policy = meta.get("publication_policy") or ""
             self.job.ocid_prefix = meta.get("ocid_prefix") or ""
 
         self.job.context["process_id_pelican"] = compiled_collection["id"]
-        self.job.save(update_fields=["modified", "context", "date_from", "date_to", "license", "ocid_prefix"])
+        self.job.save(
+            update_fields=[
+                "modified",
+                "context",
+                "date_from",
+                "date_to",
+                "license",
+                "publication_policy",
+                "ocid_prefix",
+            ]
+        )
 
         if original_collection["expected_files_count"] == 0:
             raise IrrecoverableError("Collection is empty")
