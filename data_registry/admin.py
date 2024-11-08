@@ -373,9 +373,12 @@ class LicenseAdmin(TranslationAdmin):
     def link(self, obj):
         return mark_safe(urlize(obj.url))
 
-    @admin.display(description="Description length")
+    @admin.display(description="Lines (characters)")
     def description_length(self, obj):
-        return ", ".join([str(len(field)) for field in (obj.description_en, obj.description_es, obj.description_ru)])
+        # Russian isn't populated in practice: SELECT id, name_ru, description_ru FROM data_registry_license;
+        characters = "/".join(str(len(field)) for field in (obj.description_en, obj.description_es))
+        lines = "/".join(str(len(field.split("\n"))) for field in (obj.description_en, obj.description_es))
+        return f"{lines} ({characters})"
 
 
 # https://docs.djangoproject.com/en/4.2/ref/contrib/admin/#logentry-objects
