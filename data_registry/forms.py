@@ -7,7 +7,6 @@ from django.contrib import messages
 from django.contrib.admin import widgets
 from django.db.models import F
 
-from data_registry import models
 from data_registry.util import scrapyd_url
 
 FLAGS_DIR = Path("data_registry/static/img/flags")
@@ -71,8 +70,10 @@ class CollectionAdminForm(forms.ModelForm):
         # It's not obvious how to use limit_choices_to to filter jobs by collection.
         # https://docs.djangoproject.com/en/4.2/ref/models/fields/#django.db.models.ForeignKey.limit_choices_to
         self.fields["active_job"].queryset = (
-            models.Job.objects.filter(collection=self.instance).complete().order_by(F("pk").desc())
+            self.fields["active_job"].queryset.filter(collection=self.instance).successful().order_by(F("pk").desc())
         )
+
+        self.fields["license_custom"].queryset = self.fields["license_custom"].queryset.order_by("name")
 
         # Populate choices in the form, not the model, for easier migration between icon sets.
         self.fields["country_flag"].choices += sorted((f.name, f.name) for f in FLAGS_DIR.iterdir() if f.is_file())
