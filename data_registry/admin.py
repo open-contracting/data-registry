@@ -7,7 +7,6 @@ from django.urls import NoReverseMatch, reverse
 from django.utils import timezone
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
-from django.utils.translation import gettext_lazy as _
 from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin
 
 from data_registry import forms
@@ -17,7 +16,7 @@ from data_registry.util import partialclass
 
 logger = logging.getLogger(__name__)
 
-TRANSLATION_REMINDER = _(
+TRANSLATION_REMINDER = (
     "<em>Remember to provide information in all languages. You can use the dropdown at the top "
     "of the page to toggle the language for all fields.</em>"
 )
@@ -40,11 +39,11 @@ class CascadeTaskMixin:
 
 
 class IncompleteFilter(admin.SimpleListFilter):
-    title = _("incomplete")
+    title = "incomplete"
     parameter_name = "incomplete"
 
     def lookups(self, request, model_admin):
-        return (("1", _("Yes")),)
+        return (("1", "Yes"),)
 
     def queryset(self, request, queryset):
         if self.value() == "1":
@@ -61,11 +60,11 @@ class IncompleteFilter(admin.SimpleListFilter):
 
 
 class UntranslatedFilter(admin.SimpleListFilter):
-    title = _("untranslated")
+    title = "untranslated"
     parameter_name = "untranslated"
 
     def lookups(self, request, model_admin):
-        return (("1", _("Yes")),)
+        return (("1", "Yes"),)
 
     def queryset(self, request, queryset):
         if self.value() == "1":
@@ -96,14 +95,14 @@ class CustomDateFieldListFilter(admin.DateFieldListFilter):
 
         self.links += (
             (
-                _("Previous year"),
+                "Previous year",
                 {
                     self.lookup_kwarg_since: str(today.replace(year=today.year - 1, month=1, day=1)),
                     self.lookup_kwarg_until: str(today.replace(month=1, day=1)),
                 },
             ),
             (
-                _("More than a year ago"),
+                "More than a year ago",
                 {
                     self.lookup_kwarg_until: str(today.replace(year=today.year - 1)),
                 },
@@ -131,7 +130,7 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
 
     fieldsets = (
         (
-            _("Management"),
+            "Management",
             {
                 "fields": (
                     "source_id",
@@ -144,7 +143,7 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
             },
         ),
         (
-            _("Basics"),
+            "Basics",
             {
                 "description": TRANSLATION_REMINDER,
                 "fields": (
@@ -160,7 +159,7 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
             },
         ),
         (
-            _("Overview"),
+            "Overview",
             {
                 "description": TRANSLATION_REMINDER,
                 "fields": (
@@ -175,7 +174,7 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
             },
         ),
         (
-            _("Details"),
+            "Details",
             {
                 "description": TRANSLATION_REMINDER,
                 "fields": (
@@ -207,11 +206,11 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
 
 
 class UnsuccessfulFilter(admin.SimpleListFilter):
-    title = _("unsuccessful")
+    title = "unsuccessful"
     parameter_name = "unsuccessful"
 
     def lookups(self, request, model_admin):
-        return (("1", _("Yes")),)
+        return (("1", "Yes"),)
 
     def queryset(self, request, queryset):
         if self.value() == "1":
@@ -246,7 +245,7 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
 
     fieldsets = (
         (
-            _("Management"),
+            "Management",
             {
                 "fields": (
                     "collection",
@@ -261,7 +260,7 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
             },
         ),
         (
-            _("Overview"),
+            "Overview",
             {
                 "fields": (
                     "date_from",
@@ -273,7 +272,7 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
             },
         ),
         (
-            _("Data availability"),
+            "Data availability",
             {
                 "fields": (
                     "parties_count",

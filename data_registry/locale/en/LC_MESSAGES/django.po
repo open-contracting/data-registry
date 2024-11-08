@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-07 15:57+0000\n"
+"POT-Creation-Date: 2024-11-08 16:30+0000\n"
 "PO-Revision-Date: 2021-08-04 17:44+0000\n"
 "Last-Translator: Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2023\n"
 "Language-Team: English (https://app.transifex.com/open-contracting-"
@@ -23,60 +23,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#: data_registry/admin.py:21
-msgid ""
-"<em>Remember to provide information in all languages. You can use the "
-"dropdown at the top of the page to toggle the language for all fields.</em>"
-msgstr ""
-"<em>Remember to provide information in all languages. You can use the "
-"dropdown at the top of the page to toggle the language for all fields.</em>"
-
-#: data_registry/admin.py:43
-msgid "incomplete"
-msgstr "incomplete"
-
-#: data_registry/admin.py:47 data_registry/admin.py:68
-#: data_registry/admin.py:214
-msgid "Yes"
-msgstr "Yes"
-
-#: data_registry/admin.py:64
-msgid "untranslated"
-msgstr "untranslated"
-
-#: data_registry/admin.py:99
-msgid "Previous year"
-msgstr "Past year"
-
-#: data_registry/admin.py:106
-msgid "More than a year ago"
-msgstr "More than a year ago"
-
-#: data_registry/admin.py:134 data_registry/admin.py:249
-msgid "Management"
-msgstr "Management"
-
-#: data_registry/admin.py:147
-msgid "Basics"
-msgstr "Basics"
-
-#: data_registry/admin.py:163 data_registry/admin.py:264
-#: data_registry/templates/detail.html:130
-msgid "Overview"
-msgstr "Overview"
-
-#: data_registry/admin.py:178
-msgid "Details"
-msgstr "Details"
-
-#: data_registry/admin.py:210
-msgid "unsuccessful"
-msgstr "unsuccessful"
-
-#: data_registry/admin.py:276
-msgid "Data availability"
-msgstr "Data availability"
 
 #: data_registry/models.py:144
 msgid "Africa and Middle East"
@@ -172,6 +118,10 @@ msgstr "Available formats:"
 #: data_registry/templates/detail.html:119
 msgid "ACCESS"
 msgstr "Access"
+
+#: data_registry/templates/detail.html:130
+msgid "Overview"
+msgstr "Overview"
 
 #: data_registry/templates/detail.html:134
 #: data_registry/templates/search.html:150

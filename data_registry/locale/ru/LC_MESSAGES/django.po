@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-07 15:57+0000\n"
+"POT-Creation-Date: 2024-11-08 16:30+0000\n"
 "PO-Revision-Date: 2021-08-04 17:44+0000\n"
 "Last-Translator: Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2023\n"
 "Language-Team: Russian (https://app.transifex.com/open-contracting-"
@@ -24,61 +24,6 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
-
-#: data_registry/admin.py:21
-msgid ""
-"<em>Remember to provide information in all languages. You can use the "
-"dropdown at the top of the page to toggle the language for all fields.</em>"
-msgstr ""
-"<em>Не забудьте предоставить информацию на всех языках. Вы можете "
-"использовать выпадающий список в верхней части страницы, чтобы переключить "
-"язык для всех полей.</em>"
-
-#: data_registry/admin.py:43
-msgid "incomplete"
-msgstr "неполный"
-
-#: data_registry/admin.py:47 data_registry/admin.py:68
-#: data_registry/admin.py:214
-msgid "Yes"
-msgstr "Да"
-
-#: data_registry/admin.py:64
-msgid "untranslated"
-msgstr "непереведенный"
-
-#: data_registry/admin.py:99
-msgid "Previous year"
-msgstr "Предыдущий год"
-
-#: data_registry/admin.py:106
-msgid "More than a year ago"
-msgstr "Больше года тому назад"
-
-#: data_registry/admin.py:134 data_registry/admin.py:249
-msgid "Management"
-msgstr "Управление"
-
-#: data_registry/admin.py:147
-msgid "Basics"
-msgstr "Основы"
-
-#: data_registry/admin.py:163 data_registry/admin.py:264
-#: data_registry/templates/detail.html:130
-msgid "Overview"
-msgstr "Обзор"
-
-#: data_registry/admin.py:178
-msgid "Details"
-msgstr "Подробности"
-
-#: data_registry/admin.py:210
-msgid "unsuccessful"
-msgstr "неудачная"
-
-#: data_registry/admin.py:276
-msgid "Data availability"
-msgstr "Доступность данных"
 
 #: data_registry/models.py:144
 msgid "Africa and Middle East"
@@ -175,6 +120,10 @@ msgstr "Доступные форматы"
 #: data_registry/templates/detail.html:119
 msgid "ACCESS"
 msgstr "Доступ"
+
+#: data_registry/templates/detail.html:130
+msgid "Overview"
+msgstr "Обзор"
 
 #: data_registry/templates/detail.html:134
 #: data_registry/templates/search.html:150
