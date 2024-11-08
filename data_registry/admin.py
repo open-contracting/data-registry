@@ -5,9 +5,9 @@ from django.contrib import admin, messages
 from django.db.models import Q
 from django.urls import NoReverseMatch, reverse
 from django.utils import timezone
-from django.utils.html import escape
+from django.utils.html import escape, urlize
 from django.utils.safestring import mark_safe
-from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin
+from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, TranslationAdmin
 
 from data_registry import forms
 from data_registry.exceptions import RecoverableError
@@ -347,9 +347,9 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
 
 
 @admin.register(License)
-class LicenseAdmin(TabbedDjangoJqueryTranslationAdmin):
+class LicenseAdmin(TranslationAdmin):
     form = forms.LicenseAdminForm
-    list_display = ["__str__", "url"]
+    list_display = ["__str__", "name_es", "link", "description_length"]
 
     fieldsets = (
         (
@@ -368,6 +368,14 @@ class LicenseAdmin(TabbedDjangoJqueryTranslationAdmin):
             },
         ),
     )
+
+    @admin.display(description="URL", ordering="url")
+    def link(self, obj):
+        return mark_safe(urlize(obj.url))
+
+    @admin.display(description="Description length")
+    def description_length(self, obj):
+        return ", ".join([str(len(field)) for field in (obj.description_en, obj.description_es, obj.description_ru)])
 
 
 # https://docs.djangoproject.com/en/4.2/ref/contrib/admin/#logentry-objects
