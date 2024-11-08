@@ -350,6 +350,7 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
 @admin.register(License)
 class LicenseAdmin(TabbedDjangoJqueryTranslationAdmin):
     form = forms.LicenseAdminForm
+    list_display = ["__str__", "url"]
 
     fieldsets = (
         (
