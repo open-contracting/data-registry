@@ -169,6 +169,7 @@ document.querySelectorAll('a[download]').forEach(trackable => {
         </dl>
     </div>
 </div>
+
 <div class="row py-5 border-top">
     <div class="col-sm fixed-sm-12">
         <h2 class="h4 mb-3">{% translate "Data available" %}</h2>
@@ -275,7 +276,6 @@ document.querySelectorAll('a[download]').forEach(trackable => {
         <h2 class="h4 mb-3">{% translate "Data quality" %}</h2>
     </div>
     <div class="col-sm">
-        <h3 class="h5 mb-3">{% translate "Summary" %}</h3>
         <div class="d-flex p-4 rounded-3 text-bg-light">
 {% if collection.summary %}
             {# https://icons.getbootstrap.com/icons/exclamation-circle/ #}
@@ -296,6 +296,7 @@ document.querySelectorAll('a[download]').forEach(trackable => {
             {% translate "Last reviewed:" %} {{ collection.last_reviewed|date:"M Y" }}
         </p>
 {% endif %}
+    </div>
 </div>
 
 <div class="py-5 border-top" id="access">
