@@ -289,10 +289,14 @@ And, re-publish the messages, using the Django `shell <https://docs.djangoprojec
       message = {"collection_id": 100, "collection_file_id": 55555}
       client.publish(message, routing_key="api_loader")
 
-Unpublish or freeze a publication
+Freeze or unpublish a publication
 ---------------------------------
 
 A publication is frozen if the source is temporarily broken or otherwise unavailable. Unfreeze the publication when the source is fixed.
+
+A publication is unpublished if there are security concerns (like Afghanistan), if it duplicates another publication, or if it was added in error.
+
+Only *delete* a publication if it is a duplicate or if it was otherwise created in error.
 
 .. note::
 
@@ -303,11 +307,9 @@ A publication is frozen if the source is temporarily broken or otherwise unavail
    To audit whether publications ought to be frozen, run `scrapy checkall <https://kingfisher-collect.readthedocs.io/en/latest/cli.html#checkall>`__ from Kingfisher Collect.
 
 #. `Find the publication <https://data.open-contracting.org/admin/data_registry/collection/>`__
-#. Uncheck *Public*, to hide the publication
-#. Check *Frozen*, to stop jobs from being scheduled
+#. If freezing: Check *Frozen*, to stop jobs from being scheduled
+#. If unpublishing: Uncheck *Public*, to hide the publication
 #. Click *Save* at the bottom of the page
-
-Only *delete* a publication if it is a duplicate or if it was otherwise created in error.
 
 Add an administrator
 --------------------
