@@ -138,11 +138,8 @@ def search(request):
     for row in without_filter(qs, args=False).values("active_job__date_from", "active_job__date_to"):
         facets["date_ranges"][""] += 1
         for value, limit in date_limits.items():
-            if (
-                row["active_job__date_from"]
-                and row["active_job__date_from"] >= limit
-                or row["active_job__date_to"]
-                and row["active_job__date_to"] >= limit
+            if (row["active_job__date_from"] and row["active_job__date_from"] >= limit) or (
+                row["active_job__date_to"] and row["active_job__date_to"] >= limit
             ):
                 facets["date_ranges"][value] += 1
 
