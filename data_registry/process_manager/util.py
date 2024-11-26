@@ -117,4 +117,4 @@ class TaskManager(ABC):
         """
 
     def __str__(self):
-        return f"Publication {self.collection}: {type(self).__name__}"
+        return f"Publication {self.collection}: Job #{self.job.pk}: {type(self).__name__}"
