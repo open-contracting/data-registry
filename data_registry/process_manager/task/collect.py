@@ -140,7 +140,9 @@ class Collect(TaskManager):
         #
         # If the Scrapyd job was pending, there is nothing to wipe.
         if "data_version" not in self.job.context:
-            logger.warning("%s: Unable to wipe crawl (data version is not set)", self)
+            # The key was changed (010319f) prior to the most recent server move. This data is already wiped.
+            if "process_data_version" not in self.job.context:
+                logger.warning("%s: Unable to wipe crawl (data version is not set)", self)
             return
 
         data_version = self.job.context["data_version"]  # set in get_status()
