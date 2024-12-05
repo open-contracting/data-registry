@@ -52,9 +52,9 @@ function handleCountryChange (event) {
     window.location.href = ''
   }
 }
-document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("country-select").addEventListener("change", handleCountryChange);
-});
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('country-select').addEventListener('change', handleCountryChange)
+})
 // {# "8. Make the button stationary." https://www.nngroup.com/articles/back-to-top/ #}
 const observer = new window.IntersectionObserver(entries => {
   entries[0].target.querySelector('a').toggleAttribute('hidden', !entries[0].isIntersecting)
