@@ -45,14 +45,16 @@ document.querySelectorAll('.filterable').forEach(filter => {
   })
 })
 
-function handleCountryChange(country_query) {
-    if (country_query.value) {
-        window.location.href = country_query.value;
-    } else {
-      window.location.href = ``;
-    }
+function handleCountryChange (event) {
+  if (event.target.value) {
+    window.location.href = event.target.value
+  } else {
+    window.location.href = ''
+  }
 }
-
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("country-select").addEventListener("change", handleCountryChange);
+});
 // {# "8. Make the button stationary." https://www.nngroup.com/articles/back-to-top/ #}
 const observer = new window.IntersectionObserver(entries => {
   entries[0].target.querySelector('a').toggleAttribute('hidden', !entries[0].isIntersecting)
@@ -98,7 +100,7 @@ observer.observe(document.querySelector('.toppable'))
             </a>
 
             <h3 class="h5">{% translate "Country" %}</h3>
-            <select class="mb-4 form-select" onchange="handleCountryChange(this)">
+            <select id="country-select" class="mb-4 form-select" aria-label="{% translate "Select a country" %}">
                 <option value="?" {% if not request.GET|getitem:'country' %} selected {% endif %}>
                     {% translate "All" %}
                 </option>
