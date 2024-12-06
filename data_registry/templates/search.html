@@ -45,15 +45,14 @@ document.querySelectorAll('.filterable').forEach(filter => {
   })
 })
 
-function handleCountryChange (event) {
-  if (event.target.value) {
-    window.location.href = event.target.value
-  } else {
-    window.location.href = ''
-  }
-}
 document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('country-select').addEventListener('change', handleCountryChange)
+  const select = document.getElementById('country-select')
+  select.addEventListener('change', () => {
+    const url = select.value;
+    if (url) {
+      window.location.href = url
+    }
+  })
 })
 // {# "8. Make the button stationary." https://www.nngroup.com/articles/back-to-top/ #}
 const observer = new window.IntersectionObserver(entries => {
