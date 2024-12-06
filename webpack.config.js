@@ -4,7 +4,7 @@
 // https://github.com/webpack-contrib/mini-css-extract-plugin
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const path = require('path');
+const path = require('path')
 
 module.exports = {
   entry: './src/scss/main.scss',

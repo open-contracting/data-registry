@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', event => {
-  const md = markdownit()
+  const md = markdownit() // eslint-disable-line no-undef
 
   document.querySelectorAll('.markdownable').forEach(markdownable => {
     const textarea = markdownable.querySelector('textarea')
@@ -15,6 +15,6 @@ document.addEventListener('DOMContentLoaded', event => {
 
   // https://til.simonwillison.net/css/resizing-textarea
   document.querySelectorAll('textarea').forEach(textarea => {
-    textarea.dispatchEvent(new Event('input', {bubbles: true, cancelable: true}))
+    textarea.dispatchEvent(new Event('input', { bubbles: true, cancelable: true }))
   })
 })

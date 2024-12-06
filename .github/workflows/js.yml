@@ -10,4 +10,4 @@ jobs:
         with:
           node-version: 18
       - run: npm install eslint-plugin-html standard
-      - run: npx standard --plugin html '**/*.html'
+      - run: npx standard --plugin html .

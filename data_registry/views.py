@@ -1,7 +1,5 @@
 import logging
 import re
-import string
-from collections import defaultdict
 from datetime import date, datetime, timedelta
 from urllib.parse import urlencode, urljoin
 
@@ -9,7 +7,6 @@ import requests
 from django import urls
 from django.conf import settings
 from django.db.models import Count, F, Q
-from django.db.models.functions import Substr
 from django.http.response import FileResponse, HttpResponse, HttpResponseBadRequest, HttpResponseNotFound, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.defaultfilters import filesizeformat
@@ -23,10 +20,6 @@ from data_registry.util import collection_queryset
 from exporter.util import Export, TaskStatus
 
 logger = logging.getLogger(__name__)
-
-ALPHABETS = defaultdict(lambda: string.ascii_uppercase)
-# https://en.wikipedia.org/wiki/Cyrillic_script_in_Unicode#Basic_Cyrillic_alphabet
-ALPHABETS["ru"] = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
 
 EXPORT_PATTERN = re.compile(r"\A(full|\d{4})\.(jsonl\.gz|csv\.tar\.gz|xlsx)\Z")
 
@@ -53,7 +46,7 @@ def search(request):
 
     The filter logic is:
 
-    letter AND date_range AND (frequency₁ OR frequency₂ OR …) AND parties_count AND plannings_count AND …
+    country AND date_range AND (frequency₁ OR frequency₂ OR …) AND parties_count AND plannings_count AND …
     """
 
     def without_filter(qs, key="!", *, args=True):
@@ -69,6 +62,7 @@ def search(request):
 
     now = date.today()
     language_code = get_language_from_request(request, check_path=True)
+    country_field = f"country_{language_code}"
 
     date_ranges = {
         "": _("All"),
@@ -99,7 +93,6 @@ def search(request):
         collection_queryset(request)
         .select_related("active_job")
         .annotate(
-            letter=Substr(f"country_{language_code}", 1, 1),
             **{count: F(f"active_job__{count}") for count in counts},
         )
     )
@@ -107,8 +100,8 @@ def search(request):
     filter_args = []
     filter_kwargs = {}
     exclude = {}
-    if "letter" in request.GET:
-        filter_kwargs["letter"] = request.GET["letter"]
+    if "country" in request.GET:
+        filter_kwargs["country"] = request.GET["country"]
     if "date_range" in request.GET:
         date_limit = date_limits.get(request.GET["date_range"])
         if date_limit:
@@ -123,14 +116,16 @@ def search(request):
                 exclude[count] = 0
 
     facets = {
-        "letters": dict.fromkeys(ALPHABETS[language_code], 0),
+        "countries": dict.fromkeys(
+            collection_queryset(request).values_list(country_field, flat=True).distinct().order_by(country_field), 0
+        ),
         "date_ranges": dict.fromkeys(date_ranges, 0),
         "frequencies": dict.fromkeys(Collection.UpdateFrequency.values, 0),
         "regions": dict.fromkeys(Collection.Region.values, 0),
         "counts": dict.fromkeys(counts, 0),
     }
-    for value, n in facet_counts(qs, "letter"):
-        facets["letters"][value] = n
+    for value, n in facet_counts(qs, "country"):
+        facets["countries"][value] = n
     for value, n in facet_counts(qs, "update_frequency"):
         facets["frequencies"][value] = n
     for value, n in facet_counts(qs, "region"):
