@@ -101,14 +101,14 @@ observer.observe(document.querySelector('.toppable'))
 
             <h3 class="h5">{% translate "Country" %}</h3>
             <select id="country-select" class="mb-4 form-select" aria-label="{% translate "Select a country" %}">
-                <option value="?" {% if not request.GET|getitem:'country' %} selected {% endif %}>
+                <option value="?"{% if not request.GET|getitem:'country' %} selected{% endif %}>
                     {% translate "All" %}
                 </option>
-                {% for country in facets.countries %}
-                    <option value="?{% replace_query_string_parameter 'country' country %}" {% if country == request.GET|getitem:'country' %} selected {% endif %}>
-                        {{ country }}
-                    </option>
-                {% endfor %}
+{% for country, count in facets.countries.items %}
+                <option value="?{% replace_query_string_parameter 'country' country %}"{% if country == request.GET|getitem:'country' %} selected{% endif %}{% if not count %} disabled{% endif %}>
+                    {{ country }} - {{ count }}
+                </option>
+{% endfor %}
             </select>
             {% capture content %}
             {% endcapture %}
