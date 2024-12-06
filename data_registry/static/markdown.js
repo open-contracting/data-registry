@@ -15,6 +15,6 @@ document.addEventListener('DOMContentLoaded', event => {
 
   // https://til.simonwillison.net/css/resizing-textarea
   document.querySelectorAll('textarea').forEach(textarea => {
-    textarea.dispatchEvent(new Event('input', {bubbles: true, cancelable: true}))
+    textarea.dispatchEvent(new Event('input', { bubbles: true, cancelable: true }))
   })
 })
