@@ -62,6 +62,7 @@ def search(request):
 
     now = date.today()
     language_code = get_language_from_request(request, check_path=True)
+    country_field = f"country_{language_code}"
 
     date_ranges = {
         "": _("All"),
@@ -116,7 +117,7 @@ def search(request):
 
     facets = {
         "countries": dict.fromkeys(
-            collection_queryset(request).values_list(f"country_{language_code}", flat=True).distinct(), 0
+            collection_queryset(request).values_list(country_field, flat=True).distinct().order_by(country_field), 0
         ),
         "date_ranges": dict.fromkeys(date_ranges, 0),
         "frequencies": dict.fromkeys(Collection.UpdateFrequency.values, 0),
