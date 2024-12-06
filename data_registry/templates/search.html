@@ -110,8 +110,6 @@ observer.observe(document.querySelector('.toppable'))
                 </option>
 {% endfor %}
             </select>
-            {% capture content %}
-            {% endcapture %}
             {% include "includes/checkboxes.html" with title=_("Region") key="region" items=regions facet_counts=facets.regions %}
             {% include "includes/radiobuttons.html" with title=_("Data date range") key="date_range" items=date_ranges.items facet_counts=facets.date_ranges content=content %}
             {% include "includes/checkboxes.html" with title=_("Update frequency") key="update_frequency" items=frequencies facet_counts=facets.frequencies %}
