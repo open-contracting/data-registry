@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', event => {
-  const md = markdownit()
+  const md = markdownit() // eslint-disable-line no-undef
 
   document.querySelectorAll('.markdownable').forEach(markdownable => {
     const textarea = markdownable.querySelector('textarea')
