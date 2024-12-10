@@ -14,29 +14,11 @@ from markdown_it import MarkdownIt
 register = template.Library()
 
 
-class CaptureNode(template.Node):
-    def __init__(self, nodelist, varname):
-        self.nodelist = nodelist
-        self.varname = varname
-
-    def render(self, context):
-        context[self.varname] = self.nodelist.render(context)
-        return ""
-
-
 # https://markdown-it-py.readthedocs.io/en/latest/using.html#renderers
 def render_blank_link(self, tokens, idx, options, env) -> str:
     """Set the link to open in a new tab."""
     tokens[idx].attrSet("target", "_blank")
     return self.renderToken(tokens, idx, options, env)
-
-
-@register.tag(name="capture")
-def do_capture(parser, token):
-    _, varname = token.split_contents()
-    nodelist = parser.parse(("endcapture",))
-    parser.delete_first_token()
-    return CaptureNode(nodelist, varname)
 
 
 @register.simple_tag()

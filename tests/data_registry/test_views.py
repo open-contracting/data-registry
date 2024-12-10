@@ -78,8 +78,8 @@ class ViewsTests(TestCase):
         cls.collection_no_files.save()
 
     def test_search(self):
-        # letter, update_frequency, region, dates, results
-        with self.assertNumQueries(5):
+        # country, update_frequency, region, dates, results
+        with self.assertNumQueries(6):
             response = Client().get("/en/search/")
 
             self.assertTemplateUsed("search.html")

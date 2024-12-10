@@ -45,6 +45,15 @@ document.querySelectorAll('.filterable').forEach(filter => {
   })
 })
 
+document.addEventListener('DOMContentLoaded', () => {
+  const select = document.getElementById('country-select')
+  select.addEventListener('change', () => {
+    const url = select.value
+    if (url) {
+      window.location.href = url
+    }
+  })
+})
 // {# "8. Make the button stationary." https://www.nngroup.com/articles/back-to-top/ #}
 const observer = new window.IntersectionObserver(entries => {
   entries[0].target.querySelector('a').toggleAttribute('hidden', !entries[0].isIntersecting)
@@ -89,23 +98,17 @@ observer.observe(document.querySelector('.toppable'))
                 {% translate "Clear all filters" %}
             </a>
 
-            <h3 class="h5">{% translate "Country starting with" %}</h3>
-            <ul class="mb-4 list-inline letters">
-{% for letter in facets.letters %}
-                <li class="list-inline-item mb-1 me-0 text-center">
-    {% if facets.letters|getitem:letter %}
-                    <a rel="nofollow" href="?{% if letter == request.GET|getitem:'letter' %}{% remove_query_string_parameter 'letter' %}{% else %}{% replace_query_string_parameter 'letter' letter %}{% endif %}" title="{% blocktranslate count counter=facets.letters|getitem:letter %}1 dataset{% plural %}{{ counter }} datasets{% endblocktranslate %}" class="d-inline-block text-decoration-underline{% if letter == request.GET|getitem:'letter' %} bg-primary bg-opacity-25 fw-bold{% elif facets.letters|getitem:letter %} border border-secondary{% endif %}">
-                        {{ letter }}
-                    </a>
-    {% else %}
-                    <span class="d-inline-block">{{ letter }}</span>
-    {% endif %}
-                </li>
+            <h3 class="h5">{% translate "Country" %}</h3>
+            <select id="country-select" class="mb-4 form-select" aria-label="{% translate "Select a country" %}">
+                <option value="?"{% if not request.GET|getitem:'country' %} selected{% endif %}>
+                    {% translate "All" %}
+                </option>
+{% for country, count in facets.countries.items %}
+                <option value="?{% replace_query_string_parameter 'country' country %}"{% if country == request.GET|getitem:'country' %} selected{% endif %}{% if not count %} disabled{% endif %}>
+                    {{ country }} - {{ count }}
+                </option>
 {% endfor %}
-            </ul>
-
-            {% capture content %}
-            {% endcapture %}
+            </select>
             {% include "includes/checkboxes.html" with title=_("Region") key="region" items=regions facet_counts=facets.regions %}
             {% include "includes/radiobuttons.html" with title=_("Data date range") key="date_range" items=date_ranges.items facet_counts=facets.date_ranges content=content %}
             {% include "includes/checkboxes.html" with title=_("Update frequency") key="update_frequency" items=frequencies facet_counts=facets.frequencies %}
