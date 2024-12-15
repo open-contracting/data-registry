@@ -100,7 +100,7 @@ class Export:
         """
         self.directory = Path(settings.EXPORTER_DIR).joinpath(*map(str, components))
         self.spoonbill_directory = Path(settings.SPOONBILL_EXPORTER_DIR).joinpath(*map(str, components))
-        # Cause methods that require ``basename`` to error if the instance is improperly initialized.
+        # Cause methods that require `basename` to error if the instance is improperly initialized.
         if basename:
             self.basename = basename
 
