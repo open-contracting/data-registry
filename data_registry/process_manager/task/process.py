@@ -76,6 +76,15 @@ class Process(TaskManager):
             self.job.ocid_prefix = meta.get("ocid_prefix") or ""
 
         self.job.context["process_id_pelican"] = compiled_collection["id"]
+
+        response = self.request(
+            "GET",
+            url_for_collection(original_collection["id"], "notes"),
+            error_message=f"Unable to get notes of collection {original_collection['id']}",
+        )
+
+        self.job.process_notes = response.json()
+
         self.job.save(
             update_fields=[
                 "modified",
@@ -85,6 +94,7 @@ class Process(TaskManager):
                 "license",
                 "publication_policy",
                 "ocid_prefix",
+                "process_notes",
             ]
         )
 
