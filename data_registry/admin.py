@@ -252,6 +252,7 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
                     "active",
                     "status",
                     "context",
+                    "process_notes",
                     "keep_all_data",
                     "archived",
                     "start",
@@ -299,6 +300,7 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
         "active",
         "archived",
         "context",
+        "process_notes",
         "start",
         "end",
         # Overview
