@@ -5,6 +5,7 @@ import shutil
 
 import requests
 from django.conf import settings
+from scrapyloganalyzer import ScrapyLogFile
 
 from data_registry.exceptions import ConfigurationError, RecoverableError, UnexpectedError
 from data_registry.models import Task
@@ -104,6 +105,13 @@ class Collect(TaskManager):
             # If the collection ID or data version was irretrievable, the job can't continue.
             if "process_id" not in self.job.context or "data_version" not in self.job.context:
                 raise UnexpectedError("Unable to retrieve collection ID and data version from Scrapy log")
+
+            scrapy_log = ScrapyLogFile(scrapy_log_url)
+            for key in scrapy_log.logparser["log_categories"]:
+                if scrapy_log.logparser["log_categories"][key]["count"] > 0:
+                    logger.warning("%s: %s", self, {scrapy_log.logparser["log_categories"][key]["details"]})
+            if scrapy_log.error_rate:
+                logger.warning("%s: crawl error rate was %s", self, {scrapy_log.error_rate})
 
             return Task.Status.COMPLETED
 
