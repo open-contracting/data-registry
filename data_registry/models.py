@@ -68,6 +68,12 @@ class Job(models.Model):
         "<dd>The name of the dataset in Pelican</dd>"
         "</dl>",
     )
+    process_notes = models.JSONField(
+        blank=True,
+        default=dict,
+        help_text="The collection notes from Kingfisher Process, with every collection note level code as key, with an"
+        "array of a two-value array with the collection note description as string and data as dict",
+    )
 
     # Job logic
     archived = models.BooleanField(
