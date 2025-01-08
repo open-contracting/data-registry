@@ -34,7 +34,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY", "72icl@l(^0qr$9z-5od3ooo&7qw0d4199k3(&kl+%y!d&!!tq!")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = not production
+DEBUG = os.getenv("DEBUG", str(not production)) == "True"
 
 ALLOWED_HOSTS = [".localhost", "127.0.0.1", "[::1]", "0.0.0.0"]  # noqa: S104 # Docker
 if "ALLOWED_HOSTS" in os.environ:
@@ -190,18 +190,24 @@ LOGGING = {
             "handlers": ["console"],
             "level": os.getenv("LOG_LEVEL", "INFO"),
         },
-        "django": {
-            "handlers": ["console"],
-            "level": os.getenv("LOG_LEVEL", "INFO"),
+        "django.security.DisallowedHost": {
+            "handlers": ["null"],
             "propagate": False,
         },
         "django.db.backends": {
             "handlers": ["console"],
+            "level": "DEBUG" if production else os.getenv("LOG_LEVEL", "INFO"),
+            "propagate": False,
+        },
+        # The apps use DEBUG messages.
+        "data_registry": {
+            "handlers": ["console"],
             "level": os.getenv("LOG_LEVEL", "INFO"),
             "propagate": False,
         },
-        "django.security.DisallowedHost": {
-            "handlers": ["null"],
+        "exporter": {
+            "handlers": ["console"],
+            "level": os.getenv("LOG_LEVEL", "INFO"),
             "propagate": False,
         },
         # Never show DEBUG messages.
