@@ -252,12 +252,17 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
                     "active",
                     "status",
                     "context",
-                    "process_notes",
                     "keep_all_data",
                     "archived",
                     "start",
                     "end",
                 ),
+            },
+        ),
+        (
+            "Logs",
+            {
+                "fields": ("process_notes",),
             },
         ),
         (

@@ -15,8 +15,7 @@ class Migration(migrations.Migration):
             field=models.JSONField(
                 blank=True,
                 default=dict,
-                help_text="The collection notes from Kingfisher Process, with every collection note level code as key, with an"
-                "array of a two-value array with the collection note description as string and data as dict",
+                help_text="The collection notes from Kingfisher Process.",
             ),
         ),
     ]
