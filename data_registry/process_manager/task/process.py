@@ -45,13 +45,11 @@ class Process(TaskManager):
     def get_status(self):
         process_id = self.job.context["process_id"]  # set in Collect.get_status()
 
-        response = self.request(
+        tree = self.request(
             "GET",
             url_for_collection(process_id, "tree"),
             error_message=f"Unable to get status of collection {process_id}",
-        )
-
-        tree = response.json()
+        ).json()
 
         original_collection = next(c for c in tree if c["transform_type"] == "")
         compiled_collection = next(c for c in tree if c["transform_type"] == "compile-releases")
@@ -59,13 +57,11 @@ class Process(TaskManager):
         if not compiled_collection["completed_at"]:
             return Task.Status.RUNNING
 
-        response = self.request(
+        meta = self.request(
             "GET",
             url_for_collection(compiled_collection["id"], "metadata"),
             error_message=f"Unable to get metadata of collection {compiled_collection['id']}",
-        )
-
-        meta = response.json()
+        ).json()
 
         # The metadata can be empty (or partial) if the collection contained no data.
         if meta:
@@ -76,6 +72,13 @@ class Process(TaskManager):
             self.job.ocid_prefix = meta.get("ocid_prefix") or ""
 
         self.job.context["process_id_pelican"] = compiled_collection["id"]
+
+        self.job.process_notes = self.request(
+            "GET",
+            url_for_collection(original_collection["id"], "notes"),
+            error_message=f"Unable to get notes of collection {original_collection['id']}",
+        ).json()
+
         self.job.save(
             update_fields=[
                 "modified",
@@ -85,6 +88,7 @@ class Process(TaskManager):
                 "license",
                 "publication_policy",
                 "ocid_prefix",
+                "process_notes",
             ]
         )
 
