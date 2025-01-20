@@ -260,6 +260,12 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
             },
         ),
         (
+            "Logs",
+            {
+                "fields": ("process_notes",),
+            },
+        ),
+        (
             "Overview",
             {
                 "fields": (
@@ -299,6 +305,7 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
         "active",
         "archived",
         "context",
+        "process_notes",
         "start",
         "end",
         # Overview
