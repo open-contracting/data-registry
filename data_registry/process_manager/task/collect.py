@@ -119,6 +119,8 @@ class Collect(TaskManager):
             for stat in ["item_dropped_count", "invalid_json_count"]:
                 if scrapy_log.logparser["crawler_stats"].get(stat):
                     logger.warning("%s: crawl %s: %s", self, stat, scrapy_log.logparser["crawler_stats"].get(stat))
+                    self.job.context[stat] = scrapy_log.logparser["crawler_stats"].get(stat)
+                    self.job.save(update_fields=["modified", "context"])
 
             return Task.Status.COMPLETED
 
