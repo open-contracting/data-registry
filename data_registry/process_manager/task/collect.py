@@ -107,11 +107,18 @@ class Collect(TaskManager):
                 raise UnexpectedError("Unable to retrieve collection ID and data version from Scrapy log")
 
             scrapy_log = ScrapyLogFile(scrapy_log_url)
+
             for key in scrapy_log.logparser["log_categories"]:
                 if scrapy_log.logparser["log_categories"][key]["count"] > 0:
                     logger.warning("%s: %s", self, {scrapy_log.logparser["log_categories"][key]["details"]})
             if scrapy_log.error_rate:
                 logger.warning("%s: crawl error rate was %s", self, {scrapy_log.error_rate})
+
+            if not scrapy_log.is_finished():
+                logger.warning("%s: crawl finish reason %s ", self, {scrapy_log.logparser["finish_reason"]})
+            for stat in ["item_dropped_count", "invalid_json_count"]:
+                if scrapy_log.logparser["crawler_stats"].get(stat):
+                    logger.warning("%s: crawl %s: %s", self, stat, scrapy_log.logparser["crawler_stats"].get(stat))
 
             return Task.Status.COMPLETED
 
