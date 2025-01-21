@@ -3,6 +3,7 @@ import logging
 from django.conf import settings
 from django.contrib import admin, messages
 from django.db.models import Q
+from django.http import HttpResponseRedirect
 from django.urls import NoReverseMatch, reverse
 from django.utils import timezone
 from django.utils.html import escape, urlize
@@ -113,6 +114,7 @@ class CustomDateFieldListFilter(admin.DateFieldListFilter):
 @admin.register(Collection)
 class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
     form = forms.CollectionAdminForm
+    actions = ["schedule_earlier_job"]
     search_fields = ["title_en", "country_en"]
     list_display = ["__str__", "country", "public", "frozen", "active_job", "last_reviewed"]
     list_editable = ["public", "frozen"]
@@ -203,6 +205,24 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
         form = super().get_form(request, obj, **kwargs)
         form.base_fields["active_job"].widget.can_add_related = False
         return form
+
+    @admin.action(description="Schedule an earlier job for the selected publication")
+    def schedule_earlier_job(self, request, queryset):
+        updated = 0
+        for collection in queryset:
+            if not collection.is_out_of_date() and not collection.job_set.incomplete():
+                collection.job_set.create()
+                updated += 1
+
+        self.message_user(
+            request,
+            f"{updated} jobs were scheduled.",
+            messages.SUCCESS if updated > 0 else messages.WARNING,
+        )
+        if updated > 0:
+            return HttpResponseRedirect("/admin/data_registry/job")
+
+        return request
 
 
 class UnsuccessfulFilter(admin.SimpleListFilter):
