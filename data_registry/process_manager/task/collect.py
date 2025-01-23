@@ -108,19 +108,18 @@ class Collect(TaskManager):
 
             scrapy_log = ScrapyLogFile(scrapy_log_url)
 
-            for key in scrapy_log.logparser["log_categories"]:
-                if scrapy_log.logparser["log_categories"][key]["count"] > 0:
-                    logger.warning("%s: %s", self, {scrapy_log.logparser["log_categories"][key]["details"]})
-            if scrapy_log.error_rate:
-                logger.warning("%s: crawl error rate was %s", self, {scrapy_log.error_rate})
-
             if not scrapy_log.is_finished():
-                logger.warning("%s: crawl finish reason %s ", self, {scrapy_log.logparser["finish_reason"]})
-            for stat in ["item_dropped_count", "invalid_json_count"]:
-                if scrapy_log.logparser["crawler_stats"].get(stat):
-                    logger.warning("%s: crawl %s: %s", self, stat, scrapy_log.logparser["crawler_stats"].get(stat))
-                    self.job.context[stat] = scrapy_log.logparser["crawler_stats"].get(stat)
+                logger.warning("%s: crawl finish reason: %s", self, scrapy_log.logparser["finish_reason"])
+            if scrapy_log.error_rate:
+                logger.warning("%s: crawl error rate: %s", self, scrapy_log.error_rate)
+            for key in ("item_dropped_count", "invalid_json_count"):
+                if value := scrapy_log.logparser["crawler_stats"].get(key):
+                    logger.warning("%s: crawl %s: %s", self, key, value)
+                    self.job.context[key] = value
                     self.job.save(update_fields=["modified", "context"])
+            for key in scrapy_log.logparser["log_categories"]:
+                if scrapy_log.logparser["log_categories"][key]["count"]:
+                    logger.warning("%s: %s", self, scrapy_log.logparser["log_categories"][key]["details"])
 
             return Task.Status.COMPLETED
 
