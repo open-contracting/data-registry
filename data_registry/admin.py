@@ -2,6 +2,7 @@ import logging
 
 from django.conf import settings
 from django.contrib import admin, messages
+from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.urls import NoReverseMatch, reverse
@@ -114,7 +115,7 @@ class CustomDateFieldListFilter(admin.DateFieldListFilter):
 @admin.register(Collection)
 class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
     form = forms.CollectionAdminForm
-    actions = ["schedule_earlier_job"]
+    actions = ["create_job"]
     search_fields = ["title_en", "country_en"]
     list_display = ["__str__", "country", "public", "frozen", "active_job", "last_reviewed"]
     list_editable = ["public", "frozen"]
@@ -206,23 +207,33 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
         form.base_fields["active_job"].widget.can_add_related = False
         return form
 
-    @admin.action(description="Schedule an earlier job for the selected publication")
-    def schedule_earlier_job(self, request, queryset):
-        updated = 0
+    @admin.action(description="Create a job for the selected publication")
+    def create_job(self, request, queryset):
+        created = 0
+        not_created = 0
         for collection in queryset:
             if not collection.is_out_of_date() and not collection.job_set.incomplete():
                 collection.job_set.create()
-                updated += 1
+                created += 1
+            else:
+                not_created += 1
+        if not_created:
+            self.message_user(
+                request,
+                f"Created {created} jobs. "
+                f"{not_created} publications either have incomplete jobs or will be scheduled shortly",
+                messages.WARNING,
+            )
+        else:
+            self.message_user(
+                request,
+                f"Created {created} jobs.",
+                messages.INFO,
+            )
+            content_type = ContentType.objects.get_for_model(Job)
+            return HttpResponseRedirect(reverse(f"admin:{content_type.app_label}_{content_type.model}_changelist"))
 
-        self.message_user(
-            request,
-            f"{updated} jobs were scheduled.",
-            messages.SUCCESS if updated > 0 else messages.WARNING,
-        )
-        if updated > 0:
-            return HttpResponseRedirect("/admin/data_registry/job")
-
-        return request
+        return None
 
 
 class UnsuccessfulFilter(admin.SimpleListFilter):
