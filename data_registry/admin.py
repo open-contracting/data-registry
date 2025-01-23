@@ -207,33 +207,30 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
         form.base_fields["active_job"].widget.can_add_related = False
         return form
 
-    @admin.action(description="Create a job for the selected publication")
+    @admin.action(description="Create a job for each selected publication")
     def create_job(self, request, queryset):
-        created = 0
         not_created = 0
+        created = 0
         for collection in queryset:
-            if not collection.is_out_of_date() and not collection.job_set.incomplete():
+            if collection.is_out_of_date() or collection.job_set.incomplete():
+                not_created += 1
+            else:
                 collection.job_set.create()
                 created += 1
-            else:
-                not_created += 1
+
         if not_created:
             self.message_user(
                 request,
                 f"Created {created} jobs. "
-                f"{not_created} publications either have incomplete jobs or will be scheduled shortly",
+                f"{not_created} publications either have incomplete jobs or will be scheduled shortly.",
                 messages.WARNING,
             )
-        else:
-            self.message_user(
-                request,
-                f"Created {created} jobs.",
-                messages.INFO,
-            )
-            content_type = ContentType.objects.get_for_model(Job)
-            return HttpResponseRedirect(reverse(f"admin:{content_type.app_label}_{content_type.model}_changelist"))
+            # Stay on the same page, in case the user wants to retry.
+            return None
 
-        return None
+        self.message_user(request, f"Created {created} jobs.", messages.SUCCESS)
+        content_type = ContentType.objects.get_for_model(Job)
+        return HttpResponseRedirect(reverse(f"admin:{content_type.app_label}_{content_type.model}_changelist"))
 
 
 class UnsuccessfulFilter(admin.SimpleListFilter):
