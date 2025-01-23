@@ -61,7 +61,7 @@ class Job(models.Model):
         "<dt><code>item_dropped_count</code></dt>"
         "<dd>The number of items dropped by the crawl</dd>"
         "<dt><code>invalid_json_count</code></dt>"
-        "<dd>The number of invalid JSON files dropped by the crawl</dd>"
+        "<dd>The number of invalid JSON items dropped by the crawl</dd>"
         "<dt><code>process_id</code></dt>"
         "<dd>The ID of the base collection in Kingfisher Process</dd>"
         "<dt><code>process_id_pelican</code></dt>"
