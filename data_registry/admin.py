@@ -9,6 +9,7 @@ from django.urls import NoReverseMatch, reverse
 from django.utils import timezone
 from django.utils.html import escape, urlize
 from django.utils.safestring import mark_safe
+from django.utils.translation import ngettext
 from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, TranslationAdmin
 
 from data_registry import forms
@@ -218,17 +219,19 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
                 collection.job_set.create()
                 created += 1
 
+        message = ngettext("Created %(count)d job.", "Created %(count)d jobs.", created) % {"count": created}
+        self.message_user(request, message, messages.SUCCESS)
+
         if not_created:
-            self.message_user(
-                request,
-                f"Created {created} jobs. "
-                f"{not_created} publications either have incomplete jobs or will be scheduled shortly.",
-                messages.WARNING,
-            )
+            message = ngettext(
+                "%(count)d publication either has an incomplete job or will be scheduled shortly.",
+                "%(count)d publications either have incomplete jobs or will be scheduled shortly.",
+                not_created,
+            ) % {"count": not_created}
+            self.message_user(request, message, messages.WARNING)
             # Stay on the same page, in case the user wants to retry.
             return None
 
-        self.message_user(request, f"Created {created} jobs.", messages.SUCCESS)
         content_type = ContentType.objects.get_for_model(Job)
         return HttpResponseRedirect(reverse(f"admin:{content_type.app_label}_{content_type.model}_changelist"))
 
