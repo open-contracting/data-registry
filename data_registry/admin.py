@@ -212,7 +212,7 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
         not_created = 0
         created = 0
         for collection in queryset:
-            if collection.is_out_of_date() or collection.job_set.incomplete():
+            if collection.job_set.incomplete() or collection.is_out_of_date():
                 not_created += 1
             else:
                 collection.job_set.create()
