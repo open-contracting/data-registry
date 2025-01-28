@@ -22,6 +22,7 @@ class ProcessTests(TransactionTestCase):
             settings.JOB_TASKS_PLAN = ["test"]
 
             # First call initializes the job and runs the first task.
+            self.assertTrue(collection.is_out_of_date())
             process(collection)
             job = job_set.first()
             task = job.task_set.order_by("order").first()
@@ -46,6 +47,7 @@ class ProcessTests(TransactionTestCase):
             self.assertIsNotNone(task.start)
             self.assertIsNotNone(task.end)
             self.assertEqual("OK", task.result)
+            self.assertFalse(collection.is_out_of_date())
 
     def test_delete_jobs(self):
         collection = Collection.objects.get(pk=1)

@@ -9,5 +9,28 @@
             "created": "2001-02-03T04:05:06Z",
             "modified": "2001-02-03T07:08:09Z"
         }
+    },
+    {
+        "model": "data_registry.collection",
+        "pk": 2,
+        "fields": {
+            "title": "test_out_of_date",
+            "country": "PT",
+            "retrieval_frequency": "MONTHLY",
+            "created": "2001-02-03T04:05:06Z",
+            "modified": "2001-02-03T07:08:09Z"
+        }
+    },
+        {
+        "model": "data_registry.job",
+        "pk": 1,
+        "fields": {
+            "collection_id": 2,
+            "created": "2001-02-03T04:05:06Z",
+            "modified": "2001-02-03T07:08:09Z",
+            "start": "2030-02-03T07:08:09Z",
+            "end": "2030-02-04T07:08:09Z",
+            "status": "COMPLETED"
+        }
     }
 ]
