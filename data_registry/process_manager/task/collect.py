@@ -15,6 +15,8 @@ from data_registry.util import scrapyd_url
 logger = logging.getLogger(__name__)
 
 PROJECT = settings.SCRAPYD["project"]
+# https://github.com/open-contracting/kingfisher-collect/blob/7bfeba8/kingfisher_scrapy/extensions/kingfisher_process_api2.py#L117
+PROCESS_ID = re.compile(r"Created collection (.+) in Kingfisher Process \(([^\)]+)\)")
 
 
 def scrapyd_data(response):
@@ -40,6 +42,18 @@ class Collect(TaskManager):
             raise ConfigurationError("SCRAPYD_PROJECT is not set")
 
         self.spider = task.job.collection.source_id
+
+    def read_log_file(self, scrapy_log_url):
+        try:
+            return self.request("get", scrapy_log_url, error_message="Unable to read Scrapy log").text
+        except RecoverableError as e:
+            # If the log file doesn't exist, the job can't continue.
+            if (
+                isinstance(e.__cause__, requests.HTTPError)
+                and e.__cause__.response.status_code == requests.codes.not_found
+            ):
+                raise UnexpectedError("Scrapy log doesn't exist") from e
+            raise
 
     def run(self):
         response = self.request(
@@ -78,25 +92,11 @@ class Collect(TaskManager):
         if currstate == "pending":
             return Task.Status.WAITING
 
-        # Check early for the log file, so that we can error if Scrapyd somehow stalled without writing a log file.
-        if "process_id" not in self.job.context:
-            try:
-                response = self.request("get", scrapy_log_url, error_message="Unable to read Scrapy log")
-            except RecoverableError as e:
-                # If the log file doesn't exist, the job can't continue.
-                if (
-                    isinstance(e.__cause__, requests.HTTPError)
-                    and e.__cause__.response.status_code == requests.codes.not_found
-                ):
-                    raise UnexpectedError("Scrapy log doesn't exist") from e
-                raise
-
-            # Must match
-            # https://github.com/open-contracting/kingfisher-collect/blob/7bfeba8/kingfisher_scrapy/extensions/kingfisher_process_api2.py#L117
-            if m := re.search(r"Created collection (.+) in Kingfisher Process \(([^\)]+)\)", response.text):
-                self.job.context["process_id"] = m.group(1)
-                self.job.context["data_version"] = m.group(2)
-                self.job.save(update_fields=["modified", "context"])
+        # Check early for the log file, to fail fast if Scrapyd somehow stalled without writing a log file.
+        if "process_id" not in self.job.context and (match := PROCESS_ID.search(self.read_log_file(scrapy_log_url))):
+            self.job.context["process_id"] = match.group(1)
+            self.job.context["data_version"] = match.group(2)
+            self.job.save(update_fields=["modified", "context"])
 
         if currstate == "running":
             return Task.Status.RUNNING
@@ -106,7 +106,7 @@ class Collect(TaskManager):
             if "process_id" not in self.job.context or "data_version" not in self.job.context:
                 raise UnexpectedError("Unable to retrieve collection ID and data version from Scrapy log")
 
-            scrapy_log = ScrapyLogFile(self.job.context["scrapy_log"])
+            scrapy_log = ScrapyLogFile(scrapy_log_url, text=self.read_log_file(scrapy_log_url))
 
             if not scrapy_log.is_finished():
                 logger.warning("%s: crawl finish reason: %s", self, scrapy_log.logparser["finish_reason"])
