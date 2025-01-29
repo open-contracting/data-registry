@@ -106,7 +106,7 @@ class Collect(TaskManager):
             if "process_id" not in self.job.context or "data_version" not in self.job.context:
                 raise UnexpectedError("Unable to retrieve collection ID and data version from Scrapy log")
 
-            scrapy_log = ScrapyLogFile(scrapy_log_url)
+            scrapy_log = ScrapyLogFile(self.job.context["scrapy_log"])
 
             if not scrapy_log.is_finished():
                 logger.warning("%s: crawl finish reason: %s", self, scrapy_log.logparser["finish_reason"])
