@@ -21,6 +21,9 @@ class ProcessTests(TransactionTestCase):
             mock_process.return_value = TestTask()
             settings.JOB_TASKS_PLAN = ["test"]
 
+            self.assertTrue(collection.is_out_of_date())
+            self.assertFalse(collection.job_set.incomplete())
+
             # First call initializes the job and runs the first task.
             process(collection)
             job = job_set.first()
@@ -33,6 +36,8 @@ class ProcessTests(TransactionTestCase):
             self.assertIsNotNone(task.start)
             self.assertIsNone(task.end)
             self.assertEqual("", task.result)
+            self.assertFalse(collection.is_out_of_date())
+            self.assertTrue(collection.job_set.incomplete())
 
             # Last call updates the status of the running task and job.
             process(collection)
@@ -46,6 +51,8 @@ class ProcessTests(TransactionTestCase):
             self.assertIsNotNone(task.start)
             self.assertIsNotNone(task.end)
             self.assertEqual("OK", task.result)
+            self.assertFalse(collection.is_out_of_date())
+            self.assertFalse(collection.job_set.incomplete())
 
     def test_delete_jobs(self):
         collection = Collection.objects.get(pk=1)
