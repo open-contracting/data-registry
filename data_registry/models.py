@@ -344,6 +344,10 @@ class Collection(models.Model):
         if not most_recent_job:
             return True
 
+        # It has been scheduled already.
+        if not most_recent_job.start:
+            return False
+
         match self.retrieval_frequency:
             case self.RetrievalFrequency.MONTHLY:
                 days = 30

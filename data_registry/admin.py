@@ -2,11 +2,14 @@ import logging
 
 from django.conf import settings
 from django.contrib import admin, messages
+from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
+from django.http import HttpResponseRedirect
 from django.urls import NoReverseMatch, reverse
 from django.utils import timezone
 from django.utils.html import escape, urlize
 from django.utils.safestring import mark_safe
+from django.utils.translation import ngettext
 from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, TranslationAdmin
 
 from data_registry import forms
@@ -113,6 +116,7 @@ class CustomDateFieldListFilter(admin.DateFieldListFilter):
 @admin.register(Collection)
 class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
     form = forms.CollectionAdminForm
+    actions = ["create_job"]
     search_fields = ["title_en", "country_en"]
     list_display = ["__str__", "country", "public", "frozen", "active_job", "last_reviewed"]
     list_editable = ["public", "frozen"]
@@ -203,6 +207,33 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
         form = super().get_form(request, obj, **kwargs)
         form.base_fields["active_job"].widget.can_add_related = False
         return form
+
+    @admin.action(description="Create a job for each selected publication")
+    def create_job(self, request, queryset):
+        not_created = 0
+        created = 0
+        for collection in queryset:
+            if collection.job_set.incomplete() or collection.is_out_of_date():
+                not_created += 1
+            else:
+                collection.job_set.create()
+                created += 1
+
+        message = ngettext("Created %(count)d job.", "Created %(count)d jobs.", created) % {"count": created}
+        self.message_user(request, message, messages.SUCCESS)
+
+        if not_created:
+            message = ngettext(
+                "%(count)d publication either has an incomplete job or will be scheduled shortly.",
+                "%(count)d publications either have incomplete jobs or will be scheduled shortly.",
+                not_created,
+            ) % {"count": not_created}
+            self.message_user(request, message, messages.WARNING)
+            # Stay on the same page, in case the user wants to retry.
+            return None
+
+        content_type = ContentType.objects.get_for_model(Job)
+        return HttpResponseRedirect(reverse(f"admin:{content_type.app_label}_{content_type.model}_changelist"))
 
 
 class UnsuccessfulFilter(admin.SimpleListFilter):
