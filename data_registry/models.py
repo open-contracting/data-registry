@@ -344,7 +344,7 @@ class Collection(models.Model):
         if not most_recent_job:
             return True
 
-        # It has been scheduled already.
+        # It has been scheduled, but not yet initiated.
         if not most_recent_job.start:
             return False
 
