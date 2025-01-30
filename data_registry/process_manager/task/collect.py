@@ -110,16 +110,24 @@ class Collect(TaskManager):
 
             if not scrapy_log.is_finished():
                 logger.warning("%s: crawl finish reason: %s", self, scrapy_log.logparser["finish_reason"])
-            if scrapy_log.error_rate:
+            if scrapy_log.error_rate > 0.1:
                 logger.warning("%s: crawl error rate: %s", self, scrapy_log.error_rate)
             for key in ("item_dropped_count", "invalid_json_count"):
                 if value := scrapy_log.logparser["crawler_stats"].get(key):
                     logger.warning("%s: crawl %s: %s", self, key, value)
                     self.job.context[key] = value
                     self.job.save(update_fields=["modified", "context"])
-            for key in scrapy_log.logparser["log_categories"]:
-                if scrapy_log.logparser["log_categories"][key]["count"]:
-                    logger.warning("%s: %s", self, scrapy_log.logparser["log_categories"][key]["details"])
+            for category, value in scrapy_log.logparser["log_categories"].items():
+                # For example, australia_new_south_wales has http:// "next" URLs that redirect to https://.
+                if category == "redirect_logs":
+                    continue
+                if value["count"]:
+                    for detail in value["details"]:
+                        if (
+                            "[scrapy.middleware] WARNING: Disabled kingfisher_scrapy.extensions.DatabaseStore: "
+                            "DATABASE_URL is not set." not in detail  # warning_logs
+                        ):
+                            logger.warning("%s: %s: %s", self, category, detail)
 
             return Task.Status.COMPLETED
 
