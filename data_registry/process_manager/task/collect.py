@@ -110,7 +110,7 @@ class Collect(TaskManager):
 
             if not scrapy_log.is_finished():
                 logger.warning("%s: crawl finish reason: %s", self, scrapy_log.logparser["finish_reason"])
-            if scrapy_log.error_rate > 0.1:
+            if scrapy_log.error_rate > 0.1:  # 10%
                 logger.warning("%s: crawl error rate: %s", self, scrapy_log.error_rate)
             for key in ("item_dropped_count", "invalid_json_count"):
                 if value := scrapy_log.logparser["crawler_stats"].get(key):
