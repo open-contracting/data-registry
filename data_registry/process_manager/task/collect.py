@@ -119,15 +119,14 @@ class Collect(TaskManager):
                     self.job.save(update_fields=["modified", "context"])
             for category, value in scrapy_log.logparser["log_categories"].items():
                 # For example, australia_new_south_wales has http:// "next" URLs that redirect to https://.
-                if category == "redirect_logs":
+                if category == "redirect_logs" or not value["count"]:
                     continue
-                if value["count"]:
-                    for detail in value["details"]:
-                        if (
-                            "[scrapy.middleware] WARNING: Disabled kingfisher_scrapy.extensions.DatabaseStore: "
-                            "DATABASE_URL is not set." not in detail  # warning_logs
-                        ):
-                            logger.warning("%s: %s: %s", self, category, detail)
+                for detail in value["details"]:
+                    if (
+                        "[scrapy.middleware] WARNING: Disabled kingfisher_scrapy.extensions.DatabaseStore: "
+                        "DATABASE_URL is not set." not in detail  # warning_logs
+                    ):
+                        logger.warning("%s: %s: %s", self, category, detail)
 
             return Task.Status.COMPLETED
 
