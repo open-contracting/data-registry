@@ -18,6 +18,11 @@ PROJECT = settings.SCRAPYD["project"]
 # https://github.com/open-contracting/kingfisher-collect/blob/7bfeba8/kingfisher_scrapy/extensions/kingfisher_process_api2.py#L117
 PROCESS_ID = re.compile(r"Created collection (.+) in Kingfisher Process \(([^\)]+)\)")
 
+IGNORE_WARNINGS = (
+    "[scrapy.middleware] WARNING: Disabled kingfisher_scrapy.extensions.DatabaseStore: DATABASE_URL is not set.",
+    "[yapw.clients] WARNING: Channel 1 was closed: ChannelClosedByClient: (200) 'Normal shutdown'",
+)
+
 
 def scrapyd_data(response):
     data = response.json()
@@ -110,7 +115,7 @@ class Collect(TaskManager):
 
             if not scrapy_log.is_finished():
                 logger.warning("%s: crawl finish reason: %s", self, scrapy_log.logparser["finish_reason"])
-            if scrapy_log.error_rate > 0.1:  # 10%
+            if scrapy_log.error_rate > 0.01:  # 1%
                 logger.warning("%s: crawl error rate: %s", self, scrapy_log.error_rate)
             for key in ("item_dropped_count", "invalid_json_count"):
                 if value := scrapy_log.logparser["crawler_stats"].get(key):
@@ -119,14 +124,15 @@ class Collect(TaskManager):
                     self.job.save(update_fields=["modified", "context"])
             for category, value in scrapy_log.logparser["log_categories"].items():
                 # For example, australia_new_south_wales has http:// "next" URLs that redirect to https://.
-                if category == "redirect_logs" or not value["count"]:
+                if category == "redirect_logs":
                     continue
-                for detail in value["details"]:
-                    if (
-                        "[scrapy.middleware] WARNING: Disabled kingfisher_scrapy.extensions.DatabaseStore: "
-                        "DATABASE_URL is not set." not in detail  # warning_logs
-                    ):
-                        logger.warning("%s: %s: %s", self, category, detail)
+                details = [
+                    detail for detail in value["details"] if not any(ignore in detail for ignore in IGNORE_WARNINGS)
+                ]
+                if details:
+                    logger.warning("%s messages for %s:", category, self)
+                    for detail in details:
+                        logger.warning(detail)
 
             return Task.Status.COMPLETED
 
