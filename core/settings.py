@@ -259,6 +259,8 @@ LANGUAGES = (
     ("ru", _("Russian")),
 )
 
+USE_THOUSAND_SEPARATOR = True
+
 
 # Dependency configuration
 
