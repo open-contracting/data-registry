@@ -76,6 +76,7 @@ class Process(TaskManager):
         self.job.process_notes = self.request(
             "GET",
             url_for_collection(original_collection["id"], "notes"),
+            params=[("level", "WARNING"), ("level", "ERROR")],
             error_message=f"Unable to get notes of collection {original_collection['id']}",
         ).json()
 
