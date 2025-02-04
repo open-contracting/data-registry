@@ -2,6 +2,7 @@ import functools
 from urllib.parse import urljoin
 
 from django.conf import settings
+from django.utils.formats import number_format
 
 from data_registry.models import Collection
 
@@ -30,3 +31,7 @@ def partialclass(cls, *args, **kwargs):
         __init__ = functools.partialmethod(cls.__init__, *args, **kwargs)
 
     return NewCls
+
+
+def intcomma(value):
+    return number_format(value, use_l10n=True, force_grouping=True)

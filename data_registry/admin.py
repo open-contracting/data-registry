@@ -15,7 +15,7 @@ from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, Translati
 from data_registry import forms
 from data_registry.exceptions import RecoverableError
 from data_registry.models import Collection, Job, License, Task
-from data_registry.util import partialclass
+from data_registry.util import intcomma, partialclass
 
 logger = logging.getLogger(__name__)
 
@@ -312,20 +312,20 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
             "Data availability",
             {
                 "fields": (
-                    "parties_count",
-                    "plannings_count",
-                    "tenders_count",
-                    "tenderers_count",
-                    "tenders_items_count",
-                    "awards_count",
-                    "awards_items_count",
-                    "awards_suppliers_count",
-                    "contracts_count",
-                    "contracts_items_count",
-                    "contracts_transactions_count",
-                    "documents_count",
-                    "milestones_count",
-                    "amendments_count",
+                    "formatted_parties_count",
+                    "formatted_plannings_count",
+                    "formatted_tenders_count",
+                    "formatted_tenderers_count",
+                    "formatted_tenders_items_count",
+                    "formatted_awards_count",
+                    "formatted_awards_items_count",
+                    "formatted_awards_suppliers_count",
+                    "formatted_contracts_count",
+                    "formatted_contracts_items_count",
+                    "formatted_contracts_transactions_count",
+                    "formatted_documents_count",
+                    "formatted_milestones_count",
+                    "formatted_amendments_count",
                 ),
             },
         ),
@@ -346,23 +346,79 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
         "license",
         "publication_policy",
         # Data availability
-        "parties_count",
-        "plannings_count",
-        "tenders_count",
-        "tenderers_count",
-        "tenders_items_count",
-        "awards_count",
-        "awards_items_count",
-        "awards_suppliers_count",
-        "contracts_count",
-        "contracts_items_count",
-        "contracts_transactions_count",
-        "documents_count",
-        "milestones_count",
-        "amendments_count",
+        "formatted_parties_count",
+        "formatted_plannings_count",
+        "formatted_tenders_count",
+        "formatted_tenderers_count",
+        "formatted_tenders_items_count",
+        "formatted_awards_count",
+        "formatted_awards_items_count",
+        "formatted_awards_suppliers_count",
+        "formatted_contracts_count",
+        "formatted_contracts_items_count",
+        "formatted_contracts_transactions_count",
+        "formatted_documents_count",
+        "formatted_milestones_count",
+        "formatted_amendments_count",
     ]
 
     inlines = [TaskInLine]
+
+    @admin.display(description="Parties")
+    def formatted_parties_count(self, obj):
+        return intcomma(obj.parties_count)
+
+    @admin.display(description="Planning")
+    def formatted_plannings_count(self, obj):
+        return intcomma(obj.plannings_count)
+
+    @admin.display(description="Tenders")
+    def formatted_tenders_count(self, obj):
+        return intcomma(obj.tenders_count)
+
+    @admin.display(description="Tenderers")
+    def formatted_tenderers_count(self, obj):
+        return intcomma(obj.tenderers_count)
+
+    @admin.display(description="Tender items")
+    def formatted_tenders_items_count(self, obj):
+        return intcomma(obj.tenders_items_count)
+
+    @admin.display(description="Awards")
+    def formatted_awards_count(self, obj):
+        return intcomma(obj.awards_count)
+
+    @admin.display(description="Award items")
+    def formatted_awards_items_count(self, obj):
+        return intcomma(obj.awards_items_count)
+
+    @admin.display(description="Suppliers")
+    def formatted_awards_suppliers_count(self, obj):
+        return intcomma(obj.awards_suppliers_count)
+
+    @admin.display(description="Contracts")
+    def formatted_contracts_count(self, obj):
+        return intcomma(obj.contracts_count)
+
+    @admin.display(description="Contract items")
+    def formatted_contracts_items_count(self, obj):
+        return intcomma(obj.contracts_items_count)
+
+    @admin.display(description="Transactions")
+    def formatted_contracts_transactions_count(self, obj):
+        return intcomma(obj.contracts_transactions_count)
+
+    @admin.display(description="Documents")
+    def formatted_documents_count(self, obj):
+        return intcomma(obj.documents_count)
+
+    @admin.display(description="Milestones")
+    def formatted_milestones_count(self, obj):
+        return intcomma(obj.milestones_count)
+
+    @admin.display(description="Amendments")
+    def formatted_amendments_count(self, obj):
+        return intcomma(obj.amendments_count)
 
     @admin.display(description="Country")
     def country(self, obj):
