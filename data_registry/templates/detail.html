@@ -186,68 +186,68 @@ document.querySelectorAll('a[download]').forEach(trackable => {
                 <h3 class="h6">{% include "includes/check_icon.html" with checked=job.parties_count only %}{% translate "Parties" %}</h3>
                 <dl class="ms-4 mb-0 list-desc-inline">
                     <dt>{% translate "Count of parties:" %}</dt>
-                    <dd>{{ job.parties_count }}</dd>
+                    <dd>{{ job.parties_count|intcomma }}</dd>
                 </dl>
             </div>
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
                 <h3 class="h6">{% include "includes/check_icon.html" with checked=job.plannings_count only %}{% translate "Plannings" %}</h3>
                 <dl class="ms-4 mb-0 list-desc-inline">
                     <dt>{% translate "Count of planning activities:" %}</dt>
-                    <dd>{{ job.plannings_count }}</dd>
+                    <dd>{{ job.plannings_count|intcomma }}</dd>
                 </dl>
             </div>
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
                 <h3 class="h6">{% include "includes/check_icon.html" with checked=job.tenders_count only %}{% translate "Tenders" %}</h3>
                 <dl class="ms-4 mb-0 list-desc-inline">
                     <dt>{% translate "Count of tenders:" %}</dt>
-                    <dd>{{ job.tenders_count }}
+                    <dd>{{ job.tenders_count|intcomma }}
                     <dt>{% translate "Count of tenderers:" %}</dt>
-                    <dd>{{ job.tenderers_count }}
+                    <dd>{{ job.tenderers_count|intcomma }}
                     <dt>{% translate "Count of tender items:" %}</dt>
-                    <dd>{{ job.tenders_items_count }}</dd>
+                    <dd>{{ job.tenders_items_count|intcomma }}</dd>
                 </dl>
             </div>
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
                 <h3 class="h6">{% include "includes/check_icon.html" with checked=job.awards_count only %}{% translate "Awards" %}</h3>
                 <dl class="ms-4 mb-0 list-desc-inline">
                     <dt>{% translate "Count of awards:" %}</dt>
-                    <dd>{{ job.awards_count }}
+                    <dd>{{ job.awards_count|intcomma }}
                     <dt>{% translate "Count of award suppliers:" %}</dt>
-                    <dd>{{ job.awards_suppliers_count }}
+                    <dd>{{ job.awards_suppliers_count|intcomma }}
                     <dt>{% translate "Count of award items:" %}</dt>
-                    <dd>{{ job.awards_items_count }}</dd>
+                    <dd>{{ job.awards_items_count|intcomma }}</dd>
                 </dl>
             </div>
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
                 <h3 class="h6">{% include "includes/check_icon.html" with checked=job.contracts_count only %}{% translate "Contracts" %}</h3>
                 <dl class="ms-4 mb-0 list-desc-inline">
                     <dt>{% translate "Count of contracts:" %}</dt>
-                    <dd>{{ job.contracts_count }}
+                    <dd>{{ job.contracts_count|intcomma }}
                     <dt>{% translate "Count of contract items:" %}</dt>
-                    <dd>{{ job.contracts_items_count }}
+                    <dd>{{ job.contracts_items_count|intcomma }}
                     <dt>{% translate "Count of contract transactions:" %}</dt>
-                    <dd>{{ job.contracts_transactions_count }}</dd>
+                    <dd>{{ job.contracts_transactions_count|intcomma }}</dd>
                 </dl>
             </div>
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
                 <h3 class="h6">{% include "includes/check_icon.html" with checked=job.documents_count only %}{% translate "Documents" %}</h3>
                 <dl class="ms-4 mb-0 list-desc-inline">
                     <dt>{% translate "Count of documents:" %}</dt>
-                    <dd>{{ job.documents_count }}</dd>
+                    <dd>{{ job.documents_count|intcomma }}</dd>
                 </dl>
             </div>
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
                 <h3 class="h6">{% include "includes/check_icon.html" with checked=job.milestones_count only %}{% translate "Milestones" %}</h3>
                 <dl class="ms-4 mb-0 list-desc-inline">
                     <dt>{% translate "Count of milestones:" %}</dt>
-                    <dd>{{ job.milestones_count }}</dd>
+                    <dd>{{ job.milestones_count|intcomma }}</dd>
                 </dl>
             </div>
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
                 <h3 class="h6">{% include "includes/check_icon.html" with checked=job.amendments_count only %}{% translate "Amendments" %}</h3>
                 <dl class="ms-4 mb-0 list-desc-inline">
                     <dt>{% translate "Count of amendments:" %}</dt>
-                    <dd>{{ job.amendments_count }}</dd>
+                    <dd>{{ job.amendments_count|intcomma }}</dd>
                 </dl>
             </div>
         </div>
