@@ -1,4 +1,4 @@
-FROM nikolaik/python-nodejs:python3.11-nodejs18 AS build-stage
+FROM nikolaik/python-nodejs:python3.11-nodejs22 AS build-stage
 
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
