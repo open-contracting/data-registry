@@ -8,7 +8,7 @@ from django.utils import timezone
 from data_registry.models import Collection, Job
 from data_registry.util import CHANGELIST
 
-URL = reverse(CHANGELIST.format(content_type=ContentType.objects.get_for_model(Job)))
+URL = reverse(CHANGELIST.format(content_type=ContentType.objects.get_for_model(Collection)))
 
 
 class AdminTests(TestCase):
