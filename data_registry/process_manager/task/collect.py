@@ -5,12 +5,13 @@ import shutil
 
 import requests
 from django.conf import settings
+from django.urls import reverse
 from scrapyloganalyzer import ScrapyLogFile
 
 from data_registry.exceptions import ConfigurationError, RecoverableError, UnexpectedError
 from data_registry.models import Task
 from data_registry.process_manager.util import TaskManager, skip_if_not_started
-from data_registry.util import scrapyd_url
+from data_registry.util import JOBADMIN_LIST_VIEW_NAME, scrapyd_url
 
 logger = logging.getLogger(__name__)
 
@@ -18,6 +19,13 @@ PROJECT = settings.SCRAPYD["project"]
 # https://github.com/open-contracting/kingfisher-collect/blob/7bfeba8/kingfisher_scrapy/extensions/kingfisher_process_api2.py#L117
 PROCESS_ID = re.compile(r"Created collection (.+) in Kingfisher Process \(([^\)]+)\)")
 
+IGNORE_CATEGORIES = {
+    # For example, australia_new_south_wales has http:// "next" URLs that redirect to https://.
+    "redirect_logs",
+    # A message is added to error_logs if RETRY_TIMES is exceeded.
+    # https://docs.scrapy.org/en/latest/topics/downloader-middleware.html#std-setting-RETRY_TIMES
+    "retry_logs",
+}
 IGNORE_WARNINGS = (
     "[scrapy.middleware] WARNING: Disabled kingfisher_scrapy.extensions.DatabaseStore: DATABASE_URL is not set.",
     "[yapw.clients] WARNING: Channel 1 was closed: ChannelClosedByClient: (200) 'Normal shutdown'",
@@ -113,26 +121,25 @@ class Collect(TaskManager):
 
             scrapy_log = ScrapyLogFile(scrapy_log_url, text=self.read_log_file(scrapy_log_url))
 
+            messages = []
             if not scrapy_log.is_finished():
-                logger.warning("%s: crawl finish reason: %s", self, scrapy_log.logparser["finish_reason"])
+                messages.append(f"crawl finish reason: {scrapy_log.logparser['finish_reason']}")
             if scrapy_log.error_rate > 0.01:  # 1%
-                logger.warning("%s: crawl error rate: %s", self, scrapy_log.error_rate)
+                messages.append(f"crawl error rate: {scrapy_log.error_rate}")
             for key in ("item_dropped_count", "invalid_json_count"):
                 if value := scrapy_log.logparser["crawler_stats"].get(key):
-                    logger.warning("%s: crawl %s: %s", self, key, value)
+                    messages.append(f"crawl {key}: {value}")
                     self.job.context[key] = value
                     self.job.save(update_fields=["modified", "context"])
             for category, value in scrapy_log.logparser["log_categories"].items():
-                # For example, australia_new_south_wales has http:// "next" URLs that redirect to https://.
-                if category == "redirect_logs":
+                if category in IGNORE_CATEGORIES:
                     continue
-                details = [
-                    detail for detail in value["details"] if not any(ignore in detail for ignore in IGNORE_WARNINGS)
-                ]
-                if details:
-                    logger.warning("%s messages for %s:", category, self)
-                    for detail in details:
-                        logger.warning(detail)
+                if details := [d for d in value["details"] if not any(ignore in d for ignore in IGNORE_WARNINGS)]:
+                    messages.append(f"{category} messages:")
+                    messages.extend(details)
+            if messages:
+                admin_url = reverse(JOBADMIN_LIST_VIEW_NAME, args=[self.pk])
+                logger.warning("%s has warnings: %s\n%s\n", self, admin_url, "\n".join(messages))
 
             return Task.Status.COMPLETED
 
