@@ -1,5 +1,7 @@
 import contextlib
 import logging
+from collections import defaultdict
+from http import HTTPStatus
 
 from django.conf import settings
 from django.contrib import admin, messages
@@ -15,7 +17,7 @@ from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, Translati
 from data_registry import forms
 from data_registry.exceptions import RecoverableError
 from data_registry.models import Collection, Job, License, Task
-from data_registry.util import JOBADMIN_LIST_VIEW_NAME, JOBADMIN_DETAIL_VIEW_NAME, intcomma, partialclass
+from data_registry.util import JOBADMIN_DETAIL_VIEW_NAME, JOBADMIN_LIST_VIEW_NAME, intcomma, partialclass
 
 logger = logging.getLogger(__name__)
 
@@ -292,7 +294,7 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
         (
             "Logs",
             {
-                "fields": ("process_notes",),
+                "fields": ("formatted_process_notes",),
             },
         ),
         (
@@ -335,7 +337,7 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
         "active",
         "archived",
         "context",
-        "process_notes",
+        "formatted_process_notes",
         "start",
         "end",
         # Overview
@@ -362,6 +364,30 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
     ]
 
     inlines = [TaskInLine]
+
+    @admin.display(description="Process notes")
+    def formatted_process_notes(self, obj):
+        html = []
+
+        for level, notes in obj.process_notes.items():
+            if notes:
+                html.append(f"<h3>{level}</h3>")
+                groups = defaultdict(list)
+                for note, data in notes:
+                    if len(data) == 1 and (http_code := data.get("http_code")):
+                        group_name = f"{http_code} {HTTPStatus(http_code).phrase}"
+                    elif data:
+                        group_name = tuple(data.items())
+                    else:
+                        group_name = "Uncategorized"
+                    groups[group_name].append(note)
+
+                for group_name, group_notes in groups.items():
+                    html.append(f"<details><summary>{escape(group_name)}</summary><dl>")
+                    html.extend(f"<dd>{urlize(escape(note))}</dd>" for note in group_notes)
+                    html.append("</dl></details>")
+
+        return mark_safe("".join(html))
 
     @admin.display(description="Parties")
     def formatted_parties_count(self, obj):
