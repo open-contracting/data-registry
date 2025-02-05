@@ -5,6 +5,7 @@ from http import HTTPStatus
 
 from django.conf import settings
 from django.contrib import admin, messages
+from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.urls import NoReverseMatch, reverse
@@ -17,7 +18,7 @@ from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, Translati
 from data_registry import forms
 from data_registry.exceptions import RecoverableError
 from data_registry.models import Collection, Job, License, Task
-from data_registry.util import JOBADMIN_DETAIL_VIEW_NAME, JOBADMIN_LIST_VIEW_NAME, intcomma, partialclass
+from data_registry.util import CHANGE, CHANGELIST, intcomma, partialclass
 
 logger = logging.getLogger(__name__)
 
@@ -234,7 +235,7 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
             # Stay on the same page, in case the user wants to retry.
             return None
 
-        return HttpResponseRedirect(reverse(JOBADMIN_LIST_VIEW_NAME))
+        return HttpResponseRedirect(reverse(CHANGELIST.format(content_type=ContentType.objects.get_for_model(Job))))
 
 
 class UnsuccessfulFilter(admin.SimpleListFilter):
@@ -530,7 +531,8 @@ class LogEntryAdmin(admin.ModelAdmin):
 
         if content_type and obj.action_flag != admin.models.DELETION:
             with contextlib.suppress(NoReverseMatch):
-                object_link = f'<a href="{reverse(JOBADMIN_DETAIL_VIEW_NAME, args=[obj.object_id])}">{object_link}</a>'
+                url = reverse(CHANGE.format(content_type=content_type), args=[obj.object_id])
+                object_link = f'<a href="{url}">{object_link}</a>'
 
         return mark_safe(object_link)
 

@@ -2,15 +2,13 @@ import functools
 from urllib.parse import urljoin
 
 from django.conf import settings
-from django.contrib.contenttypes.models import ContentType
 from django.utils.formats import number_format
 
-from data_registry.models import Collection, Job
+from data_registry.models import Collection
 
 # https://docs.djangoproject.com/en/4.2/ref/contrib/admin/#reversing-admin-urls
-content_type = ContentType.objects.get_for_model(Job)
-JOBADMIN_LIST_VIEW_NAME = f"admin:{content_type.app_label}_{content_type.model}_changelist"
-JOBADMIN_DETAIL_VIEW_NAME = f"admin:{content_type.app_label}_{content_type.model}_change"
+CHANGELIST = "admin:{content_type.app_label}_{content_type.model}_changelist"
+CHANGE = "admin:{content_type.app_label}_{content_type.model}_change"
 
 
 def scrapyd_url(path: str) -> str:

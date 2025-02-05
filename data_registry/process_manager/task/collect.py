@@ -5,13 +5,14 @@ import shutil
 
 import requests
 from django.conf import settings
+from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
 from scrapyloganalyzer import ScrapyLogFile
 
 from data_registry.exceptions import ConfigurationError, RecoverableError, UnexpectedError
-from data_registry.models import Task
+from data_registry.models import Job, Task
 from data_registry.process_manager.util import TaskManager, skip_if_not_started
-from data_registry.util import JOBADMIN_LIST_VIEW_NAME, scrapyd_url
+from data_registry.util import CHANGE, scrapyd_url
 
 logger = logging.getLogger(__name__)
 
@@ -138,8 +139,8 @@ class Collect(TaskManager):
                     messages.append(f"{category} messages:")
                     messages.extend(details)
             if messages:
-                admin_url = reverse(JOBADMIN_LIST_VIEW_NAME, args=[self.pk])
-                logger.warning("%s has warnings: %s\n%s\n", self, admin_url, "\n".join(messages))
+                url = reverse(CHANGE.format(content_type=ContentType.objects.get_for_model(Job)), args=[self.pk])
+                logger.warning("%s has warnings: %s\n%s\n", self, url, "\n".join(messages))
 
             return Task.Status.COMPLETED
 
