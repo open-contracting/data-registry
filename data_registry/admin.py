@@ -1,8 +1,8 @@
+import contextlib
 import logging
 
 from django.conf import settings
 from django.contrib import admin, messages
-from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.urls import NoReverseMatch, reverse
@@ -15,7 +15,7 @@ from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, Translati
 from data_registry import forms
 from data_registry.exceptions import RecoverableError
 from data_registry.models import Collection, Job, License, Task
-from data_registry.util import intcomma, partialclass
+from data_registry.util import JOBADMIN_LIST_VIEW_NAME, JOBADMIN_DETAIL_VIEW_NAME, intcomma, partialclass
 
 logger = logging.getLogger(__name__)
 
@@ -232,8 +232,7 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
             # Stay on the same page, in case the user wants to retry.
             return None
 
-        content_type = ContentType.objects.get_for_model(Job)
-        return HttpResponseRedirect(reverse(f"admin:{content_type.app_label}_{content_type.model}_changelist"))
+        return HttpResponseRedirect(reverse(JOBADMIN_LIST_VIEW_NAME))
 
 
 class UnsuccessfulFilter(admin.SimpleListFilter):
@@ -504,12 +503,8 @@ class LogEntryAdmin(admin.ModelAdmin):
         content_type = obj.content_type  # nullable
 
         if content_type and obj.action_flag != admin.models.DELETION:
-            try:
-                # https://docs.djangoproject.com/en/4.2/ref/contrib/admin/#reversing-admin-urls
-                url = reverse(f"admin:{content_type.app_label}_{content_type.model}_change", args=[obj.object_id])
-                object_link = f'<a href="{url}">{object_link}</a>'
-            except NoReverseMatch:
-                pass
+            with contextlib.suppress(NoReverseMatch):
+                object_link = f'<a href="{reverse(JOBADMIN_DETAIL_VIEW_NAME, args=[obj.object_id])}">{object_link}</a>'
 
         return mark_safe(object_link)
 
