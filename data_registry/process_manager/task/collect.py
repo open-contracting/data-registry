@@ -139,7 +139,7 @@ class Collect(TaskManager):
                     messages.append(f"{category} messages:")
                     messages.extend(details)
             if messages:
-                url = reverse(CHANGE.format(content_type=ContentType.objects.get_for_model(Job)), args=[self.pk])
+                url = reverse(CHANGE.format(content_type=ContentType.objects.get_for_model(Job)), args=[self.job.pk])
                 logger.warning("%s has warnings: %s\n%s\n", self, url, "\n".join(messages))
 
             return Task.Status.COMPLETED
