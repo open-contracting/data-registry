@@ -25,6 +25,7 @@ def update_site_backward(apps, schema_editor):
 class Migration(migrations.Migration):
     dependencies = [
         ("data_registry", "0060_alter_job_context"),
+        ("sites", "0002_alter_domain_unique"),
     ]
 
     operations = [
