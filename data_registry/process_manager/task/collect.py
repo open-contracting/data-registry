@@ -6,6 +6,7 @@ import shutil
 import requests
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.sites.models import Site
 from django.urls import reverse
 from scrapyloganalyzer import ScrapyLogFile
 
@@ -133,13 +134,14 @@ class Collect(TaskManager):
                     self.job.context[key] = value
                     self.job.save(update_fields=["modified", "context"])
             for category, value in scrapy_log.logparser["log_categories"].items():
-                if category in IGNORE_CATEGORIES:
-                    continue
-                if details := [d for d in value["details"] if not any(ignore in d for ignore in IGNORE_WARNINGS)]:
+                if category not in IGNORE_CATEGORIES and (
+                    details := [d for d in value["details"] if not any(ignore in d for ignore in IGNORE_WARNINGS)]
+                ):
                     messages.append(f"{category} messages:")
                     messages.extend(details)
             if messages:
-                url = reverse(CHANGE.format(content_type=ContentType.objects.get_for_model(Job)), args=[self.job.pk])
+                path = reverse(CHANGE.format(content_type=ContentType.objects.get_for_model(Job)), args=[self.job.pk])
+                url = f"https://{Site.objects.get_current().domain}{path}"
                 logger.warning("%s has warnings: %s\n%s\n", self, url, "\n".join(messages))
 
             return Task.Status.COMPLETED

@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",
     "django.contrib.sitemaps",
     "django.contrib.humanize",
     "data_registry",
@@ -258,6 +259,8 @@ LANGUAGES = (
     ("es", _("Spanish")),
     ("ru", _("Russian")),
 )
+
+SITE_ID = 1
 
 
 # Dependency configuration
