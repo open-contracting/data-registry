@@ -381,10 +381,11 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
                         group_name = tuple(data.items())
                     else:
                         group_name = "Uncategorized"
-                    groups[group_name].append(note)
+                    for line in note.split("\n"):
+                        groups[group_name].append(line)
 
                 for group_name, group_notes in groups.items():
-                    html.append(f"<details><summary>{escape(group_name)}</summary><dl>")
+                    html.append(f"<details><summary>{escape(group_name)} ({len(group_notes)})</summary><dl>")
                     html.extend(f"<dd>{urlize(escape(note))}</dd>" for note in group_notes)
                     html.append("</dl></details>")
 
