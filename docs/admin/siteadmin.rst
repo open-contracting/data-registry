@@ -146,7 +146,7 @@ No data collected
 
 .. note::
 
-   This bug is open.
+   This bug is fixed. The Process task fails with "Collection is empty".
 
 If the ``collectionstatus`` command shows that no collection files were created and that the compiled collection has started but not ended:
 
@@ -180,52 +180,6 @@ Then, confirm that the Collect task didn't write files, by checking the crawl's 
    2001-02-03 04:05:06 [my_spider] INFO: +------------------------------------------------+
 
 If so, run Kingfisher Process' `closecollection <https://kingfisher-process.readthedocs.io/en/latest/cli.html#closecollection>`__ command using the ID of the **original** collection, to allow the task to finish.
-
-No data collected due to HTTP errors
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. note::
-
-   This bug is open.
-
-If the ``collectionstatus`` command shows that all collection files encountered HTTP errors:
-
-.. code-block:: none
-   :emphasize-lines: 5-6,10-12
-
-   steps: compile
-   data_type: to be determined
-   store_end_at: 2001-02-03 04:05:06.979418
-   completed_at: 2001-02-03 04:05:07.074971
-   expected_files_count: 2
-   collection_files: 2
-   processing_steps: 0
-   2001-02-03 04:05:07,074 DEBUG [process.management.commands.compiler:97] Collection my_spider:2001-02-03 04:05:06 (id: 100) not compilable (data_type not set)
-   compilable: no (or not yet)
-   Error-level collection notes:
-   - Couldn't download http://api.mercadopublico.cl/APISOCDS/OCDS/listaOCDSAgnoMes/2024/07/0/10 (id: 68371070) ({'http_code': 502})
-   - Couldn't download http://api.mercadopublico.cl/APISOCDS/OCDS/listaOCDSAgnoMesConvenio/2024/07/0/10 (id: 68371071) ({'http_code': 502})
-
-   Compiled collection
-   compilation_started: False
-   store_end_at: None
-   completed_at: None
-   collection_files: 0
-   processing_steps: 0
-   2024-07-11 17:03:20,344 DEBUG [process.management.commands.finisher:114] Collection chile_compra_api_releases:2024-07-09 17:49:21 (id: 400) not completable (compile steps not created)
-   completable: no (or not yet)
-
-Then, confirm that the Collect task didn't write files, by checking the crawl's log file in `Scrapyd <https://kingfisher-collect.readthedocs.io/en/latest/scrapyd.html#using-the-scrapyd-web-interface>`__ for a message like:
-
-.. code-block:: none
-
-   2001-02-03 04:05:06 [my_spider] INFO: +---------------- DATA DIRECTORY ----------------+
-   2001-02-03 04:05:06 [my_spider] INFO: |                                                |
-   2001-02-03 04:05:06 [my_spider] INFO: | Something went wrong. No data was downloaded.  |
-   2001-02-03 04:05:06 [my_spider] INFO: |                                                |
-   2001-02-03 04:05:06 [my_spider] INFO: +------------------------------------------------+
-
-If so, run Kingfisher Process' `cancelcollection <https://kingfisher-process.readthedocs.io/en/latest/cli.html#closecollection>`__ command using the ID of the **compiled** collection, to allow the task to finish.
 
 Processing step remaining
 ^^^^^^^^^^^^^^^^^^^^^^^^^
