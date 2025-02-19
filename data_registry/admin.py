@@ -1,7 +1,6 @@
 import contextlib
 import logging
 from collections import defaultdict
-from http import HTTPStatus
 
 from django.conf import settings
 from django.contrib import admin, messages
@@ -375,12 +374,7 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
                 html.append(f"<h3>{level}</h3>")
                 groups = defaultdict(list)
                 for note, data in notes:
-                    if len(data) == 1 and (http_code := data.get("http_code")):
-                        group_name = f"{http_code} {HTTPStatus(http_code).phrase}"
-                    elif data:
-                        group_name = tuple(data.items())
-                    else:
-                        group_name = "Uncategorized"
+                    group_name = tuple(data.items()) if data else "Uncategorized"
                     for line in note.split("\n"):
                         groups[group_name].append(line)
 
