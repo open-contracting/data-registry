@@ -57,7 +57,7 @@ pytz==2021.1
     # via pandas
 requests==2.32.3
     # via -r requirements.in
-scrapyloganalyzer==0.0.4
+scrapyloganalyzer==0.0.5
     # via -r requirements.in
 sentry-sdk==2.8.0
     # via -r requirements.in
