@@ -137,7 +137,7 @@ class Collect(TaskManager):
                 if category not in IGNORE_CATEGORIES and (
                     details := [d for d in value["details"] if not any(ignore in d for ignore in IGNORE_WARNINGS)]
                 ):
-                    messages.append(f"{category} messages:")
+                    messages.append(f"{category} messages ({len(details)}):")
                     messages.extend(details)
             if messages:
                 path = reverse(CHANGE.format(content_type=ContentType.objects.get_for_model(Job)), args=[self.job.pk])
