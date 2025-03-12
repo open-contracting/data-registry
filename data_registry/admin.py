@@ -374,7 +374,12 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
                 html.append(f"<h3>{level}</h3>")
                 groups = defaultdict(list)
                 for note, data in notes:
-                    group_name = tuple(data.items()) if data else "Uncategorized"
+                    if data:
+                        group_name = tuple(data.items())
+                    elif note.startswith("Multiple objects have the `id` value "):
+                        group_name = "OCDS Merge"
+                    else:
+                        group_name = "Uncategorized"
                     for line in note.split("\n"):
                         groups[group_name].append(line)
 
