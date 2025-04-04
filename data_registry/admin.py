@@ -153,6 +153,9 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
             {
                 "description": TRANSLATION_REMINDER,
                 "fields": (
+                    "no_data_rationale_en",
+                    "no_data_rationale_es",
+                    "no_data_rationale_ru",
                     "title_en",
                     "title_es",
                     "title_ru",
