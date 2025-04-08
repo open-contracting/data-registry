@@ -13,6 +13,7 @@ class Migration(migrations.Migration):
             model_name="collection",
             name="no_data_rationale",
             field=models.TextField(
+                default="",
                 blank=True,
                 help_text="A short rationale of why an existing publication does not have data in the Data Registry. If thisfield is set, then the collection should be frozen and their retrieval frequency set to NEVER",
                 verbose_name="no data rationale",
@@ -22,6 +23,7 @@ class Migration(migrations.Migration):
             model_name="collection",
             name="no_data_rationale_en",
             field=models.TextField(
+                default="",
                 blank=True,
                 help_text="A short rationale of why an existing publication does not have data in the Data Registry. If thisfield is set, then the collection should be frozen and their retrieval frequency set to NEVER",
                 verbose_name="no data rationale",
@@ -31,6 +33,7 @@ class Migration(migrations.Migration):
             model_name="collection",
             name="no_data_rationale_es",
             field=models.TextField(
+                default="",
                 blank=True,
                 help_text="A short rationale of why an existing publication does not have data in the Data Registry. If thisfield is set, then the collection should be frozen and their retrieval frequency set to NEVER",
                 verbose_name="no data rationale",
@@ -40,6 +43,7 @@ class Migration(migrations.Migration):
             model_name="collection",
             name="no_data_rationale_ru",
             field=models.TextField(
+                default="",
                 blank=True,
                 help_text="A short rationale of why an existing publication does not have data in the Data Registry. If thisfield is set, then the collection should be frozen and their retrieval frequency set to NEVER",
                 verbose_name="no data rationale",
