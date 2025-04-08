@@ -15,6 +15,18 @@ class CollectionTests(TransactionTestCase):
 
         self.assertTrue(collection.is_out_of_date())
 
+    def test_visible(self):
+        # No public or no data with rationale datasets
+        self.assertEqual(Collection.objects.visible().count(), 0)
+        Collection.objects.create(public=True, no_data_rationale="Large dataset")
+        # No data with rationale
+        self.assertEqual(Collection.objects.visible().count(), 1)
+        # With data and no rationale
+        collection = Collection.objects.create(public=True)
+        collection.active_job = collection.job_set.create()
+        collection.save()
+        self.assertEqual(Collection.objects.visible().count(), 2)
+
 
 class JobTests(TransactionTestCase):
     @classmethod
