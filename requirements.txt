@@ -19,7 +19,7 @@ django==4.2.20
     #   django-modeltranslation
 django-modeltranslation==0.18.10
     # via -r requirements.in
-flatterer==0.21.1
+flatterer==0.22.0
     # via -r requirements.in
 gunicorn==23.0.0
     # via -r requirements.in
