@@ -121,11 +121,14 @@ def flatterer_flatten(file_path, infile, outdir, *, csv=False, xlsx=False, threa
     """
     try:
         return flatterer.flatten(infile, outdir, csv=csv, xlsx=xlsx, ndjson=True, force=True, threads=threads)
-    except RuntimeError:
+    except RuntimeError as e:
         if not xlsx:  # CSV-only should succeed.
             raise
         if not csv:  # Excel-only may fail.
             logger.exception("Failed Excel-only conversion of %s", file_path)
             return {}
-        logger.exception("Failed full conversion of %s (will attempt CSV-only conversion)", file_path)
+        if "Number of rows is too large for XLSX file" in str(e):
+            logger.warning("%s %s (will attempt CSV-only conversion)", e, file_path)
+        else:
+            logger.exception("Failed full conversion of %s (will attempt CSV-only conversion)", file_path)
         return flatterer_flatten(file_path, infile, outdir, csv=csv, xlsx=False, threads=threads)
