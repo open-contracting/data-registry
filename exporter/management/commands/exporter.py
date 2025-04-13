@@ -41,7 +41,7 @@ def callback(state, channel, method, properties, input_message):
 
     export.lock()
 
-    data_id = 0
+    minimum_data_id = 0
     page = 1
     files = {}
 
@@ -50,7 +50,7 @@ def callback(state, channel, method, properties, input_message):
 
     while True:
         with connections["kingfisher_process"].cursor() as cursor:
-            logger.debug("Processing page %s with data.id > %s", page, data_id)
+            logger.debug("Processing page %s with data.id > %s", page, minimum_data_id)
             cursor.execute(
                 """
                     SELECT
@@ -67,7 +67,7 @@ def callback(state, channel, method, properties, input_message):
                         data.id
                     LIMIT %s
                 """,
-                [collection_id, data_id, settings.EXPORTER_PAGE_SIZE],
+                [collection_id, minimum_data_id, settings.EXPORTER_PAGE_SIZE],
             )
 
             records = cursor.fetchall()
@@ -78,35 +78,34 @@ def callback(state, channel, method, properties, input_message):
         with open(dump_file, "a") as full:
             files[dump_file] = full
 
-            for r in records:
-                data_id = r[0]
+            for data_id, data, date in records:
+                minimum_data_id = data_id
 
-                full.write(r[1])
+                full.write(data)
                 full.write("\n")
 
-                date = r[2]
                 if date is None:
                     logger.exception("No compiled release date")
                     continue
 
                 try:
-                    date = datetime.strptime(date[:7], "%Y-%m")
+                    datetime.strptime(date[:7], "%Y-%m")
                 except ValueError:
                     logger.exception("Bad compiled release date: '%s'", date)
                     continue
 
-                year_path = export.directory / f"{int(r[2][:4])}.jsonl"
+                year_path = export.directory / f"{int(date[:4])}.jsonl"
                 if year_path not in files:
                     files[year_path] = year_path.open("a")
 
-                files[year_path].write(r[1])
+                files[year_path].write(data)
                 files[year_path].write("\n")
 
-                month_path = export.directory / f"{int(r[2][:4])}_{r[2][5:7]}.jsonl"
+                month_path = export.directory / f"{int(date[:4])}_{date[5:7]}.jsonl"
                 if month_path not in files:
                     files[month_path] = month_path.open("a")
 
-                files[month_path].write(r[1])
+                files[month_path].write(data)
                 files[month_path].write("\n")
 
         page = page + 1
@@ -118,8 +117,9 @@ def callback(state, channel, method, properties, input_message):
     for path, file in files.items():
         file.close()
 
-        with path.open("rb") as f_in, gzip.open(f"{path}.gz", "wb") as f_out:
-            shutil.copyfileobj(f_in, f_out)
+        with path.open("rb") as i, gzip.open(f"{path}.gz", "wb") as o:
+            shutil.copyfileobj(i, o)
+
         path.unlink()
 
     export.unlock()
