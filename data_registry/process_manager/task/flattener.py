@@ -1,6 +1,6 @@
 from data_registry import models
 from data_registry.process_manager.util import TaskManager, exporter_status_to_task_status, skip_if_not_started
-from exporter.util import Export, publish
+from exporter.util import Export, TaskStatus, publish
 
 
 class Flattener(TaskManager):
@@ -12,15 +12,16 @@ class Flattener(TaskManager):
 
     def run(self):
         for export in self.get_exports():
-            if export.running:
+            if export.locked:
                 export.unlock()
 
         publish({"job_id": self.job.pk}, "flattener_init")
 
     def get_status(self):
         for export in self.get_exports():
-            if not export.completed:
-                return exporter_status_to_task_status(export.status)
+            status = export.status
+            if status != TaskStatus.COMPLETED:
+                return exporter_status_to_task_status(status)
 
         return models.Task.Status.COMPLETED
 

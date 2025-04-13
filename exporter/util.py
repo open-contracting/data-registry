@@ -93,7 +93,7 @@ class Export:
 
     def __init__(self, *components, basename: str | None = None):
         """
-        ``basename`` is required to use ``lock()``, ``unlock()``, ``running``, ``completed`` and ``status``.
+        ``basename`` is required to use ``lock()``, ``unlock()``, ``locked`` and ``status``.
 
         :param components: the path components of the export directory
         :param basename: the basename of the output file of the export operation
@@ -144,21 +144,16 @@ class Export:
             shutil.rmtree(self.directory)
 
     @property
-    def running(self) -> bool:
+    def locked(self) -> bool:
         """Return whether the output file is being written."""
         return self.lockfile.exists()
 
     @property
-    def completed(self) -> bool:
-        """Return whether the output file has been written."""
-        return self.path.exists()
-
-    @property
     def status(self) -> Literal["RUNNING", "COMPLETED", "WAITING"]:
         """Return the status of the export."""
-        if self.running:
+        if self.locked:  # the output file is being written
             return TaskStatus.RUNNING
-        if self.completed:
+        if self.path.exists():  # the output file has been written
             return TaskStatus.COMPLETED
         return TaskStatus.WAITING
 
