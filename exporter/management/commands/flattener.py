@@ -45,15 +45,11 @@ def callback(state, channel, method, properties, input_message):
     # Acknowledge now to avoid connection losses. The rest can run for hours and is irreversible anyhow.
     ack(state, channel, method.delivery_tag)
 
-    if file_path:
+    if file_path:  # flattener_file
         process_file(job_id, file_path)
-    else:
-        publish_file(job_id)
-
-
-def publish_file(job_id):
-    for path in Export(job_id).get_convertible_paths():
-        publish({"job_id": job_id, "file_path": str(path)}, "flattener_file")
+    else:  # flattener_init
+        for path in Export(job_id).get_convertible_paths():
+            publish({"job_id": job_id, "file_path": str(path)}, "flattener_file")
 
 
 def process_file(job_id, file_path):
