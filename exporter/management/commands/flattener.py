@@ -94,15 +94,21 @@ def process_file(job_id, file_path):
                     tar.add(outdir / "csv", arcname=infile.stem)  # remove .jsonl
             if xlsx and "xlsx" in output:
                 shutil.move(output["xlsx"], xlsx_path)
-    # https://github.com/open-contracting/data-registry/issues/254
-    except FileNotFoundError:
+    # EOFError: Compressed file ended before the end-of-stream marker was reached
+    # FileNotFoundError: https://github.com/open-contracting/data-registry/issues/254
+    except (EOFError, FileNotFoundError) as e:
+        logger.warning("%s job_id=%s file_path=%s", e, job_id, file_path)
+        # The message has already been ack'd, so it can't be nack'd with requeue=True.
+        if isinstance(e, EOFError):
+            publish({"job_id": job_id, "file_path": file_path}, "flattener_file")
         # Only delete any files whose creation was attempted.
         for path, attempt in ((csv_path, csv), (xlsx_path, xlsx)):
             if attempt:
                 Path(path).unlink(missing_ok=True)
+    else:
+        logger.debug("Done job_id=%s file_path=%s", job_id, file_path)
     finally:
         export.unlock()
-    logger.debug("Done job_id=%s file_path=%s", job_id, file_path)
 
 
 def flatterer_flatten(file_path, infile, outdir, *, csv=False, xlsx=False, threads=0):
