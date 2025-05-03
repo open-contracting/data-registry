@@ -62,6 +62,8 @@ def process_file(job_id, file_path):
     xlsx_path = export.directory / f"{stem}.xlsx"
     csv_exists = os.path.isfile(csv_path)
     xlsx_exists = os.path.isfile(xlsx_path)
+    csv = False
+    xlsx = False
 
     if csv_exists and xlsx_exists:
         logger.debug("Already done job_id=%s file_path=%s", job_id, file_path)
