@@ -54,7 +54,7 @@ class Process(TaskManager):
         original_collection = next(c for c in tree if c["transform_type"] == "")
         compiled_collection = next(c for c in tree if c["transform_type"] == "compile-releases")
 
-        if not compiled_collection["completed_at"]:
+        if not original_collection["completed_at"] or not compiled_collection["completed_at"]:
             return Task.Status.RUNNING
 
         meta = self.request(
