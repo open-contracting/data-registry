@@ -10,7 +10,7 @@ from django.contrib.sites.models import Site
 from django.urls import reverse
 from scrapyloganalyzer import ScrapyLogFile
 
-from data_registry.exceptions import ConfigurationError, RecoverableError, UnexpectedError
+from data_registry.exceptions import ConfigurationError, IrrecoverableError, RecoverableError, UnexpectedError
 from data_registry.models import Job, Task
 from data_registry.process_manager.util import TaskManager, skip_if_not_started
 from data_registry.util import CHANGE, scrapyd_url
@@ -143,6 +143,9 @@ class Collect(TaskManager):
                 path = reverse(CHANGE.format(content_type=ContentType.objects.get_for_model(Job)), args=[self.job.pk])
                 url = f"https://{Site.objects.get_current().domain}{path}"
                 logger.warning("%s has warnings: %s\n%s\n", self, url, "\n".join(messages))
+
+            if scrapy_log.error_rate > 0.15:  # 15%
+                raise IrrecoverableError(f"The crawl had a {scrapy_log.error_rate} error rate")
 
             return Task.Status.COMPLETED
 
