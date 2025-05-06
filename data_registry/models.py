@@ -1,6 +1,7 @@
 from datetime import date, timedelta
 
 from django.db import models
+from django.db.models import Q
 from django.db.models.functions import Now
 from django.utils.translation import gettext_lazy as _
 
@@ -143,8 +144,8 @@ class Job(models.Model):
 
 class CollectionQuerySet(models.QuerySet):
     def visible(self):
-        """Return a query set of public collections with active jobs."""
-        return self.filter(public=True, active_job__isnull=False)
+        """Return a query set of public collections with active jobs or a rationale for having no data."""
+        return self.filter(Q(public=True) & (Q(active_job__isnull=False) | ~Q(no_data_rationale__exact="")))
 
 
 class Collection(models.Model):
@@ -300,13 +301,20 @@ class Collection(models.Model):
     frozen = models.BooleanField(
         default=False, help_text="If the spider is broken, check this box to prevent the scheduling of new jobs."
     )
+    no_data_rationale = models.TextField(
+        blank=True,
+        default="",
+        verbose_name="no data rationale",
+        help_text="A short rationale of why an existing publication does not have data in the Data Registry. If this"
+        "field is set, then the collection should be frozen and their retrieval frequency set to NEVER",
+    )
 
     # Visibility logic
     public = models.BooleanField(
         default=False,
-        help_text="If the active job's tasks completed without errors and all the fields below in all languages are "
-        "filled in, check this box to make the publication visible to anonymous users. "
-        "Otherwise, it is visible to administrators only.",
+        help_text="If the active job's tasks completed without errors or no_data_rationale is set, and all the fields"
+        "below in all languages are filled in, check this box to make the publication visible to anonymous "
+        "users. Otherwise, it is visible to administrators only.",
     )
 
     # Timestamps

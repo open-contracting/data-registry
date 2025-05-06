@@ -26,6 +26,7 @@ class CollectionAdminForm(forms.ModelForm):
             "title": widgets.AdminTextInputWidget(attrs={"style": "width: 60em"}),  # default 20em
             "country": widgets.AdminTextInputWidget(),
             "language": widgets.AdminTextInputWidget(),
+            "no_data_rationale": widgets.AdminTextInputWidget(),
             "publication_policy": widgets.AdminTextInputWidget(attrs={"style": "width: 60em"}),
             "source_url": widgets.AdminTextInputWidget(attrs={"style": "width: 60em"}),
             "description": MarkdownWidget(attrs={"rows": 1}),

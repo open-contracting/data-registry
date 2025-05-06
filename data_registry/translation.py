@@ -12,7 +12,16 @@ from data_registry import models
 
 @register(models.Collection)
 class CollectionTranslation(TranslationOptions):
-    fields = ["title", "description", "description_long", "summary", "additional_data", "country", "language"]
+    fields = [
+        "title",
+        "description",
+        "description_long",
+        "summary",
+        "additional_data",
+        "country",
+        "language",
+        "no_data_rationale",
+    ]
     required_languages = {language: ("title",) for language, _ in settings.LANGUAGES}
     fallback_undefined = ""
 
