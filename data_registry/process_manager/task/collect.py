@@ -144,6 +144,9 @@ class Collect(TaskManager):
                 url = f"https://{Site.objects.get_current().domain}{path}"
                 logger.warning("%s has warnings: %s\n%s\n", self, url, "\n".join(messages))
 
+            if scrapy_log.error_rate > 0.15:  # 15%
+                raise UnexpectedError(f"The crawl had a {scrapy_log.error_rate} error rate")
+
             return Task.Status.COMPLETED
 
         raise RecoverableError(f"Unable to find status of Scrapyd job {scrapyd_job_id}")
