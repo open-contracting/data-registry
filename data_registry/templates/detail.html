@@ -155,8 +155,7 @@ document.querySelectorAll('a[download]').forEach(trackable => {
 {% endif %}
             </dd>
             <dt>{% translate "Publication policy:" %}</dt>
-            <dd>{% firstof collection.publication_policy|urlize job.publication_policy|urlize "-" %}
-            </dd>
+            <dd>{% firstof collection.publication_policy|urlize job.publication_policy|urlize "-" %}</dd>
             <dt>{% translate "Last retrieved:" %}</dt>
             <dd>
                 {{ collection.last_retrieved|date:"M Y" }}
@@ -299,6 +298,19 @@ document.querySelectorAll('a[download]').forEach(trackable => {
     </div>
 </div>
 
+{% if not job and collection.frozen and collection.no_data_rationale %}
+<div class="py-5 border-top" id="access">
+    <div class="p-5 rounded-3 rounded-top-start-xl text-bg-warning">
+        <div class="row gy-4">
+            <div class="col-12">
+                <h2>{% translate "Data not available" %}</h2>
+
+                {{ collection.no_data_rationale|markdownify }}
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
 <div class="py-5 border-top" id="access">
     <div class="p-5 rounded-3 rounded-top-start-xl text-bg-info">
         <div class="row gy-4">
@@ -352,6 +364,7 @@ document.querySelectorAll('a[download]').forEach(trackable => {
         </div>
     </div>
 </div>
+{% endif %}
 
 <div class="mb-4 p-5 rounded-3 rounded-top-start-xl bg-primary text-white">
     <div class="row gy-3">

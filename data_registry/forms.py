@@ -32,6 +32,7 @@ class CollectionAdminForm(forms.ModelForm):
             "description_long": MarkdownWidget(attrs={"rows": 1}),
             "additional_data": MarkdownWidget(attrs={"rows": 1}),
             "summary": MarkdownWidget(attrs={"rows": 1}),
+            "no_data_rationale": MarkdownWidget(attrs={"rows": 1}),
         }
 
     source_id = forms.ChoiceField(
