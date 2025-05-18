@@ -99,7 +99,7 @@ $b-icon-animation-throb-duration: .75s;
 // https://getbootstrap.com/docs/5.2/utilities/colors/#sass
 $grays: (); // 0.2 KiB
 $colors: (); // 0.3 KiB
-$theme-colors: map-merge(map-remove($theme-colors, "danger", "warning"), ("white": $white)); // 2 KiB
+$theme-colors: map-merge(map-remove($theme-colors, "danger"), ("white": $white)); // 2 KiB
 $grid-breakpoints: map-remove($grid-breakpoints, "xxl"); // 13 KiB
 $container-max-widths: map-remove($container-max-widths, "xxl"); // 0.1 KiB
 $display-font-sizes: (); // 0.7 KiB

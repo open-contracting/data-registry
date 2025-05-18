@@ -126,32 +126,23 @@ document.querySelectorAll('a[download]').forEach(trackable => {
 </div>
 
 <div class="row py-5 border-top">
-
     <div class="col-sm fixed-sm-12">
         <h2 class="h4 mb-3">{% translate "Overview" %}</h2>
     </div>
     <div class="col-sm">
         <dl class="mb-n2 list-desc-grid">
-        {% if collection.no_data_rationale %}
-            <dt>{% translate "Rationale for why this dataset has no data:" %}</dt>
-            <dd>{{ collection.no_data_rationale }}</dd>
-        {% endif %}
-        {% if job %}
             <dt>{% translate "Data date range:" %}</dt>
             <dd>{{ job.date_from|date:"M Y" }} - {{ job.date_to|date:"M Y" }}
                 {% if collection.retrieval_frequency == never %}
                     ({{ collection.get_retrieval_frequency_display }})
                 {% endif %}
             </dd>
-         {% endif %}
             <dt>{% translate "Update frequency:" %}</dt>
             <dd>{% if collection.update_frequency == "UNKNOWN" %}-{% else %}{{ collection.get_update_frequency_display }}{% endif %}</dd>
             <dt>{% translate "Main language:" %}</dt>
             <dd>{{ collection.language }}</dd>
-        {% if job %}
             <dt>{% translate "OCID prefix:" %}</dt>
             <dd>{{ job.ocid_prefix|default:"-" }}</dd>
-        {% endif %}
             <dt>{% translate "License:" %}</dt>
             <dd class="text-break">
 {% if collection.license_custom %}
@@ -164,9 +155,7 @@ document.querySelectorAll('a[download]').forEach(trackable => {
 {% endif %}
             </dd>
             <dt>{% translate "Publication policy:" %}</dt>
-            <dd>{% firstof collection.publication_policy|urlize job.publication_policy|urlize "-" %}
-            </dd>
-         {% if job %}
+            <dd>{% firstof collection.publication_policy|urlize job.publication_policy|urlize "-" %}</dd>
             <dt>{% translate "Last retrieved:" %}</dt>
             <dd>
                 {{ collection.last_retrieved|date:"M Y" }}
@@ -174,7 +163,6 @@ document.querySelectorAll('a[download]').forEach(trackable => {
                     ({% blocktranslate with retrieval_frequency=collection.get_retrieval_frequency_display.lower %}retrieved {{ retrieval_frequency }}{% endblocktranslate %})
                 {% endif %}
             </dd>
-        {% endif %}
             <dt>{% translate "Retrieved from:" %}</dt>
             <dd class="text-break"><a href="{{ collection.source_url }}" target="_blank">{{ collection.source_url }}</a></dd>
         </dl>
@@ -310,6 +298,19 @@ document.querySelectorAll('a[download]').forEach(trackable => {
     </div>
 </div>
 
+{% if not job and collection.frozen and collection.no_data_rationale %}
+<div class="py-5 border-top" id="access">
+    <div class="p-5 rounded-3 rounded-top-start-xl text-bg-warning">
+        <div class="row gy-4">
+            <div class="col-12">
+                <h2>{% translate "Data not available" %}</h2>
+
+                {{ collection.no_data_rationale|markdownify }}
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
 <div class="py-5 border-top" id="access">
     <div class="p-5 rounded-3 rounded-top-start-xl text-bg-info">
         <div class="row gy-4">
@@ -363,6 +364,7 @@ document.querySelectorAll('a[download]').forEach(trackable => {
         </div>
     </div>
 </div>
+{% endif %}
 
 <div class="mb-4 p-5 rounded-3 rounded-top-start-xl bg-primary text-white">
     <div class="row gy-3">
