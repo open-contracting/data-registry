@@ -18,6 +18,10 @@ class CollectionTests(TransactionTestCase):
     def test_visible(self):
         self.assertEqual(Collection.objects.visible().count(), 0)
 
+        Collection.objects.create(public=True)
+
+        self.assertEqual(Collection.objects.visible().count(), 0)
+
         Collection.objects.create(public=True, no_data_rationale="nonempty")
 
         self.assertEqual(Collection.objects.visible().count(), 1)

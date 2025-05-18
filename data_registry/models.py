@@ -1,6 +1,7 @@
 from datetime import date, timedelta
 
 from django.db import models
+from django.db.models import Q
 from django.db.models.functions import Now
 from django.utils.translation import gettext_lazy as _
 
@@ -144,7 +145,9 @@ class Job(models.Model):
 class CollectionQuerySet(models.QuerySet):
     def visible(self):
         """Return a query set of public collections, exclude thosing without an active job for no reason."""
-        return self.filter(public=True).exclude(active_job__isnull=True, no_data_rationale="")
+        return self.filter(public=True).exclude(
+            Q(active_job__isnull=True) & (Q(no_data_rationale__isnull=True) | Q(no_data_rationale=""))
+        )
 
 
 class Collection(models.Model):
