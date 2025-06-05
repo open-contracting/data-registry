@@ -1,6 +1,7 @@
 from datetime import date, timedelta
 
 from django.db import models
+from django.db.models import Q
 from django.db.models.functions import Now
 from django.utils.translation import gettext_lazy as _
 
@@ -143,8 +144,10 @@ class Job(models.Model):
 
 class CollectionQuerySet(models.QuerySet):
     def visible(self):
-        """Return a query set of public collections with active jobs."""
-        return self.filter(public=True, active_job__isnull=False)
+        """Return a query set of public collections, excluding those without an active job for no reason."""
+        return self.filter(public=True).exclude(
+            Q(active_job__isnull=True) & (Q(no_data_rationale__isnull=True) | Q(no_data_rationale=""))
+        )
 
 
 class Collection(models.Model):
@@ -266,6 +269,8 @@ class Collection(models.Model):
         verbose_name="data license",
         help_text="If not set, the Overview section will display the license URL within the OCDS package.",
     )
+
+    # Documentation
     publication_policy = models.TextField(blank=True, verbose_name="publication policy")
 
     # Provenance
@@ -302,10 +307,15 @@ class Collection(models.Model):
     )
 
     # Visibility logic
+    no_data_rationale = models.TextField(
+        blank=True,
+        verbose_name="no data rationale",
+        help_text="The short reason why the publication has no active job. If set, freeze the publication.",
+    )
     public = models.BooleanField(
         default=False,
-        help_text="If the active job's tasks completed without errors and all the fields below in all languages are "
-        "filled in, check this box to make the publication visible to anonymous users. "
+        help_text="If the active job's tasks completed without errors or 'No data rationale' is set, and all fields "
+        "below in all languages are filled in, check this box to make the publication visible to anonymous users. "
         "Otherwise, it is visible to administrators only.",
     )
 
