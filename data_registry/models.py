@@ -144,7 +144,7 @@ class Job(models.Model):
 
 class CollectionQuerySet(models.QuerySet):
     def visible(self):
-        """Return a query set of public collections, exclude thosing without an active job for no reason."""
+        """Return a query set of public collections, excluding those without an active job for no reason."""
         return self.filter(public=True).exclude(
             Q(active_job__isnull=True) & (Q(no_data_rationale__isnull=True) | Q(no_data_rationale=""))
         )
