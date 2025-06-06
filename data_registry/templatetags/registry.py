@@ -91,7 +91,9 @@ def remove_query_string_parameter(context, param):
 
 @register.simple_tag(takes_context=True)
 def feedback_query_string_parameters(context):
-    subject = _("[data-registry] Re: %(collection)s") % {"collection": context["collection"]}
+    subject = _("data.open-contracting.org Support Request re: %(collection)s") % {
+        "collection": context["collection"].title
+    }
     return urlencode({"subject": subject}, quote_via=quote)
 
 
