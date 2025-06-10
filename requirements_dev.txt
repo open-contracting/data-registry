@@ -91,7 +91,7 @@ pytz==2021.1
     # via
     #   -r requirements.txt
     #   pandas
-requests==2.32.3
+requests==2.32.4
     # via -r requirements.txt
 scrapyloganalyzer==0.0.5
     # via -r requirements.txt
