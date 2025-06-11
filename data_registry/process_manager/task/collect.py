@@ -142,7 +142,10 @@ class Collect(TaskManager):
             if messages:
                 path = reverse(CHANGE.format(content_type=ContentType.objects.get_for_model(Job)), args=[self.job.pk])
                 url = f"https://{Site.objects.get_current().domain}{path}"
-                logger.warning("%s has warnings: %s\n%s\n", self, url, "\n".join(messages))
+                warnings = "\n".join(messages)
+                logger.warning("%s has warnings: %s\n%s\n", self, url, warnings)
+                if "kingfisher_scrapy.exceptions.MissingNextLinkError" in warnings:
+                    raise IrrecoverableError("The crawl stopped prematurely")
 
             if scrapy_log.error_rate > 0.15:  # 15%
                 raise IrrecoverableError(f"The crawl had a {scrapy_log.error_rate} error rate")
