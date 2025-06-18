@@ -92,7 +92,6 @@ A job's detail page:
       How to check on progress in:
 
       -  `Kingfisher Process <https://ocdsdeploy.readthedocs.io/en/latest/use/kingfisher-process.html#check-on-progress>`__
-      -  `Pelican <https://ocdsdeploy.readthedocs.io/en/latest/use/pelican.html#check-on-progress>`__
 
       This project's RabbitMQ management interface is at `rabbitmq.data.open-contracting.org <https://rabbitmq.data.open-contracting.org/>`__.
 

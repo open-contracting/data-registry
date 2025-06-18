@@ -291,7 +291,7 @@ RABBIT_URL = os.getenv("RABBIT_URL", "amqp://localhost")
 RABBIT_EXCHANGE_NAME = os.getenv("RABBIT_EXCHANGE_NAME", "data_registry_development")
 
 # The job tasks to run. Must match models.Task.Type.choices. The process manager assumes the first task retrieves data.
-JOB_TASKS_PLAN = ["collect", "process", "pelican", "exporter", "flattener"]
+JOB_TASKS_PLAN = ["collect", "process", "exporter", "flattener"]
 
 SCRAPYD = {
     # The base URL of Scrapyd.
@@ -308,9 +308,6 @@ KINGFISHER_COLLECT_FILES_STORE = os.getenv(
 
 # The base URL of Kingfisher Process.
 KINGFISHER_PROCESS_URL = os.getenv("KINGFISHER_PROCESS_URL")
-
-# The base URL of Pelican frontend.
-PELICAN_FRONTEND_URL = os.getenv("PELICAN_FRONTEND_URL")
 
 # WARNING: If you change the production default, update `Dockerfile_django` and `docker-compose.yaml` to match.
 EXPORTER_DIR = os.getenv("EXPORTER_DIR", "/data/exporter" if production else BASE_DIR / "data" / "exporter")

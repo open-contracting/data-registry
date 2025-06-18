@@ -32,14 +32,12 @@ Kingfisher Collect
 
    When the Scrapyd service restarts (for example, when the server restarts), the running Scrapyd jobs are lost, and therefore the Collect :class:`~data_registry.process_manager.util.TaskManager` won't be able to check the task's status. :ref:`Cancel the job<admin-cancel>` and reschedule it (`#350 <https://github.com/open-contracting/data-registry/issues/350>`__).
 
-Kingfisher Process, Pelican, Data Registry
+Kingfisher Process, Data Registry
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #. Wait for the Docker image to build in GitHub Actions.
 
    -  `Kingfisher Process <https://github.com/open-contracting/kingfisher-process/actions>`__
-   -  `Pelican Backend <https://github.com/open-contracting/pelican-backend/actions>`__
-   -  `Pelican Frontend <https://github.com/open-contracting/pelican-frontend/actions>`__
    -  `Data Registry <https://github.com/open-contracting/data-registry/actions>`__
 
 #. Connect to the server as the ``deployer`` user:
@@ -70,18 +68,6 @@ Kingfisher Collect
 Kingfisher Process
   -  Download the data from crawl directory in the ``KINGFISHER_COLLECT_FILES_STORE`` directory.
   -  Run Kingfisher Process' ``load`` `command <https://kingfisher-process.readthedocs.io/en/latest/cli.html#load>`__.
-Pelican
-  -  Open an SSH tunnel to forward the PostgreSQL port:
-
-     .. code-block:: bash
-
-         ssh -N ssh://root@ocp13.open-contracting.org:2223 -L 65432:localhost:5432
-
-  -  Run Pelican backend's ``add`` `command <https://pelican-backend.readthedocs.io/en/latest/tasks/datasets.html#add>`__:
-
-     .. code-block:: bash
-
-        env KINGFISHER_PROCESS_DATABASE_URL=postgresql://pelican_backend:PASSWORD@localhost:65432/kingfisher_process ./manage.py add SPIDER_YYYY-MM-DD ID
 Flattener
   -  Download the data from the job's directory in the ``EXPORTER_DIR`` directory.
   -  Run the `flatterer <https://flatterer.opendata.coop>`__ command locally.
@@ -89,7 +75,7 @@ Flattener
 Reset other applications
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-The Kingfisher Process, Pelican, Exporter and Flattener tasks use RabbitMQ. In an extreme scenario, the relevant queues can be purged in the `RabbitMQ management interface <https://rabbitmq.data.open-contracting.org/>`__.
+The Kingfisher Process, Exporter and Flattener tasks use RabbitMQ. In an extreme scenario, the relevant queues can be purged in the `RabbitMQ management interface <https://rabbitmq.data.open-contracting.org/>`__.
 
 .. warning::
 
@@ -100,13 +86,11 @@ In an extreme scenario, the other applications can be reset:
 #. Cancel all Scrapyd jobs
 #. Stop their Docker containers
 #. Purge all RabbitMQ queues
-#. `Backup the exchange_rates table <https://ocdsdeploy.readthedocs.io/en/latest/deploy/data-support.html#pelican-backend>`__
-#. Drop the PostgreSQL databases for Kingfisher Process and Pelican backend
-#. Delete the ``/data/deploy/pelican-backend/files/`` directory
+#. Drop the PostgreSQL databases for Kingfisher Process
 #. `Deploy the service <https://ocdsdeploy.readthedocs.io/en/latest/deploy/deploy.html>`__ to recreate the databases
 #. Run the `Django migrations <https://ocdsdeploy.readthedocs.io/en/latest/deploy/data-support.html#docker-apps>`__
 #. Populate the ``exchange_rates`` table
 
 .. note::
 
-   This will cause database ``id`` values in old job contexts to collide with those in new job contexts. This is okay, because we don't touch old Kingfisher Process and Pelican tasks.
+   This will cause database ``id`` values in old job contexts to collide with those in new job contexts. This is okay, because we don't touch old Kingfisher Process tasks.

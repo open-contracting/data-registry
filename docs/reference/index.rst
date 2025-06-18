@@ -31,14 +31,6 @@ This project communicates with Kingfisher Process via its `API <https://kingfish
 KINGFISHER_PROCESS_URL
   The base URL of Kingfisher Process
 
-Pelican task
-~~~~~~~~~~~~
-
-This project communicates with Pelican frontend via its `API <https://pelican-frontend.readthedocs.io/en/latest/reference/index.html#api>`__.
-
-PELICAN_FRONTEND_URL
-  The base URL of Pelican frontend
-
 .. _env-exporter-flattener:
 
 Exporter and Flattener tasks
