@@ -115,7 +115,7 @@ typing-extensions==4.7.1
     #   -r requirements.txt
     #   dj-database-url
     #   django-modeltranslation
-urllib3==2.2.2
+urllib3==2.5.0
     # via
     #   -r requirements.txt
     #   requests
