@@ -11,7 +11,10 @@ class Exporter(TaskManager):
     def run(self):
         self.get_export().unlock()
 
-        publish({"job_id": self.job.pk, "collection_id": self.job.context["process_id_pelican"]}, "exporter_init")
+        publish(
+            {"job_id": self.job.pk, "collection_id": self.job.context["process_compiled_collection_id"]},
+            "exporter_init",
+        )
 
     def get_status(self):
         export = self.get_export()
