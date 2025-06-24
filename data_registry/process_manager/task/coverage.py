@@ -30,27 +30,27 @@ class Coverage(TaskManager):
             infile = tmpdir / self.json_file_name
             with gzip.open(json_file_path) as i, infile.open("wb") as o:
                 shutil.copyfileobj(i, o)
-                coverage = ocdscardinal.coverage(o.name)
-                mapping = {
-                    "tenders_count": "/tender/",
-                    "tenderers_count": "/tender/tenderers[]",
-                    "tenders_items_count": "/tender/items[]",
-                    "parties_count": "/parties[]",
-                    "awards_count": "/awards[]",
-                    "awards_items_count": "/awards[]/items[]",
-                    "awards_suppliers_count": "/awards[]/suppliers[]",
-                    "contracts_count": "/contracts[]",
-                    "contracts_items_count": "/contracts[]/items[]",
-                    "contracts_transactions_count": "/contracts[]/transactions[]",
-                    "documents_count": get_keys_for_sub_schema(coverage, "documents[]"),
-                    "plannings_count": "/planning/",
-                    "milestones_count": get_keys_for_sub_schema(coverage, "milestones[]"),
-                    "amendments_count": get_keys_for_sub_schema(coverage, "amendments[]"),
-                }
-                for attr, paths in mapping.items():
-                    setattr(self.job, attr, sum(coverage.get(path, 0) for path in paths))
-                self.job.context["coverage"] = coverage
-                self.job.save(update_fields=["modified", "coverage", *mapping])
+            coverage = ocdscardinal.coverage(str(infile))
+            mapping = {
+                "tenders_count": "/tender/",
+                "tenderers_count": "/tender/tenderers[]",
+                "tenders_items_count": "/tender/items[]",
+                "parties_count": "/parties[]",
+                "awards_count": "/awards[]",
+                "awards_items_count": "/awards[]/items[]",
+                "awards_suppliers_count": "/awards[]/suppliers[]",
+                "contracts_count": "/contracts[]",
+                "contracts_items_count": "/contracts[]/items[]",
+                "contracts_transactions_count": "/contracts[]/transactions[]",
+                "documents_count": get_keys_for_sub_schema(coverage, "documents[]"),
+                "plannings_count": "/planning/",
+                "milestones_count": get_keys_for_sub_schema(coverage, "milestones[]"),
+                "amendments_count": get_keys_for_sub_schema(coverage, "amendments[]"),
+            }
+            for attr, paths in mapping.items():
+                setattr(self.job, attr, sum(coverage.get(path, 0) for path in paths))
+            self.job.context["coverage"] = coverage
+            self.job.save(update_fields=["modified", "coverage", *mapping])
         export.unlock()
 
     def get_status(self):
