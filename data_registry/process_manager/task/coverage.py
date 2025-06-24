@@ -15,7 +15,7 @@ def get_keys_for_sub_schema(coverage, sub_schema):
 
 
 class Coverage(TaskManager):
-    final_output = False
+    final_output = True
     json_file_name = "full.jsonl"
 
     def get_export(self):
