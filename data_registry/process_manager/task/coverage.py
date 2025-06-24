@@ -47,24 +47,20 @@ class Coverage(TaskManager):
                     "milestones_count": get_keys_for_building_block(coverage, "milestones[]"),
                     "amendments_count": get_keys_for_building_block(coverage, "amendments[]"),
                 }
-                for key, value in mapping.items():
-                    if type(value, list):
-                        setattr(self.job, key, 0)
-                        for subkey in value:
-                            setattr(self.job, key, getattr(self.job, key) + coverage.get(subkey))
-                    else:
-                        setattr(self.job, key, coverage.get(value, 0))
-                self.job.context["full_coverage"] = coverage
-                self.job.save(update_fields=["modified", *mapping])
+                for attr, paths in mapping.items():
+                    setattr(self.job, attr, sum(coverage.get(path, 0) for path in paths))
+                self.job.context["coverage"] = coverage
+                self.job.save(update_fields=["modified", "coverage", *mapping])
         export.unlock()
 
     def get_status(self):
         if self.get_export().locked:
             return models.Task.Status.RUNNING
-
-        return models.Task.Status.COMPLETED
+        if "coverage" in self.job.context:
+            return models.Task.Status.COMPLETED
+        return models.Task.Status.WAITING
 
     @skip_if_not_started
     def wipe(self):
-        # The coverage task already deletes the entire directory.
+        # The exporter task already deletes the entire directory.
         pass
