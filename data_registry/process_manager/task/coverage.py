@@ -24,11 +24,10 @@ class Coverage(TaskManager):
     def run(self):
         export = self.get_export()
         export.lock()
-        json_file_path = export.path
         with tempfile.TemporaryDirectory() as tmpdirname:
             tmpdir = Path(tmpdirname)
             infile = tmpdir / self.json_file_name
-            with gzip.open(json_file_path) as i, infile.open("wb") as o:
+            with gzip.open(export.path) as i, infile.open("wb") as o:
                 shutil.copyfileobj(i, o)
             coverage = ocdscardinal.coverage(str(infile))
             mapping = {
