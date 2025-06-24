@@ -11,7 +11,7 @@ from exporter.util import Export
 
 
 def get_keys_for_sub_schema(coverage, sub_schema):
-    return [key for key in coverage if key.endswith(sub_schema)]
+    return (key for key in coverage if key.endswith(sub_schema))
 
 
 class Coverage(TaskManager):
@@ -31,18 +31,18 @@ class Coverage(TaskManager):
                 shutil.copyfileobj(i, o)
             coverage = ocdscardinal.coverage(str(infile))
             mapping = {
-                "tenders_count": "/tender/",
-                "tenderers_count": "/tender/tenderers[]",
-                "tenders_items_count": "/tender/items[]",
-                "parties_count": "/parties[]",
-                "awards_count": "/awards[]",
-                "awards_items_count": "/awards[]/items[]",
-                "awards_suppliers_count": "/awards[]/suppliers[]",
-                "contracts_count": "/contracts[]",
-                "contracts_items_count": "/contracts[]/items[]",
-                "contracts_transactions_count": "/contracts[]/transactions[]",
+                "tenders_count": ("/tender/",),
+                "tenderers_count": ("/tender/tenderers[]",),
+                "tenders_items_count": ("/tender/items[]",),
+                "parties_count": ("/parties[]",),
+                "awards_count": ("/awards[]",),
+                "awards_items_count": ("/awards[]/items[]",),
+                "awards_suppliers_count": ("/awards[]/suppliers[]",),
+                "contracts_count": ("/contracts[]",),
+                "contracts_items_count": ("/contracts[]/items[]",),
+                "contracts_transactions_count": ("/contracts[]/transactions[]",),
                 "documents_count": get_keys_for_sub_schema(coverage, "documents[]"),
-                "plannings_count": "/planning/",
+                "plannings_count": ("/planning/",),
                 "milestones_count": get_keys_for_sub_schema(coverage, "milestones[]"),
                 "amendments_count": get_keys_for_sub_schema(coverage, "amendments[]"),
             }
