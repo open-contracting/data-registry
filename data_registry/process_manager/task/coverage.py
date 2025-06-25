@@ -10,8 +10,8 @@ from data_registry.process_manager.util import TaskManager, skip_if_not_started
 from exporter.util import Export
 
 
-def get_keys_for_sub_schema(coverage, sub_schema):
-    return (key for key in coverage if key.endswith(sub_schema))
+def get_keys_for_subschema(coverage, subschema):
+    return (key for key in coverage if key.endswith(subschema))
 
 
 class Coverage(TaskManager):
@@ -41,10 +41,10 @@ class Coverage(TaskManager):
                 "contracts_count": ("/contracts[]",),
                 "contracts_items_count": ("/contracts[]/items[]",),
                 "contracts_transactions_count": ("/contracts[]/transactions[]",),
-                "documents_count": get_keys_for_sub_schema(coverage, "documents[]"),
+                "documents_count": get_keys_for_subschema(coverage, "documents[]"),
                 "plannings_count": ("/planning/",),
-                "milestones_count": get_keys_for_sub_schema(coverage, "milestones[]"),
-                "amendments_count": get_keys_for_sub_schema(coverage, "amendments[]"),
+                "milestones_count": get_keys_for_subschema(coverage, "milestones[]"),
+                "amendments_count": get_keys_for_subschema(coverage, "amendments[]"),
             }
             for attr, paths in mapping.items():
                 setattr(self.job, attr, sum(coverage.get(path, 0) for path in paths))
