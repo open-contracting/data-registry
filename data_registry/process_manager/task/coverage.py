@@ -16,18 +16,17 @@ def get_keys_for_subschema(coverage, subschema):
 
 class Coverage(TaskManager):
     final_output = True
-    json_file_name = "full.jsonl"
 
     def get_export(self):
-        return Export(self.job.pk, f"{self.json_file_name}.gz")
+        return Export(self.job.pk, "coverage")
 
     def run(self):
         export = self.get_export()
         export.lock()
         with tempfile.TemporaryDirectory() as tmpdirname:
             tmpdir = Path(tmpdirname)
-            infile = tmpdir / self.json_file_name
-            with gzip.open(export.path) as i, infile.open("wb") as o:
+            infile = tmpdir / "tmp.jsonl"
+            with gzip.open(Export(self.job.pk, "full.jsonl.gz").path) as i, infile.open("wb") as o:
                 shutil.copyfileobj(i, o)
             coverage = ocdscardinal.coverage(str(infile))
             mapping = {
