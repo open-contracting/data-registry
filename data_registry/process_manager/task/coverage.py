@@ -10,26 +10,30 @@ from data_registry.process_manager.util import TaskManager, skip_if_not_started
 from exporter.util import Export
 
 
-def get_keys_for_subschema(coverage, subschema):
-    return (key for key in coverage if key.endswith(subschema))
+def filter_json_paths_by_suffix(json_paths, suffix):
+    return [json_path for json_path in json_paths if json_path.endswith(suffix)]
 
 
 class Coverage(TaskManager):
     final_output = True
 
     def get_export(self):
-        return Export(self.job.pk, "coverage")
+        return Export(self.job.pk, basename="coverage")
 
     def run(self):
         export = self.get_export()
+
         export.lock()
+
         with tempfile.TemporaryDirectory() as tmpdirname:
-            tmpdir = Path(tmpdirname)
-            infile = tmpdir / "tmp.jsonl"
+            infile = Path(tmpdirname) / "coverage.jsonl"
+
             with gzip.open(Export(self.job.pk, "full.jsonl.gz").path) as i, infile.open("wb") as o:
                 shutil.copyfileobj(i, o)
+
             coverage = ocdscardinal.coverage(str(infile))
-            mapping = {
+
+            attributes_mapping = {
                 "tenders_count": ("/tender/",),
                 "tenderers_count": ("/tender/tenderers[]",),
                 "tenders_items_count": ("/tender/items[]",),
@@ -40,15 +44,17 @@ class Coverage(TaskManager):
                 "contracts_count": ("/contracts[]",),
                 "contracts_items_count": ("/contracts[]/items[]",),
                 "contracts_transactions_count": ("/contracts[]/transactions[]",),
-                "documents_count": get_keys_for_subschema(coverage, "documents[]"),
+                "documents_count": filter_json_paths_by_suffix(coverage, "documents[]"),
                 "plannings_count": ("/planning/",),
-                "milestones_count": get_keys_for_subschema(coverage, "milestones[]"),
-                "amendments_count": get_keys_for_subschema(coverage, "amendments[]"),
+                "milestones_count": filter_json_paths_by_suffix(coverage, "milestones[]"),
+                "amendments_count": filter_json_paths_by_suffix(coverage, "amendments[]"),
             }
-            for attr, paths in mapping.items():
-                setattr(self.job, attr, sum(coverage.get(path, 0) for path in paths))
+            for attribute, json_paths in attributes_mapping.items():
+                setattr(self.job, attribute, sum(coverage.get(json_path, 0) for json_path in json_paths))
+
             self.job.context["coverage"] = coverage
-            self.job.save(update_fields=["modified", "coverage", *mapping])
+            self.job.save(update_fields=["modified", "coverage", *attributes_mapping])
+
         export.unlock()
 
     def get_status(self):
