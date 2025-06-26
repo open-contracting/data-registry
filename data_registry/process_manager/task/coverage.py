@@ -52,7 +52,7 @@ class Coverage(TaskManager):
             for attribute, json_paths in attributes_mapping.items():
                 setattr(self.job, attribute, sum(coverage.get(json_path, 0) for json_path in json_paths))
 
-            self.job.context["coverage"] = coverage
+            self.job.coverage = coverage
             self.job.save(update_fields=["modified", "coverage", *attributes_mapping])
 
         export.unlock()

@@ -91,6 +91,11 @@ class Job(models.Model):
     )
 
     # Field coverage
+    coverage = models.JSONField(
+        blank=True,
+        default=dict,
+        help_text="The collection compiled releases coverage from Cardinal.",
+    )
     tenders_count = models.IntegerField(default=0)
     tenderers_count = models.IntegerField(default=0)
     tenders_items_count = models.IntegerField(default=0)
