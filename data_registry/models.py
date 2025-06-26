@@ -420,6 +420,8 @@ class Task(models.Model):
         PROCESS = "process"
         #: Exporter
         EXPORTER = "exporter"
+        #: Coverage
+        COVERAGE = "coverage"
         #: Flattener
         FLATTENER = "flattener"
 

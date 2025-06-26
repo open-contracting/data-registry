@@ -291,7 +291,7 @@ RABBIT_URL = os.getenv("RABBIT_URL", "amqp://127.0.0.1")
 RABBIT_EXCHANGE_NAME = os.getenv("RABBIT_EXCHANGE_NAME", "data_registry_development")
 
 # The job tasks to run. Must match models.Task.Type.choices. The process manager assumes the first task retrieves data.
-JOB_TASKS_PLAN = ["collect", "process", "exporter", "flattener"]
+JOB_TASKS_PLAN = ["collect", "process", "exporter", "coverage", "flattener"]
 
 SCRAPYD = {
     # The base URL of Scrapyd.

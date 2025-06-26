@@ -33,7 +33,7 @@ Kingfisher Collect
    When the Scrapyd service restarts (for example, when the server restarts), the running Scrapyd jobs are lost, and therefore the Collect :class:`~data_registry.process_manager.util.TaskManager` won't be able to check the task's status. :ref:`Cancel the job<admin-cancel>` and reschedule it (`#350 <https://github.com/open-contracting/data-registry/issues/350>`__).
 
 Kingfisher Process, Data Registry
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #. Wait for the Docker image to build in GitHub Actions.
 
