@@ -24,6 +24,8 @@ def get_task_manager(task: models.Task) -> TaskManager:
             return Collect(task)
         case models.Task.Type.PROCESS:
             return Process(task)
+        case models.Task.Type.EXPORTER:
+            return Exporter(task)
         case models.Task.Type.COVERAGE:
             return Coverage(task)
         case models.Task.Type.FLATTENER:
