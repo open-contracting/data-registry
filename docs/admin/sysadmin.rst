@@ -68,6 +68,9 @@ Kingfisher Collect
 Kingfisher Process
   -  Download the data from crawl directory in the ``KINGFISHER_COLLECT_FILES_STORE`` directory.
   -  Run Kingfisher Process' ``load`` `command <https://kingfisher-process.readthedocs.io/en/latest/cli.html#load>`__.
+Coverage
+  -  Download the data from the job's directory in the ``EXPORTER_DIR`` directory.
+  -  Run the `coverage <https://cardinal.readthedocs.io/en/latest/cli/coverage.html>`__ command locally.
 Flattener
   -  Download the data from the job's directory in the ``EXPORTER_DIR`` directory.
   -  Run the `flatterer <https://flatterer.opendata.coop>`__ command locally.
@@ -89,7 +92,6 @@ In an extreme scenario, the other applications can be reset:
 #. Drop the PostgreSQL databases for Kingfisher Process
 #. `Deploy the service <https://ocdsdeploy.readthedocs.io/en/latest/deploy/deploy.html>`__ to recreate the databases
 #. Run the `Django migrations <https://ocdsdeploy.readthedocs.io/en/latest/deploy/data-support.html#docker-apps>`__
-#. Populate the ``exchange_rates`` table
 
 .. note::
 
