@@ -38,7 +38,7 @@ def callback(state, channel, method, properties, input_message):
     with tempfile.TemporaryDirectory() as tmpdirname:
         infile = Path(tmpdirname) / "coverage.jsonl"
 
-        with gzip.open(Export(job_id, "full.jsonl.gz").path) as i, infile.open("wb") as o:
+        with gzip.open(Export(job_id, basename="full.jsonl.gz").path) as i, infile.open("wb") as o:
             shutil.copyfileobj(i, o)
 
         coverage = ocdscardinal.coverage(str(infile))
