@@ -21,7 +21,7 @@ django-modeltranslation==0.18.10
     # via -r requirements.in
 flatterer==0.22.0
     # via -r requirements.in
-gunicorn[setproctitle]==23.0.0
+gunicorn==23.0.0
     # via -r requirements.in
 idna==3.7
     # via requests
@@ -35,6 +35,8 @@ mdurl==0.1.2
     # via markdown-it-py
 numpy==1.25.0
     # via pandas
+ocdscardinal==0.0.7
+    # via -r requirements.in
 orjson==3.9.15
     # via
     #   flatterer
@@ -77,5 +79,5 @@ urllib3==2.5.0
     # via
     #   requests
     #   sentry-sdk
-yapw[perf]==0.1.4
+yapw==0.1.4
     # via -r requirements.in
