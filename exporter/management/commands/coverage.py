@@ -3,7 +3,7 @@ import shutil
 import tempfile
 from pathlib import Path
 
-from click import BaseCommand
+from django.core.management import BaseCommand
 from ocdscardinal import ocdscardinal
 from yapw.methods import ack
 
