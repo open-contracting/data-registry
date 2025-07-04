@@ -32,8 +32,6 @@ class JobQuerySet(models.QuerySet):
 
 class Job(models.Model):
     class Status(models.TextChoices):
-        #: Not in use.
-        WAITING = "WAITING", "WAITING"
         #: The job is planned.
         PLANNED = "PLANNED", "PLANNED"
         #: The job has started.
