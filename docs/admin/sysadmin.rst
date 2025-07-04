@@ -69,10 +69,10 @@ Kingfisher Process
   -  Download the data from crawl directory in the ``KINGFISHER_COLLECT_FILES_STORE`` directory.
   -  Run Kingfisher Process' ``load`` `command <https://kingfisher-process.readthedocs.io/en/latest/cli.html#load>`__.
 Coverage
-  -  Download the data from the job's directory in the ``EXPORTER_DIR`` directory.
-  -  Run the `coverage <https://cardinal.readthedocs.io/en/latest/cli/coverage.html>`__ command locally.
+  -  Download the ``full.jsonl.gz`` file from the job's directory in the ``EXPORTER_DIR`` directory.
+  -  Run the `ocdscardinal coverage <https://cardinal.readthedocs.io/en/latest/cli/coverage.html>`__ command locally.
 Flattener
-  -  Download the data from the job's directory in the ``EXPORTER_DIR`` directory.
+  -  Download the ``*.jsonl.gz`` files from the job's directory in the ``EXPORTER_DIR`` directory.
   -  Run the `flatterer <https://flatterer.opendata.coop>`__ command locally.
 
 Reset other applications
