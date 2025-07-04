@@ -140,7 +140,7 @@ def search(request):
 
     for lookup, value in exclude.items():
         qs = qs.exclude(**{lookup: value})
-    qs = qs.filter(*filter_args, **filter_kwargs).order_by("country", "title")
+    qs = qs.filter(*filter_args, **filter_kwargs).order_by("country", "title").defer("active_job__process_notes")
 
     for collection in qs:
         collection.files = Export.get_files(collection.active_job_id)
@@ -161,7 +161,10 @@ def search(request):
 
 
 def detail(request, pk):
-    collection = get_object_or_404(collection_queryset(request).select_related("license_custom"), pk=pk)
+    collection = get_object_or_404(
+        collection_queryset(request).select_related("license_custom", "active_job").defer("active_job__process_notes"),
+        pk=pk,
+    )
 
     job = collection.active_job
     files = Export.get_files(collection.active_job_id)
