@@ -16,8 +16,8 @@ The complex part of the project is the orchestration. The tasks to orchestrate a
 -  Collect data, via `Scrapyd <https://scrapyd.readthedocs.io/en/latest/>`__, used as the `interface <https://kingfisher-collect.readthedocs.io/en/latest/scrapyd.html>`__ to `Kingfisher Collect <http://kingfisher-collect.readthedocs.io/en/latest/>`__
 -  Pre-process data, via `Kingfisher Process <https://kingfisher-process.readthedocs.io/en/latest/>`__
 -  Export JSON files, via the :ref:`cli-exporter` worker
--  Calculate field coverage with `Cardinal <https://cardinal.readthedocs.io/en/latest/>`__, via the :ref:`cli-coverage` worker
--  Export Excel and CSV files, via the :ref:`cli-flattener` worker
+-  Calculate coverage, via the :ref:`cli-coverage` worker, using `Cardinal <https://cardinal.readthedocs.io/en/latest/>`__
+-  Export Excel and CSV files, via the :ref:`cli-flattener` worker, using `Flatterer <https://docs.flatterer.dev>`__
 
 Each task is implemented as a :class:`~data_registry.process_manager.util.TaskManager` under the ``data_registry/process_manager/task`` directory. The ``JOB_TASKS_PLAN`` setting controls the order and choice of tasks.
 
