@@ -91,7 +91,7 @@ class ViewsTests(TestCase):
         get_files.return_value = {"jsonl": {"full": 123, "by_year": [{"year": 2022, "size": 1}]}}
         url = f"/en/publication/{self.collection1.pk}/download?name=2022.jsonl.gz"
 
-        with self.assertNumQueries(2):
+        with self.assertNumQueries(1):
             response = Client().get(f"/en/publication/{self.collection1.pk}")
 
             self.assertTemplateUsed("detail.html")
@@ -100,7 +100,7 @@ class ViewsTests(TestCase):
             )
 
     def test_detail_missing_date(self):
-        with self.assertNumQueries(2):
+        with self.assertNumQueries(1):
             response = Client().get(f"/en/publication/{self.collection2.id}")
 
             self.assertTemplateUsed("detail.html")
