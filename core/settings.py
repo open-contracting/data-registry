@@ -38,7 +38,7 @@ DEBUG = os.getenv("DEBUG", str(not production)) == "True"
 
 ALLOWED_HOSTS = [".localhost", "127.0.0.1", "[::1]", "0.0.0.0"]  # noqa: S104 # Docker
 if "ALLOWED_HOSTS" in os.environ:
-    ALLOWED_HOSTS.extend(os.getenv("ALLOWED_HOSTS").split(","))
+    ALLOWED_HOSTS.extend(os.getenv("ALLOWED_HOSTS", "").split(","))
 
 
 # Application definition
@@ -245,7 +245,7 @@ if production and not local_access:
 
     # https://docs.djangoproject.com/en/4.2/ref/middleware/#http-strict-transport-security
     if "SECURE_HSTS_SECONDS" in os.environ:
-        SECURE_HSTS_SECONDS = int(os.getenv("SECURE_HSTS_SECONDS"))
+        SECURE_HSTS_SECONDS = int(os.getenv("SECURE_HSTS_SECONDS", ""))
         SECURE_HSTS_INCLUDE_SUBDOMAINS = True
         SECURE_HSTS_PRELOAD = True
 
@@ -286,16 +286,16 @@ FATHOM = {
 }
 
 # The connection string for RabbitMQ.
-RABBIT_URL = os.getenv("RABBIT_URL", "amqp://localhost")
+RABBIT_URL = os.getenv("RABBIT_URL", "amqp://127.0.0.1")
 # The name of the RabbitMQ exchange. Follow the pattern `{project}_{service}_{environment}`.
 RABBIT_EXCHANGE_NAME = os.getenv("RABBIT_EXCHANGE_NAME", "data_registry_development")
 
 # The job tasks to run. Must match models.Task.Type.choices. The process manager assumes the first task retrieves data.
-JOB_TASKS_PLAN = ["collect", "process", "pelican", "exporter", "flattener"]
+JOB_TASKS_PLAN = ["collect", "process", "exporter", "coverage", "flattener"]
 
 SCRAPYD = {
     # The base URL of Scrapyd.
-    "url": os.getenv("SCRAPYD_URL"),
+    "url": os.getenv("SCRAPYD_URL", ""),
     # The project within Scrapyd.
     "project": os.getenv("SCRAPYD_PROJECT", "kingfisher"),
 }
@@ -308,9 +308,6 @@ KINGFISHER_COLLECT_FILES_STORE = os.getenv(
 
 # The base URL of Kingfisher Process.
 KINGFISHER_PROCESS_URL = os.getenv("KINGFISHER_PROCESS_URL")
-
-# The base URL of Pelican frontend.
-PELICAN_FRONTEND_URL = os.getenv("PELICAN_FRONTEND_URL")
 
 # WARNING: If you change the production default, update `Dockerfile_django` and `docker-compose.yaml` to match.
 EXPORTER_DIR = os.getenv("EXPORTER_DIR", "/data/exporter" if production else BASE_DIR / "data" / "exporter")

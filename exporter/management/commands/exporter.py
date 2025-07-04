@@ -25,10 +25,10 @@ class Command(BaseCommand):
 
 
 def callback(state, channel, method, properties, input_message):
-    collection_id = input_message.get("collection_id")
     job_id = input_message.get("job_id")
+    collection_id = input_message.get("collection_id")
 
-    export = Export(job_id, basename="full.json.gz")
+    export = Export(job_id, basename="full.jsonl.gz")
     dump_file = export.directory / "full.jsonl"
 
     try:

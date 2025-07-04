@@ -4,6 +4,7 @@ asgiref==3.7.2
     # via
     #   -r requirements.txt
     #   django
+    #   django-stubs
 certifi==2024.7.4
     # via
     #   -r requirements.txt
@@ -26,11 +27,17 @@ django==4.2.22
     #   -r requirements.txt
     #   dj-database-url
     #   django-modeltranslation
-django-modeltranslation==0.18.10
+    #   django-stubs
+    #   django-stubs-ext
+django-modeltranslation==0.19.15
     # via -r requirements.txt
+django-stubs==5.0.0
+    # via -r requirements_dev.in
+django-stubs-ext==5.2.1
+    # via django-stubs
 flatterer==0.22.0
     # via -r requirements.txt
-gunicorn[setproctitle]==23.0.0
+gunicorn==23.0.0
     # via -r requirements.txt
 idna==3.7
     # via
@@ -50,15 +57,20 @@ mdurl==0.1.2
     # via
     #   -r requirements.txt
     #   markdown-it-py
+mypy==1.16.1
+    # via -r requirements_dev.in
+mypy-extensions==1.1.0
+    # via mypy
 numpy==1.25.0
     # via
     #   -r requirements.txt
     #   pandas
+ocdscardinal==0.0.7
+    # via -r requirements.txt
 orjson==3.9.15
     # via
     #   -r requirements.txt
     #   flatterer
-    #   yapw
 packaging==24.0
     # via
     #   -r requirements.txt
@@ -67,6 +79,8 @@ pandas==1.5.0
     # via
     #   -r requirements.txt
     #   flatterer
+pathspec==0.12.1
+    # via mypy
 pexpect==4.9.0
     # via
     #   -r requirements.txt
@@ -98,9 +112,7 @@ scrapyloganalyzer==0.0.5
 sentry-sdk==2.8.0
     # via -r requirements.txt
 setproctitle==1.2.2
-    # via
-    #   -r requirements.txt
-    #   gunicorn
+    # via -r requirements.txt
 six==1.16.0
     # via
     #   -r requirements.txt
@@ -110,15 +122,22 @@ sqlparse==0.5.0
     # via
     #   -r requirements.txt
     #   django
+types-pyyaml==6.0.12.20250516
+    # via django-stubs
+types-requests==2.32.4.20250611
+    # via -r requirements_dev.in
 typing-extensions==4.7.1
     # via
     #   -r requirements.txt
     #   dj-database-url
-    #   django-modeltranslation
+    #   django-stubs
+    #   django-stubs-ext
+    #   mypy
 urllib3==2.5.0
     # via
     #   -r requirements.txt
     #   requests
     #   sentry-sdk
-yapw[perf]==0.1.4
+    #   types-requests
+yapw==0.1.4
     # via -r requirements.txt
