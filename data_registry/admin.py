@@ -5,7 +5,7 @@ from collections import defaultdict
 from django.conf import settings
 from django.contrib import admin, messages
 from django.contrib.contenttypes.models import ContentType
-from django.db.models import Q
+from django.db.models import OuterRef, Q, Subquery
 from django.http import HttpResponseRedirect
 from django.urls import NoReverseMatch, reverse
 from django.utils import timezone
@@ -368,6 +368,23 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
 
     inlines = [TaskInLine]
 
+    def get_queryset(self, request):
+        subquery = (
+            Task.objects.filter(job=OuterRef("pk"), status=Task.Status.COMPLETED)
+            .order_by("-order")
+            .values("type", "order")[:1]
+        )
+
+        return (
+            super()
+            .get_queryset(request)
+            .defer("process_notes")
+            .annotate(
+                last_completed_task_type=Subquery(subquery.values("type")),
+                last_completed_task_order=Subquery(subquery.values("order")),
+            )
+        )
+
     @admin.display(description="Process notes")
     def formatted_process_notes(self, obj):
         html = []
@@ -459,13 +476,8 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
 
     @admin.display(description="Last completed task")
     def last_task(self, obj):
-        last_completed_task = (
-            obj.task_set.values("type", "order").filter(status=Task.Status.COMPLETED).order_by("-order").first()
-        )
-
-        if last_completed_task:
-            return f"{last_completed_task['type']} ({last_completed_task['order']}/{len(settings.JOB_TASKS_PLAN)})"
-
+        if obj.last_completed_task_type and obj.last_completed_task_order:
+            return f"{obj.last_completed_task_type} ({obj.last_completed_task_order}/{len(settings.JOB_TASKS_PLAN)})"
         return None
 
 
