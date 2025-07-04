@@ -68,17 +68,13 @@ The lockfile is not deleted if an unhandled exception occurs.
 coverage
 ~~~~~~~~
 
-Calculate field coverage from full JSON files.
+Calculate the field coverage of JSON files.
 
 .. code-block:: bash
 
    ./manage.py coverage
 
--  Uses a lockfile to determine whether the processing of a *job* is in-progress.
--  Acknowledges the messages after creating the lockfile, but before calculating coverage.
--  Saves the coverage results in the database
-
-The lockfile is not deleted if an unhandled exception occurs.
+-  Stores the field coverage in the database, then acknowledges the message.
 
 .. _cli-flattener:
 
