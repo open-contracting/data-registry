@@ -17,7 +17,7 @@ django==4.2.22
     #   -r requirements.in
     #   dj-database-url
     #   django-modeltranslation
-django-modeltranslation==0.18.10
+django-modeltranslation==0.19.15
     # via -r requirements.in
 flatterer==0.22.0
     # via -r requirements.in
@@ -72,9 +72,7 @@ six==1.16.0
 sqlparse==0.5.0
     # via django
 typing-extensions==4.7.1
-    # via
-    #   dj-database-url
-    #   django-modeltranslation
+    # via dj-database-url
 urllib3==2.5.0
     # via
     #   requests

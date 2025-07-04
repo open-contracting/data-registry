@@ -1,3 +1,6 @@
 -r requirements.txt
 coverage
+django-stubs
+mypy
 psycopg2-binary
+types-requests

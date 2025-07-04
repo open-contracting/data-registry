@@ -38,7 +38,7 @@ DEBUG = os.getenv("DEBUG", str(not production)) == "True"
 
 ALLOWED_HOSTS = [".localhost", "127.0.0.1", "[::1]", "0.0.0.0"]  # noqa: S104 # Docker
 if "ALLOWED_HOSTS" in os.environ:
-    ALLOWED_HOSTS.extend(os.getenv("ALLOWED_HOSTS").split(","))
+    ALLOWED_HOSTS.extend(os.getenv("ALLOWED_HOSTS", "").split(","))
 
 
 # Application definition
@@ -245,7 +245,7 @@ if production and not local_access:
 
     # https://docs.djangoproject.com/en/4.2/ref/middleware/#http-strict-transport-security
     if "SECURE_HSTS_SECONDS" in os.environ:
-        SECURE_HSTS_SECONDS = int(os.getenv("SECURE_HSTS_SECONDS"))
+        SECURE_HSTS_SECONDS = int(os.getenv("SECURE_HSTS_SECONDS", ""))
         SECURE_HSTS_INCLUDE_SUBDOMAINS = True
         SECURE_HSTS_PRELOAD = True
 
@@ -295,7 +295,7 @@ JOB_TASKS_PLAN = ["collect", "process", "exporter", "coverage", "flattener"]
 
 SCRAPYD = {
     # The base URL of Scrapyd.
-    "url": os.getenv("SCRAPYD_URL"),
+    "url": os.getenv("SCRAPYD_URL", ""),
     # The project within Scrapyd.
     "project": os.getenv("SCRAPYD_PROJECT", "kingfisher"),
 }
