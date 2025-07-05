@@ -87,14 +87,14 @@ class Process(TaskManager):
         ).json()
 
         # OCDS Merge has one warning type, which can be issued millions of times.
-        counts = Counter()
+        counter = Counter()
         warning_notes = []
         for note, data in process_notes["WARNING"]:
             if note.startswith("Multiple objects have the `id` value "):
-                counts.update(OCDS_MERGE_WARNING_PATTERN.findall(note))
+                counter.update(OCDS_MERGE_WARNING_PATTERN.findall(note))
             else:
                 warning_notes.append([note, data])
-        for path, count in counts.items():
+        for path, count in counter.items():
             warning_notes.append(["OCDS Merge", {"count": count, "path": path}])
         process_notes["WARNING"] = warning_notes
 
