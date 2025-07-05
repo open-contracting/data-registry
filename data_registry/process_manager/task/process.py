@@ -1,4 +1,6 @@
 import logging
+import re
+from collections import Counter
 from datetime import datetime
 from urllib.parse import urljoin
 
@@ -9,6 +11,10 @@ from data_registry.models import Task
 from data_registry.process_manager.util import TaskManager
 
 logger = logging.getLogger(__name__)
+
+OCDS_MERGE_WARNING_PATTERN = re.compile(
+    r"^Multiple objects have the `id` value '.+' in the `(.+)` array$", re.MULTILINE
+)
 
 
 def url_for_collection(*parts):
@@ -73,12 +79,25 @@ class Process(TaskManager):
 
         self.job.context["process_id_pelican"] = compiled_collection["id"]
 
-        self.job.process_notes = self.request(
+        notes = self.request(
             "GET",
             url_for_collection(original_collection["id"], "notes"),
             params=[("level", "WARNING"), ("level", "ERROR")],
             error_message=f"Unable to get notes of collection {original_collection['id']}",
         ).json()
+
+        # OCDS Merge has one warning type, which can be issued millions of times.
+        counts = Counter()
+        others = []
+        for note, data in notes:
+            if note.startswith("Multiple objects have the `id` value "):
+                counts.update(OCDS_MERGE_WARNING_PATTERN.findall(note))
+            else:
+                others.append([note, data])
+        for path, count in counts.items():
+            others.append(["OCDS Merge", {"count": count, "path": path}])
+
+        self.job.process_notes = others
 
         self.job.save(
             update_fields=[

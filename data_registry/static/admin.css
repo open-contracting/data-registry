@@ -5,3 +5,7 @@
     */
      white-space: normal;
 }
+
+.ms-0 {
+    margin-left: 0 !important;
+}

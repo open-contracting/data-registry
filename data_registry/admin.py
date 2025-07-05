@@ -5,8 +5,10 @@ from collections import defaultdict
 from django.conf import settings
 from django.contrib import admin, messages
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.humanize.templatetags import humanize
 from django.db.models import OuterRef, Q, Subquery
 from django.http import HttpResponseRedirect
+from django.template.defaultfilters import pluralize
 from django.urls import NoReverseMatch, reverse
 from django.utils import timezone
 from django.utils.html import escape, urlize
@@ -392,16 +394,23 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
         for level, notes in obj.process_notes.items():
             if notes:
                 html.append(f"<h3>{level}</h3>")
+
+                counts = []
                 groups = defaultdict(list)
                 for note, data in notes:
-                    if data:
-                        group_name = tuple(data.items())
-                    elif note.startswith("Multiple objects have the `id` value "):
-                        group_name = "OCDS Merge"
+                    if note == "OCDS Merge":
+                        count = data["count"]
+                        counts.append(
+                            f"<li>{humanize.intcomma(count)} merge warning{pluralize(count)} about multiple objects "
+                            f"in the <code>{escape(data['path'])}</code> array having the same <code>id</code>.</li>"
+                        )
                     else:
-                        group_name = "Uncategorized"
-                    for line in note.split("\n"):
-                        groups[group_name].append(line)
+                        group_name = tuple(data.items()) if data else "Uncategorized"
+                        for line in note.split("\n"):
+                            groups[group_name].append(line)
+
+                if counts:
+                    html.append(f'<ul class="ms-0">{"".join(counts)}</ul>')
 
                 for group_name, group_notes in groups.items():
                     html.append(f"<details><summary>{escape(group_name)} ({len(group_notes)})</summary><dl>")
