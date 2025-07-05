@@ -79,7 +79,7 @@ class Process(TaskManager):
 
         self.job.context["process_id_pelican"] = compiled_collection["id"]
 
-        notes = self.request(
+        process_notes = self.request(
             "GET",
             url_for_collection(original_collection["id"], "notes"),
             params=[("level", "WARNING"), ("level", "ERROR")],
@@ -88,16 +88,17 @@ class Process(TaskManager):
 
         # OCDS Merge has one warning type, which can be issued millions of times.
         counts = Counter()
-        others = []
-        for note, data in notes:
+        warning_notes = []
+        for note, data in process_notes["WARNING"]:
             if note.startswith("Multiple objects have the `id` value "):
                 counts.update(OCDS_MERGE_WARNING_PATTERN.findall(note))
             else:
-                others.append([note, data])
+                warning_notes.append([note, data])
         for path, count in counts.items():
-            others.append(["OCDS Merge", {"count": count, "path": path}])
+            warning_notes.append(["OCDS Merge", {"count": count, "path": path}])
+        process_notes["WARNING"] = warning_notes
 
-        self.job.process_notes = others
+        self.job.process_notes = process_notes
 
         self.job.save(
             update_fields=[
