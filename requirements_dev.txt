@@ -89,7 +89,7 @@ pika==1.3.2
     # via
     #   -r requirements.txt
     #   yapw
-psycopg2==2.9.6
+psycopg2==2.9.10
     # via -r requirements.txt
 psycopg2-binary==2.9.2
     # via -r requirements_dev.in
