@@ -19,7 +19,7 @@ django==4.2.22
     #   django-modeltranslation
 django-modeltranslation==0.19.15
     # via -r requirements.in
-flatterer==0.22.0
+flatterer==0.23.0
     # via -r requirements.in
 gunicorn==23.0.0
     # via -r requirements.in
@@ -33,7 +33,7 @@ markdown-it-py==2.2.0
     # via -r requirements.in
 mdurl==0.1.2
     # via markdown-it-py
-numpy==1.25.0
+numpy==2.3.1
     # via pandas
 ocdscardinal==0.0.7
     # via -r requirements.in
@@ -43,7 +43,7 @@ orjson==3.9.15
     #   yapw
 packaging==24.0
     # via gunicorn
-pandas==1.5.0
+pandas==2.3.1
     # via flatterer
 pexpect==4.9.0
     # via logparser
@@ -73,6 +73,8 @@ sqlparse==0.5.0
     # via django
 typing-extensions==4.7.1
     # via dj-database-url
+tzdata==2025.2
+    # via pandas
 urllib3==2.5.0
     # via
     #   requests

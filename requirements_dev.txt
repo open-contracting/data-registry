@@ -35,7 +35,7 @@ django-stubs==5.0.0
     # via -r requirements_dev.in
 django-stubs-ext==5.2.1
     # via django-stubs
-flatterer==0.22.0
+flatterer==0.23.0
     # via -r requirements.txt
 gunicorn==23.0.0
     # via -r requirements.txt
@@ -61,7 +61,7 @@ mypy==1.16.1
     # via -r requirements_dev.in
 mypy-extensions==1.1.0
     # via mypy
-numpy==1.25.0
+numpy==2.3.1
     # via
     #   -r requirements.txt
     #   pandas
@@ -75,7 +75,7 @@ packaging==24.0
     # via
     #   -r requirements.txt
     #   gunicorn
-pandas==1.5.0
+pandas==2.3.1
     # via
     #   -r requirements.txt
     #   flatterer
@@ -133,6 +133,10 @@ typing-extensions==4.7.1
     #   django-stubs
     #   django-stubs-ext
     #   mypy
+tzdata==2025.2
+    # via
+    #   -r requirements.txt
+    #   pandas
 urllib3==2.5.0
     # via
     #   -r requirements.txt
