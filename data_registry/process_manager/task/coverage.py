@@ -10,7 +10,7 @@ class Coverage(TaskManager):
         publish({"job_id": self.job.pk}, "coverage_init")
 
     def get_status(self):
-        if "coverage" in self.job.context:
+        if self.job.coverage:
             return models.Task.Status.COMPLETED
         # It might be running, but the effect is the same. The server would need to be busy, or the file size would
         # need to exceed 100 GB, for processing time to exceed the 5-minute window between manageprocess runs.
