@@ -25,7 +25,7 @@ gunicorn==23.0.0
     # via -r requirements.in
 idna==3.7
     # via requests
-ijson==3.1.4
+ijson==3.4.0
     # via flatterer
 logparser==0.8.3
     # via scrapyloganalyzer
@@ -71,7 +71,7 @@ six==1.16.0
     #   python-dateutil
 sqlparse==0.5.0
     # via django
-typing-extensions==4.7.1
+typing-extensions==4.14.1
     # via dj-database-url
 tzdata==2025.2
     # via pandas

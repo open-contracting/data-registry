@@ -43,7 +43,7 @@ idna==3.7
     # via
     #   -r requirements.txt
     #   requests
-ijson==3.1.4
+ijson==3.4.0
     # via
     #   -r requirements.txt
     #   flatterer
@@ -91,7 +91,7 @@ pika==1.3.2
     #   yapw
 psycopg2==2.9.10
     # via -r requirements.txt
-psycopg2-binary==2.9.2
+psycopg2-binary==2.9.10
     # via -r requirements_dev.in
 ptyprocess==0.7.0
     # via
@@ -126,7 +126,7 @@ types-pyyaml==6.0.12.20250516
     # via django-stubs
 types-requests==2.32.4.20250611
     # via -r requirements_dev.in
-typing-extensions==4.7.1
+typing-extensions==4.14.1
     # via
     #   -r requirements.txt
     #   dj-database-url
