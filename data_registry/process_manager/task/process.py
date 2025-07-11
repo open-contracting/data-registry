@@ -77,7 +77,7 @@ class Process(TaskManager):
             self.job.publication_policy = meta.get("publication_policy") or ""
             self.job.ocid_prefix = meta.get("ocid_prefix") or ""
 
-        self.job.context["process_id_pelican"] = compiled_collection["id"]
+        self.job.context["process_compiled_collection_id"] = compiled_collection["id"]
 
         process_notes = self.request(
             "GET",

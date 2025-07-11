@@ -5,10 +5,11 @@
 
 import os
 import sys
+from pathlib import Path
 
 import django
 
-sys.path.insert(0, os.path.abspath(".."))
+sys.path.insert(0, str(Path(__file__).parent.parent))
 os.environ["DJANGO_SETTINGS_MODULE"] = "core.settings"
 
 django.setup()

@@ -8,9 +8,9 @@ from django.utils.timezone import now
 from data_registry import models
 from data_registry.exceptions import IrrecoverableError, RecoverableError
 from data_registry.process_manager.task.collect import Collect
+from data_registry.process_manager.task.coverage import Coverage
 from data_registry.process_manager.task.exporter import Exporter
 from data_registry.process_manager.task.flattener import Flattener
-from data_registry.process_manager.task.pelican import Pelican
 from data_registry.process_manager.task.process import Process
 from data_registry.process_manager.util import TaskManager
 
@@ -24,10 +24,10 @@ def get_task_manager(task: models.Task) -> TaskManager:
             return Collect(task)
         case models.Task.Type.PROCESS:
             return Process(task)
-        case models.Task.Type.PELICAN:
-            return Pelican(task)
         case models.Task.Type.EXPORTER:
             return Exporter(task)
+        case models.Task.Type.COVERAGE:
+            return Coverage(task)
         case models.Task.Type.FLATTENER:
             return Flattener(task)
         case _:

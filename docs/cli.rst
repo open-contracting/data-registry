@@ -63,6 +63,19 @@ Export JSON files from compiled collections in Kingfisher Process.
 
 The lockfile is not deleted if an unhandled exception occurs.
 
+.. _cli-coverage:
+
+coverage
+~~~~~~~~
+
+Calculate the field coverage of JSON files.
+
+.. code-block:: bash
+
+   ./manage.py coverage
+
+-  Stores the field coverage in the database, then acknowledges the message.
+
 .. _cli-flattener:
 
 flattener

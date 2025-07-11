@@ -1,8 +1,8 @@
 import logging
 import os
 import shutil
+from enum import StrEnum
 from pathlib import Path
-from typing import Literal
 from urllib.parse import parse_qs, urlencode, urlsplit
 
 from django.conf import settings
@@ -63,7 +63,7 @@ def decorator(decode, callback, state, channel, method, properties, body):
     decorate(decode, callback, state, channel, method, properties, body, errback, finalback)
 
 
-class TaskStatus:
+class TaskStatus(StrEnum):
     #: Processing hasn't started.
     WAITING = "WAITING"
     #: Processing has started.
@@ -114,7 +114,7 @@ class Export:
     # This method's logic must match the workers' logic, so that views can get the status of an export task, by
     # providing only the desired filename.
     @property
-    def lockfile(self) -> str:
+    def lockfile(self) -> Path:
         # All JSONL files are exported at once.
         if self.basename.endswith(".jsonl.gz"):
             return self.directory / "exporter_full.jsonl.gz.lock"
@@ -146,7 +146,7 @@ class Export:
         return self.lockfile.exists()
 
     @property
-    def status(self) -> Literal["RUNNING", "COMPLETED", "WAITING"]:
+    def status(self) -> TaskStatus:
         """Return the status of the export."""
         if self.locked:  # the output file is being written
             return TaskStatus.RUNNING

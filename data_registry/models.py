@@ -32,8 +32,6 @@ class JobQuerySet(models.QuerySet):
 
 class Job(models.Model):
     class Status(models.TextChoices):
-        #: Not in use.
-        WAITING = "WAITING", "WAITING"
         #: The job is planned.
         PLANNED = "PLANNED", "PLANNED"
         #: The job has started.
@@ -65,12 +63,8 @@ class Job(models.Model):
         "<dd>The number of invalid JSON items dropped by the crawl</dd>"
         "<dt><code>process_id</code></dt>"
         "<dd>The ID of the base collection in Kingfisher Process</dd>"
-        "<dt><code>process_id_pelican</code></dt>"
+        "<dt><code>process_compiled_collection_id</code></dt>"
         "<dd>The ID of the compiled collection in Kingfisher Process</dd>"
-        "<dt><code>pelican_id</code></dt>"
-        "<dd>The ID of the dataset in Pelican</dd>"
-        "<dt><code>pelican_dataset_name</code></dt>"
-        "<dd>The name of the dataset in Pelican</dd>"
         "</dl>",
     )
     process_notes = models.JSONField(
@@ -95,6 +89,11 @@ class Job(models.Model):
     )
 
     # Field coverage
+    coverage = models.JSONField(
+        blank=True,
+        default=dict,
+        help_text="The collection compiled releases coverage from Cardinal.",
+    )
     tenders_count = models.IntegerField(default=0)
     tenderers_count = models.IntegerField(default=0)
     tenders_items_count = models.IntegerField(default=0)
@@ -422,10 +421,10 @@ class Task(models.Model):
         COLLECT = "collect"
         #: Kingfisher Process
         PROCESS = "process"
-        #: Pelican
-        PELICAN = "pelican"
         #: Exporter
         EXPORTER = "exporter"
+        #: Coverage
+        COVERAGE = "coverage"
         #: Flattener
         FLATTENER = "flattener"
 

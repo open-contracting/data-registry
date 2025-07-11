@@ -4,6 +4,7 @@ django-modeltranslation
 flatterer
 gunicorn[setproctitle]
 markdown-it-py
+ocdscardinal
 psycopg2
 requests
 scrapyloganalyzer

@@ -64,10 +64,6 @@ From time to time, use the filters in the right-hand sidebar to:
 -  Check for completed jobs whose temporary data has not been deleted (*By temporary data deleted*: No, *By status*: COMPLETED)
 -  Check for running jobs that are old (*By status*: RUNNING)
 
-.. note::
-
-   The *WAITING* status is not used.
-
 .. _admin-troubleshoot:
 
 Troubleshoot a job
@@ -92,7 +88,6 @@ A job's detail page:
       How to check on progress in:
 
       -  `Kingfisher Process <https://ocdsdeploy.readthedocs.io/en/latest/use/kingfisher-process.html#check-on-progress>`__
-      -  `Pelican <https://ocdsdeploy.readthedocs.io/en/latest/use/pelican.html#check-on-progress>`__
 
       This project's RabbitMQ management interface is at `rabbitmq.data.open-contracting.org <https://rabbitmq.data.open-contracting.org/>`__.
 

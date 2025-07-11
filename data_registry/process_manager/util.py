@@ -63,7 +63,12 @@ class TaskManager(ABC):
     @property
     @abstractmethod
     def final_output(self) -> bool:
-        """Whether the task produces a final output, like a bulk download."""
+        """
+        Whether the task produces a final output, like a bulk download.
+
+        If False, then once a job is complete, the "manageprocess" management command calls
+        :meth:`~data_registry.process_manager.util.TaskManager.wipe` (unless temporary data is to be preserved).
+        """
 
     def request(self, method, url, *, error_message, **kwargs):
         """
