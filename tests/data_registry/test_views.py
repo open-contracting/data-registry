@@ -41,6 +41,7 @@ class ViewsTests(TestCase):
             pk=99,  # to match tests/fixtures directory
             date_from=datetime.date(2010, 2, 1),
             date_to=datetime.date(2023, 9, 30),
+            coverage={"": 25142, "/": 25142, "/id": 25142, "/tag": 25142, "/date": 25142, "/ocid": 25142},
         )
         cls.collection1.save()
 
@@ -192,6 +193,7 @@ class ViewsTests(TestCase):
                 "frozen": False,
                 "date_from": "2010-02-01",
                 "date_to": "2023-09-30",
+                "coverage": {"": 25142, "/": 25142, "/id": 25142, "/tag": 25142, "/date": 25142, "/ocid": 25142},
             },
             {
                 "id": self.collection2.pk,
@@ -207,6 +209,7 @@ class ViewsTests(TestCase):
                 "frozen": False,
                 "date_from": None,
                 "date_to": None,
+                "coverage": {},
             },
             {
                 "id": self.collection_no_files.pk,
@@ -222,6 +225,7 @@ class ViewsTests(TestCase):
                 "frozen": False,
                 "date_from": None,
                 "date_to": None,
+                "coverage": {},
             },
         ]
 
