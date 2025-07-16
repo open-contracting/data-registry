@@ -299,7 +299,9 @@ def publications_api(request):
             "last_retrieved",
             "frozen",
         )
-        .annotate(date_from=F("active_job__date_from"), date_to=F("active_job__date_to"))
+        .annotate(
+            date_from=F("active_job__date_from"), date_to=F("active_job__date_to"), coverage=F("active_job__coverage")
+        )
     )
     return JsonResponse(
         list(publications),
