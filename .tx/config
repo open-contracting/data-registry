@@ -1,9 +1,0 @@
-[main]
-host = https://www.transifex.com
-
-[o:open-contracting-partnership-1:p:data-registry:r:django]
-file_filter = data_registry/locale/<lang>/LC_MESSAGES/django.po
-source_file = data_registry/locale/en_US/LC_MESSAGES/django.po
-source_lang = en_US
-type        = PO
-

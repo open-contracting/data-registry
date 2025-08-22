@@ -83,6 +83,8 @@ Implementation notes
 Frontend
 ~~~~~~~~
 
+See `Internationalization (i18n) <https://ocp-software-handbook.readthedocs.io/en/latest/python/i18n.html>`__ in the Software Development Handbook.
+
 Autobuild the stylesheets
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -108,8 +110,3 @@ Then, simplify the largest files with `svgo <https://github.com/svg/svgo>`__:
 .. code-block:: bash
 
    find data_registry/static/img/flags/ -type f -size +10k -exec svgo --multipass --precision 2 {} \+
-
-Translate with Transifex
-^^^^^^^^^^^^^^^^^^^^^^^^
-
-See how to `update Django translations <https://ocp-software-handbook.readthedocs.io/en/latest/python/i18n.html>`__ and use `Transifex <https://www.transifex.com/open-contracting-partnership-1/data-registry/>`__.
