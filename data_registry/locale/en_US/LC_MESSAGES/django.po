@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-06 15:54-0300\n"
+"POT-Creation-Date: 2025-08-22 17:30-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,14 +17,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: data_registry/admin.py:227
+#: data_registry/admin.py:229
 #, python-format
 msgid "Created %(count)d job."
 msgid_plural "Created %(count)d jobs."
 msgstr[0] ""
 msgstr[1] ""
 
-#: data_registry/admin.py:232
+#: data_registry/admin.py:234
 #, python-format
 msgid ""
 "%(count)d publication either has an incomplete job or will be scheduled "
@@ -35,76 +35,76 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: data_registry/models.py:156
+#: data_registry/models.py:155
 msgid "Africa and Middle East"
 msgstr ""
 
-#: data_registry/models.py:158
+#: data_registry/models.py:157
 msgid "Asia"
 msgstr ""
 
-#: data_registry/models.py:160
+#: data_registry/models.py:159
 msgid "Eastern Europe & Central Asia"
 msgstr ""
 
-#: data_registry/models.py:162
+#: data_registry/models.py:161
 msgid "Europe"
 msgstr ""
 
-#: data_registry/models.py:164
+#: data_registry/models.py:163
 msgid "Latin America & Caribbean"
 msgstr ""
 
-#: data_registry/models.py:166
+#: data_registry/models.py:165
 msgid "North America"
 msgstr ""
 
-#: data_registry/models.py:168
+#: data_registry/models.py:167
 msgid "Oceania"
 msgstr ""
 
-#: data_registry/models.py:172 data_registry/models.py:192
+#: data_registry/models.py:171 data_registry/models.py:191
 msgid "Monthly"
 msgstr ""
 
-#: data_registry/models.py:174 data_registry/models.py:196
+#: data_registry/models.py:173 data_registry/models.py:195
 msgid "Every 6 months"
 msgstr ""
 
-#: data_registry/models.py:176 data_registry/models.py:198
+#: data_registry/models.py:175 data_registry/models.py:197
 msgid "Annually"
 msgstr ""
 
-#: data_registry/models.py:178
+#: data_registry/models.py:177
 msgid "This dataset is no longer updated by the publisher"
 msgstr ""
 
-#: data_registry/models.py:182
+#: data_registry/models.py:181
 msgid "Unknown"
 msgstr ""
 
-#: data_registry/models.py:184
+#: data_registry/models.py:183
 msgid "Real time"
 msgstr ""
 
-#: data_registry/models.py:186
+#: data_registry/models.py:185
 msgid "Hourly"
 msgstr ""
 
-#: data_registry/models.py:188
+#: data_registry/models.py:187
 msgid "Daily"
 msgstr ""
 
-#: data_registry/models.py:190
+#: data_registry/models.py:189
 msgid "Weekly"
 msgstr ""
 
-#: data_registry/models.py:194
+#: data_registry/models.py:193
 msgid "Every 3 months"
 msgstr ""
 
 #: data_registry/templates/detail.html:8 data_registry/templates/index.html:21
-#: data_registry/templates/search.html:6 data_registry/views.py:200
+#: data_registry/templates/search.html:6 data_registry/views.py:204
 msgid "OCP Data Registry"
 msgstr ""
 
@@ -181,8 +181,8 @@ msgstr ""
 msgid ""
 "An individual contracting process has several different stages: tendering, "
 "awarding, contracting and implementation. You can dive into the details of "
-"the contracting stages in this <a href=\"https://standard.open-contracting."
-"org/latest/en/primer/how/\" target=\"_blank\">tutorial</a>."
+"the contracting stages in this <a href=\"https://standard.open-"
+"contracting.org/latest/en/primer/how/\" target=\"_blank\">tutorial</a>."
 msgstr ""
 
 #: data_registry/templates/detail.html:185
@@ -409,7 +409,7 @@ msgstr ""
 
 #: data_registry/templates/includes/footer.html:129
 #: data_registry/templates/includes/header.html:11
-#: data_registry/templates/index.html:6 data_registry/views.py:190
+#: data_registry/templates/index.html:6 data_registry/views.py:194
 msgid "Open Contracting Partnership"
 msgstr ""
 
@@ -426,7 +426,7 @@ msgid "Data Registry"
 msgstr ""
 
 #: data_registry/templates/index.html:7 data_registry/templates/index.html:22
-#: data_registry/views.py:201
+#: data_registry/views.py:205
 msgid "Search for and access datasets by country"
 msgstr ""
 
@@ -508,7 +508,7 @@ msgid "Select a country"
 msgstr ""
 
 #: data_registry/templates/search.html:104 data_registry/views.py:68
-#: data_registry/views.py:316
+#: data_registry/views.py:322
 msgid "All"
 msgstr ""
 
@@ -601,11 +601,11 @@ msgstr ""
 msgid "Amendments data"
 msgstr ""
 
-#: data_registry/views.py:175
+#: data_registry/views.py:179
 #, python-format
 msgid "OCDS data for %(country)s: %(title)s"
 msgstr ""
 
-#: data_registry/views.py:356
+#: data_registry/views.py:362
 msgid "OCP Kingfisher Database"
 msgstr ""

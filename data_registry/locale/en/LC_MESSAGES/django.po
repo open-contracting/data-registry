@@ -2,35 +2,36 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 # Translators:
 # Georg <gneumann@open-contracting.org>, 2021
 # James McKinney, 2022
 # Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2025
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-06 15:54-0300\n"
+"POT-Creation-Date: 2025-08-22 17:30-0400\n"
 "PO-Revision-Date: 2021-08-04 17:44+0000\n"
 "Last-Translator: Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2025\n"
-"Language-Team: English (https://app.transifex.com/open-contracting-partnership-1/teams/123427/en/)\n"
+"Language-Team: English (https://app.transifex.com/open-contracting-"
+"partnership-1/teams/123427/en/)\n"
+"Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: data_registry/admin.py:227
+#: data_registry/admin.py:229
 #, python-format
 msgid "Created %(count)d job."
 msgid_plural "Created %(count)d jobs."
 msgstr[0] "Created %(count)d job."
 msgstr[1] "Created %(count)d jobs."
 
-#: data_registry/admin.py:232
+#: data_registry/admin.py:234
 #, python-format
 msgid ""
 "%(count)d publication either has an incomplete job or will be scheduled "
@@ -45,76 +46,76 @@ msgstr[1] ""
 "%(count)d publications either have incomplete jobs or will be scheduled "
 "shortly."
 
-#: data_registry/models.py:156
+#: data_registry/models.py:155
 msgid "Africa and Middle East"
 msgstr "Africa and Middle East"
 
-#: data_registry/models.py:158
+#: data_registry/models.py:157
 msgid "Asia"
 msgstr "Asia"
 
-#: data_registry/models.py:160
+#: data_registry/models.py:159
 msgid "Eastern Europe & Central Asia"
 msgstr "Eastern Europe & Central Asia"
 
-#: data_registry/models.py:162
+#: data_registry/models.py:161
 msgid "Europe"
 msgstr "Europe"
 
-#: data_registry/models.py:164
+#: data_registry/models.py:163
 msgid "Latin America & Caribbean"
 msgstr "Latin America & Caribbean"
 
-#: data_registry/models.py:166
+#: data_registry/models.py:165
 msgid "North America"
 msgstr "North America"
 
-#: data_registry/models.py:168
+#: data_registry/models.py:167
 msgid "Oceania"
 msgstr "Oceania"
 
-#: data_registry/models.py:172 data_registry/models.py:192
+#: data_registry/models.py:171 data_registry/models.py:191
 msgid "Monthly"
 msgstr "Monthly"
 
-#: data_registry/models.py:174 data_registry/models.py:196
+#: data_registry/models.py:173 data_registry/models.py:195
 msgid "Every 6 months"
 msgstr "Every 6 months"
 
-#: data_registry/models.py:176 data_registry/models.py:198
+#: data_registry/models.py:175 data_registry/models.py:197
 msgid "Annually"
 msgstr "Annually"
 
-#: data_registry/models.py:178
+#: data_registry/models.py:177
 msgid "This dataset is no longer updated by the publisher"
 msgstr "This dataset is no longer updated by the publisher"
 
-#: data_registry/models.py:182
+#: data_registry/models.py:181
 msgid "Unknown"
 msgstr "Unknown"
 
-#: data_registry/models.py:184
+#: data_registry/models.py:183
 msgid "Real time"
 msgstr "Real time"
 
-#: data_registry/models.py:186
+#: data_registry/models.py:185
 msgid "Hourly"
 msgstr "Hourly"
 
-#: data_registry/models.py:188
+#: data_registry/models.py:187
 msgid "Daily"
 msgstr "Daily"
 
-#: data_registry/models.py:190
+#: data_registry/models.py:189
 msgid "Weekly"
 msgstr "Weekly"
 
-#: data_registry/models.py:194
+#: data_registry/models.py:193
 msgid "Every 3 months"
 msgstr "Every 3 months"
 
 #: data_registry/templates/detail.html:8 data_registry/templates/index.html:21
-#: data_registry/templates/search.html:6 data_registry/views.py:200
+#: data_registry/templates/search.html:6 data_registry/views.py:204
 msgid "OCP Data Registry"
 msgstr "OCP Data Registry"
 
@@ -333,14 +334,14 @@ msgstr ""
 
 #: data_registry/templates/detail.html:330
 msgid ""
-"The <code>.jsonl</code> file is compressed using Gzip. Windows users need <a"
-" href=\"https://www.7-zip.org\" target=\"_blank\">7-Zip</a>, <a "
+"The <code>.jsonl</code> file is compressed using Gzip. Windows users need <a "
+"href=\"https://www.7-zip.org\" target=\"_blank\">7-Zip</a>, <a "
 "href=\"https://www.win-rar.com\" target=\"_blank\">WinRAR</a> or <a "
 "href=\"https://www.winzip.com\" target=\"_blank\">WinZip</a> to decompress "
 "the <code>.gz</code> file."
 msgstr ""
-"The <code>.jsonl</code> file is compressed using Gzip. Windows users need <a"
-" href=\"https://www.7-zip.org\" target=\"_blank\">7-Zip</a>, <a "
+"The <code>.jsonl</code> file is compressed using Gzip. Windows users need <a "
+"href=\"https://www.7-zip.org\" target=\"_blank\">7-Zip</a>, <a "
 "href=\"https://www.win-rar.com\" target=\"_blank\">WinRAR</a> or <a "
 "href=\"https://www.winzip.com\" target=\"_blank\">WinZip</a> to decompress "
 "the <code>.gz</code> file."
@@ -355,27 +356,25 @@ msgstr ""
 
 #: data_registry/templates/detail.html:344
 msgid ""
-"Excel files can have at most <a href=\"https://support.microsoft.com/en-"
-"us/office/excel-specifications-and-"
+"Excel files can have at most <a href=\"https://support.microsoft.com/en-us/"
+"office/excel-specifications-and-"
 "limits-1672b34d-7043-467e-8e27-269d656771c3\" target=\"_blank\">1,048,576 "
 "rows</a>. If a year is missing, it had too many rows. Download the CSV "
 "files, instead."
 msgstr ""
-"Excel files can have at most <a href=\"https://support.microsoft.com/en-"
-"us/office/excel-specifications-and-"
+"Excel files can have at most <a href=\"https://support.microsoft.com/en-us/"
+"office/excel-specifications-and-"
 "limits-1672b34d-7043-467e-8e27-269d656771c3\" target=\"_blank\">1,048,576 "
 "rows</a>. If a year is missing, it had too many rows. Download the CSV "
 "files, instead."
 
 #: data_registry/templates/detail.html:353
 msgid ""
-"Each contracting process is represented as one row in the "
-"<code>main.csv</code> file. Other files link to it via the "
-"<code>_link_main</code> column."
+"Each contracting process is represented as one row in the <code>main.csv</"
+"code> file. Other files link to it via the <code>_link_main</code> column."
 msgstr ""
-"Each contracting process is represented as one row in the "
-"<code>main.csv</code> file. Other files link to it via the "
-"<code>_link_main</code> column."
+"Each contracting process is represented as one row in the <code>main.csv</"
+"code> file. Other files link to it via the <code>_link_main</code> column."
 
 #: data_registry/templates/detail.html:358
 msgid ""
@@ -455,7 +454,7 @@ msgstr ""
 
 #: data_registry/templates/includes/footer.html:129
 #: data_registry/templates/includes/header.html:11
-#: data_registry/templates/index.html:6 data_registry/views.py:190
+#: data_registry/templates/index.html:6 data_registry/views.py:194
 msgid "Open Contracting Partnership"
 msgstr "Open Contracting Partnership"
 
@@ -472,7 +471,7 @@ msgid "Data Registry"
 msgstr "Data Registry"
 
 #: data_registry/templates/index.html:7 data_registry/templates/index.html:22
-#: data_registry/views.py:201
+#: data_registry/views.py:205
 msgid "Search for and access datasets by country"
 msgstr "Search for and access datasets of public contracts"
 
@@ -486,27 +485,27 @@ msgstr "Data by country"
 
 #: data_registry/templates/index.html:43
 msgid ""
-"We designed the Data Registry to help you find and access public procurement"
-" datasets that are available in the <a href=\"https://standard.open-"
+"We designed the Data Registry to help you find and access public procurement "
+"datasets that are available in the <a href=\"https://standard.open-"
 "contracting.org/latest/en/primer/what/\" target=\"_blank\">OCDS format</a>."
 msgstr ""
-"We designed the Data Registry to help you find and access public procurement"
-" datasets that are available in the <a href=\"https://standard.open-"
+"We designed the Data Registry to help you find and access public procurement "
+"datasets that are available in the <a href=\"https://standard.open-"
 "contracting.org/latest/en/primer/what/\" target=\"_blank\">OCDS format</a>."
 
 #: data_registry/templates/index.html:48
 msgid ""
-"Currently, you can access data from over 50 publishers from around the world"
-" as <b>compiled releases</b> with the latest value of each field. <a "
-"href=\"https://standard.open-"
-"contracting.org/latest/en/primer/releases_and_records/\" "
-"target=\"_blank\">Learn about how OCDS data is published</a>."
+"Currently, you can access data from over 50 publishers from around the world "
+"as <b>compiled releases</b> with the latest value of each field. <a "
+"href=\"https://standard.open-contracting.org/latest/en/primer/"
+"releases_and_records/\" target=\"_blank\">Learn about how OCDS data is "
+"published</a>."
 msgstr ""
-"Currently, you can access data from over 50 publishers from around the world"
-" as <b>compiled releases</b> with the latest value of each field. <a "
-"href=\"https://standard.open-"
-"contracting.org/latest/en/primer/releases_and_records/\" "
-"target=\"_blank\">Learn about how OCDS data is published</a>."
+"Currently, you can access data from over 50 publishers from around the world "
+"as <b>compiled releases</b> with the latest value of each field. <a "
+"href=\"https://standard.open-contracting.org/latest/en/primer/"
+"releases_and_records/\" target=\"_blank\">Learn about how OCDS data is "
+"published</a>."
 
 #: data_registry/templates/index.html:64
 msgid "Learn about the source"
@@ -567,7 +566,7 @@ msgid "Select a country"
 msgstr "Select a country"
 
 #: data_registry/templates/search.html:104 data_registry/views.py:68
-#: data_registry/views.py:316
+#: data_registry/views.py:322
 msgid "All"
 msgstr "All"
 
@@ -660,11 +659,11 @@ msgstr "Milestones data"
 msgid "Amendments data"
 msgstr "Amendments data"
 
-#: data_registry/views.py:175
+#: data_registry/views.py:179
 #, python-format
 msgid "OCDS data for %(country)s: %(title)s"
 msgstr "OCDS data for %(country)s: %(title)s"
 
-#: data_registry/views.py:356
+#: data_registry/views.py:362
 msgid "OCP Kingfisher Database"
 msgstr "OCP Kingfisher Database"
