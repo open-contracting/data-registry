@@ -322,6 +322,23 @@ class Collection(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
+    # Collection metadata, in case this needs to be overwritten from what the job extracted, or there is no job
+    date_from = models.DateField(
+        blank=True,
+        null=True,
+        verbose_name="minimum release date",
+        help_text="If not set, the job will get it from the data",
+    )
+    date_to = models.DateField(
+        blank=True,
+        null=True,
+        verbose_name="maximum release date",
+        help_text="If not set, the job will get it from the data",
+    )
+    ocid_prefix = models.TextField(
+        blank=True, verbose_name="OCID prefix", help_text="If not set, the job will get it from the data"
+    )
+
     objects = CollectionQuerySet.as_manager()
 
     class Meta:
