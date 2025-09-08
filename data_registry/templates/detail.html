@@ -132,7 +132,7 @@ document.querySelectorAll('a[download]').forEach(trackable => {
     <div class="col-sm">
         <dl class="mb-n2 list-desc-grid">
             <dt>{% translate "Data date range:" %}</dt>
-            <dd>{{ job.date_from|date:"M Y" }} - {{ job.date_to|date:"M Y" }}
+            <dd>{% firstof collection.date_from|date:"M Y" job.date_from|date:"M Y" %} - {% firstof collection.date_to|date:"M Y" job.date_to|date:"M Y" %}
                 {% if collection.retrieval_frequency == never %}
                     ({{ collection.get_retrieval_frequency_display }})
                 {% endif %}
@@ -142,7 +142,7 @@ document.querySelectorAll('a[download]').forEach(trackable => {
             <dt>{% translate "Main language:" %}</dt>
             <dd>{{ collection.language }}</dd>
             <dt>{% translate "OCID prefix:" %}</dt>
-            <dd>{{ job.ocid_prefix|default:"-" }}</dd>
+            <dd>{% firstof collection.ocid_prefix job.ocid_prefix|default:"-" %}</dd>
             <dt>{% translate "License:" %}</dt>
             <dd class="text-break">
 {% if collection.license_custom %}
@@ -159,7 +159,10 @@ document.querySelectorAll('a[download]').forEach(trackable => {
             <dt>{% translate "Last retrieved:" %}</dt>
             <dd>
                 {{ collection.last_retrieved|date:"M Y" }}
-                {% if collection.retrieval_frequency != never %}
+                {% if not job %}
+                    {% translate "This dataset has not yet been retrieved." %}
+                {% endif %}
+                {% if collection.retrieval_frequency and collection.retrieval_frequency != never %}
                     ({% blocktranslate with retrieval_frequency=collection.get_retrieval_frequency_display.lower %}retrieved {{ retrieval_frequency }}{% endblocktranslate %})
                 {% endif %}
             </dd>
