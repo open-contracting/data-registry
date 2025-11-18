@@ -6,5 +6,5 @@ The `OCP Data Registry <https://data.open-contracting.org>`__ helps you find and
 
 .. |Build Status| image:: https://github.com/open-contracting/data-registry/actions/workflows/ci.yml/badge.svg
    :target: https://github.com/open-contracting/data-registry/actions/workflows/ci.yml
-.. |Coverage Status| image:: https://coveralls.io/repos/github/open-contracting/data-registry/badge.svg?branch=main
-   :target: https://coveralls.io/github/open-contracting/data-registry?branch=main
+.. |Coverage Status| image:: https://codecov.io/github/open-contracting/data-registry/graph/badge.svg
+   :target: https://codecov.io/github/open-contracting/data-registry
