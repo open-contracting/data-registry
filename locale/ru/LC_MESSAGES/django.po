@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-25 01:45+0000\n"
+"POT-Creation-Date: 2025-11-24 15:09-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,14 +20,14 @@ msgstr ""
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: core/settings.py:251
+#: core/settings.py:258
 msgid "English"
 msgstr "English"
 
-#: core/settings.py:252
+#: core/settings.py:259
 msgid "Spanish"
 msgstr "Español"
 
-#: core/settings.py:253
+#: core/settings.py:260
 msgid "Russian"
 msgstr "Русский"

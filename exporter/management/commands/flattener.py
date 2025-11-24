@@ -123,8 +123,18 @@ def flatterer_flatten(file_path, infile, outdir, *, csv=False, xlsx=False, threa
     -  If ``xlsx=True`` and ``csv=False``, log the error and return.
     -  Otherwise (``csv=True``), re-raise the error.
     """
+    args = {
+        "pushdown": ["ocid", "id"],
+        "no_link": True,
+        "inline_one_to_one": True,
+        "schema": "path",
+        "csv": csv,
+        "ndjson": True,
+        "force": True,
+        "threads": threads,
+    }
     try:
-        return flatterer.flatten(infile, outdir, csv=csv, xlsx=xlsx, ndjson=True, force=True, threads=threads)
+        return flatterer.flatten(infile, outdir, *args, xlsx=xlsx)
     except RuntimeError as e:
         if not xlsx:  # CSV-only should succeed.
             raise
@@ -135,4 +145,4 @@ def flatterer_flatten(file_path, infile, outdir, *, csv=False, xlsx=False, threa
             logger.warning("%s %s (will attempt CSV-only conversion)", e, file_path)
         else:
             logger.exception("Failed full conversion of %s (will attempt CSV-only conversion)", file_path)
-        return flatterer_flatten(file_path, infile, outdir, csv=csv, xlsx=False, threads=threads)
+        return flatterer.flatten(infile, outdir, *args, xlsx=False)
