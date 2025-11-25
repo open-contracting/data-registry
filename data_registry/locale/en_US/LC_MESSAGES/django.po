@@ -187,8 +187,8 @@ msgstr ""
 msgid ""
 "An individual contracting process has several different stages: tendering, "
 "awarding, contracting and implementation. You can dive into the details of "
-"the contracting stages in this <a href=\"https://standard.open-contracting."
-"org/latest/en/primer/how/\" target=\"_blank\">tutorial</a>."
+"the contracting stages in this <a href=\"https://standard.open-"
+"contracting.org/latest/en/primer/how/\" target=\"_blank\">tutorial</a>."
 msgstr ""
 
 #: data_registry/templates/detail.html:188

@@ -349,11 +349,6 @@ msgstr ""
 "the <code>.gz</code> file."
 
 #: data_registry/templates/detail.html:342
-#, fuzzy
-#| msgid ""
-#| "Each contracting process is represented as one row in the <code>main</"
-#| "code> sheet. Other sheets link to it via the <code>_link_main</code> "
-#| "column."
 msgid ""
 "Each contracting process is represented as one row in the <code>main</code> "
 "sheet. Other sheets link to it via the <code>main_ocid</code> column. In "
@@ -380,10 +375,6 @@ msgstr ""
 "files, instead."
 
 #: data_registry/templates/detail.html:358
-#, fuzzy
-#| msgid ""
-#| "Each contracting process is represented as one row in the <code>main.csv</"
-#| "code> file. Other files link to it via the <code>_link_main</code> column."
 msgid ""
 "Each contracting process is represented as one row in the <code>main.csv</"
 "code> file. Other files link to it via the <code>main_ocid</code> column. In "
