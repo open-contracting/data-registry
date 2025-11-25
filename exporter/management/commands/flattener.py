@@ -145,4 +145,4 @@ def flatterer_flatten(file_path, infile, outdir, *, csv=False, xlsx=False, threa
             logger.warning("%s %s (will attempt CSV-only conversion)", e, file_path)
         else:
             logger.exception("Failed full conversion of %s (will attempt CSV-only conversion)", file_path)
-        return flatterer.flatten(infile, outdir, *args, xlsx=False)
+        return flatterer_flatten(file_path, infile, outdir, xlsx=False)
