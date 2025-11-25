@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-24 15:00-0300\n"
+"POT-Creation-Date: 2025-11-25 15:32-0300\n"
 "PO-Revision-Date: 2021-08-04 17:44+0000\n"
 "Last-Translator: Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2025\n"
 "Language-Team: Spanish (https://app.transifex.com/open-contracting-"
@@ -359,21 +359,16 @@ msgstr ""
 #| "column."
 msgid ""
 "Each contracting process is represented as one row in the <code>main</code> "
-"sheet. Other sheets link to it via the <code>main_ocid</code> column."
+"sheet. Other sheets link to it via the <code>main_ocid</code> column. In "
+"general, each sheet is linked to its parent sheet via the "
+"<code>[sheet_name]_id</code> column."
 msgstr ""
 "Cada proceso de contratación está representado como una fila en la hoja "
 "<code>main</code>. Otras hojas pueden enlazarse a esta a través de la "
-"columna <code>main_ocid</code>."
-
-#: data_registry/templates/detail.html:345
-msgid ""
-"In general, each sheet is linked to its parent sheet via the "
-"<code>[sheet_name]_id</code> column."
-msgstr ""
-"En general, cada hoja puede enlazarse con su hoja padre mediante la columna"
+"columna <code>main_ocid</code>. En general, cada hoja puede enlazarse con su hoja padre mediante la columna"
 "<code>[nombre_de_la_hoja]_id</code>."
 
-#: data_registry/templates/detail.html:351
+#: data_registry/templates/detail.html:349
 msgid ""
 "Excel files can have at most <a href=\"https://support.microsoft.com/en-us/"
 "office/excel-specifications-and-"
@@ -387,28 +382,23 @@ msgstr ""
 "filas</a>. Si un año no está, es que tiene demasiadas filas. Descargue los "
 "archivos CSV en su lugar."
 
-#: data_registry/templates/detail.html:360
+#: data_registry/templates/detail.html:358
 #, fuzzy
 #| msgid ""
 #| "Each contracting process is represented as one row in the <code>main.csv</"
 #| "code> file. Other files link to it via the <code>_link_main</code> column."
 msgid ""
 "Each contracting process is represented as one row in the <code>main.csv</"
-"code> file. Other files link to it via the <code>main_ocid</code> column."
+"code> file. Other files link to it via the <code>main_ocid</code> column. In "
+"general, each file is link to its parent file via the <code>[file_name]_id</"
+"code> column."
 msgstr ""
 "Cada proceso de contratación es representado como una fila en el archivo "
 "<code>main.csv</code>. Otros archivos pueden enlazarse a este a través de la "
-"columna <code>main_ocid</code>."
-
-#: data_registry/templates/detail.html:363
-msgid ""
-"In general, each file is linked to its parent file via the "
-"<code>[file_name]_id</code> column."
-msgstr ""
-"En general, cada archivo puede enlazarse con su archivo padre mediante la columna"
+"columna <code>main_ocid</code>. En general, cada archivo puede enlazarse con su archivo padre mediante la columna"
 "<code>[nombre_del_archivo]_id</code>."
 
-#: data_registry/templates/detail.html:368
+#: data_registry/templates/detail.html:364
 msgid ""
 "The <code>.csv</code> files are archived using tar and compressed using "
 "Gzip. Windows users need <a href=\"https://www.7-zip.org\" "
@@ -423,13 +413,13 @@ msgstr ""
 "target=\"_blank\">WinZip</a> para descomprimir el archivo <code>.tar.gz</"
 "code> file."
 
-#: data_registry/templates/detail.html:388
+#: data_registry/templates/detail.html:384
 msgid "Have questions, feedback on this dataset or content on this page?"
 msgstr ""
 "Tiene alguna pregunta o retroalimentación sobre este conjunto de datos u "
 "otro contenido en esta página? "
 
-#: data_registry/templates/detail.html:393
+#: data_registry/templates/detail.html:389
 msgid "Contact Data Support Team"
 msgstr "Contacta al Equipo de Datos"
 

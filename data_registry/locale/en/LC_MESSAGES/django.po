@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-24 15:00-0300\n"
+"POT-Creation-Date: 2025-11-25 15:32-0300\n"
 "PO-Revision-Date: 2021-08-04 17:44+0000\n"
 "Last-Translator: Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2025\n"
 "Language-Team: English (https://app.transifex.com/open-contracting-"
@@ -356,20 +356,16 @@ msgstr ""
 #| "column."
 msgid ""
 "Each contracting process is represented as one row in the <code>main</code> "
-"sheet. Other sheets link to it via the <code>main_ocid</code> column."
+"sheet. Other sheets link to it via the <code>main_ocid</code> column. In "
+"general, each sheet is linked to its parent sheet via the "
+"<code>[sheet_name]_id</code> column."
 msgstr ""
 "Each contracting process is represented as one row in the <code>main</code> "
-"sheet. Other sheets link to it via the <code>main_ocid</code> column."
-
-#: data_registry/templates/detail.html:345
-msgid ""
-"In general, each sheet is linked to its parent sheet via the "
-"<code>[sheet_name]_id</code> column."
-msgstr ""
-"In general, each sheet is linked to its parent sheet via the "
+"sheet. Other sheets link to it via the <code>main_ocid</code> column. In "
+"general, each sheet is linked to its parent sheet via the "
 "<code>[sheet_name]_id</code> column."
 
-#: data_registry/templates/detail.html:351
+#: data_registry/templates/detail.html:349
 msgid ""
 "Excel files can have at most <a href=\"https://support.microsoft.com/en-us/"
 "office/excel-specifications-and-"
@@ -383,27 +379,23 @@ msgstr ""
 "rows</a>. If a year is missing, it had too many rows. Download the CSV "
 "files, instead."
 
-#: data_registry/templates/detail.html:360
+#: data_registry/templates/detail.html:358
 #, fuzzy
 #| msgid ""
 #| "Each contracting process is represented as one row in the <code>main.csv</"
 #| "code> file. Other files link to it via the <code>_link_main</code> column."
 msgid ""
 "Each contracting process is represented as one row in the <code>main.csv</"
-"code> file. Other files link to it via the <code>main_ocid</code> column."
+"code> file. Other files link to it via the <code>main_ocid</code> column. In "
+"general, each file is link to its parent file via the <code>[file_name]_id</"
+"code> column."
 msgstr ""
 "Each contracting process is represented as one row in the <code>main.csv</"
-"code> file. Other files link to it via the <code>main_ocid</code> column."
+"code> file. Other files link to it via the <code>main_ocid</code> column. In "
+"general, each file is link to its parent file via the <code>[file_name]_id</"
+"code> column."
 
-#: data_registry/templates/detail.html:363
-msgid ""
-"In general, each file is linked to its parent file via the "
-"<code>[file_name]_id</code> column."
-msgstr ""
-"In general, each file is linked to its parent file via the "
-"<code>[file_name]_id</code> column."
-
-#: data_registry/templates/detail.html:368
+#: data_registry/templates/detail.html:364
 msgid ""
 "The <code>.csv</code> files are archived using tar and compressed using "
 "Gzip. Windows users need <a href=\"https://www.7-zip.org\" "
@@ -417,13 +409,13 @@ msgstr ""
 "target=\"_blank\">WinRAR</a> or <a href=\"https://www.winzip.com\" "
 "target=\"_blank\">WinZip</a> to decompress the <code>.tar.gz</code> file."
 
-#: data_registry/templates/detail.html:388
+#: data_registry/templates/detail.html:384
 msgid "Have questions, feedback on this dataset or content on this page?"
 msgstr ""
 "Do you have any questions or feedback on this dataset or any other content "
 "on this page?"
 
-#: data_registry/templates/detail.html:393
+#: data_registry/templates/detail.html:389
 msgid "Contact Data Support Team"
 msgstr "Contact Data Support Team"
 
