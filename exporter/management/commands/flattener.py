@@ -123,18 +123,21 @@ def flatterer_flatten(file_path, infile, outdir, *, csv=False, xlsx=False, threa
     -  If ``xlsx=True`` and ``csv=False``, log the error and return.
     -  Otherwise (``csv=True``), re-raise the error.
     """
-    args = {
-        "pushdown": ["ocid", "id"],
-        "no_link": True,
-        "inline_one_to_one": True,
-        "schema": "path",
-        "csv": csv,
-        "ndjson": True,
-        "force": True,
-        "threads": threads,
-    }
     try:
-        return flatterer.flatten(infile, outdir, *args, xlsx=xlsx)
+        return flatterer.flatten(
+            infile,
+            outdir,
+            # https://docs.flatterer.dev/options.html
+            csv=csv,
+            xlsx=xlsx,
+            threads=threads,
+            ndjson=True,  # the input is newline-delimited JSON
+            force=True,  # delete the temporary "flatten" directory, if it exists
+            pushdown=["ocid", "id"],  # copy fields to child tables as {parent}_ocid and {parent}_id
+            no_link=True,  # do not create _link and _link_{parent} (instead use the pushdown fields)
+            inline_one_to_one=True,  # inline arrays that always contain at most one entry
+            schema="path",
+        )
     except RuntimeError as e:
         if not xlsx:  # CSV-only should succeed.
             raise
@@ -145,4 +148,4 @@ def flatterer_flatten(file_path, infile, outdir, *, csv=False, xlsx=False, threa
             logger.warning("%s %s (will attempt CSV-only conversion)", e, file_path)
         else:
             logger.exception("Failed full conversion of %s (will attempt CSV-only conversion)", file_path)
-        return flatterer_flatten(file_path, infile, outdir, xlsx=False)
+        return flatterer_flatten(file_path, infile, outdir, csv=csv, xlsx=False, threads=threads)
