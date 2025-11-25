@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-22 17:30-0400\n"
+"POT-Creation-Date: 2025-11-25 15:38-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,14 +17,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: data_registry/admin.py:229
+#: data_registry/admin.py:232
 #, python-format
 msgid "Created %(count)d job."
 msgid_plural "Created %(count)d jobs."
 msgstr[0] ""
 msgstr[1] ""
 
-#: data_registry/admin.py:234
+#: data_registry/admin.py:237
 #, python-format
 msgid ""
 "%(count)d publication either has an incomplete job or will be scheduled "
@@ -120,7 +120,7 @@ msgid "BACK TO DATASETS SEARCH"
 msgstr ""
 
 #: data_registry/templates/detail.html:104
-#: data_registry/templates/search.html:173
+#: data_registry/templates/search.html:176
 msgid "Available formats:"
 msgstr ""
 
@@ -164,20 +164,26 @@ msgid "Last retrieved:"
 msgstr ""
 
 #: data_registry/templates/detail.html:163
+#: data_registry/templates/detail.html:258
 #: data_registry/templates/search.html:166
+msgid "This dataset has not yet been retrieved."
+msgstr ""
+
+#: data_registry/templates/detail.html:166
+#: data_registry/templates/search.html:169
 #, python-format
 msgid "retrieved %(retrieval_frequency)s"
 msgstr ""
 
-#: data_registry/templates/detail.html:166
+#: data_registry/templates/detail.html:169
 msgid "Retrieved from:"
 msgstr ""
 
-#: data_registry/templates/detail.html:174
+#: data_registry/templates/detail.html:177
 msgid "Data available"
 msgstr ""
 
-#: data_registry/templates/detail.html:178
+#: data_registry/templates/detail.html:181
 msgid ""
 "An individual contracting process has several different stages: tendering, "
 "awarding, contracting and implementation. You can dive into the details of "
@@ -185,132 +191,128 @@ msgid ""
 "contracting.org/latest/en/primer/how/\" target=\"_blank\">tutorial</a>."
 msgstr ""
 
-#: data_registry/templates/detail.html:185
+#: data_registry/templates/detail.html:188
 msgid "Parties"
 msgstr ""
 
-#: data_registry/templates/detail.html:187
+#: data_registry/templates/detail.html:190
 msgid "Count of parties:"
 msgstr ""
 
-#: data_registry/templates/detail.html:192
+#: data_registry/templates/detail.html:195
 msgid "Plannings"
 msgstr ""
 
-#: data_registry/templates/detail.html:194
+#: data_registry/templates/detail.html:197
 msgid "Count of planning activities:"
 msgstr ""
 
-#: data_registry/templates/detail.html:199
+#: data_registry/templates/detail.html:202
 msgid "Tenders"
 msgstr ""
 
-#: data_registry/templates/detail.html:201
+#: data_registry/templates/detail.html:204
 msgid "Count of tenders:"
 msgstr ""
 
-#: data_registry/templates/detail.html:203
+#: data_registry/templates/detail.html:206
 msgid "Count of tenderers:"
 msgstr ""
 
-#: data_registry/templates/detail.html:205
+#: data_registry/templates/detail.html:208
 msgid "Count of tender items:"
 msgstr ""
 
-#: data_registry/templates/detail.html:210
+#: data_registry/templates/detail.html:213
 msgid "Awards"
 msgstr ""
 
-#: data_registry/templates/detail.html:212
+#: data_registry/templates/detail.html:215
 msgid "Count of awards:"
 msgstr ""
 
-#: data_registry/templates/detail.html:214
+#: data_registry/templates/detail.html:217
 msgid "Count of award suppliers:"
 msgstr ""
 
-#: data_registry/templates/detail.html:216
+#: data_registry/templates/detail.html:219
 msgid "Count of award items:"
 msgstr ""
 
-#: data_registry/templates/detail.html:221
+#: data_registry/templates/detail.html:224
 msgid "Contracts"
 msgstr ""
 
-#: data_registry/templates/detail.html:223
+#: data_registry/templates/detail.html:226
 msgid "Count of contracts:"
 msgstr ""
 
-#: data_registry/templates/detail.html:225
+#: data_registry/templates/detail.html:228
 msgid "Count of contract items:"
 msgstr ""
 
-#: data_registry/templates/detail.html:227
+#: data_registry/templates/detail.html:230
 msgid "Count of contract transactions:"
 msgstr ""
 
-#: data_registry/templates/detail.html:232
+#: data_registry/templates/detail.html:235
 msgid "Documents"
 msgstr ""
 
-#: data_registry/templates/detail.html:234
+#: data_registry/templates/detail.html:237
 msgid "Count of documents:"
 msgstr ""
 
-#: data_registry/templates/detail.html:239
+#: data_registry/templates/detail.html:242
 msgid "Milestones"
 msgstr ""
 
-#: data_registry/templates/detail.html:241
+#: data_registry/templates/detail.html:244
 msgid "Count of milestones:"
 msgstr ""
 
-#: data_registry/templates/detail.html:246
+#: data_registry/templates/detail.html:249
 msgid "Amendments"
 msgstr ""
 
-#: data_registry/templates/detail.html:248
+#: data_registry/templates/detail.html:251
 msgid "Count of amendments:"
 msgstr ""
 
-#: data_registry/templates/detail.html:255
-msgid "This dataset has not yet been retrieved."
-msgstr ""
-
-#: data_registry/templates/detail.html:275
+#: data_registry/templates/detail.html:278
 msgid "Data quality"
 msgstr ""
 
-#: data_registry/templates/detail.html:289
+#: data_registry/templates/detail.html:292
 msgid "We have not yet prepared a data quality summary for this dataset."
 msgstr ""
 
-#: data_registry/templates/detail.html:295
+#: data_registry/templates/detail.html:298
 msgid "Last reviewed:"
 msgstr ""
 
-#: data_registry/templates/detail.html:306
+#: data_registry/templates/detail.html:309
 msgid "Data not available"
 msgstr ""
 
-#: data_registry/templates/detail.html:318
+#: data_registry/templates/detail.html:321
 msgid "Access data"
 msgstr ""
 
-#: data_registry/templates/detail.html:320
+#: data_registry/templates/detail.html:323
 msgid ""
 "This OCDS dataset is available for download in JSON, Excel or CSV format. "
 "You can download the data for contracting processes in a specific year or "
 "for all time."
 msgstr ""
 
-#: data_registry/templates/detail.html:325
+#: data_registry/templates/detail.html:328
 msgid ""
 "Each contracting process is represented as one line of JSON text in the "
 "<code>.jsonl</code> file."
 msgstr ""
 
-#: data_registry/templates/detail.html:330
+#: data_registry/templates/detail.html:333
 msgid ""
 "The <code>.jsonl</code> file is compressed using Gzip. Windows users need <a "
 "href=\"https://www.7-zip.org\" target=\"_blank\">7-Zip</a>, <a "
@@ -319,13 +321,15 @@ msgid ""
 "the <code>.gz</code> file."
 msgstr ""
 
-#: data_registry/templates/detail.html:339
+#: data_registry/templates/detail.html:342
 msgid ""
 "Each contracting process is represented as one row in the <code>main</code> "
-"sheet. Other sheets link to it via the <code>_link_main</code> column."
+"sheet. Other sheets link to it via the <code>main_ocid</code> column. In "
+"general, each sheet is linked to its parent sheet via the "
+"<code>[sheet_name]_id</code> column."
 msgstr ""
 
-#: data_registry/templates/detail.html:344
+#: data_registry/templates/detail.html:349
 msgid ""
 "Excel files can have at most <a href=\"https://support.microsoft.com/en-us/"
 "office/excel-specifications-and-"
@@ -334,13 +338,15 @@ msgid ""
 "files, instead."
 msgstr ""
 
-#: data_registry/templates/detail.html:353
+#: data_registry/templates/detail.html:358
 msgid ""
 "Each contracting process is represented as one row in the <code>main.csv</"
-"code> file. Other files link to it via the <code>_link_main</code> column."
+"code> file. Other files link to it via the <code>main_ocid</code> column. In "
+"general, each file is link to its parent file via the <code>[file_name]_id</"
+"code> column."
 msgstr ""
 
-#: data_registry/templates/detail.html:358
+#: data_registry/templates/detail.html:364
 msgid ""
 "The <code>.csv</code> files are archived using tar and compressed using "
 "Gzip. Windows users need <a href=\"https://www.7-zip.org\" "
@@ -349,11 +355,11 @@ msgid ""
 "target=\"_blank\">WinZip</a> to decompress the <code>.tar.gz</code> file."
 msgstr ""
 
-#: data_registry/templates/detail.html:378
+#: data_registry/templates/detail.html:384
 msgid "Have questions, feedback on this dataset or content on this page?"
 msgstr ""
 
-#: data_registry/templates/detail.html:383
+#: data_registry/templates/detail.html:389
 msgid "Contact Data Support Team"
 msgstr ""
 
@@ -540,11 +546,11 @@ msgstr[1] ""
 msgid "Showing all %(counter)s datasets"
 msgstr ""
 
-#: data_registry/templates/search.html:186
+#: data_registry/templates/search.html:189
 msgid "See details"
 msgstr ""
 
-#: data_registry/templates/search.html:199
+#: data_registry/templates/search.html:202
 msgid "Back to Top"
 msgstr ""
 

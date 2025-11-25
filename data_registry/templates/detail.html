@@ -340,8 +340,10 @@ document.querySelectorAll('a[download]').forEach(trackable => {
                 <h3>Excel</h3>
                 <p>
                     {% blocktranslate trimmed %}
-                    Each contracting process is represented as one row in the <code>main</code> sheet. Other sheets link to it via the <code>_link_main</code> column.
+                    Each contracting process is represented as one row in the <code>main</code> sheet. Other sheets link to it via the <code>main_ocid</code> column.
+                    In general, each sheet is linked to its parent sheet via the <code>[sheet_name]_id</code> column.
                     {% endblocktranslate %}
+
                 </p>
                 <p>
                     {% blocktranslate trimmed %}
@@ -354,7 +356,8 @@ document.querySelectorAll('a[download]').forEach(trackable => {
                 <h3>CSV</h3>
                 <p>
                     {% blocktranslate trimmed %}
-                    Each contracting process is represented as one row in the <code>main.csv</code> file. Other files link to it via the <code>_link_main</code> column.
+                    Each contracting process is represented as one row in the <code>main.csv</code> file. Other files link to it via the <code>main_ocid</code> column.
+                    In general, each file is link to its parent file via the <code>[file_name]_id</code> column.
                     {% endblocktranslate %}
                 </p>
                 <p>
