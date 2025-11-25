@@ -136,7 +136,6 @@ def flatterer_flatten(file_path, infile, outdir, *, csv=False, xlsx=False, threa
             pushdown=["ocid", "id"],  # copy fields to child tables as {parent}_ocid and {parent}_id
             no_link=True,  # do not create _link and _link_{parent} (instead use the pushdown fields)
             inline_one_to_one=True,  # inline arrays that always contain at most one entry
-            schema="path",
         )
     except RuntimeError as e:
         if not xlsx:  # CSV-only should succeed.
