@@ -23,21 +23,11 @@ def url_for_collection(*parts):
 
 def parse_date(dt):
     if dt:
-        # 2023-10-27T17:14:07:00Z nigeria_ebonyi_state
-        #                    ^^^
-        if dt.endswith("Z") and dt.count(":") == 3:
-            dt = ".".join(dt.rsplit(":", 1))
-
         # 2024-05-01 16:30:04.160T12:00:00Z italy_anac
         #                        ^^^^^^^^^
         if " " in dt and "T12:00:00" in dt:
-            dt = dt.replace("T12:00:00", "").replace(" ", "T")
-
-        if len(dt) == 10:
-            return datetime.strptime(dt, "%Y-%m-%d").date()
-        if "." in dt:
-            return datetime.strptime(dt, "%Y-%m-%dT%H:%M:%S.%f%z").date()
-        return datetime.strptime(dt, "%Y-%m-%dT%H:%M:%S%z").date()
+            dt = dt.replace("T12:00:00", "")
+        return datetime.fromisoformat(dt).date()
     return dt
 
 
