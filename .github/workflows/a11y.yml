@@ -21,6 +21,7 @@ jobs:
           cache: pip
           cache-dependency-path: '**/requirements*.txt'
       - run: npm ci --ignore-scripts
+      - run: npx puppeteer browsers install chrome
       - run: pip install -r requirements.txt
       - name: Build
         env:
