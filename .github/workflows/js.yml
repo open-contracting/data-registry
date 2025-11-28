@@ -11,5 +11,6 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: 22
+      - run: npm install --ignore-scripts eslint-plugin-html
       - run: npx standard --plugin html .
       - run: npx lockfile-lint --path package-lock.json --allowed-hosts npm --validate-https
