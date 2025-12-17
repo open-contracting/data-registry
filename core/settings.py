@@ -317,8 +317,8 @@ EXPORTER_PAGE_SIZE = 10000
 # The maximum size (in bytes) allowed to convert JSON files to Excel.
 EXPORTER_MAX_JSON_BYTES_TO_EXCEL = 1073741824  # 1 GB
 
-# When enabled, the view returns an X-Accel-Redirect header and nginx serves the file.
-USE_X_ACCEL_REDIRECT = os.getenv("USE_X_ACCEL_REDIRECT", "") == "True"
+# Respond to file requests with a redirect, to hand off to the web server.
+REDIRECT_DOWNLOADS = os.getenv("REDIRECT_DOWNLOADS", "") == "True"
 
 # The base URL of Spoonbill.
 SPOONBILL_URL = os.getenv("SPOONBILL_URL", "https://flatten.open-contracting.org")

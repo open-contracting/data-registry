@@ -266,22 +266,8 @@ def download_export(request, pk):
     if export.status != TaskStatus.COMPLETED:
         return HttpResponseNotFound("File not found")
 
-    if settings.USE_X_ACCEL_REDIRECT:
-        if name.endswith(".xlsx"):
-            content_type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        elif name.endswith(".csv.tar.gz"):
-            content_type = "application/gzip"
-        else:  # .jsonl.gz
-            content_type = "application/gzip"
-
-        return HttpResponse(
-            headers={
-                # Nginx must set an /internal/ location.
-                "X-Accel-Redirect": f"/internal/{collection.active_job_id}/{name}",
-                "Content-Disposition": f'attachment; filename="{collection.source_id}_{name}"',
-                "Content-Type": content_type,
-            },
-        )
+    if settings.REDIRECT_DOWNLOADS:
+        return redirect(f"/downloads/{collection.source_id}/{collection.active_job_id}/{name}")
 
     return FileResponse(
         export.path.open("rb"),
