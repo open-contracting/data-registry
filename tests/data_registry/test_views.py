@@ -142,6 +142,38 @@ class ViewsTests(TestCase):
             self.assertEqual(response.status_code, 404)
             self.assertEqual(response.content, b"File not found")
 
+    @override_settings(USE_X_ACCEL_REDIRECT=True)
+    def test_download_export_completed_x_accel(self):
+        for suffix, content_type in (
+            ("jsonl.gz", "application/gzip"),
+            ("csv.tar.gz", "application/gzip"),
+            ("xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"),
+        ):
+            with self.subTest(suffix=suffix), self.assertNumQueries(1):
+                response = Client().get(
+                    f"/en/publication/{self.collection1.pk}/download?name=2000.{suffix}",
+                    HTTP_ACCEPT_ENCODING="gzip",
+                )
+
+                response.headers.pop("Content-Length")  # 0 for X-Accel-Redirect responses
+
+                self.assertEqual(response.status_code, 200)
+                self.assertDictEqual(
+                    dict(response.headers),
+                    {
+                        "Content-Disposition": f'attachment; filename="paraguay_dncp_records_2000.{suffix}"',
+                        "Content-Language": "en",
+                        "Content-Type": content_type,
+                        "Cross-Origin-Opener-Policy": "same-origin",
+                        "Referrer-Policy": "same-origin",
+                        "Vary": "Cookie",
+                        "X-Content-Type-Options": "nosniff",
+                        "X-Frame-Options": "DENY",
+                        "X-Accel-Redirect": f"/internal/99/2000.{suffix}",
+                    },
+                )
+                self.assertFalse(hasattr(response, "streaming_content"))  #  Nginx serves the file
+
     def test_download_export_completed(self):
         for suffix, content_type in (
             ("jsonl.gz", "application/gzip"),
@@ -168,6 +200,7 @@ class ViewsTests(TestCase):
                         "Vary": "Cookie",
                         "X-Content-Type-Options": "nosniff",
                         "X-Frame-Options": "DENY",
+                        # No X-Accel-Redirect header.
                     },
                 )
                 with open(os.path.join("tests", "fixtures", "99", f"2000.{suffix}"), "rb") as f:
