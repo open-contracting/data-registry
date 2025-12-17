@@ -24,9 +24,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN groupadd -r runner && useradd --no-log-init -r -g runner runner
 
 # Must match the settings.KINGFISHER_COLLECT_FILES_STORE default value.
-RUN mkdir -p /data/collect && chown -R runner:runner /data/collect
+RUN mkdir -p /data/collect
 # Must match the settings.EXPORTER_DIR default value.
-RUN mkdir -p /data/exporter && chown -R runner:runner /data/exporter
+RUN mkdir -p /data/exporter
 
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
