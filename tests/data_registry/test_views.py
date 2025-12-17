@@ -142,7 +142,7 @@ class ViewsTests(TestCase):
             self.assertEqual(response.status_code, 404)
             self.assertEqual(response.content, b"File not found")
 
-    @override_settings(REDIRECT_DOWNLOADS=True)
+    @override_settings(DOWNLOADS_URL="https://cdn.example.com")
     def test_download_export_completed_redirect(self):
         for suffix in ("jsonl.gz", "csv.tar.gz", "xlsx"):
             with self.subTest(suffix=suffix), self.assertNumQueries(1):
@@ -159,7 +159,7 @@ class ViewsTests(TestCase):
                         "Content-Length": "0",
                         "Content-Type": "text/html; charset=utf-8",
                         "Cross-Origin-Opener-Policy": "same-origin",
-                        "Location": f"/downloads/paraguay_dncp_records/99/2000.{suffix}",
+                        "Location": f"https://cdn.example.com/downloads/paraguay_dncp_records/99/2000.{suffix}",
                         "Referrer-Policy": "same-origin",
                         "Vary": "Cookie",
                         "X-Content-Type-Options": "nosniff",

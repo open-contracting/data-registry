@@ -266,8 +266,8 @@ def download_export(request, pk):
     if export.status != TaskStatus.COMPLETED:
         return HttpResponseNotFound("File not found")
 
-    if settings.REDIRECT_DOWNLOADS:
-        return redirect(f"/downloads/{collection.source_id}/{collection.active_job_id}/{name}")
+    if settings.DOWNLOADS_URL:
+        return redirect(f"{settings.DOWNLOADS_URL}/downloads/{collection.source_id}/{collection.active_job_id}/{name}")
 
     return FileResponse(
         export.path.open("rb"),
