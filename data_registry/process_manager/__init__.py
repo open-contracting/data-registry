@@ -34,7 +34,7 @@ def get_task_manager(task: models.Task) -> TaskManager:
             raise NotImplementedError(repr(task.type))
 
 
-def process(collection: models.Collection) -> None:
+def process(collection: models.Collection, *, dry_run: bool = False) -> None:
     """
     If the collection is :meth:`out-of-date<data_registry.models.Collection.is_out_of_date>`, create a job.
 
@@ -53,13 +53,20 @@ def process(collection: models.Collection) -> None:
 
        - End the job
        - Update the collection's active job and last retrieved date
-       - Delete jobs that are more than a year older than the active job, but keep one other complete job
+       - Delete past unsuccessful jobs older than 180 days
+       - Delete past successful jobs with less than 10% more OCIDs
 
     In other words, this function advances each job by at most one task. As such, for all tasks of a job to succeed,
     this function needs to run at least as many times are there are tasks in the ``JOB_TASKS_PLAN`` setting.
+
+    :param collection: The collection to process
+    :param dry_run: Show what would be done, without making changes
     """
     if collection.is_out_of_date():
-        collection.job_set.create()  # see signals.py
+        if dry_run:
+            logger.info("DRY RUN: Would create job for out-of-date collection %s", collection)
+        else:
+            collection.job_set.create()  # see signals.py
 
     country = collection.country
 
@@ -67,6 +74,10 @@ def process(collection: models.Collection) -> None:
         with transaction.atomic():
             for task in job.task_set.exclude(status=models.Task.Status.COMPLETED).order_by("order"):
                 task_manager = get_task_manager(task)
+
+                if dry_run:
+                    logger.info("DRY RUN: Would check status of incomplete task %s for incomplete job %s", task, job)
+                    continue
 
                 try:
                     match task.status:
@@ -118,24 +129,49 @@ def process(collection: models.Collection) -> None:
                     break
             # All tasks completed successfully.
             else:
-                job.complete()
+                if dry_run:
+                    logger.info("DRY RUN: Would complete successful job %s and update collection %s", job, collection)
+                else:
+                    job.complete()
 
-                collection.last_retrieved = job.task_set.get(type=settings.JOB_TASKS_PLAN[0]).end
-                collection.active_job = job
-                if not collection.publication_policy:
-                    collection.publication_policy = job.publication_policy
-                collection.save()
+                    collection.last_retrieved = job.task_set.get(type=settings.JOB_TASKS_PLAN[0]).end
+                    collection.active_job = job
+                    if not collection.publication_policy:
+                        collection.publication_policy = job.publication_policy
+                    collection.save()
 
                 logger.debug("Job %s has succeeded (%s: %s)", job, country, collection)
 
-                # Keep the other most recent successful job as backup.
-                other_jobs = collection.job_set.exclude(pk=job.pk)
-                backup_job = other_jobs.successful().order_by("start").values_list("pk", flat=True).last()
-                if backup_job:
-                    other_jobs = other_jobs.exclude(pk=backup_job)
+                old_jobs = collection.job_set.exclude(pk=job.pk)
+                # Keep the second-most recent successful job.
+                old_successful_jobs = old_jobs.successful().order_by("-start")[1:]
+                # Keep unsuccessful jobs for six months, for debugging.
+                old_unsuccessful_jobs = old_jobs.unsuccessful().filter(start__lt=now() - datetime.timedelta(days=180))
+                # NOTE: Administrators must check incomplete jobs manually.
 
-                # There must be at most one incomplete job per collection, for deletion to not conflict with iteration.
-                for old_job in other_jobs.filter(start__lt=now() - datetime.timedelta(days=365)):
-                    # Note: The Collect task's wipe() method can be slow.
-                    old_job.delete()
-                    logger.debug("Old job %s has been deleted (%s: %s)", old_job, country, collection)
+                # NOTE: The Collect task's wipe() method can be slow.
+
+                for old_job in old_unsuccessful_jobs:
+                    if dry_run:
+                        logger.info("DRY RUN: Would delete old unsuccessful job %s", old_job)
+                    else:
+                        old_job.delete()
+                        logger.debug("Deleted old unsuccessful job %s (%s: %s)", old_job, country, collection)
+
+                new_ocid_count = job.coverage.get("/ocid", 0)
+                for old_job in old_successful_jobs:
+                    old_ocid_count = old_job.coverage.get("/ocid", 0)
+                    if old_ocid_count <= new_ocid_count * 1.1:
+                        if dry_run:
+                            logger.info("DRY RUN: Would delete old successful job %s", old_job)
+                        else:
+                            old_job.delete()
+                            logger.debug("Deleted old successful job %s (%s: %s)", old_job, country, collection)
+                    else:
+                        logger.warning(
+                            "Keeping old job %s with over 10%% more OCIDs than newest job %s (%s >> %s)",
+                            old_job,
+                            job,
+                            old_ocid_count,
+                            new_ocid_count,
+                        )

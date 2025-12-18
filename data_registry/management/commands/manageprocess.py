@@ -12,9 +12,20 @@ logger = logging.getLogger(__name__)
 class Command(BaseCommand):
     help = "Orchestrate and evaluate all jobs and tasks"
 
+    def add_arguments(self, parser):
+        parser.add_argument("--dry-run", action="store_true", help="Show what would be done, without making changes")
+
     def handle(self, *args, **options):
+        dry_run = options["dry_run"]
+        if dry_run:
+            logger.info("DRY RUN: No actions are actually performed")
+
         for collection in Collection.objects.all():
-            process(collection)
+            process(collection, dry_run=dry_run)
+
+        if dry_run:
+            logger.info("DRY RUN: Would wipe task data and archive jobs")
+            return
 
         # Complete jobs, whose temporary data isn't to be preserved or already deleted.
         for job in Job.objects.prefetch_related("task_set").complete().filter(keep_all_data=False, archived=False):
