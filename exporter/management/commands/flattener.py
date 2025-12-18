@@ -89,7 +89,9 @@ def process_file(job_id, file_path):
                 logger.debug("CSV already done and XLSX limit exceeded job_id=%s file_path=%s", job_id, file_path)
                 return
 
-            output = flatterer_flatten(file_path, str(infile), str(outdir), csv=csv, xlsx=xlsx)
+            # Limit threads to avoid "Could not write to file as your operating system says it has too many files open.
+            # Try and change limit by setting `ulimit -n 1024`"
+            output = flatterer_flatten(file_path, str(infile), str(outdir), csv=csv, xlsx=xlsx, threads=4)
 
             if csv:
                 with tarfile.open(csv_path, "w:gz") as tar:
