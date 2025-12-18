@@ -48,7 +48,10 @@ class Process(TaskManager):
         ).json()
 
         original_collection = next(c for c in tree if c["transform_type"] == "")
-        compiled_collection = next(c for c in tree if c["transform_type"] == "compile-releases")
+        try:
+            compiled_collection = next(c for c in tree if c["transform_type"] == "compile-releases")
+        except StopIteration:
+            raise IrrecoverableError("No compiled collection") from None
 
         if not original_collection["completed_at"] or not compiled_collection["completed_at"]:
             return Task.Status.RUNNING
