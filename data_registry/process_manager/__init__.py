@@ -16,6 +16,9 @@ from data_registry.process_manager.util import TaskManager
 
 logger = logging.getLogger(__name__)
 
+FLATTENER_EXECUTION_LIMIT = datetime.timedelta(days=1)
+UNSUCCESSFUL_JOB_RETENTION = datetime.timedelta(days=180)
+
 
 def get_task_manager(task: models.Task) -> TaskManager:
     """Instantiate and return a task manager for the task."""
@@ -51,7 +54,7 @@ def delete_older_jobs(collection: models.Collection, job: models.Job, *, dry_run
     # Keep the second-most recent successful job.
     old_successful_jobs = other_jobs.successful().order_by("-start")[1:]
     # Keep unsuccessful jobs for six months, for debugging.
-    old_unsuccessful_jobs = other_jobs.unsuccessful().filter(start__lt=now() - datetime.timedelta(days=180))
+    old_unsuccessful_jobs = other_jobs.unsuccessful().filter(start__lt=now() - UNSUCCESSFUL_JOB_RETENTION)
     # NOTE: Administrators must check incomplete jobs manually.
 
     # NOTE: The Collect task's wipe() method can be slow.
@@ -152,6 +155,17 @@ def process(collection: models.Collection, *, dry_run: bool = False) -> None:
                             match status:
                                 case models.Task.Status.WAITING | models.Task.Status.RUNNING:
                                     task.progress()  # The application is responding (again). Reset any progress.
+
+                                    # Check if the flattener task has been stuck for a day.
+                                    if (
+                                        task.type == models.Task.Type.FLATTENER
+                                        and now() - task.start > FLATTENER_EXECUTION_LIMIT
+                                    ):
+                                        # Perform the same actions as the PLANNED branch.
+                                        task_manager.run()
+
+                                        task.initiate()
+                                        logger.warning("Task %s is restarting (%s: %s)", task, country, collection)
 
                                     break
                                 case models.Task.Status.COMPLETED:
