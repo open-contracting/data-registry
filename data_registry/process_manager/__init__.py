@@ -76,7 +76,9 @@ def process(collection: models.Collection, *, dry_run: bool = False) -> None:
                 task_manager = get_task_manager(task)
 
                 if dry_run:
-                    logger.info("DRY RUN: Would check status of incomplete task %s for incomplete job %s", task, job)
+                    logger.info(
+                        "DRY RUN: Would check status of task %s for job %s (%s: %s)", task, job, country, collection
+                    )
                     continue
 
                 try:
@@ -130,7 +132,9 @@ def process(collection: models.Collection, *, dry_run: bool = False) -> None:
             # All tasks completed successfully.
             else:
                 if dry_run:
-                    logger.info("DRY RUN: Would complete successful job %s and update collection %s", job, collection)
+                    logger.info(
+                        "DRY RUN: Would complete job %s and update collection %s (%s)", job, collection, country
+                    )
                 else:
                     job.complete()
 
@@ -153,7 +157,9 @@ def process(collection: models.Collection, *, dry_run: bool = False) -> None:
 
                 for old_job in old_unsuccessful_jobs:
                     if dry_run:
-                        logger.info("DRY RUN: Would delete old unsuccessful job %s", old_job)
+                        logger.info(
+                            "DRY RUN: Would delete old unsuccessful job %s (%s: %s)", old_job, country, collection
+                        )
                     else:
                         old_job.delete()
                         logger.debug("Deleted old unsuccessful job %s (%s: %s)", old_job, country, collection)
@@ -163,15 +169,19 @@ def process(collection: models.Collection, *, dry_run: bool = False) -> None:
                     old_ocid_count = old_job.coverage.get("/ocid", 0)
                     if old_ocid_count <= new_ocid_count * 1.1:
                         if dry_run:
-                            logger.info("DRY RUN: Would delete old successful job %s", old_job)
+                            logger.info(
+                                "DRY RUN: Would delete old successful job %s (%s: %s)", old_job, country, collection
+                            )
                         else:
                             old_job.delete()
                             logger.debug("Deleted old successful job %s (%s: %s)", old_job, country, collection)
                     else:
                         logger.warning(
-                            "Keeping old job %s with over 10%% more OCIDs than newest job %s (%s >> %s)",
+                            "Keeping old job %s with over 10%% more OCIDs than newest job %s (%s >> %s) (%s: %s)",
                             old_job,
                             job,
                             old_ocid_count,
                             new_ocid_count,
+                            country,
+                            collection,
                         )
