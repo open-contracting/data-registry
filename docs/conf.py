@@ -51,3 +51,4 @@ autodoc_default_options = {
     "member-order": "bysource",
 }
 autodoc_typehints = "description"
+autodoc_mock_imports = ["flatterer", "ocdscardinal"]

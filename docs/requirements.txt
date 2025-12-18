@@ -1,2 +1,14 @@
--r ../requirements.txt
+dj-database-url
+django<5
+django-modeltranslation
+#flatterr
+gunicorn[setproctitle]
+markdown-it-py
+#ocdscardinal
+psycopg2
+requests
+scrapyloganalyzer
+sentry-sdk
+yapw[perf]
+
 furo
