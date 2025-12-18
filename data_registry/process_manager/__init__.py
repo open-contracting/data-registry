@@ -34,6 +34,56 @@ def get_task_manager(task: models.Task) -> TaskManager:
             raise NotImplementedError(repr(task.type))
 
 
+def delete_older_jobs(collection: models.Collection, job: models.Job, *, dry_run: bool = False) -> None:
+    """
+    Delete old jobs for a collection.
+
+    - Delete past unsuccessful jobs older than 180 days
+    - Delete past successful jobs with less than 10% more OCIDs, keeping the second-most recent job
+
+    :param collection: The collection on which to operate
+    :param job: A job to keep and to which to compare OCID counts
+    :param dry_run: Show what would be done, without making changes
+    """
+    country = collection.country
+
+    old_jobs = collection.job_set.exclude(pk=job.pk)
+    # Keep the second-most recent successful job.
+    old_successful_jobs = old_jobs.successful().order_by("-start")[1:]
+    # Keep unsuccessful jobs for six months, for debugging.
+    old_unsuccessful_jobs = old_jobs.unsuccessful().filter(start__lt=now() - datetime.timedelta(days=180))
+    # NOTE: Administrators must check incomplete jobs manually.
+
+    # NOTE: The Collect task's wipe() method can be slow.
+
+    for old_job in old_unsuccessful_jobs:
+        if dry_run:
+            logger.info("DRY RUN: Would delete old unsuccessful job %s (%s: %s)", old_job, country, collection)
+        else:
+            old_job.delete()
+            logger.debug("Deleted old unsuccessful job %s (%s: %s)", old_job, country, collection)
+
+    new_ocid_count = job.coverage.get("/ocid", 0)
+    for old_job in old_successful_jobs:
+        old_ocid_count = old_job.coverage.get("/ocid", 0)
+        if old_ocid_count <= new_ocid_count * 1.1:
+            if dry_run:
+                logger.info("DRY RUN: Would delete old successful job %s (%s: %s)", old_job, country, collection)
+            else:
+                old_job.delete()
+                logger.debug("Deleted old successful job %s (%s: %s)", old_job, country, collection)
+        else:
+            logger.warning(
+                "Keeping old job %s with over 10%% more OCIDs than newest job %s (%s >> %s) (%s: %s)",
+                old_job,
+                job,
+                old_ocid_count,
+                new_ocid_count,
+                country,
+                collection,
+            )
+
+
 def process(collection: models.Collection, *, dry_run: bool = False) -> None:
     """
     If the collection is :meth:`out-of-date<data_registry.models.Collection.is_out_of_date>`, create a job.
@@ -54,7 +104,7 @@ def process(collection: models.Collection, *, dry_run: bool = False) -> None:
        - End the job
        - Update the collection's active job and last retrieved date
        - Delete past unsuccessful jobs older than 180 days
-       - Delete past successful jobs with less than 10% more OCIDs
+       - Delete past successful jobs with less than 10% more OCIDs, keeping the second-most recent job
 
     In other words, this function advances each job by at most one task. As such, for all tasks of a job to succeed,
     this function needs to run at least as many times are there are tasks in the ``JOB_TASKS_PLAN`` setting.
@@ -62,13 +112,13 @@ def process(collection: models.Collection, *, dry_run: bool = False) -> None:
     :param collection: The collection to process
     :param dry_run: Show what would be done, without making changes
     """
+    country = collection.country
+
     if collection.is_out_of_date():
         if dry_run:
-            logger.info("DRY RUN: Would create job for out-of-date collection %s", collection)
+            logger.info("DRY RUN: Would create job for out-of-date collection %s: %s", country, collection)
         else:
             collection.job_set.create()  # see signals.py
-
-    country = collection.country
 
     for job in collection.job_set.incomplete():
         with transaction.atomic():
@@ -133,7 +183,7 @@ def process(collection: models.Collection, *, dry_run: bool = False) -> None:
             else:
                 if dry_run:
                     logger.info(
-                        "DRY RUN: Would complete job %s and update collection %s (%s)", job, collection, country
+                        "DRY RUN: Would complete job %s and update collection %s: %s", job, country, collection
                     )
                 else:
                     job.complete()
@@ -146,42 +196,4 @@ def process(collection: models.Collection, *, dry_run: bool = False) -> None:
 
                 logger.debug("Job %s has succeeded (%s: %s)", job, country, collection)
 
-                old_jobs = collection.job_set.exclude(pk=job.pk)
-                # Keep the second-most recent successful job.
-                old_successful_jobs = old_jobs.successful().order_by("-start")[1:]
-                # Keep unsuccessful jobs for six months, for debugging.
-                old_unsuccessful_jobs = old_jobs.unsuccessful().filter(start__lt=now() - datetime.timedelta(days=180))
-                # NOTE: Administrators must check incomplete jobs manually.
-
-                # NOTE: The Collect task's wipe() method can be slow.
-
-                for old_job in old_unsuccessful_jobs:
-                    if dry_run:
-                        logger.info(
-                            "DRY RUN: Would delete old unsuccessful job %s (%s: %s)", old_job, country, collection
-                        )
-                    else:
-                        old_job.delete()
-                        logger.debug("Deleted old unsuccessful job %s (%s: %s)", old_job, country, collection)
-
-                new_ocid_count = job.coverage.get("/ocid", 0)
-                for old_job in old_successful_jobs:
-                    old_ocid_count = old_job.coverage.get("/ocid", 0)
-                    if old_ocid_count <= new_ocid_count * 1.1:
-                        if dry_run:
-                            logger.info(
-                                "DRY RUN: Would delete old successful job %s (%s: %s)", old_job, country, collection
-                            )
-                        else:
-                            old_job.delete()
-                            logger.debug("Deleted old successful job %s (%s: %s)", old_job, country, collection)
-                    else:
-                        logger.warning(
-                            "Keeping old job %s with over 10%% more OCIDs than newest job %s (%s >> %s) (%s: %s)",
-                            old_job,
-                            job,
-                            old_ocid_count,
-                            new_ocid_count,
-                            country,
-                            collection,
-                        )
+                delete_older_jobs(collection, job, dry_run=dry_run)
