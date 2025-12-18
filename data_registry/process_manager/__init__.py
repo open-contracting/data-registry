@@ -47,11 +47,11 @@ def delete_older_jobs(collection: models.Collection, job: models.Job, *, dry_run
     """
     country = collection.country
 
-    old_jobs = collection.job_set.exclude(pk=job.pk)
+    other_jobs = collection.job_set.exclude(pk=job.pk)
     # Keep the second-most recent successful job.
-    old_successful_jobs = old_jobs.successful().order_by("-start")[1:]
+    old_successful_jobs = other_jobs.successful().order_by("-start")[1:]
     # Keep unsuccessful jobs for six months, for debugging.
-    old_unsuccessful_jobs = old_jobs.unsuccessful().filter(start__lt=now() - datetime.timedelta(days=180))
+    old_unsuccessful_jobs = other_jobs.unsuccessful().filter(start__lt=now() - datetime.timedelta(days=180))
     # NOTE: Administrators must check incomplete jobs manually.
 
     # NOTE: The Collect task's wipe() method can be slow.
@@ -104,7 +104,7 @@ def process(collection: models.Collection, *, dry_run: bool = False) -> None:
        - End the job
        - Update the collection's active job and last retrieved date
        - Delete past unsuccessful jobs older than 180 days
-       - Delete past successful jobs with less than 10% more OCIDs, keeping the second-most recent job
+       - Delete past successful jobs with less than 10% more OCIDs, keeping the active and next-most recent job
 
     In other words, this function advances each job by at most one task. As such, for all tasks of a job to succeed,
     this function needs to run at least as many times are there are tasks in the ``JOB_TASKS_PLAN`` setting.

@@ -1,5 +1,9 @@
+import logging
+
 from data_registry.process_manager.util import TaskManager, exporter_status_to_task_status, skip_if_not_started
 from exporter.util import Export, publish
+
+logger = logging.getLogger(__name__)
 
 
 class Exporter(TaskManager):
@@ -23,4 +27,5 @@ class Exporter(TaskManager):
 
     @skip_if_not_started
     def wipe(self):
+        logger.info("%s: Wiping exported data", self)
         publish({"job_id": self.job.pk}, "wiper_init")
