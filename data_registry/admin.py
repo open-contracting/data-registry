@@ -417,7 +417,7 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
                                 "<code>id</code>.</li>"
                             )
                         else:
-                            group_name = tuple(data.items()) if data else "Uncategorized"
+                            group_name = data.get("type", "Uncategorized")
                             for line in note.split("\n"):
                                 groups[group_name].append(line)
 
