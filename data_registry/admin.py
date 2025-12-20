@@ -426,7 +426,7 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
 
                     for group_name, group_notes in groups.items():
                         html.append(f"<details><summary>{escape(group_name)} ({len(group_notes)})</summary><dl>")
-                        html.extend(f"<dd>{urlize(escape(note))}</dd>" for note in group_notes)
+                        html.extend(f"<dd>{urlize(escape(note))} ({escape(data)})</dd>" for note in group_notes)
                         html.append("</dl></details>")
 
         return mark_safe("".join(html))
