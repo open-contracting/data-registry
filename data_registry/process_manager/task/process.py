@@ -1,5 +1,4 @@
 import logging
-import re
 from collections import Counter
 from datetime import datetime
 from urllib.parse import urljoin
@@ -11,10 +10,6 @@ from data_registry.models import Task, TaskNote
 from data_registry.process_manager.util import TaskManager
 
 logger = logging.getLogger(__name__)
-
-OCDS_MERGE_WARNING_PATTERN = re.compile(
-    r"^Multiple objects have the `id` value '.+' in the `(.+)` array$", re.MULTILINE
-)
 
 
 def url_for_collection(*parts):
@@ -83,8 +78,8 @@ class Process(TaskManager):
         counter = Counter()
         warning_notes = []
         for note, data in process_notes["WARNING"]:
-            if note.startswith("Multiple objects have the `id` value "):
-                counter.update(OCDS_MERGE_WARNING_PATTERN.findall(note))
+            if data.get("type") == "DuplicateIdValueWarning":
+                counter += Counter(data["paths"])
             else:
                 warning_notes.append([note, data])
         for path, count in counter.items():

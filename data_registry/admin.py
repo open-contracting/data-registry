@@ -408,6 +408,7 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
                     counts = []
                     groups = defaultdict(list)
                     for note, data in notes:
+                        # See special handling in data_registry/process_manager/task/process.py.
                         if note == "OCDS Merge":
                             count = data["count"]
                             counts.append(
