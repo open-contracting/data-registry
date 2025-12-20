@@ -398,7 +398,7 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
             .order_by("order")
             .values_list("id", "type", "order")
         ):
-            html.append(f"<h2>{task_type} ({task_order}/{len(settings.JOB_TASKS_PLAN)})</h2>")
+            html.append(f"<h2>{task_type.capitalize()} ({task_order}/{len(settings.JOB_TASKS_PLAN)})</h2>")
 
             for level in ("ERROR", "WARNING"):
                 notes = TaskNote.objects.filter(task_id=task_id, level=level).values_list("note", "data")
@@ -417,17 +417,19 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
                                 "<code>id</code>.</li>"
                             )
                         else:
-                            group_name = data.get("type", "Uncategorized")
-                            for line in note.split("\n"):
-                                groups[group_name].append(line)
+                            group_name = data.pop("type", "Uncategorized")
+                            groups[group_name].append((note, data))
 
                     if counts:
                         html.append(f'<ul class="ms-0">{"".join(counts)}</ul>')
 
                     for group_name, group_notes in groups.items():
-                        html.append(f"<details><summary>{escape(group_name)} ({len(group_notes)})</summary><dl>")
-                        html.extend(f"<dd>{urlize(escape(note))} ({escape(data)})</dd>" for note in group_notes)
-                        html.append("</dl></details>")
+                        html.append(f'<h4>{escape(group_name)} ({len(group_notes)})</h4><ul class="unordered-list">')
+                        html.extend(
+                            f"<li>{urlize(escape(note))} <code>{escape(data)}</code></li>"
+                            for note, data in group_notes
+                        )
+                        html.append("</ul>")
 
         return mark_safe("".join(html))
 

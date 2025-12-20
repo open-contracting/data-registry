@@ -9,3 +9,10 @@
 .ms-0 {
     margin-left: 0 !important;
 }
+.unordered-list {
+    margin-left: 0 !important;
+    padding-left: 2em !important;
+}
+.unordered-list li {
+    list-style: disc !important;
+}
