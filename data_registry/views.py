@@ -92,7 +92,6 @@ def search(request):
     qs = (
         collection_queryset(request)
         .select_related("active_job")
-        .defer("active_job__process_notes")
         .annotate(
             **{count: F(f"active_job__{count}") for count in counts},
         )
@@ -163,7 +162,7 @@ def search(request):
 
 def detail(request, pk):
     collection = get_object_or_404(
-        collection_queryset(request).select_related("active_job", "license_custom").defer("active_job__process_notes"),
+        collection_queryset(request).select_related("active_job", "license_custom"),
         pk=pk,
     )
 

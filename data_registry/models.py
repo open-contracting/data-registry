@@ -67,11 +67,6 @@ class Job(models.Model):
         "<dd>The ID of the compiled collection in Kingfisher Process</dd>"
         "</dl>",
     )
-    process_notes = models.JSONField(
-        blank=True,
-        default=dict,
-        help_text="The collection notes from Kingfisher Process.",
-    )
 
     # Job logic
     archived = models.BooleanField(
@@ -491,3 +486,27 @@ class Task(models.Model):
         self.result = result
         self.note = note
         self.save()
+
+
+class TaskNote(models.Model):
+    class Level(models.TextChoices):
+        WARNING = "WARNING", "WARNING"
+        ERROR = "ERROR", "ERROR"
+
+    task = models.ForeignKey("Task", on_delete=models.CASCADE)
+    level = models.TextField(choices=Level.choices)
+    note = models.TextField()
+    data = models.JSONField(blank=True, default=dict)
+
+    # Timestamps
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "task note"
+        indexes = [
+            models.Index(fields=["task", "level"]),
+        ]
+
+    def __str__(self):
+        return f"{self.level}: {self.note[:50]}"

@@ -6,7 +6,7 @@ from django.conf import settings
 from django.contrib import admin, messages
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.humanize.templatetags import humanize
-from django.db.models import OuterRef, Q, Subquery
+from django.db.models import Exists, OuterRef, Q, Subquery
 from django.http import HttpResponseRedirect
 from django.template.defaultfilters import pluralize
 from django.urls import NoReverseMatch, reverse
@@ -18,7 +18,7 @@ from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, Translati
 
 from data_registry import forms
 from data_registry.exceptions import RecoverableError
-from data_registry.models import Collection, Job, License, Task
+from data_registry.models import Collection, Job, License, Task, TaskNote
 from data_registry.util import CHANGE, CHANGELIST, intcomma, partialclass
 
 logger = logging.getLogger(__name__)
@@ -302,7 +302,7 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
         (
             "Logs",
             {
-                "fields": ("formatted_process_notes",),
+                "fields": ("formatted_task_notes",),
             },
         ),
         (
@@ -345,7 +345,7 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
         "active",
         "archived",
         "context",
-        "formatted_process_notes",
+        "formatted_task_notes",
         "start",
         "end",
         # Overview
@@ -383,42 +383,50 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
         return (
             super()
             .get_queryset(request)
-            .defer("process_notes")
             .annotate(
                 last_completed_task_type=Subquery(subquery.values("type")),
                 last_completed_task_order=Subquery(subquery.values("order")),
             )
         )
 
-    @admin.display(description="Process notes")
-    def formatted_process_notes(self, obj):
+    @admin.display(description="Task notes")
+    def formatted_task_notes(self, obj):
         html = []
 
-        for level, notes in obj.process_notes.items():
-            if notes:
-                html.append(f"<h3>{level}</h3>")
+        for task_id, task_type, task_order in (
+            obj.task_set.filter(Exists(TaskNote.objects.filter(task=OuterRef("pk"))))
+            .order_by("order")
+            .values_list("id", "type", "order")
+        ):
+            html.append(f"<h2>{task_type} ({task_order}/{len(settings.JOB_TASKS_PLAN)})</h2>")
 
-                counts = []
-                groups = defaultdict(list)
-                for note, data in notes:
-                    if note == "OCDS Merge":
-                        count = data["count"]
-                        counts.append(
-                            f"<li>{humanize.intcomma(count)} merge warning{pluralize(count)} about multiple objects "
-                            f"in the <code>{escape(data['path'])}</code> array having the same <code>id</code>.</li>"
-                        )
-                    else:
-                        group_name = tuple(data.items()) if data else "Uncategorized"
-                        for line in note.split("\n"):
-                            groups[group_name].append(line)
+            for level in ("ERROR", "WARNING"):
+                notes = TaskNote.objects.filter(task_id=task_id, level=level).values_list("note", "data")
+                if notes:
+                    html.append(f"<h3>{level}</h3>")
 
-                if counts:
-                    html.append(f'<ul class="ms-0">{"".join(counts)}</ul>')
+                    counts = []
+                    groups = defaultdict(list)
+                    for note, data in notes:
+                        if note == "OCDS Merge":
+                            count = data["count"]
+                            counts.append(
+                                f"<li>{humanize.intcomma(count)} merge warning{pluralize(count)} about multiple "
+                                f"objects in the <code>{escape(data['path'])}</code> array having the same "
+                                "<code>id</code>.</li>"
+                            )
+                        else:
+                            group_name = tuple(data.items()) if data else "Uncategorized"
+                            for line in note.split("\n"):
+                                groups[group_name].append(line)
 
-                for group_name, group_notes in groups.items():
-                    html.append(f"<details><summary>{escape(group_name)} ({len(group_notes)})</summary><dl>")
-                    html.extend(f"<dd>{urlize(escape(note))}</dd>" for note in group_notes)
-                    html.append("</dl></details>")
+                    if counts:
+                        html.append(f'<ul class="ms-0">{"".join(counts)}</ul>')
+
+                    for group_name, group_notes in groups.items():
+                        html.append(f"<details><summary>{escape(group_name)} ({len(group_notes)})</summary><dl>")
+                        html.extend(f"<dd>{urlize(escape(note))}</dd>" for note in group_notes)
+                        html.append("</dl></details>")
 
         return mark_safe("".join(html))
 

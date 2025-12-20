@@ -7,7 +7,7 @@ from urllib.parse import urljoin
 from django.conf import settings
 
 from data_registry.exceptions import IrrecoverableError
-from data_registry.models import Task
+from data_registry.models import Task, TaskNote
 from data_registry.process_manager.util import TaskManager
 
 logger = logging.getLogger(__name__)
@@ -91,7 +91,16 @@ class Process(TaskManager):
             warning_notes.append(["OCDS Merge", {"count": count, "path": path}])
         process_notes["WARNING"] = warning_notes
 
-        self.job.process_notes = process_notes
+        # Delete any existing task notes, in case of retries.
+        self.task.tasknote_set.delete()
+
+        self.task.tasknote_set.bulk_create(
+            [
+                TaskNote(level=level, note=note, data=data)
+                for level, notes in process_notes.items()
+                for note, data in notes
+            ]
+        )
 
         self.job.save(
             update_fields=[
@@ -102,7 +111,6 @@ class Process(TaskManager):
                 "license",
                 "publication_policy",
                 "ocid_prefix",
-                "process_notes",
             ]
         )
 
