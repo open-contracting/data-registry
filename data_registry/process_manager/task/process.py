@@ -91,7 +91,7 @@ class Process(TaskManager):
 
         self.task.tasknote_set.bulk_create(
             [
-                TaskNote(level=level, note=note, data=data)
+                TaskNote(task=self.task, level=level, note=note, data=data)
                 for level, notes in process_notes.items()
                 for note, data in notes
             ]
