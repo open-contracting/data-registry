@@ -124,17 +124,15 @@ def process(collection: models.Collection, *, dry_run: bool = False) -> None:
             collection.job_set.create()  # see signals.py
 
     for job in collection.job_set.incomplete():
-        with transaction.atomic():
-            for task in job.task_set.exclude(status=models.Task.Status.COMPLETED).order_by("order"):
-                task_manager = get_task_manager(task)
+        for task in job.task_set.exclude(status=models.Task.Status.COMPLETED).order_by("order"):
+            task_manager = get_task_manager(task)
 
-                if dry_run:
-                    logger.info(
-                        "DRY RUN: Would check status of task %s for job %s (%s: %s)", task, job, country, collection
-                    )
-                    continue
+            if dry_run:
+                logger.info("DRY RUN: Would progress task %s for job %s (%s: %s)", task, job, country, collection)
+                continue
 
-                try:
+            try:
+                with transaction.atomic():
                     match task.status:
                         case models.Task.Status.PLANNED:
                             # If this is the first task...
@@ -172,34 +170,33 @@ def process(collection: models.Collection, *, dry_run: bool = False) -> None:
                                     task.complete(result=models.Task.Result.OK)
 
                                     # Do not break! Go onto the next task.
-                except RecoverableError as e:
-                    logger.exception("Recoverable exception during task %s (%s: %s)", task, country, collection)
-                    task.progress(result=models.Task.Result.FAILED, note=str(e))  # The application is not responding.
+            except RecoverableError as e:
+                logger.exception("Recoverable exception during task %s (%s: %s)", task, country, collection)
+                task.progress(result=models.Task.Result.FAILED, note=str(e))  # The application is not responding.
 
-                    break
-                except IrrecoverableError as e:
-                    logger.warning("Irrecoverable error during task %s (%s: %s): %s", task, country, collection, e)
-                    task.complete(result=models.Task.Result.FAILED, note=str(e))
+                break
+            except IrrecoverableError as e:
+                logger.warning("Irrecoverable error during task %s (%s: %s): %s", task, country, collection, e)
+                task.complete(result=models.Task.Result.FAILED, note=str(e))
 
-                    job.complete()
-                    logger.warning("Job %s has failed (%s: %s)", job, country, collection)
+                job.complete()
+                logger.warning("Job %s has failed (%s: %s)", job, country, collection)
 
-                    break
-                except Exception as e:
-                    logger.exception("Unhandled exception during task %s (%s: %s)", task, country, collection)
-                    task.complete(result=models.Task.Result.FAILED, note=str(e))
+                break
+            except Exception as e:
+                logger.exception("Unhandled exception during task %s (%s: %s)", task, country, collection)
+                task.complete(result=models.Task.Result.FAILED, note=str(e))
 
-                    job.complete()
-                    logger.warning("Job %s has failed (%s: %s)", job, country, collection)
+                job.complete()
+                logger.warning("Job %s has failed (%s: %s)", job, country, collection)
 
-                    break
-            # All tasks completed successfully.
+                break
+        # All tasks completed successfully.
+        else:
+            if dry_run:
+                logger.info("DRY RUN: Would complete job %s and update collection %s: %s", job, country, collection)
             else:
-                if dry_run:
-                    logger.info(
-                        "DRY RUN: Would complete job %s and update collection %s: %s", job, country, collection
-                    )
-                else:
+                with transaction.atomic():
                     job.complete()
 
                     collection.last_retrieved = job.task_set.get(type=settings.JOB_TASKS_PLAN[0]).end
@@ -208,6 +205,6 @@ def process(collection: models.Collection, *, dry_run: bool = False) -> None:
                         collection.publication_policy = job.publication_policy
                     collection.save()
 
-                logger.debug("Job %s has succeeded (%s: %s)", job, country, collection)
+            logger.debug("Job %s has succeeded (%s: %s)", job, country, collection)
 
-                delete_older_jobs(collection, job, dry_run=dry_run)
+            delete_older_jobs(collection, job, dry_run=dry_run)
