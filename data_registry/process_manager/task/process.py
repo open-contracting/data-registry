@@ -87,7 +87,7 @@ class Process(TaskManager):
         process_notes["WARNING"] = warning_notes
 
         # Delete any existing task notes, in case of retries.
-        self.task.tasknote_set.delete()
+        self.task.tasknote_set.all().delete()
 
         self.task.tasknote_set.bulk_create(
             [
