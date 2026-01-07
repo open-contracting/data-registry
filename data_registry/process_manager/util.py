@@ -106,6 +106,8 @@ class TaskManager(ABC):
         This method can write metadata about the task to the job. Since this method can be called many times, write
         metadata only when the metadata is missing or when the task is complete.
 
+        This method is expected to be called within a transaction.
+
         :raises RecoverableError:
         """
 
