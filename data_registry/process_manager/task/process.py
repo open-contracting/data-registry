@@ -74,7 +74,7 @@ class Process(TaskManager):
             error_message=f"Unable to get notes of collection {original_collection['id']}",
         ).json()
 
-        # OCDS Merge has one warning type, which can be issued millions of times.
+        # DuplicateIdValueWarning can be issued millions of times.
         counter = Counter()
         warning_notes = []
         for note, data in process_notes["WARNING"]:
