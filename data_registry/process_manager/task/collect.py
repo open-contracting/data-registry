@@ -2,6 +2,7 @@ import logging
 import os
 import re
 import shutil
+from collections import Counter
 
 import requests
 from django.conf import settings
@@ -11,7 +12,7 @@ from django.urls import reverse
 from scrapyloganalyzer import ScrapyLogFile
 
 from data_registry.exceptions import ConfigurationError, IrrecoverableError, RecoverableError, UnexpectedError
-from data_registry.models import Job, Task
+from data_registry.models import Job, Task, TaskNote
 from data_registry.process_manager.util import TaskManager, skip_if_not_started
 from data_registry.util import CHANGE, scrapyd_url
 
@@ -21,17 +22,19 @@ PROJECT = settings.SCRAPYD["project"]
 # https://github.com/open-contracting/kingfisher-collect/blob/7bfeba8/kingfisher_scrapy/extensions/kingfisher_process_api2.py#L117
 PROCESS_ID = re.compile(r"Created collection (.+) in Kingfisher Process \(([^\)]+)\)")
 
-IGNORE_CATEGORIES = {
-    # For example, australia_new_south_wales has http:// "next" URLs that redirect to https://.
-    "redirect_logs",
-    # A message is added to error_logs if RETRY_TIMES is exceeded.
-    # https://docs.scrapy.org/en/latest/topics/downloader-middleware.html#std-setting-RETRY_TIMES
-    "retry_logs",
-}
 IGNORE_WARNINGS = (
     "[scrapy.middleware] WARNING: Disabled kingfisher_scrapy.extensions.DatabaseStore: DATABASE_URL is not set.",
     "[yapw.clients] WARNING: Channel 1 was closed: ChannelClosedByClient: (200) 'Normal shutdown'",
 )
+# See LOG_CATEGORIES_PATTERN_DICT in https://github.com/my8100/logparser
+# redirect_logs and retry_logs are ignored, and ignore_logs aren't observed.
+# Note: log_categories might not contain all non-critical, non-error, non-warning messages.
+# https://docs.scrapy.org/en/latest/topics/logging.html#log-levels
+CATEGORY_LEVELS = {
+    "critical_logs": TaskNote.Level.CRITICAL,
+    "error_logs": TaskNote.Level.ERROR,
+    "warning_logs": TaskNote.Level.WARNING,
+}
 
 
 def scrapyd_data(response):
@@ -43,6 +46,27 @@ def scrapyd_data(response):
         raise UnexpectedError(repr(data))
 
     return data
+
+
+def get_message_type(category_name, message):
+    if match := re.search(r"status=(\d{3})", message):
+        return f"HTTP {match.group(1)}"
+
+    for message_type, pattern in (
+        # WARNING: Got data loss in {URL}. If you want to process broken responses set the setting
+        # DOWNLOAD_FAIL_ON_DATALOSS = False -- This message won't be shown in further requests
+        ("Data loss", "Got data loss"),
+        # ERROR: Gave up retrying <GET {URL}> (failed 3 times): 503 Service Unavailable
+        # (Typically paired with "status=###" or "Error downloading".)
+        ("Retry failures", "Gave up retrying"),
+        # ERROR: Error downloading <GET {URL}>
+        # Traceback (most recent call last): …
+        ("Download errors", "Error downloading"),
+    ):
+        if pattern in message:
+            return message_type
+
+    return category_name
 
 
 class Collect(TaskManager):
@@ -123,30 +147,77 @@ class Collect(TaskManager):
 
             scrapy_log = ScrapyLogFile(scrapy_log_url, text=self.read_log_file(scrapy_log_url))
 
-            messages = []
+            logs = []
+            notes = []
+            counter = Counter()
+            missing_next_link_error = False
+
+            # These two are persisted on the Task itself.
             if not scrapy_log.is_finished():
-                messages.append(f"crawl finish reason: {scrapy_log.logparser['finish_reason']}")
+                logs.append(f"crawl finish reason: {scrapy_log.logparser['finish_reason']}")
             if scrapy_log.error_rate > 0.01:  # 1%
-                messages.append(f"crawl error rate: {scrapy_log.error_rate}")
-            for key in ("item_dropped_count", "invalid_json_count"):
+                logs.append(f"crawl error rate: {scrapy_log.error_rate}")
+
+            for key, level in (
+                # For administrators to review "Dropped: Duplicate File" messages.
+                ("item_dropped_count", TaskNote.Level.WARNING),
+                # invalid_json_count is included in the error_rate.
+                ("invalid_json_count", TaskNote.Level.ERROR),
+            ):
                 if value := scrapy_log.logparser["crawler_stats"].get(key):
-                    messages.append(f"crawl {key}: {value}")
-                    self.job.context[key] = value
-                    self.job.save(update_fields=["modified", "context"])
-            for category, value in scrapy_log.logparser["log_categories"].items():
-                if category not in IGNORE_CATEGORIES and (
-                    details := [d for d in value["details"] if not any(ignore in d for ignore in IGNORE_WARNINGS)]
-                ):
-                    messages.append(f"{category} messages ({len(details)}):")
-                    messages.extend(details)
-            if messages:
+                    logs.append(f"crawl {key}: {value}")
+
+                    notes.append(TaskNote(task=self.task, level=level, note=f"{key}: {value}"))
+
+            for category_name, category in scrapy_log.logparser["log_categories"].items():
+                if category_name in {
+                    # For example, australia_new_south_wales has http:// "next" URLs that redirect to https://.
+                    # DEBUG-level only: https://github.com/scrapy/scrapy/blob/master/scrapy/downloadermiddlewares/redirect.py
+                    "redirect_logs",
+                    # Another message is already added to error_logs if RETRY_TIMES is exceeded.
+                    # https://docs.scrapy.org/en/latest/topics/downloader-middleware.html#std-setting-RETRY_TIMES
+                    "retry_logs",
+                }:
+                    continue
+
+                for message in category["details"]:
+                    if not missing_next_link_error and "kingfisher_scrapy.exceptions.MissingNextLinkError" in message:
+                        missing_next_link_error = True
+
+                    if any(ignore in message for ignore in IGNORE_WARNINGS):
+                        continue
+
+                    message_type = get_message_type(category_name, message)
+
+                    counter[message_type] += 1
+
+                    notes.append(
+                        TaskNote(
+                            task=self.task,
+                            level=CATEGORY_LEVELS.get(category_name, TaskNote.Level.UNKNOWN),
+                            note=message,
+                            data={"type": message_type},
+                        )
+                    )
+
+            if logs or counter:
                 path = reverse(CHANGE.format(content_type=ContentType.objects.get_for_model(Job)), args=[self.job.pk])
                 url = f"https://{Site.objects.get_current().domain}{path}"
-                warnings = "\n".join(messages)
-                logger.warning("%s has warnings: %s\n%s\n", self, url, warnings)
-                if "kingfisher_scrapy.exceptions.MissingNextLinkError" in warnings:
-                    raise IrrecoverableError("The crawl stopped prematurely")
+                messages = logs + [f"{message_type}: {count}" for message_type, count in counter.items()]
+                logger.warning("%s has warnings\n%s\n    %s\n", self, url, "\n    ".join(messages))
 
+            # Persist the task notes.
+
+            # Delete any existing task notes, in case of retries.
+            self.task.tasknote_set.all().delete()
+            TaskNote.objects.bulk_create(notes)
+
+            # Prevent further processing if acceptance criteria not met.
+
+            if missing_next_link_error:
+                raise IrrecoverableError("The crawl stopped prematurely")
+            if not scrapy_log.is_finished():
+                raise IrrecoverableError(f"The crawl wasn't finished: {scrapy_log.logparser['finish_reason']}")
             if scrapy_log.error_rate > 0.15:  # 15%
                 raise IrrecoverableError(f"The crawl had a {scrapy_log.error_rate} error rate")
 
