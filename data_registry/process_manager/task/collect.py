@@ -223,6 +223,7 @@ class Collect(TaskManager):
 
             return Task.Status.COMPLETED
 
+        # If the job isn't listed, Scrapyd might've restarted while it was running.
         raise RecoverableError(f"Unable to find status of Scrapyd job {scrapyd_job_id}")
 
     @skip_if_not_started

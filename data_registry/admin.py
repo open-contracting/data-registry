@@ -60,7 +60,7 @@ class IncompleteFilter(admin.SimpleListFilter):
                 | Q(language_en="")
                 | Q(description_en="")
                 | Q(source_url="")
-                | Q(retrieval_frequency="")
+                | Q(retrieval_frequency="", frozen=False)
                 | Q(additional_data_en="")
             )
         return None
