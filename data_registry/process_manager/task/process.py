@@ -36,6 +36,8 @@ class Process(TaskManager):
     def get_status(self):
         process_id = self.job.context["process_id"]  # set in Collect.get_status()
 
+        # Determine whether the task is complete.
+
         tree = self.request(
             "GET",
             url_for_collection(process_id, "tree"),
@@ -50,6 +52,8 @@ class Process(TaskManager):
 
         if not original_collection["completed_at"] or not compiled_collection["completed_at"]:
             return Task.Status.RUNNING
+
+        # Get the task's metadata.
 
         meta = self.request(
             "GET",
@@ -67,6 +71,8 @@ class Process(TaskManager):
 
         self.job.context["process_compiled_collection_id"] = compiled_collection["id"]
 
+        # Get the task's notes.
+
         process_notes = self.request(
             "GET",
             url_for_collection(original_collection["id"], "notes"),
@@ -74,10 +80,11 @@ class Process(TaskManager):
             error_message=f"Unable to get notes of collection {original_collection['id']}",
         ).json()
 
-        # DuplicateIdValueWarning can be issued millions of times.
+        # Aggregate the task's WARNING notes.
         counter = Counter()
         warning_notes = []
         for note, data in process_notes["WARNING"]:
+            # DuplicateIdValueWarning can be issued millions of times.
             if data.get("type") == "DuplicateIdValueWarning":
                 counter += Counter(data["paths"])
             else:
@@ -86,10 +93,11 @@ class Process(TaskManager):
             warning_notes.append(["OCDS Merge", {"count": count, "path": path}])
         process_notes["WARNING"] = warning_notes
 
+        # Persist the task notes and task.
+
         # Delete any existing task notes, in case of retries.
         self.task.tasknote_set.all().delete()
-
-        self.task.tasknote_set.bulk_create(
+        TaskNote.objects.bulk_create(
             [
                 TaskNote(task=self.task, level=level, note=note, data=data)
                 for level, notes in process_notes.items()
@@ -108,6 +116,8 @@ class Process(TaskManager):
                 "ocid_prefix",
             ]
         )
+
+        # Prevent further processing if acceptance criteria not met.
 
         if original_collection["expected_files_count"] == 0:
             raise IrrecoverableError("Collection is empty")
