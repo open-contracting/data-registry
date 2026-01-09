@@ -207,8 +207,10 @@ def detail(request, pk):
         "dateModified": collection.modified.isoformat(),
     }
 
-    if job and job.date_from and job.date_to:
-        dataset["temporalCoverage"] = f"{job.date_from.strftime('%Y-%m-%d')}/{job.date_to.strftime('%Y-%m-%d')}"
+    date_from = collection.date_from or getattr(job, "date_from", None)
+    date_to = collection.date_to or getattr(job, "date_to", None)
+    if date_from and date_to:
+        dataset["temporalCoverage"] = f"{date_from.strftime('%Y-%m-%d')}/{date_to.strftime('%Y-%m-%d')}"
 
     if language := collection.language:
         dataset["inLanguage"] = language
