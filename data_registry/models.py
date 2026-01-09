@@ -492,6 +492,8 @@ class TaskNote(models.Model):
     class Level(models.TextChoices):
         WARNING = "WARNING", "WARNING"
         ERROR = "ERROR", "ERROR"
+        CRITICAL = "CRITICAL", "CRITICAL"
+        UNKNOWN = "UNKNOWN", "UNKNOWN"
 
     task = models.ForeignKey("Task", on_delete=models.CASCADE)
     level = models.TextField(choices=Level.choices)

@@ -400,7 +400,7 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
         ):
             html.append(f"<h2>{task_type.capitalize()} ({task_order}/{len(settings.JOB_TASKS_PLAN)})</h2>")
 
-            for level in ("ERROR", "WARNING"):
+            for level in TaskNote.Level.values:
                 notes = TaskNote.objects.filter(task_id=task_id, level=level).values_list("note", "data")
                 if notes:
                     html.append(f"<h3>{level}</h3>")
