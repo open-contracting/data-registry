@@ -257,7 +257,7 @@ class Collection(models.Model):
         null=True,
         db_index=True,
         verbose_name="data license",
-        help_text="If not set, the Overview section will display the license URL within the OCDS package.",
+        help_text="If not set, the license URL within the OCDS package is displayed.",
     )
 
     # Documentation
@@ -313,21 +313,23 @@ class Collection(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
-    # Collection metadata, in case this needs to be overwritten from what the job extracted, or there is no job
+    # Collection metadata, to override the active job (or as backup when there's no active job).
     date_from = models.DateField(
         blank=True,
         null=True,
         verbose_name="minimum release date",
-        help_text="If not set, the job will get it from the data",
+        help_text="If not set, the value calculated from the OCDS data is displayed.",
     )
     date_to = models.DateField(
         blank=True,
         null=True,
         verbose_name="maximum release date",
-        help_text="If not set, the job will get it from the data",
+        help_text="If not set, the value calculated from the OCDS data is displayed.",
     )
     ocid_prefix = models.TextField(
-        blank=True, verbose_name="OCID prefix", help_text="If not set, the job will get it from the data"
+        blank=True,
+        verbose_name="OCID prefix",
+        help_text="If not set, the value calculated from the OCDS data is displayed.",
     )
 
     objects = CollectionQuerySet.as_manager()
