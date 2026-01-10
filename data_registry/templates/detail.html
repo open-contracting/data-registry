@@ -149,10 +149,18 @@ document.querySelectorAll('a[download]').forEach(trackable => {
             </dd>
             <dt>{% translate "Update frequency:" %}</dt>
             <dd>{% if collection.update_frequency == "UNKNOWN" %}-{% else %}{{ collection.get_update_frequency_display }}{% endif %}</dd>
-            <dt>{% translate "Main language:" %}</dt>
-            <dd>{{ collection.language }}</dd>
-            <dt>{% translate "OCID prefix:" %}</dt>
-            <dd>{% firstof collection.ocid_prefix job.ocid_prefix|default:"-" %}</dd>
+            <dt>{% translate "Last retrieved:" %}</dt>
+            <dd>
+                {{ collection.last_retrieved|date:"M Y" }}
+                {% if not job %}
+                    {% translate "This dataset has not yet been retrieved." %}
+                {% endif %}
+                {% if collection.retrieval_frequency and collection.retrieval_frequency != never %}
+                    ({% blocktranslate with retrieval_frequency=collection.get_retrieval_frequency_display.lower %}retrieved {{ retrieval_frequency }}{% endblocktranslate %})
+                {% endif %}
+            </dd>
+            <dt>{% translate "Retrieved from:" %}</dt>
+            <dd class="text-break"><a href="{{ collection.source_url }}" target="_blank">{{ collection.source_url }}</a></dd>
             <dt>{% translate "License:" %}</dt>
             <dd class="text-break">
 {% if collection.license_custom %}
@@ -166,18 +174,10 @@ document.querySelectorAll('a[download]').forEach(trackable => {
             </dd>
             <dt>{% translate "Publication policy:" %}</dt>
             <dd>{% firstof collection.publication_policy|urlize job.publication_policy|urlize "-" %}</dd>
-            <dt>{% translate "Last retrieved:" %}</dt>
-            <dd>
-                {{ collection.last_retrieved|date:"M Y" }}
-                {% if not job %}
-                    {% translate "This dataset has not yet been retrieved." %}
-                {% endif %}
-                {% if collection.retrieval_frequency and collection.retrieval_frequency != never %}
-                    ({% blocktranslate with retrieval_frequency=collection.get_retrieval_frequency_display.lower %}retrieved {{ retrieval_frequency }}{% endblocktranslate %})
-                {% endif %}
-            </dd>
-            <dt>{% translate "Retrieved from:" %}</dt>
-            <dd class="text-break"><a href="{{ collection.source_url }}" target="_blank">{{ collection.source_url }}</a></dd>
+            <dt>{% translate "Main language:" %}</dt>
+            <dd>{{ collection.language }}</dd>
+            <dt>{% translate "OCID prefix:" %}</dt>
+            <dd>{% firstof collection.ocid_prefix job.ocid_prefix|default:"-" %}</dd>
         </dl>
     </div>
 </div>
