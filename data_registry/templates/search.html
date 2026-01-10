@@ -98,7 +98,17 @@ observer.observe(document.querySelector('.toppable'))
                 {% translate "Clear all filters" %}
             </a>
 
-            <h3 class="h5">{% translate "Country" %}</h3>
+            <h3 class="h5">
+                {% translate "Country" %}
+                <span class="tooltip-wrapper">
+                    <span class="tooltip-trigger" tabindex="0" aria-label="{% translate "Information about the country list" %}">
+                        {% include "includes/info_icon.html" with size="18" classes="align-text-top" only %}
+                    </span>
+                    <span class="tooltip-content tooltip-content-left" role="tooltip">
+                        {% translate "Unlisted countries have no datasets" %}
+                    </span>
+                </span>
+            </h3>
             <select id="country-select" class="mb-4 form-select" aria-label="{% translate "Select a country" %}">
                 <option value="?"{% if not request.GET|getitem:'country' %} selected{% endif %}>
                     {% translate "All" %}
@@ -150,7 +160,17 @@ observer.observe(document.querySelector('.toppable'))
             <div class="row">
                 <div class="col-md">
                     <dl class="mb-0 mb-md-n2 list-desc-inline">
-                        <dt>{% translate "Data date range:" %}</dt>
+                        <dt>
+                            {% translate "Data date range:" %}
+                            <span class="tooltip-wrapper">
+                                <span class="tooltip-trigger" tabindex="0" aria-label="{% translate "Information about the data date range" %}">
+                                    {% include "includes/info_icon.html" with size="16" classes="align-text-top" only %}
+                                </span>
+                                <span class="tooltip-content" role="tooltip">
+                                    {% translate "The time span over which contracting information was first published, using the `date` field in OCDS" %}
+                                </span>
+                            </span>
+                        </dt>
                         <dd>
                             {% firstof collection.date_from|date:"M Y" collection.active_job.date_from|date:"M Y" %} - {% firstof collection.date_to|date:"M Y" collection.active_job.date_to|date:"M Y" %}
                             {% if collection.retrieval_frequency == never %}

@@ -131,7 +131,17 @@ document.querySelectorAll('a[download]').forEach(trackable => {
     </div>
     <div class="col-sm">
         <dl class="mb-n2 list-desc-grid">
-            <dt>{% translate "Data date range:" %}</dt>
+            <dt>
+                {% translate "Data date range:" %}
+                <span class="tooltip-wrapper">
+                    <span class="tooltip-trigger" tabindex="0" aria-label="{% translate "Information about the data date range" %}">
+                        {% include "includes/info_icon.html" with size="16" classes="align-text-top" only %}
+                    </span>
+                    <span class="tooltip-content" role="tooltip">
+                        {% translate "The time span over which contracting information was first published, using the `date` field in OCDS" %}
+                    </span>
+                </span>
+            </dt>
             <dd>{% firstof collection.date_from|date:"M Y" job.date_from|date:"M Y" %} - {% firstof collection.date_to|date:"M Y" job.date_to|date:"M Y" %}
                 {% if collection.retrieval_frequency == never %}
                     ({{ collection.get_retrieval_frequency_display }})
@@ -178,9 +188,16 @@ document.querySelectorAll('a[download]').forEach(trackable => {
     </div>
     <div class="col-sm">
         <div class="mb-5">
-        {% blocktranslate trimmed %}
-            An individual contracting process has several different stages: tendering, awarding, contracting and implementation. You can dive into the details of the contracting stages in this <a href="https://standard.open-contracting.org/latest/en/primer/how/" target="_blank">tutorial</a>.
-        {% endblocktranslate %}
+            <p>
+                {% blocktranslate trimmed %}
+                    An individual contracting process has several different stages: tendering, awarding, contracting and implementation. You can dive into the details of the contracting stages in this <a href="https://standard.open-contracting.org/latest/en/primer/how/" target="_blank">tutorial</a>.
+                {% endblocktranslate %}
+            </p>
+            <p>
+                {% blocktranslate trimmed %}
+                    These counts are the number of JSON objects across all contracting processes. Parties, tenderers and suppliers are unique within a contracting process, but can be repeated across contracting processes.
+                {% endblocktranslate %}
+            </p>
         </div>
  {% if job %}
         <div class="row">
