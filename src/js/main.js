@@ -1,3 +1,4 @@
+import Offcanvas from 'bootstrap/js/dist/offcanvas'
 import Tooltip from 'bootstrap/js/dist/tooltip'
 
 document.addEventListener('DOMContentLoaded', () => {

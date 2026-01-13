@@ -76,48 +76,64 @@ observer.observe(document.querySelector('.toppable'))
 
 {% block content %}
 <div class="row">
-    <div class="col-md-3 col-xl-2 mb-5">
-        <h2 class="h4 mb-4">{% translate "Filters" %}</h2>
+    <div class="col-md-3 col-xl-2 mb-0">
+        <div class="mb-4">
+            <h2 class="h4 mb-0 d-none d-md-block">{% translate "Filters" %}</h2>
+            <button class="btn btn-primary d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#filters" aria-controls="filters">
+                {% translate "Filters" %}
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
+                    <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z"/>
+                </svg>
+            </button>
+        </div>
 
-        <div class="d-none d-md-block" id="filters">
-            <a rel="nofollow" href="?" class="{% if request.GET|nonempty %}d-block{% else %}d-none{% endif %} mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="bi b-iconstack b-icon" width="1em" height="1em" viewBox="0 0 16 16" role="img" focusable="false" aria-hidden="true" fill="currentColor">
-                    <g>
-                        {# https://icons.getbootstrap.com/icons/slash/ #}
-                        <svg class="bi bi-slash b-icon slash" viewBox="0 0 16 16" role="img" focusable="false" aria-hidden="true" fill="currentColor">
-                            <g transform="translate(8 8) scale(1.6 1.6) rotate(90) translate(-8 -8)">
-                                <path d="M11.354 4.646a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708l6-6a.5.5 0 0 1 .708 0z"/>
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="filters" aria-labelledby="filters-label">
+            <div class="offcanvas-header">
+                <h2 class="offcanvas-title h4" id="filters-label">{% translate "Filters" %}</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#filters" aria-label="{% translate "Close" %}"></button>
+            </div>
+            <div class="offcanvas-body">
+                <div>
+                    <a rel="nofollow" href="?" class="{% if request.GET|nonempty %}d-block{% else %}d-none{% endif %} mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="bi b-iconstack b-icon" width="1em" height="1em" viewBox="0 0 16 16" role="img" focusable="false" aria-hidden="true" fill="currentColor">
+                            <g>
+                                {# https://icons.getbootstrap.com/icons/slash/ #}
+                                <svg class="bi bi-slash b-icon slash" viewBox="0 0 16 16" role="img" focusable="false" aria-hidden="true" fill="currentColor">
+                                    <g transform="translate(8 8) scale(1.6 1.6) rotate(90) translate(-8 -8)">
+                                        <path d="M11.354 4.646a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                                    </g>
+                                </svg>
+                                {# https://icons.getbootstrap.com/icons/funnel/ #}
+                                <svg class="bi bi-funnel b-icon funnel" viewBox="0 0 16 16" role="img" focusable="false" aria-hidden="true" fill="currentColor">
+                                    <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z"/>
+                                </svg>
                             </g>
                         </svg>
-                        {# https://icons.getbootstrap.com/icons/funnel/ #}
-                        <svg class="bi bi-funnel b-icon funnel" viewBox="0 0 16 16" role="img" focusable="false" aria-hidden="true" fill="currentColor">
-                            <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z"/>
-                        </svg>
-                    </g>
-                </svg>
-                {% translate "Clear all filters" %}
-            </a>
+                        {% translate "Clear all filters" %}
+                    </a>
 
-            <h3 class="h5">
-                {% translate "Country" %}
-                <a href="#" data-bs-toggle="tooltip" data-bs-title="{% translate "Unlisted countries have no datasets" %}">
-                    {% include "includes/info_icon.html" with size="18" classes="text-secondary" only %}
-                </a>
-            </h3>
-            <select id="country-select" class="mb-4 form-select" aria-label="{% translate "Select a country" %}">
-                <option value="?"{% if not request.GET|getitem:'country' %} selected{% endif %}>
-                    {% translate "All" %}
-                </option>
-{% for country, count in facets.countries.items %}
-                <option value="?{% replace_query_string_parameter 'country' country %}"{% if country == request.GET|getitem:'country' %} selected{% endif %}{% if not count %} disabled{% endif %}>
-                    {{ country }} - {{ count }}
-                </option>
-{% endfor %}
-            </select>
-            {% include "includes/checkboxes.html" with title=_("Region") key="region" items=regions facet_counts=facets.regions %}
-            {% include "includes/radiobuttons.html" with title=_("Data date range") key="date_range" items=date_ranges.items facet_counts=facets.date_ranges content=content %}
-            {% include "includes/checkboxes.html" with title=_("Update frequency") key="update_frequency" items=frequencies facet_counts=facets.frequencies %}
-            {% include "includes/checkboxes.html" with title=_("Data contains") key="counts" items=counts.items facet_counts=facets.counts %}
+                    <h3 class="h5">
+                        {% translate "Country" %}
+                        <a href="#" data-bs-toggle="tooltip" data-bs-title="{% translate "Unlisted countries have no datasets" %}">
+                            {% include "includes/info_icon.html" with size="18" classes="text-secondary" only %}
+                        </a>
+                    </h3>
+                    <select id="country-select" class="mb-4 form-select" aria-label="{% translate "Select a country" %}">
+                        <option value="?"{% if not request.GET|getitem:'country' %} selected{% endif %}>
+                            {% translate "All" %}
+                        </option>
+        {% for country, count in facets.countries.items %}
+                        <option value="?{% replace_query_string_parameter 'country' country %}"{% if country == request.GET|getitem:'country' %} selected{% endif %}{% if not count %} disabled{% endif %}>
+                            {{ country }} - {{ count }}
+                        </option>
+        {% endfor %}
+                    </select>
+                    {% include "includes/checkboxes.html" with title=_("Region") key="region" items=regions facet_counts=facets.regions %}
+                    {% include "includes/radiobuttons.html" with title=_("Data date range") key="date_range" items=date_ranges.items facet_counts=facets.date_ranges content=content %}
+                    {% include "includes/checkboxes.html" with title=_("Update frequency") key="update_frequency" items=frequencies facet_counts=facets.frequencies %}
+                    {% include "includes/checkboxes.html" with title=_("Data contains") key="counts" items=counts.items facet_counts=facets.counts %}
+                </div>
+            </div>
         </div>
     </div>
 
