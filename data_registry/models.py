@@ -158,6 +158,10 @@ class Collection(models.Model):
         OC = "OC", _("Oceania")
 
     class RetrievalFrequency(models.TextChoices):
+        #: Weekly
+        WEEKLY = "WEEKLY", _("Weekly")
+        #: Every 2 weeks
+        BIWEEKLY = "BIWEEKLY", _("Every 2 weeks")
         #: Monthly
         MONTHLY = "MONTHLY", _("Monthly")
         #: Every 6 months
@@ -368,6 +372,10 @@ class Collection(models.Model):
             return False
 
         match self.retrieval_frequency:
+            case self.RetrievalFrequency.WEEKLY:
+                days = 7
+            case self.RetrievalFrequency.BIWEEKLY:
+                days = 14
             case self.RetrievalFrequency.MONTHLY:
                 days = 30
             case self.RetrievalFrequency.HALF_YEARLY:
