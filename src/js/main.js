@@ -1,3 +1,4 @@
+/* biome-ignore lint/correctness/noUnusedImports: Bootstrap */
 import Offcanvas from "bootstrap/js/dist/offcanvas";
 import Tooltip from "bootstrap/js/dist/tooltip";
 
@@ -61,7 +62,7 @@ document.querySelectorAll(".toggleable").forEach((toggleable) => {
 
 document.querySelectorAll("a[download]").forEach((trackable) => {
     if (typeof fathom !== "undefined") {
-        trackable.addEventListener("click", (event) => {
+        trackable.addEventListener("click", () => {
             fathom.trackEvent(`download ${trackable.dataset.event}`); // eslint-disable-line no-undef
         });
     }
@@ -84,7 +85,7 @@ document.querySelectorAll(".filterable").forEach((filter) => {
     const key = filter.dataset.key;
     const method = filter.dataset.method;
     filter.querySelectorAll("input").forEach((input) => {
-        input.addEventListener("change", (event) => {
+        input.addEventListener("change", () => {
             const url = new URL(window.location.href);
             const params = new URLSearchParams(url.search);
             const values = params.getAll(key);
