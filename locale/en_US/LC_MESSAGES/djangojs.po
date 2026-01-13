@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-26 01:24+0000\n"
+"POT-Creation-Date: 2026-01-13 05:12+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,12 +16,11 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: data_registry/static/js/main.js:6
+#: src/js/main.js:38
 msgid "Show more"
-msgstr "Ver más"
+msgstr ""
 
-#: data_registry/static/js/main.js:9
+#: src/js/main.js:39
 msgid "Show less"
-msgstr "Ver menos"
+msgstr ""
