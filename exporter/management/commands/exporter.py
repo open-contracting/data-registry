@@ -101,13 +101,6 @@ def callback(state, channel, method, properties, input_message):
                 files[year_path].write(data)
                 files[year_path].write("\n")
 
-                month_path = export.directory / f"{int(date[:4])}_{date[5:7]}.jsonl"
-                if month_path not in files:
-                    files[month_path] = month_path.open("a")
-
-                files[month_path].write(data)
-                files[month_path].write("\n")
-
         page = page + 1
 
         # Last page.
