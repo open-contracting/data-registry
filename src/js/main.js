@@ -5,11 +5,19 @@ import Tooltip from "bootstrap/js/dist/tooltip";
 document.addEventListener("DOMContentLoaded", () => {
     [...document.querySelectorAll('[data-bs-toggle="tooltip"]')].map((el) => new Tooltip(el));
 
+    // header.html
+    const languageSelect = document.querySelector("select[name='language']");
+    if (languageSelect) {
+        languageSelect.addEventListener("change", () => {
+            languageSelect.form.submit();
+        });
+    }
+
     // search.html
-    const select = document.getElementById("country-select");
-    if (select) {
-        select.addEventListener("change", () => {
-            const url = select.value;
+    const countrySelect = document.getElementById("country-select");
+    if (countrySelect) {
+        countrySelect.addEventListener("change", () => {
+            const url = countrySelect.value;
             if (url) {
                 window.location.href = url;
             }
@@ -33,6 +41,7 @@ function gettext(msgid) {
     return value[0];
 }
 
+// Toggle content.
 document.querySelectorAll(".toggleable").forEach((toggleable) => {
     const toggle = document.createElement("a");
     const showMoreText = toggleable.dataset.showMore || gettext("Show more");
@@ -64,6 +73,7 @@ document.querySelectorAll(".toggleable").forEach((toggleable) => {
     toggleable.setAttribute("hidden", "");
 });
 
+// Track download events.
 document.querySelectorAll("a[download]").forEach((trackable) => {
     if (typeof fathom !== "undefined") {
         trackable.addEventListener("click", () => {
@@ -72,23 +82,34 @@ document.querySelectorAll("a[download]").forEach((trackable) => {
     }
 });
 
+// Track contact events.
+document.querySelectorAll("a[data-event='contact']").forEach((link) => {
+    if (typeof fathom !== "undefined") {
+        link.addEventListener("click", () => {
+            fathom.trackEvent("contact");
+        });
+    }
+});
+
 // search.html
 
-document.querySelectorAll(".clickable").forEach((div) => {
-    div.addEventListener("click", (event) => {
+// Make search result cards clickable.
+document.querySelectorAll(".clickable").forEach((clickable) => {
+    clickable.addEventListener("click", (event) => {
         // Stop "See details" from triggering a second event.
         event.preventDefault();
         window.open(
-            div.querySelector(".click").href,
+            clickable.querySelector(".click").href,
             event.ctrlKey || event.metaKey || event.shiftKey ? "_blank" : "_self",
         );
     });
 });
 
-document.querySelectorAll(".filterable").forEach((filter) => {
-    const key = filter.dataset.key;
-    const method = filter.dataset.method;
-    filter.querySelectorAll("input").forEach((input) => {
+// Enable filters.
+document.querySelectorAll(".filterable").forEach((filterable) => {
+    const key = filterable.dataset.key;
+    const method = filterable.dataset.method;
+    filterable.querySelectorAll("input").forEach((input) => {
         input.addEventListener("change", () => {
             const url = new URL(window.location.href);
             const params = new URLSearchParams(url.search);

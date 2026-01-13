@@ -353,7 +353,7 @@ window.catalog = JSON.parse('{% cache None catalog LANGUAGE_CODE %}{% catalog_st
             </div>
         </div>
         <div class="col-md-auto">
-            <a href="mailto:data@open-contracting.org?{% feedback_query_string_parameters %}" onclick="typeof fathom !== 'undefined' && fathom.trackEvent('contact')" target="_blank" class="hstack link-white">
+            <a href="mailto:data@open-contracting.org?{% feedback_query_string_parameters %}" data-event="contact" target="_blank" class="hstack link-white">
                 {% include "includes/chevron_icon.html" with direction="right" classes="me-2" size="24" only %}{% translate "Contact Data Support Team" %}
             </a>
         </div>
