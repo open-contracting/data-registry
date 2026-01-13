@@ -48,6 +48,10 @@ document.querySelectorAll(".toggleable").forEach((toggleable) => {
         const collapsed = toggleable.toggleAttribute("hidden");
         toggle.textContent = collapsed ? showMoreText : showLessText;
         toggle.ariaExpanded = !collapsed;
+
+        if (typeof fathom !== "undefined" && !collapsed) {
+            fathom.trackEvent(`show more ${toggleable.id}`);
+        }
     });
 
     let insert = toggle;
@@ -63,7 +67,7 @@ document.querySelectorAll(".toggleable").forEach((toggleable) => {
 document.querySelectorAll("a[download]").forEach((trackable) => {
     if (typeof fathom !== "undefined") {
         trackable.addEventListener("click", () => {
-            fathom.trackEvent(`download ${trackable.dataset.event}`); // eslint-disable-line no-undef
+            fathom.trackEvent(`download ${trackable.dataset.event}`);
         });
     }
 });
@@ -99,6 +103,10 @@ document.querySelectorAll(".filterable").forEach((filter) => {
                 });
             } else {
                 params[method](key, input.value);
+
+                if (typeof fathom !== "undefined") {
+                    fathom.trackEvent(`filter ${key}`);
+                }
             }
             url.search = params.toString();
             window.location.href = url.toString();
