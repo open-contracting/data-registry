@@ -48,7 +48,7 @@ window.catalog = JSON.parse('{% cache None catalog LANGUAGE_CODE %}{% catalog_st
                 {{ collection.description|markdownify }}
 
 {% if collection.description_long %}
-                <div class="toggleable" id="description">
+                <div class="toggleable" id="description" data-show-more="{% translate "See more, including regulatory context" %}" data-show-less="{% translate "Show less" %}">
                     {{ collection.description_long|markdownify }}
                 </div>
 {% endif %}
@@ -116,7 +116,7 @@ window.catalog = JSON.parse('{% cache None catalog LANGUAGE_CODE %}{% catalog_st
             <dd class="text-break">
 {% if collection.license_custom %}
                 <a href="{{ collection.license_custom.url }}" target="_blank" class="d-block">{{ collection.license_custom.name }}</a>
-                <div class="mt-2 mb-n3 ps-3 border-start small toggleable" id="license">
+                <div class="mt-2 mb-n3 ps-3 border-start small toggleable" id="license" data-show-more="{% translate "See permissions and conditions" %}" data-show-less="{% translate "Show less" %}">
                     {{ collection.license_custom.description|markdownify }}
                 </div>
 {% else %}

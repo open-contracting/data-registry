@@ -34,8 +34,10 @@ function gettext (msgid) {
 
 document.querySelectorAll('.toggleable').forEach(toggleable => {
   const toggle = document.createElement('a')
+  const showMoreText = toggleable.dataset.showMore || gettext('Show more')
+  const showLessText = toggleable.dataset.showLess || gettext('Show less')
 
-  toggle.textContent = gettext('Show more')
+  toggle.textContent = showMoreText
   toggle.setAttribute('aria-controls', toggleable.id)
   toggle.ariaExpanded = false
   toggle.href = '#'
@@ -43,7 +45,7 @@ document.querySelectorAll('.toggleable').forEach(toggleable => {
   toggle.addEventListener('click', event => {
     event.preventDefault()
     const collapsed = toggleable.toggleAttribute('hidden')
-    toggle.textContent = collapsed ? gettext('Show more') : gettext('Show less')
+    toggle.textContent = collapsed ? showMoreText : showLessText
     toggle.ariaExpanded = !collapsed
   })
 

@@ -24,4 +24,4 @@ msgstr "Ver más"
 
 #: data_registry/static/js/main.js:9
 msgid "Show less"
-msgstr "Mostrar menos"
+msgstr "Ver menos"
