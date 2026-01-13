@@ -60,9 +60,9 @@
 
                     <h3 class="h5">
                         {% translate "Country" %}
-                        <a href="#" data-bs-toggle="tooltip" data-bs-title="{% translate "Unlisted countries have no datasets" %}">
+                        <button type="button" class="btn btn-link p-0 border-0" data-bs-toggle="tooltip" data-bs-title="{% translate "Unlisted countries have no datasets" %}" aria-label="{% translate "Information about the country list" %}">
                             {% include "includes/info_icon.html" with size="18" classes="text-secondary" only %}
-                        </a>
+                        </button>
                     </h3>
                     <select id="country-select" class="mb-4 form-select" aria-label="{% translate "Select a country" %}">
                         <option value="?"{% if not request.GET|getitem:'country' %} selected{% endif %}>
@@ -119,9 +119,9 @@
                     <dl class="mb-0 mb-md-n2 list-desc-inline">
                         <dt>
                             {% translate "Data date range:" %}
-                            <a href="#" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="{% translate "The time span over which contracting information was first published, using the <code>date</code> field in OCDS" %}">
+                            <button type="button" class="btn btn-link p-0 border-0" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="{% translate "The time span over which contracting information was first published, using the <code>date</code> field in OCDS" %}" aria-label="{% translate "Information about the data date range" %}">
                                 {% include "includes/info_icon.html" with size="16" classes="text-secondary" only %}
-                            </a>
+                            </button>
                         </dt>
                         <dd>
                             {% firstof collection.date_from|date:"M Y" collection.active_job.date_from|date:"M Y" %} - {% firstof collection.date_to|date:"M Y" collection.active_job.date_to|date:"M Y" %}
