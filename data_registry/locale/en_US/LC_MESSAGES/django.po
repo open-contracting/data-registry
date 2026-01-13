@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-13 04:23+0000\n"
+"POT-Creation-Date: 2026-01-13 06:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -151,6 +151,11 @@ msgstr ""
 msgid ""
 "The time span over which contracting information was first published, using "
 "the <code>date</code> field in OCDS"
+msgstr ""
+
+#: data_registry/templates/detail.html:92
+#: data_registry/templates/search.html:122
+msgid "Information about the data date range"
 msgstr ""
 
 #: data_registry/templates/detail.html:101
@@ -546,6 +551,10 @@ msgstr ""
 msgid "Unlisted countries have no datasets"
 msgstr ""
 
+#: data_registry/templates/search.html:63
+msgid "Information about the country list"
+msgstr ""
+
 #: data_registry/templates/search.html:67
 msgid "Select a country"
 msgstr ""
@@ -588,6 +597,7 @@ msgid "See details"
 msgstr ""
 
 #: data_registry/templates/search.html:174
+#: data_registry/templates/search.html:179
 msgid "Back to Top"
 msgstr ""
 

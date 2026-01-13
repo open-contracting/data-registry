@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-13 04:23+0000\n"
+"POT-Creation-Date: 2026-01-13 06:17+0000\n"
 "PO-Revision-Date: 2021-08-04 17:44+0000\n"
 "Last-Translator: Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2025\n"
 "Language-Team: English (https://app.transifex.com/open-contracting-"
@@ -167,6 +167,11 @@ msgid ""
 msgstr ""
 "The time span over which contracting information was first published, using "
 "the <code>date</code> field in OCDS"
+
+#: data_registry/templates/detail.html:92
+#: data_registry/templates/search.html:122
+msgid "Information about the data date range"
+msgstr "Информация о диапазоне дат данных"
 
 #: data_registry/templates/detail.html:101
 #: data_registry/templates/search.html:132
@@ -613,6 +618,10 @@ msgstr "Country"
 msgid "Unlisted countries have no datasets"
 msgstr "Unlisted countries have no datasets"
 
+#: data_registry/templates/search.html:63
+msgid "Information about the country list"
+msgstr "Информация о списке стран"
+
 #: data_registry/templates/search.html:67
 msgid "Select a country"
 msgstr "Select a country"
@@ -655,6 +664,7 @@ msgid "See details"
 msgstr "See details"
 
 #: data_registry/templates/search.html:174
+#: data_registry/templates/search.html:179
 msgid "Back to Top"
 msgstr "Back to Top"
 
