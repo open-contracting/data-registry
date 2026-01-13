@@ -133,14 +133,9 @@ document.querySelectorAll('a[download]').forEach(trackable => {
         <dl class="mb-n2 list-desc-grid">
             <dt>
                 {% translate "Data date range:" %}
-                <span class="tooltip-wrapper">
-                    <span class="tooltip-trigger" tabindex="0" aria-label="{% translate "Information about the data date range" %}">
-                        {% include "includes/info_icon.html" with size="16" classes="align-text-top" only %}
-                    </span>
-                    <span class="tooltip-content" role="tooltip">
-                        {% translate "The time span over which contracting information was first published, using the `date` field in OCDS" %}
-                    </span>
-                </span>
+                <a href="#" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="{% translate "The time span over which contracting information was first published, using the <code>date</code> field in OCDS" %}">
+                    {% include "includes/info_icon.html" with size="16" classes="text-secondary" only %}
+                </a>
             </dt>
             <dd>{% firstof collection.date_from|date:"M Y" job.date_from|date:"M Y" %} - {% firstof collection.date_to|date:"M Y" job.date_to|date:"M Y" %}
                 {% if collection.retrieval_frequency == never %}

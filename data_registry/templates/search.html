@@ -100,14 +100,9 @@ observer.observe(document.querySelector('.toppable'))
 
             <h3 class="h5">
                 {% translate "Country" %}
-                <span class="tooltip-wrapper">
-                    <span class="tooltip-trigger" tabindex="0" aria-label="{% translate "Information about the country list" %}">
-                        {% include "includes/info_icon.html" with size="18" classes="align-text-top" only %}
-                    </span>
-                    <span class="tooltip-content tooltip-content-left" role="tooltip">
-                        {% translate "Unlisted countries have no datasets" %}
-                    </span>
-                </span>
+                <a href="#" data-bs-toggle="tooltip" data-bs-title="{% translate "Unlisted countries have no datasets" %}">
+                    {% include "includes/info_icon.html" with size="18" classes="text-secondary" only %}
+                </a>
             </h3>
             <select id="country-select" class="mb-4 form-select" aria-label="{% translate "Select a country" %}">
                 <option value="?"{% if not request.GET|getitem:'country' %} selected{% endif %}>
@@ -162,14 +157,9 @@ observer.observe(document.querySelector('.toppable'))
                     <dl class="mb-0 mb-md-n2 list-desc-inline">
                         <dt>
                             {% translate "Data date range:" %}
-                            <span class="tooltip-wrapper">
-                                <span class="tooltip-trigger" tabindex="0" aria-label="{% translate "Information about the data date range" %}">
-                                    {% include "includes/info_icon.html" with size="16" classes="align-text-top" only %}
-                                </span>
-                                <span class="tooltip-content" role="tooltip">
-                                    {% translate "The time span over which contracting information was first published, using the `date` field in OCDS" %}
-                                </span>
-                            </span>
+                            <a href="#" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="{% translate "The time span over which contracting information was first published, using the <code>date</code> field in OCDS" %}">
+                                {% include "includes/info_icon.html" with size="16" classes="text-secondary" only %}
+                            </a>
                         </dt>
                         <dd>
                             {% firstof collection.date_from|date:"M Y" collection.active_job.date_from|date:"M Y" %} - {% firstof collection.date_to|date:"M Y" collection.active_job.date_to|date:"M Y" %}
