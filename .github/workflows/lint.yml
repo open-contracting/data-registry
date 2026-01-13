@@ -7,3 +7,6 @@ jobs:
       contents: write
     secrets:
       personal-access-token: ${{ secrets.PAT }}
+    with:
+      # Defer indentation to biome format.
+      ocds-noindent: 'yes'

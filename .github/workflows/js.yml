@@ -1,16 +1,7 @@
 name: Lint JavaScript
 on: [push, pull_request]
-permissions:
-  contents: read
 jobs:
-  build:
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 22
-      - run: npm install --ignore-scripts eslint-plugin-html
-      - run: npx standard --plugin html .
-      - run: npx lockfile-lint --path package-lock.json --allowed-hosts npm --validate-https
+  lint:
+    uses: open-contracting/.github/.github/workflows/js.yml@main
+    permissions:
+      contents: read
