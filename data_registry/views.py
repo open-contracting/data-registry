@@ -1,21 +1,19 @@
 import logging
 import re
-from datetime import date, datetime, timedelta
-from urllib.parse import urlencode, urljoin
+from datetime import date, timedelta
 
-import requests
 from django import urls
 from django.conf import settings
 from django.db.models import Count, F, Q
-from django.http.response import FileResponse, HttpResponse, HttpResponseBadRequest, HttpResponseNotFound, JsonResponse
+from django.http.response import FileResponse, HttpResponseBadRequest, HttpResponseNotFound, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.defaultfilters import filesizeformat
 from django.templatetags.static import static
 from django.urls import reverse
-from django.utils.translation import get_language, get_language_from_request
+from django.utils.translation import get_language_from_request
 from django.utils.translation import gettext as _
 
-from data_registry.models import Collection, Job
+from data_registry.models import Collection
 from data_registry.util import collection_queryset
 from exporter.util import Export, TaskStatus
 
@@ -314,77 +312,3 @@ def publications_api(request):
         content_type="application/json; charset=utf-8",  # some browsers assume incorrect charset
         headers={"Access-Control-Allow-Origin": "*"},
     )
-
-
-def excel_data(request, job_id, job_range=None):
-    job = Job.objects.get(pk=job_id)
-    export = Export(job_id)
-
-    urls = []
-    if job_range is None:
-        urls.append((export.spoonbill_directory / "full.jsonl.gz").as_uri())
-        job_range = _("All")
-    else:
-        if job_range == "6M":
-            end_date = date.today()
-            start_date = date.today() - timedelta(days=180)
-        if job_range == "1Y":
-            end_date = date.today()
-            start_date = date.today() - timedelta(days=365)
-        if "|" in job_range:
-            d_from, d_to = job_range.split("|")
-            if d_from and d_to:
-                start_date = datetime.strptime(d_from, "%Y-%m-%d")
-                end_date = datetime.strptime(d_to, "%Y-%m-%d")
-                job_range = f"{d_from} - {d_to}"
-            elif not d_from:
-                start_date = datetime.datetime(1980, 1, 1, 0, 0)
-                end_date = datetime.strptime(d_to, "%Y-%m-%d")
-                job_range = f"< {d_to}"
-            elif not d_to:
-                start_date = datetime.strptime(d_from, "%Y-%m-%d")
-                end_date = datetime.now()
-                job_range = f"> {d_from}"
-
-        while (start_date.year, start_date.month) <= (end_date.year, end_date.month):
-            file_path = export.spoonbill_directory / f"{start_date.strftime('%Y_%m')}.jsonl.gz"
-
-            if file_path.exists():
-                logger.debug("File %s exists, including in export.", file_path)
-                urls.append(file_path.as_uri())
-            else:
-                logger.debug("File %s does not found. Excluding from export.", file_path)
-
-            start_date = start_date + timedelta(days=30)
-
-    language = get_language()
-
-    body = {
-        "urls": urls,
-        "country": f"{job.collection.country} {job.collection.title}",
-        "period": _(job_range),
-        "source": _("OCP Kingfisher Database"),
-    }
-
-    headers = {"Accept-Language": f"{language}"}
-    response = requests.post(
-        urljoin(settings.SPOONBILL_URL, "/api/urls/"),
-        body,
-        headers=headers,
-        auth=(settings.SPOONBILL_API_USERNAME, settings.SPOONBILL_API_PASSWORD),
-        timeout=10,
-    )
-
-    logger.info(
-        "Sent body request to flatten tool body \n%s headers\n%s\nresponse status code %s.",
-        body,
-        headers,
-        response.status_code,
-    )
-
-    if response.status_code > requests.codes.created or "id" not in response.json():
-        logger.error("Invalid response from spoonbill %s.", response.text)
-        return HttpResponse(status=requests.codes.internal_server_error)
-
-    params = urlencode({"lang": language, "url": response.json()["id"]})
-    return redirect(urljoin(settings.SPOONBILL_URL, f"/#/upload-file?{params}"))
