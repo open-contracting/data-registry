@@ -114,9 +114,8 @@ document.querySelectorAll(".filterable").forEach((filter) => {
     });
 });
 
-const toppable = document.querySelector(".toppable");
-if (toppable) {
-    // "8. Make the button stationary." https://www.nngroup.com/articles/back-to-top/
+// "8. Make the button stationary." https://www.nngroup.com/articles/back-to-top/
+document.querySelectorAll(".toppable, .toppable-mobile").forEach((toppable) => {
     const observer = new window.IntersectionObserver(
         (entries) => {
             entries[0].target.querySelector("a").toggleAttribute("hidden", !entries[0].isIntersecting);
@@ -127,4 +126,4 @@ if (toppable) {
     );
 
     observer.observe(toppable);
-}
+});
