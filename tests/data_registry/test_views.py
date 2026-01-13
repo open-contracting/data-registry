@@ -16,9 +16,7 @@ class ViewsTests(TestCase):
     def setUpTestData(cls):
         cls.collection1 = models.Collection.objects.create(
             # Identification
-            title="Ignore",
-            title_en="National Directorate of Public Procurement (DNCP)",
-            title_es="Dirección Nacional de Contrataciones Públicas (DNCP)",
+            title="National Directorate of Public Procurement (DNCP)",
             # Spatial coverage
             country="Ignore",
             country_en="Paraguay (EN)",
@@ -47,9 +45,7 @@ class ViewsTests(TestCase):
 
         cls.collection2 = models.Collection.objects.create(
             # Identification
-            title="Another",
-            title_en="Title",
-            title_es="Título",
+            title="Title",
             # Spatial coverage
             country="Another",
             country_en="Canada (EN)",
@@ -259,10 +255,8 @@ class ViewsTests(TestCase):
         self.assertEqual(en_response.json(), expected)
         self.assertNotIn(b": ", en_response.content)  # separators
 
-        expected[0]["title"] = "Dirección Nacional de Contrataciones Públicas (DNCP)"
         expected[0]["country"] = "Paraguay (ES)"
         expected[0]["language"] = "Español"
-        expected[1]["title"] = "Título"
         expected[1]["country"] = "Canada (ES)"
         expected[1]["language"] = "Inglés"
 

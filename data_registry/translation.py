@@ -1,4 +1,3 @@
-from django.conf import settings
 from modeltranslation.translator import TranslationOptions, register
 
 from data_registry import models
@@ -13,7 +12,6 @@ from data_registry import models
 @register(models.Collection)
 class CollectionTranslation(TranslationOptions):
     fields = [
-        "title",
         "description",
         "description_long",
         "summary",
@@ -22,7 +20,6 @@ class CollectionTranslation(TranslationOptions):
         "language",
         "no_data_rationale",
     ]
-    required_languages = {language: ("title",) for language, _ in settings.LANGUAGES}
     fallback_undefined = ""
 
 

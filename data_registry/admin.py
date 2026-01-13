@@ -76,8 +76,7 @@ class UntranslatedFilter(admin.SimpleListFilter):
     def queryset(self, request, queryset):
         if self.value() == "1":
             return queryset.filter(
-                (~Q(title_en="") & Q(title_es=""))
-                | (~Q(country_en="") & Q(country_es=""))
+                (~Q(country_en="") & Q(country_es=""))
                 | (~Q(language_en="") & Q(language_es=""))
                 | (~Q(description_en="") & Q(description_es=""))
                 | (~Q(description_long_en="") & Q(description_long_es=""))
@@ -121,7 +120,7 @@ class CustomDateFieldListFilter(admin.DateFieldListFilter):
 class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
     form = forms.CollectionAdminForm
     actions = ["create_job"]
-    search_fields = ["title_en", "country_en"]
+    search_fields = ["title", "country_en"]
     list_display = ["__str__", "country", "public", "frozen", "active_job", "last_reviewed"]
     list_editable = ["public", "frozen"]
     list_filter = [
@@ -155,9 +154,7 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
             {
                 "description": TRANSLATION_REMINDER,
                 "fields": (
-                    "title_en",
-                    "title_es",
-                    "title_ru",
+                    "title",
                     "country_en",
                     "country_es",
                     "country_ru",
@@ -277,7 +274,7 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
     class Media:
         css = {"all": ["admin.css"]}
 
-    search_fields = ["collection__title_en", "collection__country_en"]
+    search_fields = ["collection__title", "collection__country_en"]
     list_display = ["__str__", "country", "collection", "status", "last_task", "active", "archived", "keep_all_data"]
     # "active" is read-only and uneditable, because at most one job must be set as active for a given collection.
     list_editable = ["status", "keep_all_data"]
