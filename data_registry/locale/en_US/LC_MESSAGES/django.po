@@ -485,7 +485,7 @@ msgstr ""
 
 #: data_registry/templates/index.html:48
 msgid ""
-"Currently, you can access data from over 50 publishers from around the world "
+"Currently, you can access data from over 100 publishers from around the world "
 "as <b>compiled releases</b> with the latest value of each field. <a "
 "href=\"https://standard.open-contracting.org/latest/en/primer/"
 "releases_and_records/\" target=\"_blank\">Learn about how OCDS data is "
