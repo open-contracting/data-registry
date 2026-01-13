@@ -75,20 +75,20 @@ document.querySelectorAll(".toggleable").forEach((toggleable) => {
 
 // Track download events.
 document.querySelectorAll("a[download]").forEach((trackable) => {
-    if (typeof fathom !== "undefined") {
-        trackable.addEventListener("click", () => {
+    trackable.addEventListener("click", () => {
+        if (typeof fathom !== "undefined") {
             fathom.trackEvent(`download ${trackable.dataset.event}`);
-        });
-    }
+        }
+    });
 });
 
 // Track contact events.
 document.querySelectorAll("a[data-event='contact']").forEach((link) => {
-    if (typeof fathom !== "undefined") {
-        link.addEventListener("click", () => {
+    link.addEventListener("click", () => {
+        if (typeof fathom !== "undefined") {
             fathom.trackEvent("contact");
-        });
-    }
+        }
+    });
 });
 
 // search.html
