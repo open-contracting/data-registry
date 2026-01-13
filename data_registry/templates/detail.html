@@ -89,7 +89,7 @@ window.catalog = JSON.parse('{% cache None catalog LANGUAGE_CODE %}{% catalog_st
         <dl class="mb-n2 list-desc-grid">
             <dt>
                 {% translate "Data date range:" %}
-                <button type="button" class="btn btn-link p-0 border-0" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="{% translate "The time span over which contracting information was first published, using the <code>date</code> field in OCDS" %}" aria-label="{% translate "Information about the data date range" %}">
+                <button type="button" class="btn btn-link p-0 border-0" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="{% translate "The time span over which contracting information was first published, using the <code>date</code> field in OCDS" %}" data-event="date:detail" aria-label="{% translate "Information about the data date range" %}">
                     {% include "includes/info_icon.html" with size="16" classes="text-secondary" only %}
                 </button>
             </dt>

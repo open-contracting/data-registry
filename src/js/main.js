@@ -5,6 +5,15 @@ import Tooltip from "bootstrap/js/dist/tooltip";
 document.addEventListener("DOMContentLoaded", () => {
     [...document.querySelectorAll('[data-bs-toggle="tooltip"]')].map((el) => new Tooltip(el));
 
+    // Track tooltip shown events.
+    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((tooltipElement) => {
+        tooltipElement.addEventListener("shown.bs.tooltip", () => {
+            if (typeof fathom !== "undefined") {
+                fathom.trackEvent(`tooltip ${tooltipElement.dataset.event}`);
+            }
+        });
+    });
+
     // header.html
     const languageSelect = document.querySelector("select[name='language']");
     if (languageSelect) {
