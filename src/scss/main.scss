@@ -161,10 +161,33 @@ $letter-size: $spacer * 2;
     max-height: 168px;
 }
 
-// Tooltip
+// Tooltip and Popover
 
 .tooltip code {
     color: $light;
+}
+
+button[type="button"][data-bs-toggle="tooltip"] {
+    cursor: help;
+
+    // Undo .btn .b-icon.bi
+    .b-icon.bi {
+        vertical-align: -0.15em;
+    }
+}
+
+[data-bs-toggle="popover"] {
+    cursor: pointer;
+
+    // Undo .btn .b-icon.bi
+    .b-icon.bi {
+        vertical-align: -0.15em;
+    }
+
+    &:hover .b-icon.bi,
+    &:focus .b-icon.bi {
+        color: shade-color($link-color, $link-shade-percentage) !important;
+    }
 }
 
 // Components

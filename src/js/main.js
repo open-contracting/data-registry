@@ -1,9 +1,11 @@
 /* biome-ignore lint/correctness/noUnusedImports: Bootstrap */
 import Offcanvas from "bootstrap/js/dist/offcanvas";
+import Popover from "bootstrap/js/dist/popover";
 import Tooltip from "bootstrap/js/dist/tooltip";
 
 document.addEventListener("DOMContentLoaded", () => {
     [...document.querySelectorAll('[data-bs-toggle="tooltip"]')].map((el) => new Tooltip(el));
+    [...document.querySelectorAll('[data-bs-toggle="popover"]')].map((el) => new Popover(el));
 
     // Track tooltip shown events.
     document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((tooltipElement) => {
