@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-13 06:17+0000\n"
+"POT-Creation-Date: 2026-01-13 21:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,14 +17,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: data_registry/admin.py:232
+#: data_registry/admin.py:229
 #, python-format
 msgid "Created %(count)d job."
 msgid_plural "Created %(count)d jobs."
 msgstr[0] ""
 msgstr[1] ""
 
-#: data_registry/admin.py:237
+#: data_registry/admin.py:234
 #, python-format
 msgid ""
 "%(count)d publication either has an incomplete job or will be scheduled "
@@ -63,48 +63,52 @@ msgstr ""
 msgid "Oceania"
 msgstr ""
 
-#: data_registry/models.py:162 data_registry/models.py:182
-msgid "Monthly"
-msgstr ""
-
-#: data_registry/models.py:164 data_registry/models.py:186
-msgid "Every 6 months"
-msgstr ""
-
-#: data_registry/models.py:166 data_registry/models.py:188
-msgid "Annually"
-msgstr ""
-
-#: data_registry/models.py:168
-msgid "This dataset is no longer updated by the publisher"
-msgstr ""
-
-#: data_registry/models.py:172
-msgid "Unknown"
-msgstr ""
-
-#: data_registry/models.py:174
-msgid "Real time"
-msgstr ""
-
-#: data_registry/models.py:176
-msgid "Hourly"
-msgstr ""
-
-#: data_registry/models.py:178
-msgid "Daily"
-msgstr ""
-
-#: data_registry/models.py:180
+#: data_registry/models.py:162 data_registry/models.py:184
 msgid "Weekly"
 msgstr ""
 
-#: data_registry/models.py:184
+#: data_registry/models.py:164
+msgid "Every 2 weeks"
+msgstr ""
+
+#: data_registry/models.py:166 data_registry/models.py:186
+msgid "Monthly"
+msgstr ""
+
+#: data_registry/models.py:168 data_registry/models.py:190
+msgid "Every 6 months"
+msgstr ""
+
+#: data_registry/models.py:170 data_registry/models.py:192
+msgid "Annually"
+msgstr ""
+
+#: data_registry/models.py:172
+msgid "This dataset is no longer updated by the publisher"
+msgstr ""
+
+#: data_registry/models.py:176
+msgid "Unknown"
+msgstr ""
+
+#: data_registry/models.py:178
+msgid "Real time"
+msgstr ""
+
+#: data_registry/models.py:180
+msgid "Hourly"
+msgstr ""
+
+#: data_registry/models.py:182
+msgid "Daily"
+msgstr ""
+
+#: data_registry/models.py:188
 msgid "Every 3 months"
 msgstr ""
 
 #: data_registry/templates/detail.html:8 data_registry/templates/index.html:21
-#: data_registry/templates/search.html:6 data_registry/views.py:203
+#: data_registry/templates/search.html:6 data_registry/views.py:201
 msgid "OCP Data Registry"
 msgstr ""
 
@@ -218,9 +222,13 @@ msgstr ""
 
 #: data_registry/templates/detail.html:148
 msgid ""
-"These counts are the number of JSON objects across all contracting "
-"processes. Parties, tenderers and suppliers are unique within a contracting "
-"process, but can be repeated across contracting processes."
+"These counts are the number of JSON objects across all <abbr title=\"In OCDS "
+"terminology, the registry represents a contracting process as a 'compiled "
+"release'.\">contracting processes</abbr>. Parties, tenderers and suppliers "
+"are unique within a contracting process, but can be repeated across "
+"contracting processes. You can learn about data publication in <a "
+"href=\"https://standard.open-contracting.org/latest/en/primer/"
+"releases_and_records/\" target=\"_target\">this tutorial</a>."
 msgstr ""
 
 #: data_registry/templates/detail.html:156
@@ -447,7 +455,7 @@ msgstr ""
 
 #: data_registry/templates/includes/footer.html:129
 #: data_registry/templates/includes/header.html:11
-#: data_registry/templates/index.html:6 data_registry/views.py:193
+#: data_registry/templates/index.html:6 data_registry/views.py:191
 msgid "Open Contracting Partnership"
 msgstr ""
 
@@ -464,7 +472,7 @@ msgid "Data Registry"
 msgstr ""
 
 #: data_registry/templates/index.html:7 data_registry/templates/index.html:22
-#: data_registry/views.py:204
+#: data_registry/views.py:202
 msgid "Search for and access datasets by country"
 msgstr ""
 
@@ -485,8 +493,8 @@ msgstr ""
 
 #: data_registry/templates/index.html:48
 msgid ""
-"Currently, you can access data from over 100 publishers from around the world "
-"as <b>compiled releases</b> with the latest value of each field. <a "
+"Currently, you can access data from over 100 publishers from around the "
+"world as <b>compiled releases</b> with the latest value of each field. <a "
 "href=\"https://standard.open-contracting.org/latest/en/primer/"
 "releases_and_records/\" target=\"_blank\">Learn about how OCDS data is "
 "published</a>."
@@ -559,8 +567,7 @@ msgstr ""
 msgid "Select a country"
 msgstr ""
 
-#: data_registry/templates/search.html:69 data_registry/views.py:68
-#: data_registry/views.py:326
+#: data_registry/templates/search.html:69 data_registry/views.py:66
 msgid "All"
 msgstr ""
 
@@ -606,59 +613,55 @@ msgstr ""
 msgid "data.open-contracting.org Support Request re: %(collection)s"
 msgstr ""
 
-#: data_registry/views.py:69
+#: data_registry/views.py:67
 msgid "Past month"
 msgstr ""
 
-#: data_registry/views.py:70
+#: data_registry/views.py:68
 msgid "Past 6 months"
 msgstr ""
 
-#: data_registry/views.py:71
+#: data_registry/views.py:69
 msgid "Past year"
 msgstr ""
 
-#: data_registry/views.py:72
+#: data_registry/views.py:70
 msgid "Past 5 years"
 msgstr ""
 
-#: data_registry/views.py:82
+#: data_registry/views.py:80
 msgid "Parties data"
 msgstr ""
 
-#: data_registry/views.py:83
+#: data_registry/views.py:81
 msgid "Plannings data"
 msgstr ""
 
-#: data_registry/views.py:84
+#: data_registry/views.py:82
 msgid "Tenders data"
 msgstr ""
 
-#: data_registry/views.py:85
+#: data_registry/views.py:83
 msgid "Awards data"
 msgstr ""
 
-#: data_registry/views.py:86
+#: data_registry/views.py:84
 msgid "Contracts data"
 msgstr ""
 
-#: data_registry/views.py:87
+#: data_registry/views.py:85
 msgid "Documents data"
 msgstr ""
 
-#: data_registry/views.py:88
+#: data_registry/views.py:86
 msgid "Milestones data"
 msgstr ""
 
-#: data_registry/views.py:89
+#: data_registry/views.py:87
 msgid "Amendments data"
 msgstr ""
 
-#: data_registry/views.py:178
+#: data_registry/views.py:176
 #, python-format
 msgid "OCDS data for %(country)s: %(title)s"
-msgstr ""
-
-#: data_registry/views.py:366
-msgid "OCP Kingfisher Database"
 msgstr ""
