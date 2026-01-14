@@ -18,3 +18,25 @@
 .unordered-list li {
     list-style: disc !important;
 }
+
+/* Job status */
+
+.recent-jobs {
+    display: flex;
+    gap: 2px;
+}
+
+.recent-job {
+    display: inline-block;
+    width: 11px;
+    height: 11px;
+    cursor: help;
+}
+
+.job-pass {
+    background-color: var(--header-bg);
+}
+
+.job-fail {
+    background-color: var(--error-fg);
+}

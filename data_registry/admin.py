@@ -6,7 +6,7 @@ from django.conf import settings
 from django.contrib import admin, messages
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.humanize.templatetags import humanize
-from django.db.models import Exists, OuterRef, Q, Subquery
+from django.db.models import Exists, OuterRef, Prefetch, Q, Subquery
 from django.http import HttpResponseRedirect
 from django.template.defaultfilters import pluralize
 from django.urls import NoReverseMatch, reverse
@@ -118,10 +118,13 @@ class CustomDateFieldListFilter(admin.DateFieldListFilter):
 
 @admin.register(Collection)
 class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
+    class Media:
+        css = {"all": ["admin.css"]}
+
     form = forms.CollectionAdminForm
     actions = ["create_job"]
     search_fields = ["title", "country_en"]
-    list_display = ["__str__", "country", "public", "frozen", "active_job", "last_reviewed"]
+    list_display = ["__str__", "country", "public", "frozen", "active_job", "recent_jobs", "last_reviewed"]
     list_editable = ["public", "frozen"]
     list_filter = [
         "public",
@@ -214,6 +217,27 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
         form = super().get_form(request, obj, **kwargs)
         form.base_fields["active_job"].widget.can_add_related = False
         return form
+
+    def get_queryset(self, request):
+        jobs_prefetch = Prefetch(
+            "job_set",
+            queryset=Job.objects.complete().prefetch_related("task_set").order_by("-start")[:10],
+            to_attr="recent_completed_jobs",
+        )
+
+        return super().get_queryset(request).select_related("active_job").prefetch_related(jobs_prefetch)
+
+    @admin.display(description="Recent jobs")
+    def recent_jobs(self, obj):
+        jobs = obj.recent_completed_jobs
+        if not jobs:
+            return mark_safe('<span class="help">No completed jobs</span>')
+
+        spans = [
+            f'<span class="recent-job job-{"fail" if job.is_unsuccessful() else "pass"}" title="{job}"></span>'
+            for job in reversed(jobs)
+        ]
+        return mark_safe(f'<div class="recent-jobs">{"".join(spans)}</div>')
 
     @admin.action(description="Create a job for each selected publication")
     def create_job(self, request, queryset):

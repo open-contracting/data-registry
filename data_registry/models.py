@@ -131,6 +131,18 @@ class Job(models.Model):
         self.status = Job.Status.COMPLETED
         self.save()
 
+    def is_successful(self):
+        """Return whether all tasks ended successfully."""
+        return all(
+            task.status == Task.Status.COMPLETED and task.result == Task.Result.OK for task in self.task_set.all()
+        )
+
+    def is_unsuccessful(self):
+        """Return whether any tasks ended unsuccessfully."""
+        return any(
+            task.status == Task.Status.COMPLETED and task.result == Task.Result.FAILED for task in self.task_set.all()
+        )
+
 
 class CollectionQuerySet(models.QuerySet):
     def visible(self):
