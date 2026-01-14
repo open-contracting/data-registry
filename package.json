@@ -1,6 +1,9 @@
 {
   "name": "data-registry",
   "version": "1.0.1",
+  "scripts": {
+    "build": "npx webpack"
+  },
   "devDependencies": {
     "autoprefixer": "^10.4.16",
     "bootstrap": "^5.2.1",
