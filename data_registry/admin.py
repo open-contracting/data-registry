@@ -241,8 +241,22 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
             href = reverse(change_url, args=[job.pk])
             css_class = "fail" if job.is_unsuccessful() else "pass"
             error_rate = job.context.get("collect_error_rate")
-            text = progress[min(7, int((1 - error_rate) * 8))] if error_rate is not None else ""
-            links.append(f'<a href="{href}" title="{job}" class="recent-job job-{css_class}">{text}</a>')
+            if error_rate is None:
+                text, rate = "", ""
+            elif error_rate == 0:
+                text, rate = "✓", "100%"
+            elif error_rate == 1:
+                text, rate = "✗", "0%"
+            else:
+                text = progress[min(7, int((1 - error_rate) * 8))]
+                success_rate = round((1 - error_rate) * 100)
+                if success_rate == 100:
+                    rate = "<100%"
+                elif success_rate == 0:
+                    rate = ">0%"
+                else:
+                    rate = f"{success_rate}%"
+            links.append(f'<a href="{href}" title="{job} {rate}" class="recent-job job-{css_class}">{text}</a>')
 
         return mark_safe(f'<div class="recent-jobs">{"".join(links)}</div>')
 
