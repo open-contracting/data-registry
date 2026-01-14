@@ -175,7 +175,7 @@ msgstr ""
 #: data_registry/templates/detail.html:92
 #: data_registry/templates/search.html:122
 msgid "Information about the data date range"
-msgstr "Информация о диапазоне дат данных"
+msgstr "Information about the data date range"
 
 #: data_registry/templates/detail.html:101
 #: data_registry/templates/search.html:132
@@ -659,7 +659,7 @@ msgstr "Unlisted countries have no datasets"
 
 #: data_registry/templates/search.html:63
 msgid "Information about the country list"
-msgstr "Информация о списке стран"
+msgstr "Information about the country list"
 
 #: data_registry/templates/search.html:67
 msgid "Select a country"
