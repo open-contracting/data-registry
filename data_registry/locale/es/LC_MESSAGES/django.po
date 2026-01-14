@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-14 05:12+0000\n"
+"POT-Creation-Date: 2026-01-14 18:27+0000\n"
 "PO-Revision-Date: 2021-08-04 17:44+0000\n"
 "Last-Translator: Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2025\n"
 "Language-Team: Spanish (https://app.transifex.com/open-contracting-"
@@ -24,7 +24,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? "
 "1 : 2;\n"
 
-#: data_registry/admin.py:229
+#: data_registry/admin.py:260
 #, python-format
 msgid "Created %(count)d job."
 msgid_plural "Created %(count)d jobs."
@@ -32,7 +32,7 @@ msgstr[0] "%(count)djob creado."
 msgstr[1] "%(count)djobs creados."
 msgstr[2] "%(count)d jobs creados."
 
-#: data_registry/admin.py:234
+#: data_registry/admin.py:265
 #, python-format
 msgid ""
 "%(count)d publication either has an incomplete job or will be scheduled "
@@ -47,75 +47,75 @@ msgstr[1] ""
 msgstr[2] ""
 "%(count)dpublicaciones tienen jobs incompletos o serán calendarizados pronto."
 
-#: data_registry/models.py:146
+#: data_registry/models.py:158
 msgid "Africa and Middle East"
 msgstr "África y Medio Oriente"
 
-#: data_registry/models.py:148
+#: data_registry/models.py:160
 msgid "Asia"
 msgstr "Asia"
 
-#: data_registry/models.py:150
+#: data_registry/models.py:162
 msgid "Eastern Europe & Central Asia"
 msgstr "Europa del Este & Asia Central"
 
-#: data_registry/models.py:152
+#: data_registry/models.py:164
 msgid "Europe"
 msgstr "Europa"
 
-#: data_registry/models.py:154
+#: data_registry/models.py:166
 msgid "Latin America & Caribbean"
 msgstr "América Latina y el Caribe"
 
-#: data_registry/models.py:156
+#: data_registry/models.py:168
 msgid "North America"
 msgstr "Norteamérica"
 
-#: data_registry/models.py:158
+#: data_registry/models.py:170
 msgid "Oceania"
 msgstr "Oceanía"
 
-#: data_registry/models.py:162 data_registry/models.py:184
+#: data_registry/models.py:174 data_registry/models.py:196
 msgid "Weekly"
 msgstr "Semanal"
 
-#: data_registry/models.py:164
+#: data_registry/models.py:176
 msgid "Every 2 weeks"
 msgstr "Cada 2 semanas"
 
-#: data_registry/models.py:166 data_registry/models.py:186
+#: data_registry/models.py:178 data_registry/models.py:198
 msgid "Monthly"
 msgstr "Mensual"
 
-#: data_registry/models.py:168 data_registry/models.py:190
+#: data_registry/models.py:180 data_registry/models.py:202
 msgid "Every 6 months"
 msgstr "Cada 6 meses"
 
-#: data_registry/models.py:170 data_registry/models.py:192
+#: data_registry/models.py:182 data_registry/models.py:204
 msgid "Annually"
 msgstr "Anual"
 
-#: data_registry/models.py:172
+#: data_registry/models.py:184
 msgid "This dataset is no longer updated by the publisher"
 msgstr "Los datos ya no son actualizados por el publicador"
 
-#: data_registry/models.py:176
+#: data_registry/models.py:188
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: data_registry/models.py:178
+#: data_registry/models.py:190
 msgid "Real time"
 msgstr "En tiempo real"
 
-#: data_registry/models.py:180
+#: data_registry/models.py:192
 msgid "Hourly"
 msgstr "Cada hora"
 
-#: data_registry/models.py:182
+#: data_registry/models.py:194
 msgid "Daily"
 msgstr "Diaria"
 
-#: data_registry/models.py:188
+#: data_registry/models.py:200
 msgid "Every 3 months"
 msgstr "Cada 3 meses"
 
@@ -218,14 +218,27 @@ msgid ""
 "target='_blank'>merged</a> into compiled releases."
 msgstr ""
 "Los datos se obtienen con <a href='https://kingfisher-collect.readthedocs.io/"
-"en/latest/' target='_blank'>Kingfisher Collect</a>. Kingfisher Collect transforma los datos lo "
-"menos posible, por ejemplo, elimina <a href='https://es.wikipedia.org/wiki/"
-"Marca_de_orden_de_bytes' target='_blank'>BOM</a> y caracteres nulos, "
-"reemplaza caracteres de nueva línea o tabulación sin escapar, y transcodifica "
-"a UTF-8. También reintenta errores HTTP. Para que una colección sea actualizada en el Registry, "
-"la nueva colección descargada debe contener más datos que la colección anterior, y más del"
-" 85%% de los requests deben tener éxito. Los datos luego se <a href='https://standard.open-contracting.org/"
-"latest/es/schema/merging/' target='_blank'>fusionan</a> en entregas compiladas."
+"en/latest/' target='_blank'>Kingfisher Collect</a>. Kingfisher Collect "
+"transforma los datos lo menos posible, por ejemplo, elimina <a href='https://"
+"es.wikipedia.org/wiki/Marca_de_orden_de_bytes' target='_blank'>BOM</a> y "
+"caracteres nulos, reemplaza caracteres de nueva línea o tabulación sin "
+"escapar, y transcodifica a UTF-8. También reintenta errores HTTP. Para que "
+"una colección sea actualizada en el Registry, la nueva colección descargada "
+"debe contener más datos que la colección anterior, y más del 85%% de los "
+"requests deben tener éxito. Los datos luego se <a href='https://"
+"standard.open-contracting.org/latest/es/schema/merging/' "
+"target='_blank'>fusionan</a> en entregas compiladas."
+
+#: data_registry/templates/detail.html:115
+#, python-format
+msgid ""
+"You can read the <a href='https://github.com/open-contracting/kingfisher-"
+"collect/blob/main/kingfisher_scrapy/spiders/%(collection.source_id)s.py' "
+"target='_blank'>source code</a> for this dataset's spider."
+msgstr ""
+"Puede leer el <a href='https://github.com/open-contracting/kingfisher-"
+"collect/blob/main/kingfisher_scrapy/spiders/%(collection.source_id)s.py' "
+"target='_blank'>código fuente</a> del spider de este conjunto de datos."
 
 #: data_registry/templates/detail.html:115
 msgid "Information about data retrieval"
@@ -278,13 +291,13 @@ msgid ""
 "releases_and_records/\" target=\"_target\">this tutorial</a>."
 msgstr ""
 "Estos conteos corresponden al número de objetos JSON en todos los <abbr "
-"title=\"En la terminología de OCDS, el Registro de Datos representa un proceso de "
-"contratación como un 'release compilado'.\">procesos de contratación</abbr>. "
-"Las partes, oferentes y proveedores son únicos dentro de un proceso de "
-"contratación, pero pueden repetirse en diferentes procesos de contratación. "
-"Puedes aprender sobre la publicación de datos en <a href=\"https://"
-"standard.open-contracting.org/latest/es/primer/releases_and_records/\" "
-"target=\"_target\">este tutorial</a>."
+"title=\"En la terminología de OCDS, el Registro de Datos representa un "
+"proceso de contratación como un 'release compilado'.\">procesos de "
+"contratación</abbr>. Las partes, oferentes y proveedores son únicos dentro "
+"de un proceso de contratación, pero pueden repetirse en diferentes procesos "
+"de contratación. Puedes aprender sobre la publicación de datos en <a "
+"href=\"https://standard.open-contracting.org/latest/es/primer/"
+"releases_and_records/\" target=\"_target\">este tutorial</a>."
 
 #: data_registry/templates/detail.html:163
 msgid "Parties"

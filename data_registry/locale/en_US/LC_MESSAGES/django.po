@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-14 05:14+0000\n"
+"POT-Creation-Date: 2026-01-14 18:27+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,14 +17,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: data_registry/admin.py:229
+#: data_registry/admin.py:260
 #, python-format
 msgid "Created %(count)d job."
 msgid_plural "Created %(count)d jobs."
 msgstr[0] ""
 msgstr[1] ""
 
-#: data_registry/admin.py:234
+#: data_registry/admin.py:265
 #, python-format
 msgid ""
 "%(count)d publication either has an incomplete job or will be scheduled "
@@ -35,75 +35,75 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: data_registry/models.py:146
+#: data_registry/models.py:158
 msgid "Africa and Middle East"
 msgstr ""
 
-#: data_registry/models.py:148
+#: data_registry/models.py:160
 msgid "Asia"
 msgstr ""
 
-#: data_registry/models.py:150
+#: data_registry/models.py:162
 msgid "Eastern Europe & Central Asia"
 msgstr ""
 
-#: data_registry/models.py:152
+#: data_registry/models.py:164
 msgid "Europe"
 msgstr ""
 
-#: data_registry/models.py:154
+#: data_registry/models.py:166
 msgid "Latin America & Caribbean"
 msgstr ""
 
-#: data_registry/models.py:156
+#: data_registry/models.py:168
 msgid "North America"
 msgstr ""
 
-#: data_registry/models.py:158
+#: data_registry/models.py:170
 msgid "Oceania"
 msgstr ""
 
-#: data_registry/models.py:162 data_registry/models.py:184
+#: data_registry/models.py:174 data_registry/models.py:196
 msgid "Weekly"
 msgstr ""
 
-#: data_registry/models.py:164
+#: data_registry/models.py:176
 msgid "Every 2 weeks"
 msgstr ""
 
-#: data_registry/models.py:166 data_registry/models.py:186
+#: data_registry/models.py:178 data_registry/models.py:198
 msgid "Monthly"
 msgstr ""
 
-#: data_registry/models.py:168 data_registry/models.py:190
+#: data_registry/models.py:180 data_registry/models.py:202
 msgid "Every 6 months"
 msgstr ""
 
-#: data_registry/models.py:170 data_registry/models.py:192
+#: data_registry/models.py:182 data_registry/models.py:204
 msgid "Annually"
 msgstr ""
 
-#: data_registry/models.py:172
+#: data_registry/models.py:184
 msgid "This dataset is no longer updated by the publisher"
 msgstr ""
 
-#: data_registry/models.py:176
+#: data_registry/models.py:188
 msgid "Unknown"
 msgstr ""
 
-#: data_registry/models.py:178
+#: data_registry/models.py:190
 msgid "Real time"
 msgstr ""
 
-#: data_registry/models.py:180
+#: data_registry/models.py:192
 msgid "Hourly"
 msgstr ""
 
-#: data_registry/models.py:182
+#: data_registry/models.py:194
 msgid "Daily"
 msgstr ""
 
-#: data_registry/models.py:188
+#: data_registry/models.py:200
 msgid "Every 3 months"
 msgstr ""
 
@@ -200,6 +200,14 @@ msgid ""
 "collections, and over 85%% of requests must succeed. The data is then <a "
 "href='https://standard.open-contracting.org/latest/en/schema/merging/' "
 "target='_blank'>merged</a> into compiled releases."
+msgstr ""
+
+#: data_registry/templates/detail.html:115
+#, python-format
+msgid ""
+"You can read the <a href='https://github.com/open-contracting/kingfisher-"
+"collect/blob/main/kingfisher_scrapy/spiders/%(collection.source_id)s.py' "
+"target='_blank'>source code</a> for this dataset's spider."
 msgstr ""
 
 #: data_registry/templates/detail.html:115
