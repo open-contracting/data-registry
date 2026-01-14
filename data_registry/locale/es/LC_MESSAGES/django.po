@@ -238,7 +238,7 @@ msgstr ""
 "Un proceso de contratación consta de varias etapas: licitación, "
 "adjudicación, contratación e implementación. Puedes aprender sobre los "
 "detalles de las etapas de contratación en <a href=\"https://standard.open-"
-"contracting.org/latest/en/primer/how/\" target=\"_blank\">este tutorial</a>."
+"contracting.org/latest/es/primer/how/\" target=\"_blank\">este tutorial</a>."
 
 #: data_registry/templates/detail.html:148
 msgid ""
@@ -256,7 +256,7 @@ msgstr ""
 "Las partes, oferentes y proveedores son únicos dentro de un proceso de "
 "contratación, pero pueden repetirse en diferentes procesos de contratación. "
 "Puedes aprender sobre la publicación de datos en <a href=\"https://standard."
-"open-contracting.org/latest/en/primer/releases_and_records/\" "
+"open-contracting.org/latest/es/primer/releases_and_records/\" "
 "target=\"_target\">este tutorial</a>."
 
 #: data_registry/templates/detail.html:156
@@ -556,7 +556,7 @@ msgid ""
 msgstr ""
 "Hemos diseñado el Registro de Datos para ayudarte a encontrar y acceder a "
 "conjuntos de datos de procesos de contratación pública que están disponibles "
-"en el <a href=\"https://standard.open-contracting.org/latest/en/primer/what/"
+"en el <a href=\"https://standard.open-contracting.org/latest/es/primer/what/"
 "\" target=\"_blank\">formato OCDS</a>."
 
 #: data_registry/templates/index.html:48
@@ -569,7 +569,7 @@ msgid ""
 msgstr ""
 "Actualmente puedes acceder a datos de más de 100 publicadores de todo el "
 "mundo como <b>releases compilados</b> con el valor más actualizado de cada "
-"campo. <a href=\"https://standard.open-contracting.org/latest/en/primer/"
+"campo. <a href=\"https://standard.open-contracting.org/latest/es/primer/"
 "releases_and_records/\" target=\"_blank\">Aprende sobre cómo se publica "
 "OCDS</a>."
 
