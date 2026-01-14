@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-14 03:46+0000\n"
+"POT-Creation-Date: 2026-01-14 05:14+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -133,7 +133,7 @@ msgid "Show less"
 msgstr ""
 
 #: data_registry/templates/detail.html:60
-#: data_registry/templates/search.html:148
+#: data_registry/templates/search.html:189
 msgid "Available formats:"
 msgstr ""
 
@@ -146,40 +146,40 @@ msgid "Overview"
 msgstr ""
 
 #: data_registry/templates/detail.html:91
-#: data_registry/templates/search.html:121
+#: data_registry/templates/search.html:162
 msgid "Data date range:"
 msgstr ""
 
 #: data_registry/templates/detail.html:92
-#: data_registry/templates/search.html:122
+#: data_registry/templates/search.html:163
 msgid ""
 "The time span over which contracting information was first published, using "
 "the <code>date</code> field in OCDS"
 msgstr ""
 
 #: data_registry/templates/detail.html:92
-#: data_registry/templates/search.html:122
+#: data_registry/templates/search.html:163
 msgid "Information about the data date range"
 msgstr ""
 
 #: data_registry/templates/detail.html:101
-#: data_registry/templates/search.html:132
+#: data_registry/templates/search.html:173
 msgid "Update frequency:"
 msgstr ""
 
 #: data_registry/templates/detail.html:103
-#: data_registry/templates/search.html:134
+#: data_registry/templates/search.html:175
 msgid "Last retrieved:"
 msgstr ""
 
 #: data_registry/templates/detail.html:107
 #: data_registry/templates/detail.html:233
-#: data_registry/templates/search.html:138
+#: data_registry/templates/search.html:179
 msgid "This dataset has not yet been retrieved."
 msgstr ""
 
 #: data_registry/templates/detail.html:110
-#: data_registry/templates/search.html:141
+#: data_registry/templates/search.html:182
 #, python-format
 msgid "retrieved %(retrieval_frequency)s"
 msgstr ""
@@ -570,6 +570,7 @@ msgid "Clear all filters"
 msgstr ""
 
 #: data_registry/templates/search.html:62
+#: data_registry/templates/search.html:97
 msgid "Country"
 msgstr ""
 
@@ -590,43 +591,67 @@ msgid "All"
 msgstr ""
 
 #: data_registry/templates/search.html:77
+#: data_registry/templates/search.html:105
 msgid "Region"
 msgstr ""
 
 #: data_registry/templates/search.html:78
+#: data_registry/templates/search.html:113
 msgid "Data date range"
 msgstr ""
 
 #: data_registry/templates/search.html:79
+#: data_registry/templates/search.html:121
 msgid "Update frequency"
 msgstr ""
 
 #: data_registry/templates/search.html:80
+#: data_registry/templates/search.html:130
 msgid "Data contains"
 msgstr ""
 
 #: data_registry/templates/search.html:89
 #, python-format
-msgid "%(counter)s dataset matches the selected filters"
-msgid_plural "%(counter)s datasets match the selected filters"
+msgid "%(counter)s dataset matches the selected filters:"
+msgid_plural "%(counter)s datasets match the selected filters:"
 msgstr[0] ""
 msgstr[1] ""
 
-#: data_registry/templates/search.html:95
+#: data_registry/templates/search.html:98
+msgid "Remove country filter"
+msgstr ""
+
+#: data_registry/templates/search.html:106
+msgid "Remove region filter"
+msgstr ""
+
+#: data_registry/templates/search.html:114
+msgid "Remove data date range filter"
+msgstr ""
+
+#: data_registry/templates/search.html:122
+msgid "Remove update frequency filter"
+msgstr ""
+
+#: data_registry/templates/search.html:131
+msgid "Remove data availability filter"
+msgstr ""
+
+#: data_registry/templates/search.html:136
 #, python-format
 msgid "Showing all %(counter)s datasets"
 msgstr ""
 
-#: data_registry/templates/search.html:161
+#: data_registry/templates/search.html:202
 msgid "See details"
 msgstr ""
 
-#: data_registry/templates/search.html:174
-#: data_registry/templates/search.html:179
+#: data_registry/templates/search.html:215
+#: data_registry/templates/search.html:220
 msgid "Back to Top"
 msgstr ""
 
-#: data_registry/templatetags/registry.py:94
+#: data_registry/templatetags/registry.py:101
 #, python-format
 msgid "data.open-contracting.org Support Request re: %(collection)s"
 msgstr ""

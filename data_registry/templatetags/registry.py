@@ -90,6 +90,13 @@ def remove_query_string_parameter(context, param):
 
 
 @register.simple_tag(takes_context=True)
+def remove_query_string_value(context, param, value):
+    copy = context["request"].GET.copy()
+    copy.setlist(param, [v for v in copy.getlist(param) if v != value])
+    return copy.urlencode()
+
+
+@register.simple_tag(takes_context=True)
 def feedback_query_string_parameters(context):
     subject = _("data.open-contracting.org Support Request re: %(collection)s") % {
         "collection": context["collection"].title

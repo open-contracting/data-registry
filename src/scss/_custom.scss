@@ -151,7 +151,7 @@ $utilities: map-merge(
         // https://getbootstrap.com/docs/5.2/utilities/display/
         "display": map-merge( // 2 KiB
             map-get($utilities, "display"),
-            (values: inline-block block flex none)
+            (values: inline-block block inline-flex flex none)
         ),
         // https://getbootstrap.com/docs/5.2/utilities/flex/
         // justify-content
@@ -159,8 +159,8 @@ $utilities: map-merge(
         "flex-direction": null,
         "flex-grow": null,
         "flex-shrink": null,
-        "flex-wrap": null,
-        "align-items": null,
+        // flex-wrap
+        // align-items
         "align-content": null,
         "align-self": null,
         "order": null,
@@ -190,13 +190,12 @@ $utilities: map-merge(
         "viewport-height": null,
         "min-viewport-height": null,
         // https://getbootstrap.com/docs/5.2/utilities/spacing/
-        // margin-top margin-end margin-bottom margin-start
+        // margin-top margin-bottom margin-start margin-end
         "margin": null,
         "margin-x": null,
         "margin-y": null,
-        // padding padding-x padding-y padding-start
+        // padding padding-x padding-y padding-start padding-end
         "padding-top": null,
-        "padding-end": null,
         "padding-bottom": null,
         // negative-margin-bottom
         "negative-margin": null,
@@ -205,7 +204,7 @@ $utilities: map-merge(
         "negative-margin-top": null,
         "negative-margin-end": null,
         "negative-margin-start": null,
-        "gap": null,
+        // gap
         // https://getbootstrap.com/docs/5.2/utilities/text/
         // font-size font-style font-weight text-align text-decoration text-transform white-space word-wrap
         "font-family": null,

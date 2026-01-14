@@ -84,13 +84,54 @@
     </div>
 
     <div class="col-md-9 col-xl-10">
-        <h1 class="h4 mb-4">
-{% if request.GET %}
+        <h1 class="h4 mb-4 d-flex align-items-center flex-wrap gap-2">
+{% if request.GET|nonempty %}
             {% blocktranslate count counter=collections|length trimmed %}
-            {{ counter }} dataset matches the selected filters
+            {{ counter }} dataset matches the selected filters:
             {% plural %}
-            {{ counter }} datasets match the selected filters
+            {{ counter }} datasets match the selected filters:
             {% endblocktranslate %}
+
+    {% if request.GET.country %}
+            <a href="?{% remove_query_string_parameter 'country' %}" class="badge text-bg-primary d-inline-flex gap-1 align-items-center text-decoration-none fw-normal" rel="nofollow">
+                <span class="fst-italic">{% translate "Country" %}:</span> {{ request.GET.country }}
+                <button type="button" class="btn-close btn-close-white ms-2 pe-0" aria-label="{% translate "Remove country filter" %}"></button>
+            </a>
+    {% endif %}
+
+    {% for value, label in regions %}
+        {% if value in request.GET|getlist:'region' %}
+            <a href="?{% remove_query_string_value 'region' value %}" class="badge text-bg-primary d-inline-flex gap-1 align-items-center text-decoration-none fw-normal" rel="nofollow">
+                <span class="fst-italic">{% translate "Region" %}:</span> {{ label }}
+                <button type="button" class="btn-close btn-close-white ms-2 pe-0" aria-label="{% translate "Remove region filter" %}: {{ label }}"></button>
+            </a>
+        {% endif %}
+    {% endfor %}
+
+    {% if request.GET.date_range %}
+            <a href="?{% remove_query_string_parameter 'date_range' %}" class="badge text-bg-primary d-inline-flex gap-1 align-items-center text-decoration-none fw-normal" rel="nofollow">
+                <span class="fst-italic">{% translate "Data date range" %}:</span> {{ date_ranges|getitem:request.GET.date_range }}
+                <button type="button" class="btn-close btn-close-white ms-2 pe-0" aria-label="{% translate "Remove data date range filter" %}"></button>
+            </a>
+    {% endif %}
+
+    {% for value, label in frequencies %}
+        {% if value in request.GET|getlist:'update_frequency' %}
+            <a href="?{% remove_query_string_value 'update_frequency' value %}" class="badge text-bg-primary d-inline-flex gap-1 align-items-center text-decoration-none fw-normal" rel="nofollow">
+                <span class="fst-italic">{% translate "Update frequency" %}:</span> {{ label }}
+                <button type="button" class="btn-close btn-close-white ms-2 pe-0" aria-label="{% translate "Remove update frequency filter" %}: {{ label }}"></button>
+            </a>
+        {% endif %}
+    {% endfor %}
+
+    {% for value, label in counts.items %}
+        {% if value in request.GET|getlist:'counts' %}
+            <a href="?{% remove_query_string_value 'counts' value %}" class="badge text-bg-primary d-inline-flex gap-1 align-items-center text-decoration-none fw-normal" rel="nofollow">
+                <span class="fst-italic">{% translate "Data contains" %}:</span> {{ label }}
+                <button type="button" class="btn-close btn-close-white ms-2 pe-0" aria-label="{% translate "Remove data availability filter" %}: {{ label }}"></button>
+            </a>
+        {% endif %}
+    {% endfor %}
 {% else %}
             {% blocktranslate with counter=collections|length trimmed %}
             Showing all {{ counter }} datasets

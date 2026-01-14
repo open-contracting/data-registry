@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-14 03:46+0000\n"
+"POT-Creation-Date: 2026-01-14 05:12+0000\n"
 "PO-Revision-Date: 2021-08-04 17:44+0000\n"
 "Last-Translator: Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2025\n"
 "Language-Team: Russian (https://app.transifex.com/open-contracting-"
@@ -156,7 +156,7 @@ msgid "Show less"
 msgstr "Меньше"
 
 #: data_registry/templates/detail.html:60
-#: data_registry/templates/search.html:148
+#: data_registry/templates/search.html:189
 msgid "Available formats:"
 msgstr "Доступные форматы"
 
@@ -169,12 +169,12 @@ msgid "Overview"
 msgstr "Обзор"
 
 #: data_registry/templates/detail.html:91
-#: data_registry/templates/search.html:121
+#: data_registry/templates/search.html:162
 msgid "Data date range:"
 msgstr "Диапазон дат"
 
 #: data_registry/templates/detail.html:92
-#: data_registry/templates/search.html:122
+#: data_registry/templates/search.html:163
 msgid ""
 "The time span over which contracting information was first published, using "
 "the <code>date</code> field in OCDS"
@@ -183,28 +183,28 @@ msgstr ""
 "опубликована, используя поле <code>date</code> в OCDS"
 
 #: data_registry/templates/detail.html:92
-#: data_registry/templates/search.html:122
+#: data_registry/templates/search.html:163
 msgid "Information about the data date range"
 msgstr "Information about the data date range"
 
 #: data_registry/templates/detail.html:101
-#: data_registry/templates/search.html:132
+#: data_registry/templates/search.html:173
 msgid "Update frequency:"
 msgstr "Периодичность обновлений"
 
 #: data_registry/templates/detail.html:103
-#: data_registry/templates/search.html:134
+#: data_registry/templates/search.html:175
 msgid "Last retrieved:"
 msgstr "Последнее получено:"
 
 #: data_registry/templates/detail.html:107
 #: data_registry/templates/detail.html:233
-#: data_registry/templates/search.html:138
+#: data_registry/templates/search.html:179
 msgid "This dataset has not yet been retrieved."
 msgstr "Этот набор данных еще не загружен."
 
 #: data_registry/templates/detail.html:110
-#: data_registry/templates/search.html:141
+#: data_registry/templates/search.html:182
 #, python-format
 msgid "retrieved %(retrieval_frequency)s"
 msgstr "загружен %(retrieval_frequency)s"
@@ -226,15 +226,16 @@ msgid ""
 "href='https://standard.open-contracting.org/latest/en/schema/merging/' "
 "target='_blank'>merged</a> into compiled releases."
 msgstr ""
-"Данные извлекаются с помощью <a href='https://kingfisher-collect.readthedocs.io/"
-"en/latest/' target='_blank'>Kingfisher Collect</a>. Он преобразует данные "
-"минимально: удаляет <a href='https://ru.wikipedia.org/wiki/"
-"Маркер_последовательности_байтов' target='_blank'>BOM</a> и нулевые символы, "
-"заменяет неэкранированные символы новой строки или табуляции, и перекодирует "
-"в UTF-8. Он повторяет запросы при ошибках HTTP. Новые коллекции должны содержать "
-"больше данных, чем предыдущие, и более 85%% запросов должны быть успешными. "
-"Затем данные <a href='https://standard.open-contracting.org/latest/en/schema/"
-"merging/' target='_blank'>объединяются</a> в скомпилированные выпуски."
+"Данные извлекаются с помощью <a href='https://kingfisher-"
+"collect.readthedocs.io/en/latest/' target='_blank'>Kingfisher Collect</a>. "
+"Он преобразует данные минимально: удаляет <a href='https://ru.wikipedia.org/"
+"wiki/Маркер_последовательности_байтов' target='_blank'>BOM</a> и нулевые "
+"символы, заменяет неэкранированные символы новой строки или табуляции, и "
+"перекодирует в UTF-8. Он повторяет запросы при ошибках HTTP. Новые коллекции "
+"должны содержать больше данных, чем предыдущие, и более 85%% запросов должны "
+"быть успешными. Затем данные <a href='https://standard.open-contracting.org/"
+"latest/en/schema/merging/' target='_blank'>объединяются</a> в "
+"скомпилированные выпуски."
 
 #: data_registry/templates/detail.html:115
 msgid "Information about data retrieval"
@@ -665,6 +666,7 @@ msgid "Clear all filters"
 msgstr "Очистить все фильтры"
 
 #: data_registry/templates/search.html:62
+#: data_registry/templates/search.html:97
 msgid "Country"
 msgstr "Страна"
 
@@ -685,45 +687,69 @@ msgid "All"
 msgstr "Все"
 
 #: data_registry/templates/search.html:77
+#: data_registry/templates/search.html:105
 msgid "Region"
 msgstr "Регион"
 
 #: data_registry/templates/search.html:78
+#: data_registry/templates/search.html:113
 msgid "Data date range"
 msgstr "Диапазон дат данных"
 
 #: data_registry/templates/search.html:79
+#: data_registry/templates/search.html:121
 msgid "Update frequency"
 msgstr "Частота обновления"
 
 #: data_registry/templates/search.html:80
+#: data_registry/templates/search.html:130
 msgid "Data contains"
 msgstr "Данные содержат"
 
 #: data_registry/templates/search.html:89
 #, python-format
-msgid "%(counter)s dataset matches the selected filters"
-msgid_plural "%(counter)s datasets match the selected filters"
-msgstr[0] "%(counter)sнабор данных соответствуют выбранным фильтрам"
-msgstr[1] "%(counter)sнаборов данных соответствуют выбранным фильтрам"
-msgstr[2] "%(counter)sнаборов данных соответствуют выбранным фильтрам"
-msgstr[3] "%(counter)sнаборов данных соответствуют выбранным фильтрам"
+msgid "%(counter)s dataset matches the selected filters:"
+msgid_plural "%(counter)s datasets match the selected filters:"
+msgstr[0] "%(counter)sнабор данных соответствуют выбранным фильтрам:"
+msgstr[1] "%(counter)sнаборов данных соответствуют выбранным фильтрам:"
+msgstr[2] "%(counter)sнаборов данных соответствуют выбранным фильтрам:"
+msgstr[3] "%(counter)sнаборов данных соответствуют выбранным фильтрам:"
 
-#: data_registry/templates/search.html:95
+#: data_registry/templates/search.html:98
+msgid "Remove country filter"
+msgstr "Удалить фильтр страны"
+
+#: data_registry/templates/search.html:106
+msgid "Remove region filter"
+msgstr "Удалить фильтр региона"
+
+#: data_registry/templates/search.html:114
+msgid "Remove data date range filter"
+msgstr "Удалить фильтр диапазона дат данных"
+
+#: data_registry/templates/search.html:122
+msgid "Remove update frequency filter"
+msgstr "Удалить фильтр частоты обновления"
+
+#: data_registry/templates/search.html:131
+msgid "Remove data availability filter"
+msgstr "Удалить фильтр доступности данных"
+
+#: data_registry/templates/search.html:136
 #, python-format
 msgid "Showing all %(counter)s datasets"
 msgstr "Показаны все %(counter)sнаборов данных"
 
-#: data_registry/templates/search.html:161
+#: data_registry/templates/search.html:202
 msgid "See details"
 msgstr "Смотреть детали"
 
-#: data_registry/templates/search.html:174
-#: data_registry/templates/search.html:179
+#: data_registry/templates/search.html:215
+#: data_registry/templates/search.html:220
 msgid "Back to Top"
 msgstr "вернуться наверх"
 
-#: data_registry/templatetags/registry.py:94
+#: data_registry/templatetags/registry.py:101
 #, python-format
 msgid "data.open-contracting.org Support Request re: %(collection)s"
 msgstr ""
