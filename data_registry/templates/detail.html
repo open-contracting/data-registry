@@ -102,7 +102,7 @@ window.catalog = JSON.parse('{% cache None catalog LANGUAGE_CODE %}{% catalog_st
             <dd>{% if collection.update_frequency == "UNKNOWN" %}-{% else %}{{ collection.get_update_frequency_display }}{% endif %}</dd>
             <dt>{% translate "Last retrieved:" %}</dt>
             <dd>
-                {{ collection.last_retrieved|date:"M Y" }}
+                {{ collection.last_retrieved|date:"M j, Y" }}
                 {% if not job %}
                     {% translate "This dataset has not yet been retrieved." %}
                 {% endif %}
