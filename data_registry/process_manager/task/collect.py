@@ -147,6 +147,8 @@ class Collect(TaskManager):
 
             scrapy_log = ScrapyLogFile(scrapy_log_url, text=self.read_log_file(scrapy_log_url))
 
+            self.job.context["collect_error_rate"] = scrapy_log.error_rate
+
             logs = []
             notes = []
             counter = Counter()
@@ -206,11 +208,13 @@ class Collect(TaskManager):
                 messages = logs + [f"{message_type}: {count}" for message_type, count in counter.items()]
                 logger.warning("%s has warnings\n%s\n    %s\n", self, url, "\n    ".join(messages))
 
-            # Persist the task notes.
+            # Persist the task notes and job.
 
             # Delete any existing task notes, in case of retries.
             self.task.tasknote_set.all().delete()
             TaskNote.objects.bulk_create(notes)
+
+            self.job.save(update_fields=["modified", "context"])
 
             # Prevent further processing if acceptance criteria not met.
 

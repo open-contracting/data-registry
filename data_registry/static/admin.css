@@ -27,10 +27,18 @@
 }
 
 .recent-job {
-    display: inline-block;
-    width: 11px;
-    height: 11px;
-    cursor: help;
+    display: inline-flex;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+    font-size: 12px;
+    line-height: 1;
+    text-decoration: none;
+}
+
+a.recent-job:link,
+a.recent-job:visited {
+    color: #fff;
 }
 
 .job-pass {

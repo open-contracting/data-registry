@@ -233,11 +233,18 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
         if not jobs:
             return mark_safe('<span class="help">No completed jobs</span>')
 
-        spans = [
-            f'<span class="recent-job job-{"fail" if job.is_unsuccessful() else "pass"}" title="{job}"></span>'
-            for job in reversed(jobs)
-        ]
-        return mark_safe(f'<div class="recent-jobs">{"".join(spans)}</div>')
+        progress = "⠁⠃⠇⠏⠟⠿⡿⣿"
+        change_url = CHANGE.format(content_type=ContentType.objects.get_for_model(Job))
+
+        links = []
+        for job in reversed(jobs):
+            href = reverse(change_url, args=[job.pk])
+            css_class = "fail" if job.is_unsuccessful() else "pass"
+            error_rate = job.context.get("collect_error_rate")
+            text = progress[min(7, int((1 - error_rate) * 8))] if error_rate is not None else ""
+            links.append(f'<a href="{href}" title="{job}" class="recent-job job-{css_class}">{text}</a>')
+
+        return mark_safe(f'<div class="recent-jobs">{"".join(links)}</div>')
 
     @admin.action(description="Create a job for each selected publication")
     def create_job(self, request, queryset):

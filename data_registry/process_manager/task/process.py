@@ -93,7 +93,7 @@ class Process(TaskManager):
             warning_notes.append(["OCDS Merge", {"count": count, "path": path}])
         process_notes["WARNING"] = warning_notes
 
-        # Persist the task notes and task.
+        # Persist the task notes and job.
 
         # Delete any existing task notes, in case of retries.
         self.task.tasknote_set.all().delete()
