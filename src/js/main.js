@@ -16,6 +16,15 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    // Track popover shown events.
+    document.querySelectorAll('[data-bs-toggle="popover"]').forEach((popoverElement) => {
+        popoverElement.addEventListener("shown.bs.popover", () => {
+            if (typeof fathom !== "undefined") {
+                fathom.trackEvent(`popover ${popoverElement.dataset.event}`);
+            }
+        });
+    });
+
     // header.html
     const languageSelect = document.querySelector("select[name='language']");
     if (languageSelect) {
