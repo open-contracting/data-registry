@@ -1,10 +1,14 @@
+from datetime import timedelta
 from unittest.mock import patch
 
 from django.db.models import RestrictedError
 from django.test import TransactionTestCase
+from django.utils import timezone
 
-from data_registry.models import Collection
+from data_registry.models import Collection, Job, Task
 from tests import TestTask
+
+MONTHLY = Collection.RetrievalFrequency.MONTHLY
 
 
 class CollectionTests(TransactionTestCase):
@@ -12,6 +16,66 @@ class CollectionTests(TransactionTestCase):
 
     def test_is_out_of_date(self):
         collection = Collection.objects.get(pk=1)
+
+        self.assertTrue(collection.is_out_of_date())
+
+    def test_is_out_of_date_frozen(self):
+        for frozen, expected in ((True, False), (False, True)):
+            with self.subTest(frozen=frozen):
+                collection = Collection.objects.create(title="test", retrieval_frequency=MONTHLY, frozen=frozen)
+
+                self.assertEqual(collection.is_out_of_date(), expected)
+
+    def test_is_out_of_date_retrieval_frequency(self):
+        for retrieval_frequency, expected in (("", False), (Collection.RetrievalFrequency.NEVER, False)):
+            with self.subTest(retrieval_frequency=retrieval_frequency):
+                collection = Collection.objects.create(title="test", retrieval_frequency=retrieval_frequency)
+
+                self.assertEqual(collection.is_out_of_date(), expected)
+
+    def test_is_out_of_date_incomplete_planned(self):
+        collection = Collection.objects.create(title="test", retrieval_frequency=MONTHLY)
+
+        collection.job_set.create(status=Job.Status.PLANNED, start=timezone.now() - timedelta(days=60))
+
+        self.assertFalse(collection.is_out_of_date())
+
+    def test_is_out_of_date_incomplete_running(self):
+        collection = Collection.objects.create(title="test", retrieval_frequency=MONTHLY)
+
+        collection.job_set.create(status=Job.Status.RUNNING, start=timezone.now() - timedelta(days=60))
+
+        self.assertFalse(collection.is_out_of_date())
+
+    def test_is_out_of_date_unsuccessful_less_than_one_week(self):
+        collection = Collection.objects.create(title="test", retrieval_frequency=MONTHLY)
+
+        job = collection.job_set.create(status=Job.Status.COMPLETED, start=timezone.now() - timedelta(days=5))
+        job.task_set.create(status=Task.Status.COMPLETED, result=Task.Result.FAILED)
+
+        self.assertFalse(collection.is_out_of_date())
+
+    def test_is_out_of_date_unsuccessful_more_than_one_week(self):
+        collection = Collection.objects.create(title="test", retrieval_frequency=MONTHLY)
+
+        job = collection.job_set.create(status=Job.Status.COMPLETED, start=timezone.now() - timedelta(days=10))
+        job.task_set.create(status=Task.Status.COMPLETED, result=Task.Result.FAILED)
+
+        self.assertTrue(collection.is_out_of_date())
+
+    def test_is_out_of_date_successful_less_than_frequency(self):
+        collection = Collection.objects.create(title="test", retrieval_frequency=MONTHLY)
+
+        job = collection.job_set.create(status=Job.Status.COMPLETED, start=timezone.now() - timedelta(days=15))
+        job.task_set.create(status=Task.Status.COMPLETED, result=Task.Result.OK)
+
+        self.assertFalse(collection.is_out_of_date())
+
+    def test_is_out_of_date_successful_more_than_frequency(self):
+        collection = Collection.objects.create(title="test", retrieval_frequency=MONTHLY)
+
+        job = collection.job_set.create(status=Job.Status.COMPLETED, start=timezone.now() - timedelta(days=45))
+        job.task_set.create(status=Task.Status.COMPLETED, result=Task.Result.OK)
 
         self.assertTrue(collection.is_out_of_date())
 

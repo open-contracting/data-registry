@@ -1,9 +1,12 @@
+import logging
 from datetime import date, timedelta
 
 from django.db import models
 from django.db.models import Q
 from django.db.models.functions import Now
 from django.utils.translation import gettext_lazy as _
+
+logger = logging.getLogger(__name__)
 
 
 def format_datetime(dt):
@@ -363,8 +366,9 @@ class Collection(models.Model):
         """
         Return whether the publication is out-of-date.
 
-        A publication is out-of-date if it isn't frozen and has a retrieval frequency other than "never", and either
-        has never been scheduled or was last scheduled longer ago than the retrieval frequency.
+        A publication is out-of-date if it isn't frozen, has a retrieval frequency other than "never", has no
+        incomplete jobs, and either has never been scheduled or was last scheduled longer ago than the retrieval
+        frequency. If the most recent job is unsuccessful, the minimum retrieval frequency is used, instead.
         """
         if self.frozen:
             return False
@@ -373,17 +377,22 @@ class Collection(models.Model):
         if not self.retrieval_frequency or self.retrieval_frequency == self.RetrievalFrequency.NEVER:
             return False
 
+        # It has an incomplete job. (Avoid running two jobs for the same publication, concurrently.)
+        incomplete_jobs = list(self.job_set.incomplete())
+        if incomplete_jobs:
+            logger.warning("%s has incomplete job(s): %s", self, incomplete_jobs)
+            return False
+
         most_recent_job = self.job_set.order_by("-start").first()
 
         # It has never been scheduled.
         if not most_recent_job:
             return True
 
-        # It has been scheduled, but not yet initiated.
-        if not most_recent_job.start:
-            return False
+        # If the most recent job is unsuccessful, use the minimum retrieval frequency.
+        frequency = self.RetrievalFrequency.WEEKLY if most_recent_job.is_unsuccessful() else self.retrieval_frequency
 
-        match self.retrieval_frequency:
+        match frequency:
             case self.RetrievalFrequency.WEEKLY:
                 days = 7
             case self.RetrievalFrequency.BIWEEKLY:
