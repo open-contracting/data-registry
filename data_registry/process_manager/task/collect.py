@@ -6,15 +6,12 @@ from collections import Counter
 
 import requests
 from django.conf import settings
-from django.contrib.contenttypes.models import ContentType
-from django.contrib.sites.models import Site
-from django.urls import reverse
 from scrapyloganalyzer import ScrapyLogFile
 
 from data_registry.exceptions import ConfigurationError, IrrecoverableError, RecoverableError, UnexpectedError
-from data_registry.models import Job, Task, TaskNote
+from data_registry.models import Task, TaskNote
 from data_registry.process_manager.util import TaskManager, skip_if_not_started
-from data_registry.util import CHANGE, scrapyd_url
+from data_registry.util import scrapyd_url
 
 logger = logging.getLogger(__name__)
 
@@ -154,7 +151,7 @@ class Collect(TaskManager):
             counter = Counter()
             missing_next_link_error = False
 
-            # These two are persisted on the Task itself.
+            # These two are persisted on the Task itself, instead of as TaskNote objects.
             if not scrapy_log.is_finished():
                 logs.append(f"crawl finish reason: {scrapy_log.logparser['finish_reason']}")
             if scrapy_log.error_rate > 0.01:  # 1%
@@ -203,10 +200,8 @@ class Collect(TaskManager):
                     )
 
             if logs or counter:
-                path = reverse(CHANGE.format(content_type=ContentType.objects.get_for_model(Job)), args=[self.job.pk])
-                url = f"https://{Site.objects.get_current().domain}{path}"
                 messages = logs + [f"{message_type}: {count}" for message_type, count in counter.items()]
-                logger.warning("%s has warnings\n%s\n    %s\n", self, url, "\n    ".join(messages))
+                logger.warning("%s has warnings\n%s\n    %s\n", self, self.job_url, "\n    ".join(messages))
 
             # Persist the task notes and job.
 

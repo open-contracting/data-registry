@@ -80,18 +80,26 @@ class Process(TaskManager):
             error_message=f"Unable to get notes of collection {original_collection['id']}",
         ).json()
 
+        # Count the original notes, before aggregation.
+        counter = Counter(("ERROR", note) for note, _ in process_notes["ERROR"])
+        counter += Counter(("WARNING", data.get("type", "Unrecognized")) for _, data in process_notes["WARNING"])
+
         # Aggregate the task's WARNING notes.
-        counter = Counter()
+        paths_counter = Counter()
         warning_notes = []
         for note, data in process_notes["WARNING"]:
             # DuplicateIdValueWarning can be issued millions of times.
             if data.get("type") == "DuplicateIdValueWarning":
-                counter += Counter(data["paths"])
+                paths_counter += Counter(data["paths"])
             else:
                 warning_notes.append([note, data])
-        for path, count in counter.items():
+        for path, count in paths_counter.items():
             warning_notes.append(["OCDS Merge", {"count": count, "path": path}])
         process_notes["WARNING"] = warning_notes
+
+        if counter:
+            messages = [f"{level}: {key}: {count}" for (level, key), count in counter.items()]
+            logger.warning("%s has issues\n%s\n    %s\n", self, self.job_url, "\n    ".join(messages))
 
         # Persist the task notes and job.
 

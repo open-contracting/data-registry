@@ -3,9 +3,13 @@ import logging
 from abc import ABC, abstractmethod
 
 import requests
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.sites.models import Site
+from django.urls import reverse
 
 from data_registry import models
 from data_registry.exceptions import RecoverableError
+from data_registry.util import CHANGE
 from exporter.util import TaskStatus
 
 logger = logging.getLogger(__name__)
@@ -59,6 +63,12 @@ class TaskManager(ABC):
     def collection(self) -> models.Collection:
         """The publication on which the task is performed."""
         return self.task.job.collection
+
+    @property
+    def job_url(self) -> str:
+        """The URL to the job's admin change page."""
+        path = reverse(CHANGE.format(content_type=ContentType.objects.get_for_model(models.Job)), args=[self.job.pk])
+        return f"https://{Site.objects.get_current().domain}{path}"
 
     @property
     @abstractmethod
