@@ -58,6 +58,7 @@ class Process(TaskManager):
         meta = self.request(
             "GET",
             url_for_collection(compiled_collection["id"], "metadata"),
+            timeout=7200,  # 2h, until performance issues resolved (1h was observed)
             error_message=f"Unable to get metadata of collection {compiled_collection['id']}",
         ).json()
 

@@ -84,10 +84,8 @@ class Collect(TaskManager):
             return self.request("get", scrapy_log_url, error_message="Unable to read Scrapy log").text
         except RecoverableError as e:
             # If the log file doesn't exist, the job can't continue.
-            if (
-                isinstance(e.__cause__, requests.HTTPError)
-                and e.__cause__.response.status_code == requests.codes.not_found
-            ):
+            cause = e.__cause__
+            if isinstance(cause, requests.HTTPError) and cause.response.status_code == requests.codes.not_found:
                 raise UnexpectedError("Scrapy log doesn't exist") from e
             raise
 
@@ -95,11 +93,7 @@ class Collect(TaskManager):
         response = self.request(
             "POST",
             scrapyd_url("schedule.json"),
-            data={
-                "project": PROJECT,
-                "spider": self.spider,
-                "steps": "compile",  # no "check"
-            },
+            data={"project": PROJECT, "spider": self.spider, "steps": "compile"},  # no "check" step
             error_message=f"Unable to schedule a Scrapyd job for project {PROJECT} and spider {self.spider}",
         )
 
@@ -232,10 +226,7 @@ class Collect(TaskManager):
         response = self.request(
             "POST",
             scrapyd_url("cancel.json"),
-            data={
-                "project": PROJECT,
-                "job": scrapyd_job_id,
-            },
+            data={"project": PROJECT, "job": scrapyd_job_id},
             error_message=f"Unable to cancel the Scrapyd job {scrapyd_job_id}",
         )
 

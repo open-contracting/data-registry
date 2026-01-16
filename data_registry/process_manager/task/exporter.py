@@ -1,6 +1,6 @@
 import logging
 
-from data_registry.process_manager.util import TaskManager, exporter_status_to_task_status, skip_if_not_started
+from data_registry.process_manager.util import TaskManager, export_to_task_status, skip_if_not_started
 from exporter.util import Export, publish
 
 logger = logging.getLogger(__name__)
@@ -21,9 +21,7 @@ class Exporter(TaskManager):
         )
 
     def get_status(self):
-        export = self.get_export()
-
-        return exporter_status_to_task_status(export.status)
+        return export_to_task_status(self.get_export())
 
     @skip_if_not_started
     def wipe(self):

@@ -10,13 +10,13 @@ from django.urls import reverse
 from data_registry import models
 from data_registry.exceptions import RecoverableError
 from data_registry.util import CHANGE
-from exporter.util import TaskStatus
+from exporter.util import Export, TaskStatus
 
 logger = logging.getLogger(__name__)
 
 
-def exporter_status_to_task_status(status: TaskStatus) -> models.Task.Status:
-    match status:
+def export_to_task_status(export: Export) -> models.Task.Status:
+    match export.status:
         case TaskStatus.WAITING:
             return models.Task.Status.WAITING
         case TaskStatus.RUNNING:
@@ -80,7 +80,7 @@ class TaskManager(ABC):
         :meth:`~data_registry.process_manager.util.TaskManager.wipe` (unless temporary data is to be preserved).
         """
 
-    def request(self, method, url, *, error_message, **kwargs):
+    def request(self, method, url, *, error_message, timeout=10, **kwargs):
         """
         Send a request to an application.
 
@@ -90,7 +90,7 @@ class TaskManager(ABC):
         :raises RecoverableError:
         """
         try:
-            response = requests.request(method, url, **kwargs, timeout=7200)  # 2h, until performance issues resolved
+            response = requests.request(method, url, **kwargs, timeout=timeout)
             response.raise_for_status()
         except requests.RequestException as e:
             raise RecoverableError(f"{self}: {error_message} ({url})") from e
@@ -103,7 +103,7 @@ class TaskManager(ABC):
 
         This method is called once.
 
-        :raises RecoverableError:
+        :raises RecoverableError: if the task can't be started, temporarily
         """
 
     @abstractmethod

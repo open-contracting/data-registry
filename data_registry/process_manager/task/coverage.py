@@ -10,11 +10,9 @@ class Coverage(TaskManager):
         publish({"job_id": self.job.pk}, "coverage_init")
 
     def get_status(self):
-        if self.job.coverage:
-            return models.Task.Status.COMPLETED
-        # It might be running, but the effect is the same. The server would need to be busy, or the file size would
-        # need to exceed 100 GB, for processing time to exceed the 5-minute window between manageprocess runs.
-        return models.Task.Status.WAITING
+        # It might be running, not waiting, but the effect is the same. The server would need to be busy, or the file
+        # size would need to be >100 GB, for processing time to exceed the 5-minute window between manageprocess runs.
+        return models.Task.Status.COMPLETED if self.job.coverage else models.Task.Status.WAITING
 
     @skip_if_not_started
     def wipe(self):
