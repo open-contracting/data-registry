@@ -5,7 +5,6 @@ from urllib.parse import urljoin
 
 from django.conf import settings
 
-from data_registry.exceptions import IrrecoverableError
 from data_registry.models import Task, TaskNote
 from data_registry.process_manager.util import TaskManager
 
@@ -48,10 +47,10 @@ class Process(TaskManager):
         try:
             compiled_collection = next(c for c in tree if c["transform_type"] == "compile-releases")
         except StopIteration:
-            raise IrrecoverableError("No compiled collection") from None
+            return Task.Status.COMPLETED, "No compiled collection"
 
         if not original_collection["completed_at"] or not compiled_collection["completed_at"]:
-            return Task.Status.RUNNING
+            return Task.Status.RUNNING, None
 
         # Get the task's metadata.
 
@@ -129,9 +128,9 @@ class Process(TaskManager):
         # Prevent further processing if acceptance criteria not met.
 
         if original_collection["expected_files_count"] == 0:
-            raise IrrecoverableError("Collection is empty")
+            return Task.Status.COMPLETED, "Collection is empty"
 
-        return Task.Status.COMPLETED
+        return Task.Status.COMPLETED, None
 
     # Don't use @skip_if_not_started, because Kingfisher Process can start before the Process task starts.
     def wipe(self):

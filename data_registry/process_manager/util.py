@@ -107,9 +107,9 @@ class TaskManager(ABC):
         """
 
     @abstractmethod
-    def get_status(self) -> models.Task.Status:
+    def get_status(self) -> tuple[models.Task.Status, str | None]:
         """
-        Return the status of the task.
+        Return the status of the task, and an optional failure reason.
 
         This method must be called only after :meth:`~data_registry.process_manager.util.TaskManager.run` is called.
 
@@ -130,7 +130,7 @@ class TaskManager(ABC):
 
         This method must be idempotent. It is retried if any task failed to be wiped.
 
-        :raises RecoverableError:
+        :raises RecoverableError: if the task can't be wiped, temporarily
         """
 
     def __str__(self):

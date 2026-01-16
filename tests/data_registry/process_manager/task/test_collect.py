@@ -2,7 +2,7 @@ from unittest.mock import MagicMock, patch
 
 from django.test import TransactionTestCase, override_settings
 
-from data_registry.exceptions import IrrecoverableError, UnexpectedError
+from data_registry.exceptions import UnexpectedError
 from data_registry.models import Collection, Task, TaskNote
 from data_registry.process_manager.task.collect import Collect
 
@@ -23,9 +23,10 @@ class CollectTaskTests(TransactionTestCase):
         mock_response.json.return_value = {"status": "ok", "currstate": "pending"}
 
         with patch.object(collect_manager, "request", return_value=mock_response):
-            status = collect_manager.get_status()
+            status, failure_reason = collect_manager.get_status()
 
         self.assertEqual(status, Task.Status.WAITING)
+        self.assertIsNone(failure_reason)
 
     def test_get_status_running(self):
         collection = Collection.objects.get(pk=1)
@@ -35,19 +36,19 @@ class CollectTaskTests(TransactionTestCase):
 
         collect_manager = Collect(task)
 
-        mock_response = MagicMock()
-        mock_response.json.return_value = {"status": "ok", "currstate": "running"}
-        log_content = "Created collection 456 in Kingfisher Process (2024-01-15 10:00:00)"
+        mock_status_response = MagicMock()
+        mock_status_response.json.return_value = {"status": "ok", "currstate": "running"}
 
-        with (
-            patch.object(collect_manager, "request", return_value=mock_response),
-            patch.object(collect_manager, "read_log_file", return_value=log_content),
-        ):
-            status = collect_manager.get_status()
+        mock_log_response = MagicMock()
+        mock_log_response.text = "Created collection 456 in Kingfisher Process (2024-01-15 10:00:00)"
+
+        with patch.object(collect_manager, "request", side_effect=[mock_status_response, mock_log_response]):
+            status, failure_reason = collect_manager.get_status()
 
         job.refresh_from_db()
 
         self.assertEqual(status, Task.Status.RUNNING)
+        self.assertIsNone(failure_reason)
         self.assertEqual(task.job.context["process_id"], "456")
         self.assertEqual(task.job.context["data_version"], "2024-01-15 10:00:00")
 
@@ -68,9 +69,10 @@ class CollectTaskTests(TransactionTestCase):
         mock_response.json.return_value = {"status": "ok", "currstate": "running"}
 
         with patch.object(collect_manager, "request", return_value=mock_response):
-            status = collect_manager.get_status()
+            status, failure_reason = collect_manager.get_status()
 
         self.assertEqual(status, Task.Status.RUNNING)
+        self.assertIsNone(failure_reason)
 
     def test_get_status_finished_without_process_id(self):
         collection = Collection.objects.get(pk=1)
@@ -80,13 +82,14 @@ class CollectTaskTests(TransactionTestCase):
 
         collect_manager = Collect(task)
 
-        mock_response = MagicMock()
-        mock_response.json.return_value = {"status": "ok", "currstate": "finished"}
-        log_content = "Some log without collection ID"
+        mock_status_response = MagicMock()
+        mock_status_response.json.return_value = {"status": "ok", "currstate": "finished"}
+
+        mock_log_response = MagicMock()
+        mock_log_response.text = "Some log without collection ID"
 
         with (
-            patch.object(collect_manager, "request", return_value=mock_response),
-            patch.object(collect_manager, "read_log_file", return_value=log_content),
+            patch.object(collect_manager, "request", side_effect=[mock_status_response, mock_log_response]),
             self.assertRaisesMessage(
                 UnexpectedError, "Unable to retrieve collection ID and data version from Scrapy log"
             ),
@@ -122,17 +125,20 @@ class CollectTaskTests(TransactionTestCase):
             },
         }
 
-        mock_response = MagicMock()
-        mock_response.json.return_value = {"status": "ok", "currstate": "finished"}
-        log_content = "Created collection 123 in Kingfisher Process (2024-01-01)"
+        mock_status_response = MagicMock()
+        mock_status_response.json.return_value = {"status": "ok", "currstate": "finished"}
+
+        mock_log_response = MagicMock()
+        mock_log_response.text = "Created collection 123 in Kingfisher Process (2024-01-01)"
 
         with (
-            patch.object(collect_manager, "request", return_value=mock_response),
-            patch.object(collect_manager, "read_log_file", return_value=log_content),
+            patch.object(collect_manager, "request", side_effect=[mock_status_response, mock_log_response]),
             patch("data_registry.process_manager.task.collect.ScrapyLogFile", return_value=mock_scrapy_log),
-            self.assertRaisesMessage(IrrecoverableError, "The crawl stopped prematurely"),
         ):
-            collect_manager.get_status()
+            status, failure_reason = collect_manager.get_status()
+
+        self.assertEqual(status, Task.Status.COMPLETED)
+        self.assertEqual(failure_reason, "The crawl stopped prematurely")
 
     def test_get_status_finished_not_finished(self):
         collection = Collection.objects.get(pk=1)
@@ -156,17 +162,20 @@ class CollectTaskTests(TransactionTestCase):
             "log_categories": {},
         }
 
-        mock_response = MagicMock()
-        mock_response.json.return_value = {"status": "ok", "currstate": "finished"}
-        log_content = "Created collection 123 in Kingfisher Process (2024-01-01)"
+        mock_status_response = MagicMock()
+        mock_status_response.json.return_value = {"status": "ok", "currstate": "finished"}
+
+        mock_log_response = MagicMock()
+        mock_log_response.text = "Created collection 123 in Kingfisher Process (2024-01-01)"
 
         with (
-            patch.object(collect_manager, "request", return_value=mock_response),
-            patch.object(collect_manager, "read_log_file", return_value=log_content),
+            patch.object(collect_manager, "request", side_effect=[mock_status_response, mock_log_response]),
             patch("data_registry.process_manager.task.collect.ScrapyLogFile", return_value=mock_scrapy_log),
-            self.assertRaisesMessage(IrrecoverableError, "The crawl wasn't finished: shutdown"),
         ):
-            collect_manager.get_status()
+            status, failure_reason = collect_manager.get_status()
+
+        self.assertEqual(status, Task.Status.COMPLETED)
+        self.assertEqual(failure_reason, "The crawl wasn't finished: shutdown")
 
     def test_get_status_finished_error_rate(self):
         collection = Collection.objects.get(pk=1)
@@ -190,17 +199,20 @@ class CollectTaskTests(TransactionTestCase):
             "log_categories": {},
         }
 
-        mock_response = MagicMock()
-        mock_response.json.return_value = {"status": "ok", "currstate": "finished"}
-        log_content = "Created collection 123 in Kingfisher Process (2024-01-01)"
+        mock_status_response = MagicMock()
+        mock_status_response.json.return_value = {"status": "ok", "currstate": "finished"}
+
+        mock_log_response = MagicMock()
+        mock_log_response.text = "Created collection 123 in Kingfisher Process (2024-01-01)"
 
         with (
-            patch.object(collect_manager, "request", return_value=mock_response),
-            patch.object(collect_manager, "read_log_file", return_value=log_content),
+            patch.object(collect_manager, "request", side_effect=[mock_status_response, mock_log_response]),
             patch("data_registry.process_manager.task.collect.ScrapyLogFile", return_value=mock_scrapy_log),
-            self.assertRaisesMessage(IrrecoverableError, "The crawl had a 0.2 error rate"),
         ):
-            collect_manager.get_status()
+            status, failure_reason = collect_manager.get_status()
+
+        self.assertEqual(status, Task.Status.COMPLETED)
+        self.assertEqual(failure_reason, "The crawl had a 0.2 error rate")
 
     def test_get_status_finished_success(self):
         collection = Collection.objects.get(pk=1)
@@ -249,18 +261,20 @@ class CollectTaskTests(TransactionTestCase):
             },
         }
 
-        mock_response = MagicMock()
-        mock_response.json.return_value = {"status": "ok", "currstate": "finished"}
-        log_content = "Created collection 123 in Kingfisher Process (2024-01-01)"
+        mock_status_response = MagicMock()
+        mock_status_response.json.return_value = {"status": "ok", "currstate": "finished"}
+
+        mock_log_response = MagicMock()
+        mock_log_response.text = "Created collection 123 in Kingfisher Process (2024-01-01)"
 
         with (
-            patch.object(collect_manager, "request", return_value=mock_response),
-            patch.object(collect_manager, "read_log_file", return_value=log_content),
+            patch.object(collect_manager, "request", side_effect=[mock_status_response, mock_log_response]),
             patch("data_registry.process_manager.task.collect.ScrapyLogFile", return_value=mock_scrapy_log),
         ):
-            status = collect_manager.get_status()
+            status, failure_reason = collect_manager.get_status()
 
         self.assertEqual(status, Task.Status.COMPLETED)
+        self.assertIsNone(failure_reason)
         self.assertEqual(
             list(TaskNote.objects.filter(task=task).values_list("level", "note", "data")),
             [

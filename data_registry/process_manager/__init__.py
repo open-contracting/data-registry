@@ -6,7 +6,7 @@ from django.db import transaction
 from django.utils.timezone import now
 
 from data_registry import models
-from data_registry.exceptions import IrrecoverableError, RecoverableError
+from data_registry.exceptions import RecoverableError
 from data_registry.process_manager.task.collect import Collect
 from data_registry.process_manager.task.coverage import Coverage
 from data_registry.process_manager.task.exporter import Exporter
@@ -147,7 +147,7 @@ def process(collection: models.Collection, *, dry_run: bool = False) -> None:
 
                             break
                         case models.Task.Status.WAITING | models.Task.Status.RUNNING:
-                            status = task_manager.get_status()
+                            status, note = task_manager.get_status()
                             logger.debug("Task %s is %s (%s: %s)", task, status, country, collection)
 
                             match status:
@@ -167,20 +167,21 @@ def process(collection: models.Collection, *, dry_run: bool = False) -> None:
 
                                     break
                                 case models.Task.Status.COMPLETED:
+                                    if note:
+                                        logger.warning("Task %s failed (%s: %s): %s", task, country, collection, note)
+                                        task.complete(result=models.Task.Result.FAILED, note=note)
+
+                                        job.complete()
+                                        logger.warning("Job %s has failed (%s: %s)", job, country, collection)
+
+                                        break
+
                                     task.complete(result=models.Task.Result.OK)
 
                                     # Do not break! Go onto the next task.
             except RecoverableError as e:
                 logger.exception("Recoverable exception during task %s (%s: %s)", task, country, collection)
                 task.progress(result=models.Task.Result.FAILED, note=str(e))  # The application is not responding.
-
-                break
-            except IrrecoverableError as e:
-                logger.warning("Irrecoverable error during task %s (%s: %s): %s", task, country, collection, e)
-                task.complete(result=models.Task.Result.FAILED, note=str(e))
-
-                job.complete()
-                logger.warning("Job %s has failed (%s: %s)", job, country, collection)
 
                 break
             except Exception as e:

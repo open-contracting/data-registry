@@ -4,8 +4,8 @@ from unittest.mock import MagicMock, patch
 from django.test import TransactionTestCase, override_settings
 from django.utils.timezone import now
 
-from data_registry.exceptions import IrrecoverableError, RecoverableError
-from data_registry.models import Collection, Job, Task
+from data_registry.exceptions import RecoverableError
+from data_registry.models import Collection, Job, Task, TaskNote
 from data_registry.process_manager import process
 from tests import TestTask
 
@@ -167,9 +167,18 @@ class ProcessTests(TransactionTestCase):
         task.status = Task.Status.RUNNING
         task.save()
 
+        def get_status():
+            TaskNote.objects.bulk_create(
+                [
+                    TaskNote(task=task, level=TaskNote.Level.ERROR, note="HTTP 400 error", data={"type": "HTTP 400"}),
+                    TaskNote(task=task, level=TaskNote.Level.ERROR, note="HTTP 500 error", data={"type": "HTTP 500"}),
+                ]
+            )
+            return Task.Status.COMPLETED, "Test irrecoverable error"
+
         with patch("data_registry.process_manager.get_task_manager") as mock_process:
             mock_manager = MagicMock()
-            mock_manager.get_status.side_effect = IrrecoverableError("Test irrecoverable error")
+            mock_manager.get_status.side_effect = get_status
             mock_process.return_value = mock_manager
 
             process(collection)
@@ -182,6 +191,14 @@ class ProcessTests(TransactionTestCase):
             self.assertEqual(task.note, "Test irrecoverable error")
 
             self.assertEqual(job.status, Job.Status.COMPLETED)
+
+            self.assertEqual(
+                list(TaskNote.objects.filter(task=task).values_list("level", "note", "data")),
+                [
+                    ("ERROR", "HTTP 400 error", {"type": "HTTP 400"}),
+                    ("ERROR", "HTTP 500 error", {"type": "HTTP 500"}),
+                ],
+            )
 
     @override_settings(JOB_TASKS_PLAN=["test"])
     def test_recoverable_error(self):

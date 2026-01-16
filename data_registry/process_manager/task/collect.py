@@ -8,7 +8,7 @@ import requests
 from django.conf import settings
 from scrapyloganalyzer import ScrapyLogFile
 
-from data_registry.exceptions import ConfigurationError, IrrecoverableError, RecoverableError, UnexpectedError
+from data_registry.exceptions import ConfigurationError, RecoverableError, UnexpectedError
 from data_registry.models import Task, TaskNote
 from data_registry.process_manager.util import TaskManager, skip_if_not_started
 from data_registry.util import scrapyd_url
@@ -79,16 +79,6 @@ class Collect(TaskManager):
 
         self.spider = task.job.collection.source_id
 
-    def read_log_file(self, scrapy_log_url):
-        try:
-            return self.request("get", scrapy_log_url, error_message="Unable to read Scrapy log").text
-        except RecoverableError as e:
-            # If the log file doesn't exist, the job can't continue.
-            cause = e.__cause__
-            if isinstance(cause, requests.HTTPError) and cause.response.status_code == requests.codes.not_found:
-                raise UnexpectedError("Scrapy log doesn't exist") from e
-            raise
-
     def run(self):
         response = self.request(
             "POST",
@@ -120,27 +110,37 @@ class Collect(TaskManager):
 
         # https://github.com/open-contracting/data-registry/issues/442
         if currstate is None:
-            raise IrrecoverableError(f"No status for Scrapyd job {scrapyd_job_id}")
+            return Task.Status.COMPLETED, f"No status for Scrapyd job {scrapyd_job_id}"
 
         # If the job is pending, return early, because the log file will not exist yet.
         if currstate == "pending":
-            return Task.Status.WAITING
+            return Task.Status.WAITING, None
 
-        # Check early for the log file, to fail fast if Scrapyd somehow stalled without writing a log file.
-        if "process_id" not in self.job.context and (match := PROCESS_ID.search(self.read_log_file(scrapy_log_url))):
-            self.job.context["process_id"] = match.group(1)
-            self.job.context["data_version"] = match.group(2)
-            self.job.save(update_fields=["modified", "context"])
+        # Check early for the log file (and always if finished), to fail fast if the log file doesn't exist.
+        if "process_id" not in self.job.context or currstate == "finished":
+            try:
+                scrapy_log_text = self.request("get", scrapy_log_url, error_message="Unable to read Scrapy log").text
+            except RecoverableError as e:
+                cause = e.__cause__
+                if isinstance(cause, requests.HTTPError) and cause.response.status_code == requests.codes.not_found:
+                    # The job can't continue. Alert Sentry, as this implies an issue in Kingfisher Collect.
+                    raise UnexpectedError("Scrapyd job started but no Scrapy log written") from e
+                raise
+
+            if match := PROCESS_ID.search(scrapy_log_text):
+                self.job.context["process_id"] = match.group(1)
+                self.job.context["data_version"] = match.group(2)
+                self.job.save(update_fields=["modified", "context"])
 
         if currstate == "running":
-            return Task.Status.RUNNING
+            return Task.Status.RUNNING, None
 
         if currstate == "finished":
             # If the collection ID or data version was irretrievable, the job can't continue.
             if "process_id" not in self.job.context or "data_version" not in self.job.context:
                 raise UnexpectedError("Unable to retrieve collection ID and data version from Scrapy log")
 
-            scrapy_log = ScrapyLogFile(scrapy_log_url, text=self.read_log_file(scrapy_log_url))
+            scrapy_log = ScrapyLogFile(scrapy_log_url, text=scrapy_log_text)
 
             self.job.context["collect_error_rate"] = scrapy_log.error_rate
 
@@ -212,15 +212,16 @@ class Collect(TaskManager):
             # Prevent further processing if acceptance criteria not met.
 
             if missing_next_link_error:
-                raise IrrecoverableError("The crawl stopped prematurely")
+                return Task.Status.COMPLETED, "The crawl stopped prematurely"
             if not scrapy_log.is_finished():
-                raise IrrecoverableError(f"The crawl wasn't finished: {scrapy_log.logparser['finish_reason']}")
+                return Task.Status.COMPLETED, f"The crawl wasn't finished: {scrapy_log.logparser['finish_reason']}"
             if scrapy_log.error_rate > 0.15:  # 15%
-                raise IrrecoverableError(f"The crawl had a {scrapy_log.error_rate} error rate")
+                return Task.Status.COMPLETED, f"The crawl had a {scrapy_log.error_rate} error rate"
 
-            return Task.Status.COMPLETED
+            return Task.Status.COMPLETED, None
 
-        raise IrrecoverableError(f"Unknown status {currstate!r} for Scrapyd job {scrapyd_job_id}")
+        # This is expected to be unreachable.
+        return Task.Status.COMPLETED, f"Unknown status {currstate!r} for Scrapyd job {scrapyd_job_id}"
 
     @skip_if_not_started
     def wipe(self):

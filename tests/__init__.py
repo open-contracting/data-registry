@@ -6,7 +6,7 @@ class TestTask:
         pass
 
     def get_status(self):
-        return Task.Status.COMPLETED
+        return Task.Status.COMPLETED, None
 
     def wipe(self):
         pass

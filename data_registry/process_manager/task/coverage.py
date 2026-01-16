@@ -12,7 +12,7 @@ class Coverage(TaskManager):
     def get_status(self):
         # It might be running, not waiting, but the effect is the same. The server would need to be busy, or the file
         # size would need to be >100 GB, for processing time to exceed the 5-minute window between manageprocess runs.
-        return models.Task.Status.COMPLETED if self.job.coverage else models.Task.Status.WAITING
+        return models.Task.Status.COMPLETED if self.job.coverage else models.Task.Status.WAITING, None
 
     @skip_if_not_started
     def wipe(self):

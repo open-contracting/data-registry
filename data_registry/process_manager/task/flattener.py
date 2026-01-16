@@ -21,7 +21,7 @@ class Flattener(TaskManager):
         return next(
             (export_to_task_status(export) for export in self.get_exports() if export.status != TaskStatus.COMPLETED),
             models.Task.Status.COMPLETED,
-        )
+        ), None
 
     @skip_if_not_started
     def wipe(self):

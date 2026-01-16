@@ -2,7 +2,6 @@ from unittest.mock import MagicMock, patch
 
 from django.test import TransactionTestCase
 
-from data_registry.exceptions import IrrecoverableError
 from data_registry.models import Collection, Task, TaskNote
 from data_registry.process_manager.task.process import Process
 
@@ -23,11 +22,11 @@ class ProcessTaskTests(TransactionTestCase):
             {"id": 1, "transform_type": "", "completed_at": "2024-01-01T00:00:00Z", "expected_files_count": 1}
         ]
 
-        with (
-            patch.object(process_manager, "request", return_value=mock_response),
-            self.assertRaisesMessage(IrrecoverableError, "No compiled collection"),
-        ):
-            process_manager.get_status()
+        with patch.object(process_manager, "request", return_value=mock_response):
+            status, failure_reason = process_manager.get_status()
+
+        self.assertEqual(status, Task.Status.COMPLETED)
+        self.assertEqual(failure_reason, "No compiled collection")
 
     def test_get_status_running(self):
         collection = Collection.objects.get(pk=1)
@@ -44,9 +43,10 @@ class ProcessTaskTests(TransactionTestCase):
         ]
 
         with patch.object(process_manager, "request", return_value=mock_response):
-            status = process_manager.get_status()
+            status, failure_reason = process_manager.get_status()
 
         self.assertEqual(status, Task.Status.RUNNING)
+        self.assertIsNone(failure_reason)
 
     def test_get_status_collection_is_empty(self):
         collection = Collection.objects.get(pk=1)
@@ -69,11 +69,11 @@ class ProcessTaskTests(TransactionTestCase):
             {"WARNING": [], "ERROR": []},
         ]
 
-        with (
-            patch.object(process_manager, "request", return_value=mock_response),
-            self.assertRaisesMessage(IrrecoverableError, "Collection is empty"),
-        ):
-            process_manager.get_status()
+        with patch.object(process_manager, "request", return_value=mock_response):
+            status, failure_reason = process_manager.get_status()
+
+        self.assertEqual(status, Task.Status.COMPLETED)
+        self.assertEqual(failure_reason, "Collection is empty")
 
     def test_get_status_completed(self):
         collection = Collection.objects.get(pk=1)
@@ -128,7 +128,7 @@ class ProcessTaskTests(TransactionTestCase):
         ]
 
         with patch.object(process_manager, "request", return_value=mock_response):
-            status = process_manager.get_status()
+            status, failure_reason = process_manager.get_status()
 
         task_notes = TaskNote.objects.filter(task=task).order_by("level", "note")
         warning_notes = task_notes.filter(level="WARNING")
@@ -164,6 +164,7 @@ class ProcessTaskTests(TransactionTestCase):
         self.assertEqual(job.ocid_prefix, "ocds-213czf")
 
         self.assertEqual(status, Task.Status.COMPLETED)
+        self.assertIsNone(failure_reason)
 
     def test_get_status_empty_metadata(self):
         collection = Collection.objects.get(pk=1)
@@ -190,7 +191,7 @@ class ProcessTaskTests(TransactionTestCase):
         ]
 
         with patch.object(process_manager, "request", return_value=mock_response):
-            status = process_manager.get_status()
+            status, failure_reason = process_manager.get_status()
 
         task_notes = TaskNote.objects.filter(task=task).order_by("level", "note")
         job.refresh_from_db()
@@ -205,3 +206,4 @@ class ProcessTaskTests(TransactionTestCase):
         self.assertEqual(job.ocid_prefix, "")
 
         self.assertEqual(status, Task.Status.COMPLETED)
+        self.assertIsNone(failure_reason)

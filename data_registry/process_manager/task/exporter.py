@@ -21,7 +21,7 @@ class Exporter(TaskManager):
         )
 
     def get_status(self):
-        return export_to_task_status(self.get_export())
+        return export_to_task_status(self.get_export()), None
 
     @skip_if_not_started
     def wipe(self):
