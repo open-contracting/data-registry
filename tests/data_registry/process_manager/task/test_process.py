@@ -122,6 +122,18 @@ class ProcessTaskTests(TransactionTestCase):
                         {"type": "DuplicateIdValueWarning", "paths": {"/releases/0/id": 2}},
                     ],
                     ["Warning 3", {"type": "OtherType", "data": "test data"}],
+                    [
+                        "Warning 4",
+                        {"type": "RepeatedDateValueWarning", "date": "2022-01-04T15:21:48Z", "index": 1},
+                    ],
+                    [
+                        "Warning 5",
+                        {"type": "RepeatedDateValueWarning", "date": "2022-01-04T15:21:48Z", "index": 2},
+                    ],
+                    [
+                        "Warning 6",
+                        {"type": "RepeatedDateValueWarning", "date": "2021-06-09T12:25:02+01:00", "index": 3},
+                    ],
                 ],
                 "ERROR": [["Error 1", {"type": "ErrorType", "message": "test message"}]],
             },
@@ -133,18 +145,25 @@ class ProcessTaskTests(TransactionTestCase):
         task_notes = TaskNote.objects.filter(task=task).order_by("level", "note")
         warning_notes = task_notes.filter(level="WARNING")
         error_notes = task_notes.filter(level="ERROR")
-        merge_notes = warning_notes.filter(note="OCDS Merge").order_by("data__path")
-        other_notes = warning_notes.exclude(note="OCDS Merge")
+        id_notes = warning_notes.filter(note="DuplicateIdValueWarning").order_by("data__path")
+        date_notes = warning_notes.filter(note="RepeatedDateValueWarning").order_by("data__date")
+        other_notes = warning_notes.exclude(note__in=("DuplicateIdValueWarning", "RepeatedDateValueWarning"))
         job.refresh_from_db()
 
-        self.assertEqual(task_notes.count(), 4)
-        self.assertEqual(warning_notes.count(), 3)
+        self.assertEqual(task_notes.count(), 6)
+        self.assertEqual(warning_notes.count(), 5)
 
-        self.assertEqual(merge_notes.count(), 2)
-        self.assertEqual(merge_notes[0].task_id, task.id)
-        self.assertEqual(merge_notes[0].data, {"path": "/releases/0/id", "count": 7})
-        self.assertEqual(merge_notes[1].task_id, task.id)
-        self.assertEqual(merge_notes[1].data, {"path": "/releases/1/id", "count": 3})
+        self.assertEqual(id_notes.count(), 2)
+        self.assertEqual(id_notes[0].task_id, task.id)
+        self.assertEqual(id_notes[0].data, {"path": "/releases/0/id", "count": 7})
+        self.assertEqual(id_notes[1].task_id, task.id)
+        self.assertEqual(id_notes[1].data, {"path": "/releases/1/id", "count": 3})
+
+        self.assertEqual(date_notes.count(), 2)
+        self.assertEqual(date_notes[0].task_id, task.id)
+        self.assertEqual(date_notes[0].data, {"date": "2021-06-09T12:25:02+01:00", "count": 1})
+        self.assertEqual(date_notes[1].task_id, task.id)
+        self.assertEqual(date_notes[1].data, {"date": "2022-01-04T15:21:48Z", "count": 2})
 
         self.assertEqual(other_notes.count(), 1)
         self.assertEqual(other_notes[0].task_id, task.id)

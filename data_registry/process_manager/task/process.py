@@ -94,7 +94,7 @@ class Process(TaskManager):
                 case "DuplicateIdValueWarning":
                     paths_counter += Counter(data["paths"])  # Kingfisher Process aggregates per compiled release
                 case "RepeatedDateValueWarning":
-                    dates_counter += Counter(data["date"])  # ignore the release index
+                    dates_counter[data["date"]] += 1  # ignore the release index
                 case _:
                     warning_notes.append([note, data])
         for path, count in paths_counter.items():

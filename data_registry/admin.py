@@ -451,12 +451,18 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
                     groups = defaultdict(list)
                     for note, data in notes:
                         # See special handling in data_registry/process_manager/task/process.py.
-                        if note == "OCDS Merge":
+                        if note == "DuplicateIdValueWarning":
                             count = data["count"]
                             counts.append(
                                 f"<li>{humanize.intcomma(count)} merge warning{pluralize(count)} about multiple "
                                 f"objects in the <code>{escape(data['path'])}</code> array having the same "
                                 "<code>id</code>.</li>"
+                            )
+                        elif note == "RepeatedDateValueWarning":
+                            count = data["count"]
+                            counts.append(
+                                f"<li>{humanize.intcomma(count)} merge warning{pluralize(count)} about multiple "
+                                f"releases having the same <code>date</code>.</li>"
                             )
                         else:
                             group_name = data.pop("type", "Uncategorized")
