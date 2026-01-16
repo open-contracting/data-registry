@@ -447,29 +447,34 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
                 if notes:
                     html.append(f"<h3>{level}</h3>")
 
-                    counts = []
+                    ids = []
+                    dates = []
                     groups = defaultdict(list)
                     for note, data in notes:
                         # See special handling in data_registry/process_manager/task/process.py.
                         if note == "DuplicateIdValueWarning":
                             count = data["count"]
-                            counts.append(
-                                f"<li>{humanize.intcomma(count)} merge warning{pluralize(count)} about multiple "
-                                f"objects in the <code>{escape(data['path'])}</code> array having the same "
-                                "<code>id</code>.</li>"
+                            ids.append(
+                                f"<li>{humanize.intcomma(count)} merge warning{pluralize(count)} about objects in the "
+                                f"<code>{escape(data['path'])}</code> array having the same <code>id</code>.</li>"
                             )
                         elif note == "RepeatedDateValueWarning":
-                            count = data["count"]
-                            counts.append(
-                                f"<li>{humanize.intcomma(count)} merge warning{pluralize(count)} about multiple "
-                                f"releases having the same <code>date</code>.</li>"
-                            )
+                            dates.append((data["count"], data["date"]))
                         else:
                             group_name = data.pop("type", "Uncategorized")
                             groups[group_name].append((note, data))
 
-                    if counts:
-                        html.append(f'<ul class="ms-0">{"".join(counts)}</ul>')
+                    if ids:
+                        html.append(f'<ul class="ms-0">{"".join(ids)}</ul>')
+                    if dates:
+                        total = sum(count for count, _ in dates)
+                        html.append(
+                            f'<ul class="ms-0"><li>{humanize.intcomma(total)} merge warning{pluralize(total)} about '
+                            f'releases having the same <code>date</code>. 10 most common:<ul class="unordered-list">'
+                        )
+                        for count, date in sorted(dates, reverse=True)[:10]:
+                            html.append(f"<li><code>{date}</code>: {humanize.intcomma(count)}</li>")
+                        html.append("</ul></li></ul>")
 
                     for group_name, group_notes in groups.items():
                         html.append(f'<h4>{escape(group_name)} ({len(group_notes)})</h4><ul class="unordered-list">')
