@@ -86,15 +86,21 @@ class Process(TaskManager):
 
         # Aggregate the task's WARNING notes.
         paths_counter = Counter()
+        dates_counter = Counter()
         warning_notes = []
         for note, data in process_notes["WARNING"]:
             # DuplicateIdValueWarning can be issued millions of times.
-            if data.get("type") == "DuplicateIdValueWarning":
-                paths_counter += Counter(data["paths"])
-            else:
-                warning_notes.append([note, data])
+            match data.get("type"):
+                case "DuplicateIdValueWarning":
+                    paths_counter += Counter(data["paths"])  # Kingfisher Process aggregates per compiled release
+                case "RepeatedDateValueWarning":
+                    dates_counter += Counter(data["date"])  # ignore the release index
+                case _:
+                    warning_notes.append([note, data])
         for path, count in paths_counter.items():
-            warning_notes.append(["OCDS Merge", {"count": count, "path": path}])
+            warning_notes.append(["DuplicateIdValueWarning", {"count": count, "path": path}])
+        for date, count in dates_counter.items():
+            warning_notes.append(["RepeatedDateValueWarning", {"count": count, "date": date}])
         process_notes["WARNING"] = warning_notes
 
         if counter:
