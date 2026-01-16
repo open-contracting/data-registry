@@ -377,17 +377,15 @@ class Collection(models.Model):
         if not self.retrieval_frequency or self.retrieval_frequency == self.RetrievalFrequency.NEVER:
             return False
 
-        # It has an incomplete job. (Avoid running two jobs for the same publication, concurrently.)
-        incomplete_jobs = list(self.job_set.incomplete())
-        if incomplete_jobs:
-            logger.warning("%s has incomplete job(s): %s", self, incomplete_jobs)
-            return False
-
         most_recent_job = self.job_set.order_by("-start").first()
 
         # It has never been scheduled.
         if not most_recent_job:
             return True
+
+        # It has been scheduled, but not yet initiated.
+        if not most_recent_job.start:
+            return False
 
         # If the most recent job is unsuccessful, use the minimum retrieval frequency.
         frequency = self.RetrievalFrequency.WEEKLY if most_recent_job.is_unsuccessful() else self.retrieval_frequency
@@ -406,7 +404,18 @@ class Collection(models.Model):
             case _:
                 raise NotImplementedError
 
-        return date.today() >= (most_recent_job.start + timedelta(days=days)).date()
+        out_of_date = date.today() >= (most_recent_job.start + timedelta(days=days)).date()
+
+        # Avoid a query if not out-of-date.
+        if not out_of_date:
+            return False
+
+        # It has an incomplete job (likely the most recent job). Don't run concurrent jobs for a publication.
+        if incomplete_jobs := list(self.job_set.incomplete()):
+            logger.warning("%s has incomplete job(s): %s", self, incomplete_jobs)
+            return False
+
+        return out_of_date
 
 
 class License(models.Model):
