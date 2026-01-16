@@ -118,6 +118,10 @@ class Collect(TaskManager):
 
         currstate = scrapyd_data(response)["currstate"]
 
+        # https://github.com/open-contracting/data-registry/issues/442
+        if currstate is None:
+            raise IrrecoverableError(f"No status for Scrapyd job {scrapyd_job_id}")
+
         # If the job is pending, return early, because the log file will not exist yet.
         if currstate == "pending":
             return Task.Status.WAITING
@@ -216,8 +220,7 @@ class Collect(TaskManager):
 
             return Task.Status.COMPLETED
 
-        # If the job isn't listed, Scrapyd might've restarted while it was running.
-        raise RecoverableError(f"Unable to find status of Scrapyd job {scrapyd_job_id}")
+        raise IrrecoverableError(f"Unknown status {currstate!r} for Scrapyd job {scrapyd_job_id}")
 
     @skip_if_not_started
     def wipe(self):
