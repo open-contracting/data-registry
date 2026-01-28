@@ -67,7 +67,7 @@ numpy==2.3.1
     #   pandas
 ocdscardinal==0.0.7
     # via -r requirements.txt
-orjson==3.9.15
+orjson==3.11.5
     # via
     #   -r requirements.txt
     #   flatterer
