@@ -6,7 +6,9 @@ from django.conf import settings
 from django.contrib import admin, messages
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.humanize.templatetags import humanize
-from django.db.models import Exists, OuterRef, Prefetch, Q, Subquery
+from django.db.models import Case, Exists, FloatField, OuterRef, Prefetch, Q, Subquery, Value, When
+from django.db.models.fields.json import KT
+from django.db.models.functions import Cast
 from django.http import HttpResponseRedirect
 from django.template.defaultfilters import pluralize
 from django.urls import NoReverseMatch, reverse
@@ -219,18 +221,35 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
         return form
 
     def get_queryset(self, request):
+        latest_jobs = Job.objects.complete().order_by("-start")
+
         jobs_prefetch = Prefetch(
             "job_set",
-            queryset=Job.objects.complete().prefetch_related("task_set").order_by("-start")[:10],
+            queryset=latest_jobs.prefetch_related("task_set")[:10],
             to_attr="recent_completed_jobs",
         )
 
-        return super().get_queryset(request).select_related("active_job").prefetch_related(jobs_prefetch)
+        latest_job_error_rate = Subquery(
+            latest_jobs.filter(collection=OuterRef("pk")).values(error_rate=KT("context__collect_error_rate"))[:1]
+        )
 
-    @admin.display(description="Recent jobs")
+        return (
+            super()
+            .get_queryset(request)
+            .select_related("active_job")
+            .prefetch_related(jobs_prefetch)
+            .annotate(
+                recent_jobs_order=Case(
+                    When(retrieval_frequency=Collection.RetrievalFrequency.NEVER, then=Value(4.0)),
+                    When(active_job__isnull=True, then=Value(3.0)),
+                    When(frozen=True, then=Value(2.0)),
+                    default=Cast(latest_job_error_rate, output_field=FloatField()),  # 0.0 to 1.0
+                )
+            )
+        )
+
+    @admin.display(description="Recent jobs", ordering="recent_jobs_order")
     def recent_jobs(self, obj):
-        if obj.frozen:
-            return mark_safe('<span class="help">Frozen</span>')
         if obj.retrieval_frequency == Collection.RetrievalFrequency.NEVER:
             return mark_safe('<span class="help">No longer updated</span>')
 
@@ -263,7 +282,7 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
                     rate = f"{success_rate}%"
             links.append(f'<a href="{href}" title="{job} {rate}" class="recent-job job-{css_class}">{text}</a>')
 
-        return mark_safe(f'<div class="recent-jobs">{"".join(links)}</div>')
+        return mark_safe(f'<div class="recent-jobs">{" ❄️" if obj.frozen else ""}{"".join(links)}</div>')
 
     @admin.action(description="Create a job for each selected publication")
     def create_job(self, request, queryset):
