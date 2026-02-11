@@ -229,6 +229,11 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
 
     @admin.display(description="Recent jobs")
     def recent_jobs(self, obj):
+        if obj.frozen:
+            return mark_safe('<span class="help">Frozen</span>')
+        if obj.retrieval_frequency == Collection.RetrievalFrequency.NEVER:
+            return mark_safe('<span class="help">No longer updated</span>')
+
         jobs = obj.recent_completed_jobs
         if not jobs:
             return mark_safe('<span class="help">No completed jobs</span>')
