@@ -199,14 +199,14 @@ class Collect(TaskManager):
                         )
                     )
 
-            # "Retry failures" tends to repeat "Download errors" or "HTTP 500".
-            if (counter[RETRY_FAILURES] == counter[DOWNLOAD_ERRORS] and not counter["HTTP 500"]) or (
-                counter[RETRY_FAILURES] == counter["HTTP 500"] and not counter[DOWNLOAD_ERRORS]
-            ):
-                counter.pop(RETRY_FAILURES)
-                notes = [note for note in notes if note.data["type"] != RETRY_FAILURES]
-
             if logs or counter:
+                # "Retry failures" tends to repeat "Download errors" or "HTTP 500".
+                if (counter[RETRY_FAILURES] == counter[DOWNLOAD_ERRORS] and not counter["HTTP 500"]) or (
+                    counter[RETRY_FAILURES] == counter["HTTP 500"] and not counter[DOWNLOAD_ERRORS]
+                ):
+                    counter.pop(RETRY_FAILURES)
+                    notes = [note for note in notes if note.data["type"] != RETRY_FAILURES]
+
                 messages = logs + [f"{message_type}: {count}" for message_type, count in counter.items()]
                 logger.warning("%s has warnings\n%s\n    %s\n", self, self.job_url, "\n    ".join(messages))
 
