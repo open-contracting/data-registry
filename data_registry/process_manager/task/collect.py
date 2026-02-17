@@ -32,6 +32,8 @@ CATEGORY_LEVELS = {
     "error_logs": TaskNote.Level.ERROR,
     "warning_logs": TaskNote.Level.WARNING,
 }
+RETRY_FAILURES = "Retry failures"
+DOWNLOAD_ERRORS = "Download errors"
 
 
 def scrapyd_data(response):
@@ -55,10 +57,10 @@ def get_message_type(category_name, message):
         ("Data loss", "Got data loss"),
         # ERROR: Gave up retrying <GET {URL}> (failed 3 times): 503 Service Unavailable
         # (Typically paired with "status=###" or "Error downloading".)
-        ("Retry failures", "Gave up retrying"),
+        (RETRY_FAILURES, "Gave up retrying"),
         # ERROR: Error downloading <GET {URL}>
         # Traceback (most recent call last): …
-        ("Download errors", "Error downloading"),
+        (DOWNLOAD_ERRORS, "Error downloading"),
     ):
         if pattern in message:
             return message_type
@@ -196,6 +198,13 @@ class Collect(TaskManager):
                             data={"type": message_type},
                         )
                     )
+
+            # "Retry failures" tends to repeat "Download errors" or "HTTP 500".
+            if (counter[RETRY_FAILURES] == counter[DOWNLOAD_ERRORS] and not counter["HTTP 500"]) or (
+                counter[RETRY_FAILURES] == counter["HTTP 500"] and not counter[DOWNLOAD_ERRORS]
+            ):
+                counter.pop(RETRY_FAILURES)
+                notes = [note for note in notes if note.data["type"] != RETRY_FAILURES]
 
             if logs or counter:
                 messages = logs + [f"{message_type}: {count}" for message_type, count in counter.items()]
