@@ -164,7 +164,7 @@ class Collect(TaskManager):
                 ("invalid_json_count", TaskNote.Level.ERROR),
             ):
                 if value := scrapy_log.logparser["crawler_stats"].get(key):
-                    logs.append(f"crawl {key}: {value}")
+                    counter[key] = value
 
                     notes.append(TaskNote(task=self.task, level=level, note=f"{key}: {value}"))
 
@@ -179,12 +179,16 @@ class Collect(TaskManager):
                 }:
                     continue
 
-                for message in category["details"]:
+                details = [m for m in category["details"] if not any(ignore in m for ignore in IGNORE_WARNINGS)]
+                # In Kingfisher Collect, A DropItem exception is logged whenever invalid_json_count is incremented.
+                # It is logged at the level of DEFAULT_DROPITEM_LOG_LEVEL, which defaults to "WARNING".
+                # https://docs.scrapy.org/en/latest/topics/settings.html#default-dropitem-log-level
+                if category_name == "warning_logs" and len(details) == counter["invalid_json_count"]:
+                    continue
+
+                for message in details:
                     if not missing_next_link_error and "kingfisher_scrapy.exceptions.MissingNextLinkError" in message:
                         missing_next_link_error = True
-
-                    if any(ignore in message for ignore in IGNORE_WARNINGS):
-                        continue
 
                     message_type = get_message_type(category_name, message)
 
