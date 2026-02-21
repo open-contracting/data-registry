@@ -61,6 +61,9 @@ def get_message_type(category_name, message):
         # ERROR: Error downloading <GET {URL}>
         # Traceback (most recent call last): …
         (DOWNLOAD_ERRORS, "Error downloading"),
+        # WARNING: Channel 1 was closed: StreamLostError: ("Stream connection lost: ConnectionResetError(104, ...
+        # WARNING: Connection closed, reconnecting in 15s: StreamLostError: ("Stream connection lost: ...
+        ("RabbitMQ", "StreamLostError"),
     ):
         if pattern in message:
             return message_type
