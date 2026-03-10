@@ -24,8 +24,8 @@ IGNORE_WARNINGS = (
     "[yapw.clients] WARNING: Channel 1 was closed: ChannelClosedByClient: (200) 'Normal shutdown'",
 )
 # See LOG_CATEGORIES_PATTERN_DICT in https://github.com/my8100/logparser
-# redirect_logs and retry_logs are ignored, and ignore_logs aren't observed.
-# Note: log_categories might not contain all non-critical, non-error, non-warning messages.
+# redirect_logs and retry_logs are ignored below, and ignore_logs aren't observed.
+# Note: logparser's log_categories might not contain all non-critical, non-error, non-warning messages.
 # https://docs.scrapy.org/en/latest/topics/logging.html#log-levels
 CATEGORY_LEVELS = {
     "critical_logs": TaskNote.Level.CRITICAL,
@@ -34,6 +34,17 @@ CATEGORY_LEVELS = {
 }
 RETRY_FAILURES = "Retry failures"
 DOWNLOAD_ERRORS = "Download errors"
+MESSAGE_PATTERNS = (
+    # [scrapy.core.downloader.handlers.http11] WARNING: Got data loss in {URL}. If you want to process broken responses
+    # set the setting DOWNLOAD_FAIL_ON_DATALOSS = False -- This message won't be shown in further requests
+    ("Data loss", "Got data loss"),
+    # [scrapy.downloadermiddlewares.retry] or [spider] ERROR: Gave up retrying <GET {URL}> (failed 3 times): 503
+    # (Typically paired with "status=###" or "Error downloading".)
+    (RETRY_FAILURES, "Gave up retrying"),
+    # [scrapy.core.scraper] ERROR: Error downloading <GET {URL}>
+    # Traceback (most recent call last): …
+    (DOWNLOAD_ERRORS, "Error downloading"),
+)
 
 
 def scrapyd_data(response):
@@ -48,23 +59,13 @@ def scrapyd_data(response):
 
 
 def get_message_type(category_name, message):
+    if (match := re.search(r"\[([^\]]+)\]", message)) and match.group(1).startswith(("pika.", "yapw.clients")):
+        return "RabbitMQ"
+
     if match := re.search(r"status=(\d{3})", message):
         return f"HTTP {match.group(1)}"
 
-    for message_type, pattern in (
-        # WARNING: Got data loss in {URL}. If you want to process broken responses set the setting
-        # DOWNLOAD_FAIL_ON_DATALOSS = False -- This message won't be shown in further requests
-        ("Data loss", "Got data loss"),
-        # ERROR: Gave up retrying <GET {URL}> (failed 3 times): 503 Service Unavailable
-        # (Typically paired with "status=###" or "Error downloading".)
-        (RETRY_FAILURES, "Gave up retrying"),
-        # ERROR: Error downloading <GET {URL}>
-        # Traceback (most recent call last): …
-        (DOWNLOAD_ERRORS, "Error downloading"),
-        # WARNING: Channel 1 was closed: StreamLostError: ("Stream connection lost: ConnectionResetError(104, ...
-        # WARNING: Connection closed, reconnecting in 15s: StreamLostError: ("Stream connection lost: ...
-        ("RabbitMQ", "StreamLostError"),
-    ):
+    for message_type, pattern in MESSAGE_PATTERNS:
         if pattern in message:
             return message_type
 
