@@ -501,12 +501,15 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
                         html.append("</ul></li></ul>")
 
                     for group_name, group_notes in groups.items():
-                        html.append(f'<h4>{escape(group_name)} ({len(group_notes)})</h4><ul class="unordered-list">')
+                        html.append(
+                            f"<details open><summary>{escape(group_name)} ({len(group_notes)})</summary>"
+                            '<ul class="unordered-list">'
+                        )
                         html.extend(
                             f"<li>{urlize(escape(note))} <code>{escape(data)}</code></li>"
                             for note, data in group_notes
                         )
-                        html.append("</ul>")
+                        html.append("</ul></details>")
 
         return mark_safe("".join(html))
 
