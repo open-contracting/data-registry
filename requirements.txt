@@ -37,7 +37,7 @@ numpy==2.3.1
     # via pandas
 ocdscardinal==0.0.7
     # via -r requirements.in
-orjson==3.11.5
+orjson==3.11.6
     # via
     #   flatterer
     #   yapw
