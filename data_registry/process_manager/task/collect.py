@@ -24,7 +24,7 @@ IGNORE_WARNINGS = (
     "[yapw.clients] WARNING: Channel 1 was closed: ChannelClosedByClient: (200) 'Normal shutdown'",
 )
 # See LOG_CATEGORIES_PATTERN_DICT in https://github.com/my8100/logparser
-# redirect_logs and retry_logs are ignored below, and ignore_logs aren't observed.
+# redirect_logs and retry_logs are ignored below, and ignore_logs are conditionally ignored.
 # Note: logparser's log_categories might not contain all non-critical, non-error, non-warning messages.
 # https://docs.scrapy.org/en/latest/topics/logging.html#log-levels
 CATEGORY_LEVELS = {
@@ -206,6 +206,14 @@ class Collect(TaskManager):
                             data={"type": message_type},
                         )
                     )
+
+            # "ignore_logs" tends to repeat HTTP errors.
+            if counter["ignore_logs"] and (
+                counter["ignore_logs"]
+                == sum(count for message_type, count in counter.items() if message_type.startswith("HTTP "))
+            ):
+                counter.pop("ignore_logs")
+                notes = [note for note in notes if note.data["type"] != "ignore_logs"]
 
             # "Retry failures" tends to repeat "Download errors" or "HTTP 500".
             if counter[RETRY_FAILURES] and (
