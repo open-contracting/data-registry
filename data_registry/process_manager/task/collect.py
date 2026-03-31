@@ -213,7 +213,7 @@ class Collect(TaskManager):
                 == sum(count for message_type, count in counter.items() if message_type.startswith("HTTP "))
             ):
                 counter.pop("ignore_logs")
-                notes = [note for note in notes if note.data["type"] != "ignore_logs"]
+                notes = [note for note in notes if note.data.get("type") != "ignore_logs"]
 
             # "Retry failures" tends to repeat "Download errors" or "HTTP 500".
             if counter[RETRY_FAILURES] and (
@@ -221,7 +221,7 @@ class Collect(TaskManager):
                 or (counter[RETRY_FAILURES] == counter["HTTP 500"] and not counter[DOWNLOAD_ERRORS])
             ):
                 counter.pop(RETRY_FAILURES)
-                notes = [note for note in notes if note.data["type"] != RETRY_FAILURES]
+                notes = [note for note in notes if note.data.get("type") != RETRY_FAILURES]
 
             if logs or counter:
                 messages = logs + [f"{message_type}: {count}" for message_type, count in counter.items()]
