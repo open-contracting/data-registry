@@ -128,6 +128,7 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
     search_fields = ["title", "country_en"]
     list_display = ["__str__", "country", "public", "frozen", "active_job", "recent_jobs", "last_reviewed"]
     list_editable = ["public", "frozen"]
+    show_facets = admin.ShowFacets.ALWAYS
     list_filter = [
         "public",
         "frozen",
@@ -356,6 +357,7 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
     ]
     # "active" is read-only and uneditable, because at most one job must be set as active for a given collection.
     list_editable = ["status", "keep_all_data"]
+    show_facets = admin.ShowFacets.ALWAYS
     list_filter = ["status", ("active_collection", admin.EmptyFieldListFilter), "archived", UnsuccessfulFilter]
 
     fieldsets = (
