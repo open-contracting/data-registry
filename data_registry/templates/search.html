@@ -69,7 +69,7 @@
                             {% translate "All" %}
                         </option>
         {% for country, count in facets.countries.items %}
-                        <option value="?{% replace_query_string_parameter 'country' country %}"{% if country == request.GET|getitem:'country' %} selected{% endif %}{% if not count %} disabled{% endif %}>
+                        <option value="{% querystring country=country %}"{% if country == request.GET|getitem:'country' %} selected{% endif %}{% if not count %} disabled{% endif %}>
                             {{ country }} - {{ count }}
                         </option>
         {% endfor %}
@@ -93,7 +93,7 @@
             {% endblocktranslate %}
 
     {% if request.GET.country %}
-            <a href="?{% remove_query_string_parameter 'country' %}" class="badge text-bg-primary d-inline-flex gap-1 align-items-center text-decoration-none fw-normal fs-6" rel="nofollow">
+            <a href="{% querystring country=None %}" class="badge text-bg-primary d-inline-flex gap-1 align-items-center text-decoration-none fw-normal fs-6" rel="nofollow">
                 <span class="fst-italic">{% translate "Country" %}:</span> {{ request.GET.country }}
                 <button type="button" class="btn-close btn-close-white ms-2 pe-0" aria-label="{% translate "Remove country filter" %}"></button>
             </a>
@@ -109,7 +109,7 @@
     {% endfor %}
 
     {% if request.GET.date_range %}
-            <a href="?{% remove_query_string_parameter 'date_range' %}" class="badge text-bg-primary d-inline-flex gap-1 align-items-center text-decoration-none fw-normal fs-6" rel="nofollow">
+            <a href="{% querystring date_range=None %}" class="badge text-bg-primary d-inline-flex gap-1 align-items-center text-decoration-none fw-normal fs-6" rel="nofollow">
                 <span class="fst-italic">{% translate "Data date range" %}:</span> {{ date_ranges|getitem:request.GET.date_range }}
                 <button type="button" class="btn-close btn-close-white ms-2 pe-0" aria-label="{% translate "Remove data date range filter" %}"></button>
             </a>

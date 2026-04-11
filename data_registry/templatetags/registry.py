@@ -71,22 +71,10 @@ def redirect_to(context):
     """Remove the ``letter`` query string parameter, to avoid zero results in the new language."""
     request = context["request"]
     if "letter" in request.GET:
-        return request.build_absolute_uri(f"{request.path}?{remove_query_string_parameter(context, 'letter')}")
+        query = request.GET.copy()
+        del query["letter"]
+        return request.build_absolute_uri(f"{request.path}?{query.urlencode()}")
     return ""
-
-
-@register.simple_tag(takes_context=True)
-def replace_query_string_parameter(context, param, value):
-    copy = context["request"].GET.copy()
-    copy[param] = value
-    return copy.urlencode()
-
-
-@register.simple_tag(takes_context=True)
-def remove_query_string_parameter(context, param):
-    copy = context["request"].GET.copy()
-    del copy[param]
-    return copy.urlencode()
 
 
 @register.simple_tag(takes_context=True)
