@@ -1,11 +1,11 @@
 dj-database-url
-django<6
+django<5.3
 django-modeltranslation
 #flatterr
 gunicorn[setproctitle]
 markdown-it-py
 #ocdscardinal
-psycopg2
+psycopg
 requests
 scrapyloganalyzer
 sentry-sdk
