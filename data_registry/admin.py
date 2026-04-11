@@ -344,7 +344,16 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
         css = {"all": ["admin.css"]}
 
     search_fields = ["collection__title", "collection__country_en"]
-    list_display = ["__str__", "country", "collection", "status", "last_task", "active", "archived", "keep_all_data"]
+    list_display = [
+        "__str__",
+        "collection__country",
+        "collection",
+        "status",
+        "last_task",
+        "active",
+        "archived",
+        "keep_all_data",
+    ]
     # "active" is read-only and uneditable, because at most one job must be set as active for a given collection.
     list_editable = ["status", "keep_all_data"]
     list_filter = ["status", ("active_collection", admin.EmptyFieldListFilter), "archived", UnsuccessfulFilter]
@@ -568,10 +577,6 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
     @admin.display(description="Amendments")
     def formatted_amendments_count(self, obj):
         return intcomma(obj.amendments_count)
-
-    @admin.display(description="Country")
-    def country(self, obj):
-        return obj.collection.country
 
     @admin.display(description="Active", boolean=True)
     def active(self, obj):
