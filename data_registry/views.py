@@ -273,7 +273,7 @@ def download_export(request, pk):
         as_attachment=True,
         filename=f"{collection.source_id}_{name}",
         # Set Content-Encoding to skip GZipMiddleware. (content_encoding_middleware removes the empty header.)
-        # https://docs.djangoproject.com/en/4.2/ref/middleware/#module-django.middleware.gzip
+        # https://docs.djangoproject.com/en/5.2/ref/middleware/#module-django.middleware.gzip
         headers={"Content-Encoding": ""},
     )
 

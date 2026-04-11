@@ -619,7 +619,7 @@ class LicenseAdmin(TranslationAdmin):
         return f"{lines} ({characters})"
 
 
-# https://docs.djangoproject.com/en/4.2/ref/contrib/admin/#logentry-objects
+# https://docs.djangoproject.com/en/5.2/ref/contrib/admin/#logentry-objects
 @admin.register(admin.models.LogEntry)
 class LogEntryAdmin(admin.ModelAdmin):
     list_display_links = None

@@ -438,7 +438,7 @@ class License(models.Model):
 
 class TaskQuerySet(models.QuerySet):
     def failed(self):
-        # https://docs.djangoproject.com/en/4.2/ref/models/expressions/#some-examples
+        # https://docs.djangoproject.com/en/5.2/ref/models/expressions/#some-examples
         return Task.objects.filter(
             job=models.OuterRef("pk"),
             status=Task.Status.COMPLETED,

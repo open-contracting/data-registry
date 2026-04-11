@@ -68,11 +68,11 @@ class CollectionAdminForm(forms.ModelForm):
 
         self.fields["source_id"].choices += choices
 
-        # https://docs.djangoproject.com/en/4.2/ref/forms/fields/#fields-which-handle-relationships
+        # https://docs.djangoproject.com/en/5.2/ref/forms/fields/#fields-which-handle-relationships
         # `self.instance.job_set` doesn't work, because `self.instance` might be an unsaved publication.
         #
         # It's not obvious how to use limit_choices_to to filter jobs by collection.
-        # https://docs.djangoproject.com/en/4.2/ref/models/fields/#django.db.models.ForeignKey.limit_choices_to
+        # https://docs.djangoproject.com/en/5.2/ref/models/fields/#django.db.models.ForeignKey.limit_choices_to
         self.fields["active_job"].queryset = (
             self.fields["active_job"].queryset.filter(collection=self.instance).successful().order_by(F("pk").desc())
         )

@@ -6,7 +6,7 @@ from django.utils.formats import number_format
 
 from data_registry.models import Collection
 
-# https://docs.djangoproject.com/en/4.2/ref/contrib/admin/#reversing-admin-urls
+# https://docs.djangoproject.com/en/5.2/ref/contrib/admin/#reversing-admin-urls
 CHANGELIST = "admin:{content_type.app_label}_{content_type.model}_changelist"
 CHANGE = "admin:{content_type.app_label}_{content_type.model}_change"
 
