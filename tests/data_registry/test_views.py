@@ -114,21 +114,21 @@ class ViewsTests(TestCase):
             response = Client().get(f"/en/publication/{self.collection1.pk}/download?name=invalid")
 
             self.assertEqual(response.status_code, 400)
-            self.assertEqual(response.content, b"The name query string parameter is invalid")
+            self.assertEqual(response.text, "The name query string parameter is invalid")
 
     def test_download_export_empty_parameter(self):
         with self.assertNumQueries(0):
             response = Client().get(f"/en/publication/{self.collection1.pk}/download?name=")
 
             self.assertEqual(response.status_code, 400)
-            self.assertEqual(response.content, b"The name query string parameter is invalid")
+            self.assertEqual(response.text, "The name query string parameter is invalid")
 
     def test_download_export_waiting(self):
         with self.assertNumQueries(1):
             response = Client().get(f"/en/publication/{self.collection_no_files.pk}/download?name=2000.jsonl.gz")
 
             self.assertEqual(response.status_code, 404)
-            self.assertEqual(response.content, b"File not found")
+            self.assertEqual(response.text, "File not found")
 
     @patch("exporter.util.Export.lockfile", new_callable=PropertyMock)
     def test_download_export_running(self, exists):
@@ -136,7 +136,7 @@ class ViewsTests(TestCase):
             response = Client().get(f"/en/publication/{self.collection1.pk}/download?name=2000.jsonl.gz")
 
             self.assertEqual(response.status_code, 404)
-            self.assertEqual(response.content, b"File not found")
+            self.assertEqual(response.text, "File not found")
 
     @override_settings(DOWNLOADS_URL="https://cdn.example.com")
     def test_download_export_completed_redirect(self):
@@ -162,7 +162,7 @@ class ViewsTests(TestCase):
                         "X-Frame-Options": "DENY",
                     },
                 )
-                self.assertEqual(response.content, b"")
+                self.assertEqual(response.text, "")
 
     def test_download_export_completed(self):
         for suffix, content_type in (
@@ -253,7 +253,7 @@ class ViewsTests(TestCase):
 
         self.assertEqual(en_response.status_code, 200)
         self.assertEqual(en_response.json(), expected)
-        self.assertNotIn(b": ", en_response.content)  # separators
+        self.assertNotIn(": ", en_response.text)  # separators
 
         expected[0]["country"] = "Paraguay (ES)"
         expected[0]["language"] = "Español"
@@ -262,7 +262,7 @@ class ViewsTests(TestCase):
 
         self.assertEqual(es_response.status_code, 200)
         self.assertEqual(es_response.json(), expected)
-        self.assertNotIn(b"\\u", es_response.content)  # ensure_ascii
+        self.assertNotIn("\\u", es_response.text)  # ensure_ascii
 
         for public, active_job in ((False, True), (True, False), (False, False)):
             with self.subTest(public=public, active_job=active_job):
