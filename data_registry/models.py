@@ -47,7 +47,7 @@ class Job(models.Model):
     # Job metadata
     start = models.DateTimeField(blank=True, null=True, verbose_name="job started at")
     end = models.DateTimeField(blank=True, null=True, verbose_name="job ended at")
-    status = models.TextField(choices=Status.choices, blank=True, default=Status.PLANNED)
+    status = models.TextField(choices=Status, blank=True, default=Status.PLANNED)
     context = models.JSONField(
         blank=True,
         default=dict,
@@ -232,7 +232,7 @@ class Collection(models.Model):
     )
     country_flag = models.TextField(blank=True)
     region = models.TextField(
-        choices=Region.choices, blank=True, help_text="The name of the region to which the country belongs."
+        choices=Region, blank=True, help_text="The name of the region to which the country belongs."
     )
 
     # Field coverage
@@ -248,7 +248,7 @@ class Collection(models.Model):
 
     # Accrual periodicity
     update_frequency = models.TextField(
-        choices=UpdateFrequency.choices,
+        choices=UpdateFrequency,
         blank=True,
         default=UpdateFrequency.UNKNOWN,
         help_text="The frequency at which the source updates the publication.",
@@ -292,7 +292,7 @@ class Collection(models.Model):
         "Kingfisher Collect needs to be re-deployed to the registry's server.",
     )
     retrieval_frequency = models.TextField(
-        choices=RetrievalFrequency.choices,
+        choices=RetrievalFrequency,
         blank=True,
         help_text="The frequency at which the registry updates the publication, based on the frequency at which "
         "the publication is updated.",
@@ -481,14 +481,14 @@ class Task(models.Model):
     # Task metadata
     start = models.DateTimeField(blank=True, null=True)
     end = models.DateTimeField(blank=True, null=True)
-    status = models.TextField(choices=Status.choices, blank=True, default=Status.PLANNED)
+    status = models.TextField(choices=Status, blank=True, default=Status.PLANNED)
 
     # Task result
-    result = models.TextField(choices=Result.choices, blank=True)
+    result = models.TextField(choices=Result, blank=True)
     note = models.TextField(blank=True, help_text="Metadata about any failure.")
 
     # Job logic (see `create_tasks`)
-    type = models.TextField(choices=Type.choices, blank=True)
+    type = models.TextField(choices=Type, blank=True)
     order = models.IntegerField(blank=True, null=True)
 
     # Timestamps
@@ -532,7 +532,7 @@ class TaskNote(models.Model):
         UNKNOWN = "UNKNOWN", "UNKNOWN"
 
     task = models.ForeignKey("Task", on_delete=models.CASCADE)
-    level = models.TextField(choices=Level.choices)
+    level = models.TextField(choices=Level)
     note = models.TextField()
     data = models.JSONField(blank=True, default=dict)
 
