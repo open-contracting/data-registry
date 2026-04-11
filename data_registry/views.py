@@ -233,7 +233,7 @@ def detail(request, pk):
                     "encodingFormat": ENCODING_FORMATS[file_type],
                     "contentSize": filesizeformat(groups["full"]),
                     "contentUrl": request.build_absolute_uri(
-                        f"{reverse('download', kwargs={'pk': pk})}?name=full.{FILE_SUFFIXES[file_type]}"
+                        reverse("download", kwargs={"pk": pk}, query={"name": f"full.{FILE_SUFFIXES[file_type]}"})
                     ),
                     "dateModified": collection.last_retrieved.isoformat(),
                 }
