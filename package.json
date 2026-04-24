@@ -11,7 +11,7 @@
     "css-loader": "^6.7.1",
     "mini-css-extract-plugin": "^2.6.1",
     "pa11y-ci": "^4.0.1",
-    "postcss": "^8.4.31",
+    "postcss": "^8.5.10",
     "postcss-loader": "^7.0.1",
     "sass": "^1.54.5",
     "sass-loader": "^13.0.2",
