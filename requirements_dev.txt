@@ -22,7 +22,7 @@ coverage==6.5.0
     # via -r requirements_dev.in
 dj-database-url==2.0.0
     # via -r requirements.txt
-django==5.2.13
+django==5.2.14
     # via
     #   -r requirements.txt
     #   dj-database-url
