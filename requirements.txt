@@ -77,7 +77,7 @@ typing-extensions==4.14.1
     #   psycopg
 tzdata==2025.2
     # via pandas
-urllib3==2.6.3
+urllib3==2.7.0
     # via
     #   requests
     #   sentry-sdk
