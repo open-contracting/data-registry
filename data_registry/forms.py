@@ -73,9 +73,13 @@ class CollectionAdminForm(forms.ModelForm):
         #
         # It's not obvious how to use limit_choices_to to filter jobs by collection.
         # https://docs.djangoproject.com/en/5.2/ref/models/fields/#django.db.models.ForeignKey.limit_choices_to
-        self.fields["active_job"].queryset = (
-            self.fields["active_job"].queryset.filter(collection=self.instance).successful().order_by(F("pk").desc())
-        )
+        active_job = self.fields["active_job"]
+        if self.instance.pk:
+            active_job.queryset = (
+                active_job.queryset.filter(collection=self.instance).successful().order_by(F("pk").desc())
+            )
+        else:
+            active_job.queryset = active_job.queryset.none()
 
         self.fields["license_custom"].queryset = self.fields["license_custom"].queryset.order_by("name")
 
