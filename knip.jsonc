@@ -1,0 +1,10 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.jsonc",
+  "project": ["src/**"],
+  "ignoreDependencies": [
+    "autoprefixer" // via webpack.config.js
+  ],
+  "ignoreBinaries": [
+    "puppeteer" // provides the `puppeteer` command
+  ]
+}

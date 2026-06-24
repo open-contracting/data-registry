@@ -3,16 +3,18 @@ FROM nikolaik/python-nodejs:python3.11-nodejs22 AS build-stage
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
+RUN corepack enable
+
 WORKDIR /workdir
 
-COPY package*.json ./
-RUN npm ci --ignore-scripts
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+RUN pnpm install --frozen-lockfile --ignore-scripts
 
 COPY . .
 
 ENV DJANGO_ENV=production
 
-RUN npx webpack --mode production
+RUN pnpm exec webpack --mode production
 RUN python manage.py collectstatic --noinput -v2
 
 FROM nginxinc/nginx-unprivileged:latest AS production-stage
