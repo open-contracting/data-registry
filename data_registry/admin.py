@@ -594,11 +594,13 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
 
 class SettingInline(admin.TabularInline):
     model = Setting
+    form = forms.SettingForm
     extra = 0
 
 
 @admin.register(SettingsBundle)
 class SettingsBundleAdmin(admin.ModelAdmin):
+    form = forms.SettingsBundleForm
     list_display = ["__str__", "modified"]
     inlines = [SettingInline]
 

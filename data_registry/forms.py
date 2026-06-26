@@ -87,6 +87,21 @@ class CollectionAdminForm(forms.ModelForm):
         self.fields["country_flag"].choices += sorted((f.name, f.name) for f in FLAGS_DIR.iterdir() if f.is_file())
 
 
+class SettingsBundleForm(forms.ModelForm):
+    class Meta:
+        widgets = {
+            "name": widgets.AdminTextInputWidget(),
+        }
+
+
+class SettingForm(forms.ModelForm):
+    class Meta:
+        widgets = {
+            "key": widgets.AdminTextInputWidget(),
+            "value": widgets.AdminTextInputWidget(attrs={"style": "width: 60em"}),
+        }
+
+
 class LicenseAdminForm(forms.ModelForm):
     class Meta:
         widgets = {
