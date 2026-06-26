@@ -6,3 +6,4 @@ Administrator's guide
 
    siteadmin
    sysadmin
+   cloudflare

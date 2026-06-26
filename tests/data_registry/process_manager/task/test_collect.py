@@ -3,13 +3,57 @@ from unittest.mock import MagicMock, patch
 from django.test import TransactionTestCase, override_settings
 
 from data_registry.exceptions import UnexpectedError
-from data_registry.models import Collection, Task, TaskNote
+from data_registry.models import Collection, SettingsBundle, Task, TaskNote
 from data_registry.process_manager.task.collect import Collect
 
 
 @override_settings(SCRAPYD={"url": "http://localhost:6800", "project": "test_project"})
 class CollectTaskTests(TransactionTestCase):
     fixtures = ["tests/fixtures/fixtures.json"]
+
+    def test_run_without_settings_bundle(self):
+        collection = Collection.objects.get(pk=1)
+        job = collection.job_set.create()
+        task = job.task_set.order_by("order").first()
+
+        collect_manager = Collect(task)
+
+        mock_response = MagicMock()
+        mock_response.json.return_value = {"status": "ok", "jobid": "test-job-id"}
+
+        with patch.object(collect_manager, "request", return_value=mock_response) as mock_request:
+            collect_manager.run()
+
+        self.assertNotIn("setting", mock_request.call_args.kwargs["data"])
+
+    def test_run_with_settings_bundle(self):
+        bundle = SettingsBundle.objects.create(name="opentender.eu")
+        bundle.setting_set.create(key="CF_CLEARANCE", value="cookie-value")
+        bundle.setting_set.create(key="CF_USER_AGENT", value="Mozilla/5.0 RealChrome")
+        bundle.setting_set.create(key="CF_IMPERSONATE", value="chrome")
+
+        collection = Collection.objects.get(pk=1)
+        collection.settings_bundle = bundle
+        collection.save()
+        job = collection.job_set.create()
+        task = job.task_set.order_by("order").first()
+
+        collect_manager = Collect(task)
+
+        mock_response = MagicMock()
+        mock_response.json.return_value = {"status": "ok", "jobid": "test-job-id"}
+
+        with patch.object(collect_manager, "request", return_value=mock_response) as mock_request:
+            collect_manager.run()
+
+        self.assertEqual(
+            mock_request.call_args.kwargs["data"]["setting"],
+            [
+                "CF_CLEARANCE=cookie-value",
+                "CF_IMPERSONATE=chrome",
+                "CF_USER_AGENT=Mozilla/5.0 RealChrome",
+            ],
+        )
 
     def test_get_status_pending(self):
         collection = Collection.objects.get(pk=1)

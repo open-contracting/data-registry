@@ -314,6 +314,14 @@ class Collection(models.Model):
     frozen = models.BooleanField(
         default=False, help_text="If the spider is broken, check this box to prevent the scheduling of new jobs."
     )
+    settings_bundle = models.ForeignKey(
+        "SettingsBundle",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        db_index=True,
+        help_text="Additional Scrapy settings to send when scheduling crawls.",
+    )
 
     # Visibility logic
     no_data_rationale = models.TextField(
@@ -416,6 +424,35 @@ class Collection(models.Model):
             return False
 
         return out_of_date
+
+
+class SettingsBundle(models.Model):
+    """A named set of Scrapy settings, sent to Kingfisher Collect when scheduling a crawl."""
+
+    name = models.TextField(help_text='A label for the bundle, like "opentender.eu (Cloudflare)".')
+
+    # Timestamps
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Scrapy settings bundle"
+
+    def __str__(self):
+        return f"{self.name} ({self.pk})"
+
+
+class Setting(models.Model):
+    bundle = models.ForeignKey("SettingsBundle", on_delete=models.CASCADE, db_index=True)
+    key = models.TextField(help_text='The name of a Scrapy setting, like "CF_CLEARANCE".')
+    value = models.TextField(blank=True, help_text="The value of the Scrapy setting.")
+
+    class Meta:
+        ordering = ["key"]
+        constraints = [models.UniqueConstraint(fields=["bundle", "key"], name="unique_bundle_key")]
+
+    def __str__(self):
+        return f"{self.key}={self.value}"
 
 
 class License(models.Model):

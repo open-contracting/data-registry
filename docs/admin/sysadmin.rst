@@ -44,7 +44,7 @@ Kingfisher Process, Data Registry
    
    .. code-block:: bash
 
-      ssh -p 2223 deployer@ocp13.open-contracting.org
+      ssh deployer@ocp29.open-contracting.org
 
 #. `Update the application <https://ocdsdeploy.readthedocs.io/en/latest/deploy/docker.html#update-applications>`__.
 

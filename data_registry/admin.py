@@ -20,7 +20,7 @@ from modeltranslation.admin import TabbedDjangoJqueryTranslationAdmin, Translati
 
 from data_registry import forms
 from data_registry.exceptions import RecoverableError
-from data_registry.models import Collection, Job, License, Task, TaskNote
+from data_registry.models import Collection, Job, License, Setting, SettingsBundle, Task, TaskNote
 from data_registry.util import CHANGE, CHANGELIST, intcomma, partialclass
 
 logger = logging.getLogger(__name__)
@@ -147,6 +147,7 @@ class CollectionAdmin(CascadeTaskMixin, TabbedDjangoJqueryTranslationAdmin):
             {
                 "fields": (
                     "source_id",
+                    "settings_bundle",
                     "retrieval_frequency",
                     "active_job",
                     "last_retrieved",
@@ -589,6 +590,17 @@ class JobAdmin(CascadeTaskMixin, admin.ModelAdmin):
         if obj.last_completed_task_type and obj.last_completed_task_order:
             return f"{obj.last_completed_task_type} ({obj.last_completed_task_order}/{len(settings.JOB_TASKS_PLAN)})"
         return None
+
+
+class SettingInline(admin.TabularInline):
+    model = Setting
+    extra = 0
+
+
+@admin.register(SettingsBundle)
+class SettingsBundleAdmin(admin.ModelAdmin):
+    list_display = ["__str__", "modified"]
+    inlines = [SettingInline]
 
 
 @admin.register(License)

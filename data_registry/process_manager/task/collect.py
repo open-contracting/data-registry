@@ -86,10 +86,14 @@ class Collect(TaskManager):
         self.spider = task.job.collection.source_id
 
     def run(self):
+        data = {"project": PROJECT, "spider": self.spider, "steps": "compile"}  # no "check" step
+        if bundle := self.collection.settings_bundle:
+            data["setting"] = [f"{setting.key}={setting.value}" for setting in bundle.setting_set.all()]
+
         response = self.request(
             "POST",
             scrapyd_url("schedule.json"),
-            data={"project": PROJECT, "spider": self.spider, "steps": "compile"},  # no "check" step
+            data=data,
             error_message=f"Unable to schedule a Scrapyd job for project {PROJECT} and spider {self.spider}",
         )
 
