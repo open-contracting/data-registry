@@ -35,9 +35,9 @@ django-stubs==5.0.0
     # via -r requirements_dev.in
 django-stubs-ext==5.2.1
     # via django-stubs
-flatterer==0.23.0
+flatterer==0.25.0
     # via -r requirements.txt
-gunicorn[setproctitle]==23.0.0
+gunicorn==23.0.0
     # via -r requirements.txt
 idna==3.15
     # via
@@ -71,7 +71,6 @@ orjson==3.11.6
     # via
     #   -r requirements.txt
     #   flatterer
-    #   yapw
 packaging==24.0
     # via
     #   -r requirements.txt
@@ -113,9 +112,7 @@ scrapyloganalyzer==0.0.5
 sentry-sdk==2.8.0
     # via -r requirements.txt
 setproctitle==1.2.2
-    # via
-    #   -r requirements.txt
-    #   gunicorn
+    # via -r requirements.txt
 six==1.16.0
     # via
     #   -r requirements.txt
@@ -136,7 +133,6 @@ typing-extensions==4.14.1
     #   django-stubs
     #   django-stubs-ext
     #   mypy
-    #   psycopg
 tzdata==2025.2
     # via
     #   -r requirements.txt
@@ -147,5 +143,5 @@ urllib3==2.7.0
     #   requests
     #   sentry-sdk
     #   types-requests
-yapw[perf]==0.1.4
+yapw==0.1.4
     # via -r requirements.txt

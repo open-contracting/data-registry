@@ -19,9 +19,9 @@ django==5.2.14
     #   django-modeltranslation
 django-modeltranslation==0.19.15
     # via -r requirements.in
-flatterer==0.23.0
+flatterer==0.25.0
     # via -r requirements.in
-gunicorn[setproctitle]==23.0.0
+gunicorn==23.0.0
     # via -r requirements.in
 idna==3.15
     # via requests
@@ -72,14 +72,12 @@ six==1.16.0
 sqlparse==0.5.4
     # via django
 typing-extensions==4.14.1
-    # via
-    #   dj-database-url
-    #   psycopg
+    # via dj-database-url
 tzdata==2025.2
     # via pandas
 urllib3==2.7.0
     # via
     #   requests
     #   sentry-sdk
-yapw[perf]==0.1.4
+yapw==0.1.4
     # via -r requirements.in
