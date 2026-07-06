@@ -32,12 +32,13 @@ CATEGORY_LEVELS = {
     "error_logs": TaskNote.Level.ERROR,
     "warning_logs": TaskNote.Level.WARNING,
 }
+DATA_LOSS = "Data loss"
 RETRY_FAILURES = "Retry failures"
 DOWNLOAD_ERRORS = "Download errors"
 MESSAGE_PATTERNS = (
     # [scrapy.core.downloader.handlers.http11] WARNING: Got data loss in {URL}. If you want to process broken responses
     # set the setting DOWNLOAD_FAIL_ON_DATALOSS = False -- This message won't be shown in further requests
-    ("Data loss", "Got data loss"),
+    (DATA_LOSS, "Got data loss"),
     # [scrapy.downloadermiddlewares.retry] or [spider] ERROR: Gave up retrying <GET {URL}> (failed 3 times): 503
     # (Typically paired with "status=###" or "Error downloading".)
     (RETRY_FAILURES, "Gave up retrying"),
@@ -45,6 +46,13 @@ MESSAGE_PATTERNS = (
     # Traceback (most recent call last): …
     (DOWNLOAD_ERRORS, "Error downloading"),
 )
+# These errors (plus HTTP errors) are expected during crawls. They are worth logging only if the task failed
+# (get_status() returns a reason) or if other categories are also reported.
+NOISY_MESSAGE_TYPES = {DATA_LOSS, RETRY_FAILURES, DOWNLOAD_ERRORS}
+
+
+def is_noisy_message_type(message_type):
+    return message_type.startswith("HTTP ") or message_type in NOISY_MESSAGE_TYPES
 
 
 def scrapyd_data(response):
@@ -227,7 +235,19 @@ class Collect(TaskManager):
                 counter.pop(RETRY_FAILURES)
                 notes = [note for note in notes if note.data.get("type") != RETRY_FAILURES]
 
-            if logs or counter:
+            # Prevent further processing if acceptance criteria aren't met.
+
+            if missing_next_link_error:
+                reason = "The crawl stopped prematurely"
+            elif not scrapy_log.is_finished():
+                reason = f"The crawl wasn't finished: {scrapy_log.logparser['finish_reason']}"
+            elif scrapy_log.error_rate > 0.15:  # 15%
+                reason = f"The crawl had a {scrapy_log.error_rate} error rate"
+            else:
+                reason = None
+
+            # Don't log noisy message types on their own; only alongside a failure reason or other categories.
+            if reason or logs or any(not is_noisy_message_type(message_type) for message_type in counter):
                 messages = logs + [f"{message_type}: {count}" for message_type, count in counter.items()]
                 logger.warning("%s has warnings\n%s\n    %s\n", self, self.job_url, "\n    ".join(messages))
 
@@ -239,16 +259,7 @@ class Collect(TaskManager):
 
             self.job.save(update_fields=["modified", "context"])
 
-            # Prevent further processing if acceptance criteria not met.
-
-            if missing_next_link_error:
-                return Task.Status.COMPLETED, "The crawl stopped prematurely"
-            if not scrapy_log.is_finished():
-                return Task.Status.COMPLETED, f"The crawl wasn't finished: {scrapy_log.logparser['finish_reason']}"
-            if scrapy_log.error_rate > 0.15:  # 15%
-                return Task.Status.COMPLETED, f"The crawl had a {scrapy_log.error_rate} error rate"
-
-            return Task.Status.COMPLETED, None
+            return Task.Status.COMPLETED, reason
 
         # This is expected to be unreachable.
         return Task.Status.COMPLETED, f"Unknown status {currstate!r} for Scrapyd job {scrapyd_job_id}"

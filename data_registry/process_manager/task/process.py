@@ -81,8 +81,13 @@ class Process(TaskManager):
         ).json()
 
         # Count the original notes, before aggregation.
+        # Don't log DuplicateIdValueWarning or RepeatedDateValueWarning, to reduce notificatons to site administrators.
         counter = Counter(("ERROR", note) for note, _ in process_notes["ERROR"])
-        counter += Counter(("WARNING", data.get("type", "Unrecognized")) for _, data in process_notes["WARNING"])
+        counter += Counter(
+            ("WARNING", data.get("type", "Unrecognized"))
+            for _, data in process_notes["WARNING"]
+            if data.get("type") not in {"DuplicateIdValueWarning", "RepeatedDateValueWarning"}
+        )
 
         # Aggregate the task's WARNING notes.
         paths_counter = Counter()
