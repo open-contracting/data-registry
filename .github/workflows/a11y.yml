@@ -36,6 +36,8 @@ jobs:
       - name: Serve
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres
+          DJANGO_ENV: production
+          SERVE_STATIC: 'True'
         run: |
           python manage.py runserver &
           sleep 5
