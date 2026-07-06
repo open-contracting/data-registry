@@ -7,7 +7,7 @@
     "defaultBranch": "main"
   },
   "files": {
-    "includes": ["**", "!data_registry/templates", "!data_registry/static/*.min.js"]
+    "includes": ["**", "!data_registry/templates/**/*.html", "!data_registry/static/*.min.js"]
   },
   "assist": {
     "actions": {
