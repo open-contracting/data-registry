@@ -166,7 +166,7 @@ STORAGES = {
     },
 }
 
-STATICFILES_DIRS = [BASE_DIR / "core" / "static"]  # webpack.config.js
+STATICFILES_DIRS = [BASE_DIR / "core" / "static"]  # build.mjs
 
 # https://docs.djangoproject.com/en/5.2/topics/logging/#django-security
 LOGGING = {

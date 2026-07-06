@@ -90,7 +90,7 @@ Autobuild the stylesheets
 
 .. code-block:: bash
 
-   pnpm exec webpack --watch
+   node build.js --watch
 
 Update the flags
 ^^^^^^^^^^^^^^^^
