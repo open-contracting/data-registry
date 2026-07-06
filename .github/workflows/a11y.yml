@@ -26,9 +26,10 @@ jobs:
       - name: Build
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres
+          NODE_ENV: production
         shell: bash
         run: |
-          pnpm exec webpack --mode production
+          node build.mjs
           env DJANGO_ENV=production python manage.py collectstatic --noinput -v2
           python manage.py migrate
           python manage.py loaddata tests/fixtures/a11y.json

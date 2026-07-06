@@ -12,9 +12,10 @@ RUN pnpm install --frozen-lockfile --ignore-scripts
 
 COPY . .
 
+ENV NODE_ENV=production
 ENV DJANGO_ENV=production
 
-RUN pnpm exec webpack --mode production
+RUN node build.mjs
 RUN python manage.py collectstatic --noinput -v2
 
 FROM python:3.11

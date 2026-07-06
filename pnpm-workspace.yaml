@@ -1,2 +1,5 @@
 minimumReleaseAge: 10080
 trustPolicy: no-downgrade
+allowBuilds:
+  '@parcel/watcher': false # via esbuild-sass-plugin
+  esbuild: false
