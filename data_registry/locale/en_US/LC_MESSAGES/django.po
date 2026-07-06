@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-14 18:27+0000\n"
+"POT-Creation-Date: 2026-07-06 15:29+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,14 +17,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: data_registry/admin.py:260
+#: data_registry/admin.py:300
 #, python-format
 msgid "Created %(count)d job."
 msgid_plural "Created %(count)d jobs."
 msgstr[0] ""
 msgstr[1] ""
 
-#: data_registry/admin.py:265
+#: data_registry/admin.py:305
 #, python-format
 msgid ""
 "%(count)d publication either has an incomplete job or will be scheduled "
@@ -35,75 +35,75 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: data_registry/models.py:158
+#: data_registry/models.py:161
 msgid "Africa and Middle East"
 msgstr ""
 
-#: data_registry/models.py:160
+#: data_registry/models.py:163
 msgid "Asia"
 msgstr ""
 
-#: data_registry/models.py:162
+#: data_registry/models.py:165
 msgid "Eastern Europe & Central Asia"
 msgstr ""
 
-#: data_registry/models.py:164
+#: data_registry/models.py:167
 msgid "Europe"
 msgstr ""
 
-#: data_registry/models.py:166
+#: data_registry/models.py:169
 msgid "Latin America & Caribbean"
 msgstr ""
 
-#: data_registry/models.py:168
+#: data_registry/models.py:171
 msgid "North America"
 msgstr ""
 
-#: data_registry/models.py:170
+#: data_registry/models.py:173
 msgid "Oceania"
 msgstr ""
 
-#: data_registry/models.py:174 data_registry/models.py:196
+#: data_registry/models.py:177 data_registry/models.py:199
 msgid "Weekly"
 msgstr ""
 
-#: data_registry/models.py:176
+#: data_registry/models.py:179
 msgid "Every 2 weeks"
 msgstr ""
 
-#: data_registry/models.py:178 data_registry/models.py:198
+#: data_registry/models.py:181 data_registry/models.py:201
 msgid "Monthly"
 msgstr ""
 
-#: data_registry/models.py:180 data_registry/models.py:202
+#: data_registry/models.py:183 data_registry/models.py:205
 msgid "Every 6 months"
 msgstr ""
 
-#: data_registry/models.py:182 data_registry/models.py:204
+#: data_registry/models.py:185 data_registry/models.py:207
 msgid "Annually"
 msgstr ""
 
-#: data_registry/models.py:184
+#: data_registry/models.py:187
 msgid "This dataset is no longer updated by the publisher"
 msgstr ""
 
-#: data_registry/models.py:188
+#: data_registry/models.py:191
 msgid "Unknown"
 msgstr ""
 
-#: data_registry/models.py:190
+#: data_registry/models.py:193
 msgid "Real time"
 msgstr ""
 
-#: data_registry/models.py:192
+#: data_registry/models.py:195
 msgid "Hourly"
 msgstr ""
 
-#: data_registry/models.py:194
+#: data_registry/models.py:197
 msgid "Daily"
 msgstr ""
 
-#: data_registry/models.py:200
+#: data_registry/models.py:203
 msgid "Every 3 months"
 msgstr ""
 
@@ -445,6 +445,10 @@ msgstr ""
 msgid "Files not yet available."
 msgstr ""
 
+#: data_registry/templates/includes/files.html:25
+msgid "Date unknown"
+msgstr ""
+
 #: data_registry/templates/includes/footer.html:15
 msgid "What is open contracting"
 msgstr ""
@@ -659,7 +663,7 @@ msgstr ""
 msgid "Back to Top"
 msgstr ""
 
-#: data_registry/templatetags/registry.py:101
+#: data_registry/templatetags/registry.py:89
 #, python-format
 msgid "data.open-contracting.org Support Request re: %(collection)s"
 msgstr ""

@@ -19,7 +19,7 @@ from exporter.util import Export, TaskStatus
 
 logger = logging.getLogger(__name__)
 
-EXPORT_PATTERN = re.compile(r"\A(full|\d{4})\.(jsonl\.gz|csv\.tar\.gz|xlsx)\Z")
+EXPORT_PATTERN = re.compile(r"\A(full|undated|\d{4})\.(jsonl\.gz|csv\.tar\.gz|xlsx)\Z")
 
 FILE_SUFFIXES = {
     "jsonl": "jsonl.gz",

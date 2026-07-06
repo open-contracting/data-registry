@@ -20,4 +20,10 @@
     </li>
     {% endif %}
 {% endfor %}
+{% if files.undated %}
+    <li>
+        <a href="{% url 'download' collection.id %}?name=undated.{{ suffix }}" rel="nofollow" data-event="{{ suffix }} undated" download>{% translate "Date unknown" %}</a>
+        <span class="text-muted small">{{ files.undated|humanfilesize }}</span>
+    </li>
+{% endif %}
 </ul>

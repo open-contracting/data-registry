@@ -29,7 +29,8 @@ def callback(state, channel, method, properties, input_message):
     collection_id = input_message.get("collection_id")
 
     export = Export(job_id, basename="full.jsonl.gz")
-    dump_file = export.directory / "full.jsonl"
+    full_path = export.directory / "full.jsonl"
+    undated_path = export.directory / "undated.jsonl"
 
     try:
         export.directory.mkdir(parents=True)
@@ -44,6 +45,13 @@ def callback(state, channel, method, properties, input_message):
     minimum_data_id = 0
     page = 1
     files = {}
+
+    def write_line(path, data):
+        # Open lazily, so that a file is created only if it has content.
+        if path not in files:
+            files[path] = path.open("a")
+        files[path].write(data)
+        files[path].write("\n")
 
     # Acknowledge now to avoid connection losses. The rest can run for hours and is irreversible anyhow.
     ack(state, channel, method.delivery_tag)
@@ -75,8 +83,8 @@ def callback(state, channel, method, properties, input_message):
         if not records:
             break
 
-        with open(dump_file, "a") as full:
-            files[dump_file] = full
+        with open(full_path, "a") as full:
+            files[full_path] = full
 
             for data_id, data, date in records:
                 minimum_data_id = data_id
@@ -85,21 +93,18 @@ def callback(state, channel, method, properties, input_message):
                 full.write("\n")
 
                 if date is None:
-                    logger.exception("No compiled release date")
+                    logger.warning("No compiled release date in job %s", job_id)
+                    write_line(undated_path, data)
                     continue
 
                 try:
                     datetime.strptime(date[:7], "%Y-%m")
                 except ValueError:
-                    logger.exception("Bad compiled release date: '%s'", date)
+                    logger.exception("Bad compiled release date %r in job %s", date, job_id)
+                    write_line(undated_path, data)
                     continue
 
-                year_path = export.directory / f"{int(date[:4])}.jsonl"
-                if year_path not in files:
-                    files[year_path] = year_path.open("a")
-
-                files[year_path].write(data)
-                files[year_path].write("\n")
+                write_line(export.directory / f"{int(date[:4])}.jsonl", data)
 
         page = page + 1
 

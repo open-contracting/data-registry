@@ -83,9 +83,9 @@ class Export:
     @classmethod
     def default_files(cls):
         return {
-            "csv": {"full": False, "by_year": []},
-            "jsonl": {"full": False, "by_year": []},
-            "xlsx": {"full": False, "by_year": []},
+            "csv": {"full": False, "undated": False, "by_year": []},
+            "jsonl": {"full": False, "undated": False, "by_year": []},
+            "xlsx": {"full": False, "undated": False, "by_year": []},
         }
 
     def __init__(self, *components, basename: str | None = None):
@@ -163,11 +163,11 @@ class Export:
             suffix = path.name.split(".", 2)[1]  # works for .xlsx .jsonl.gz .csv.tar.gz
             if suffix not in files:
                 continue
-            prefix = path.name[:4]  # year or "full"
+            prefix = path.name.split(".", 1)[0]  # year, "full" or "undated"
             if prefix.isdigit():
                 files[suffix]["by_year"].append({"year": int(prefix), "size": os.path.getsize(path)})
-            elif prefix == "full":
-                files[suffix]["full"] = os.path.getsize(path)
+            elif prefix in ("full", "undated"):
+                files[suffix][prefix] = os.path.getsize(path)
 
         return files
 

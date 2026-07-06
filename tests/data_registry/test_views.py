@@ -85,15 +85,27 @@ class ViewsTests(TestCase):
 
     @patch("exporter.util.Export.get_files")
     def test_detail(self, get_files):
-        get_files.return_value = {"jsonl": {"full": 123, "by_year": [{"year": 2022, "size": 1}]}}
-        url = f"/en/publication/{self.collection1.pk}/download?name=2022.jsonl.gz"
+        get_files.return_value = {
+            "csv": {"full": False, "undated": False, "by_year": []},
+            "jsonl": {"full": 123, "undated": 45, "by_year": [{"year": 2022, "size": 1}]},
+            "xlsx": {"full": False, "undated": False, "by_year": []},
+        }
+        year_url = f"/en/publication/{self.collection1.pk}/download?name=2022.jsonl.gz"
+        undated_url = f"/en/publication/{self.collection1.pk}/download?name=undated.jsonl.gz"
 
         with self.assertNumQueries(1):
             response = Client().get(f"/en/publication/{self.collection1.pk}")
 
             self.assertTemplateUsed("detail.html")
             self.assertContains(
-                response, f"""<a href="{url}" rel="nofollow" data-event="jsonl.gz year" download>2022</a>""", html=True
+                response,
+                f"""<a href="{year_url}" rel="nofollow" data-event="jsonl.gz year" download>2022</a>""",
+                html=True,
+            )
+            self.assertContains(
+                response,
+                f"""<a href="{undated_url}" rel="nofollow" data-event="jsonl.gz undated" download>Date unknown</a>""",
+                html=True,
             )
 
     def test_detail_missing_date(self):
@@ -122,6 +134,15 @@ class ViewsTests(TestCase):
 
             self.assertEqual(response.status_code, 400)
             self.assertEqual(response.text, "The name query string parameter is invalid")
+
+    def test_download_export_undated_valid_name(self):
+        # "undated" is an accepted prefix: no fixture file exists, so the request passes the name pattern (not 400)
+        # and reaches the status check (404).
+        with self.assertNumQueries(1):
+            response = Client().get(f"/en/publication/{self.collection1.pk}/download?name=undated.jsonl.gz")
+
+            self.assertEqual(response.status_code, 404)
+            self.assertEqual(response.text, "File not found")
 
     def test_download_export_waiting(self):
         with self.assertNumQueries(1):
