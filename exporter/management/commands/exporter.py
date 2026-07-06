@@ -100,7 +100,7 @@ def callback(state, channel, method, properties, input_message):
                 try:
                     datetime.strptime(date[:7], "%Y-%m")
                 except ValueError:
-                    logger.exception("Bad compiled release date %r in job %s", date, job_id)
+                    logger.warning("Bad compiled release date %r in job %s", date, job_id)
                     write_line(undated_path, data)
                     continue
 
