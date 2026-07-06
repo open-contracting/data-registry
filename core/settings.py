@@ -333,3 +333,6 @@ SPOONBILL_API_PASSWORD = os.getenv("SPOONBILL_API_PASSWORD")
 # In non-Docker environments, this environment variable can be unset, in which case `SPOONBILL_EXPORTER_DIR` will be
 # the same as `EXPORTER_DIR`.
 SPOONBILL_EXPORTER_DIR = os.getenv("SPOONBILL_EXPORTER_DIR", EXPORTER_DIR)
+
+# Serve STATIC_ROOT on the same port as runserver, to check a production build locally.
+SERVE_STATIC = os.getenv("SERVE_STATIC") == "True"
