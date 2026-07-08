@@ -1,7 +1,7 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema-jsonc.json",
   "entry": ["src/js/main.js", "src/scss/main.scss"],
-  "project": ["src/**"],
+  "project": ["src/**"], // excludes built files in core/static/
   "ignoreDependencies": [
     "bootstrap-vue" // imported in src/scss/_custom.scss (knip doesn't resolve SCSS @imports)
   ]
