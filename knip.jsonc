@@ -1,5 +1,5 @@
 {
-  "$schema": "https://unpkg.com/knip@6/schema.jsonc",
+  "$schema": "https://unpkg.com/knip@6/schema-jsonc.json",
   "entry": ["src/js/main.js", "src/scss/main.scss"],
   "project": ["src/**"],
   "ignoreDependencies": [
