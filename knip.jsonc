@@ -3,6 +3,6 @@
   "entry": ["src/js/main.js", "src/scss/main.scss"],
   "project": ["src/**"], // excludes built files in core/static/
   "ignoreDependencies": [
-    "bootstrap-vue" // imported in src/scss/_custom.scss (knip doesn't resolve SCSS @imports)
+    "bootstrap-vue" // imported in src/scss/_custom.scss (knip doesn't resolve package SCSS @imports)
   ]
 }
