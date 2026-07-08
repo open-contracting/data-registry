@@ -1,5 +1,7 @@
 import autoprefixer from "autoprefixer";
+import browserslist from "browserslist";
 import * as esbuild from "esbuild";
+import { esbuildPluginBrowserslist } from "esbuild-plugin-browserslist";
 import { sassPlugin } from "esbuild-sass-plugin";
 import postcss from "postcss";
 
@@ -24,6 +26,7 @@ const options = {
         ".otf": "file",
     },
     plugins: [
+        esbuildPluginBrowserslist(browserslist(), { printUnknownTargets: false }),
         sassPlugin({
             async transform(source) {
                 const { css } = await postcss([autoprefixer]).process(source, { from: undefined });
