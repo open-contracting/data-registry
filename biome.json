@@ -5,15 +5,15 @@
     "useIgnoreFile": true,
     "defaultBranch": "main"
   },
-  "files": {
-    "includes": ["**", "!data_registry/templates/**/*.html", "!data_registry/static/*.min.js"]
-  },
   "assist": {
     "actions": {
       "source": {
         "organizeImports": "on"
       }
     }
+  },
+  "linter": {
+    "enabled": true
   },
   "formatter": {
     "indentStyle": "space",
@@ -25,7 +25,7 @@
       "indentWidth": 2
     }
   },
-  "linter": {
-    "enabled": true
+  "files": {
+    "includes": ["**", "!data_registry/templates/**/*.html", "!data_registry/static/markdown-it.min.js"]
   }
 }
