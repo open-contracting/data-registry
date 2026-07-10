@@ -17,13 +17,8 @@
   },
   "formatter": {
     "indentStyle": "space",
-    "indentWidth": 4,
+    "indentWidth": 2,
     "lineWidth": 119
-  },
-  "json": {
-    "formatter": {
-      "indentWidth": 2
-    }
   },
   "files": {
     "includes": ["**", "!data_registry/templates/**/*.html", "!data_registry/static/markdown-it.min.js"]
