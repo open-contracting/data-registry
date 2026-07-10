@@ -1,50 +1,50 @@
 /* biome-ignore-all lint/complexity/noImportantStyles: Django */
 
 .nowrap {
-    /*
+  /*
     Django intentionally uses nowrap for foreign keys on change_list.html. This makes the tables wider than the screen.
     https://code.djangoproject.com/ticket/11447
     */
-    white-space: normal;
+  white-space: normal;
 }
 
 .ms-0 {
-    margin-left: 0 !important;
+  margin-left: 0 !important;
 }
 .unordered-list {
-    margin-left: 0 !important;
-    padding-left: 2em !important;
+  margin-left: 0 !important;
+  padding-left: 2em !important;
 }
 .unordered-list li {
-    list-style: disc !important;
+  list-style: disc !important;
 }
 
 /* Job status */
 
 .recent-jobs {
-    display: flex;
-    gap: 2px;
+  display: flex;
+  gap: 2px;
 }
 
 .recent-job {
-    display: inline-flex;
-    justify-content: center;
-    width: 14px;
-    height: 14px;
-    font-size: 12px;
-    line-height: 1;
-    text-decoration: none;
+  display: inline-flex;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  font-size: 12px;
+  line-height: 1;
+  text-decoration: none;
 }
 
 a.recent-job:link,
 a.recent-job:visited {
-    color: #fff;
+  color: #fff;
 }
 
 .job-pass {
-    background-color: var(--header-bg);
+  background-color: var(--header-bg);
 }
 
 .job-fail {
-    background-color: var(--error-fg);
+  background-color: var(--error-fg);
 }
