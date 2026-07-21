@@ -41,8 +41,8 @@ jobs:
         run: |
           python manage.py runserver &
           sleep 5
-      - run: pnpm exec pa11y-ci -c pa11y.default.json -s http://127.0.0.1:8000/sitemap.xml -f https://data.open-contracting.org -r http://127.0.0.1:8000
-      - run: pnpm exec pa11y-ci -c pa11y.mobile.json -s http://127.0.0.1:8000/sitemap.xml -f https://data.open-contracting.org -r http://127.0.0.1:8000
+      - run: pnpm exec pa11y-ci -c pa11y.default.js -s http://127.0.0.1:8000/sitemap.xml -f https://data.open-contracting.org -r http://127.0.0.1:8000
+      - run: pnpm exec pa11y-ci -c pa11y.mobile.js -s http://127.0.0.1:8000/sitemap.xml -f https://data.open-contracting.org -r http://127.0.0.1:8000
     services:
       postgres:
         image: postgres:16
