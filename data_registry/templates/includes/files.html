@@ -5,17 +5,17 @@
 {% if files.full %}
     <li>
         <a href="{% url 'download' collection.id %}?name=full.{{ suffix }}" rel="nofollow" data-event="{{ suffix }} full" download>{% translate "All time" %}</a>
-        <span class="text-muted small">{{ files.full|humanfilesize }}</span>
+        <span class="text-body-secondary small">{{ files.full|humanfilesize }}</span>
     </li>
 {% endif %}
 {% for file in files.by_year|dictsortreversed:"year" %}
     <li>
         <a href="{% url 'download' collection.id %}?name={{ file.year }}.{{ suffix }}" rel="nofollow" data-event="{{ suffix }} year" download>{{ file.year }}</a>
-        <span class="text-muted small">{{ file.size|humanfilesize }}</span>
+        <span class="text-body-secondary small">{{ file.size|humanfilesize }}</span>
     </li>
 {% empty %}
     {% if not hideempty %}
-    <li class="text-muted">
+    <li class="text-body-secondary">
     {% translate "Files not yet available." %}
     </li>
     {% endif %}
@@ -23,7 +23,7 @@
 {% if files.undated %}
     <li>
         <a href="{% url 'download' collection.id %}?name=undated.{{ suffix }}" rel="nofollow" data-event="{{ suffix }} undated" download>{% translate "Date unknown" %}</a>
-        <span class="text-muted small">{{ files.undated|humanfilesize }}</span>
+        <span class="text-body-secondary small">{{ files.undated|humanfilesize }}</span>
     </li>
 {% endif %}
 </ul>

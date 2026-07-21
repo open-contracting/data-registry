@@ -54,10 +54,11 @@ $dark: #323232; // same as OCP footer
 
 $primary-bg-subtle: tint-color($primary, 90%);
 
+$body-secondary-color: #565f67; // $gray-600 #6c757d
+
 $font-family-sans-serif: "GT Eesti Pro", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 $font-family-monospace: "Roboto Mono", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
-$text-muted: #565f67; // $gray-600 #6c757d
 $dt-font-weight: 300; // 700
 $list-inline-padding: 1.5rem; // .5rem
 
