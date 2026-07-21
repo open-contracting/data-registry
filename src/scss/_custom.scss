@@ -34,7 +34,7 @@
 @import 'bootstrap/scss/functions';
 
 // 2. Include any default variable overrides here
-// https://github.com/twbs/bootstrap/blob/v5.2.1/scss/_variables.scss
+// https://github.com/twbs/bootstrap/blob/v5.3.8/scss/_variables.scss
 
 $enable-negative-margins: true;
 // Adding the following has <0.1 KiB effect:
@@ -51,6 +51,8 @@ $info: #d6e100; // yellow
 $warning: #fb6045; // red
 $light: #eeeeee; // gray
 $dark: #323232; // same as OCP footer
+
+$primary-bg-subtle: tint-color($primary, 90%);
 
 $font-family-sans-serif: "GT Eesti Pro", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 $font-family-monospace: "Roboto Mono", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
