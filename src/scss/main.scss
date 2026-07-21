@@ -198,7 +198,7 @@ button[type="button"][data-bs-toggle="tooltip"] {
     background-color: $light;
     &:hover {
         background-color: shade-color($light, $link-shade-percentage) !important;
-        h2 {
+        h3 {
             text-decoration: $link-hover-decoration;
         }
         .click {

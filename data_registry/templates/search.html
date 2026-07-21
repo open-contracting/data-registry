@@ -21,6 +21,7 @@
 {% endblock %}
 
 {% block content %}
+<h1 class="visually-hidden">{% translate "Search for datasets" %}</h1>
 <div class="row">
     <div class="col-md-3 col-xl-2 mb-0">
         <div class="mb-4">
@@ -84,7 +85,7 @@
     </div>
 
     <div class="col-md-9 col-xl-10">
-        <h1 class="h4 mb-4 d-flex flex-wrap gap-2 align-items-center">
+        <h2 class="h4 mb-4 d-flex flex-wrap gap-2 align-items-center">
 {% if request.GET|nonempty %}
             {% blocktranslate count counter=collections|length trimmed %}
             {{ counter }} dataset matches the selected filters:
@@ -140,7 +141,7 @@
 {% if request.user.is_authenticated %}
             (You are logged in)
 {% endif %}
-        </h1>
+        </h2>
 
 {% for collection in collections %}
         <article class="mb-4 p-3 px-md-5 rounded-2 rounded-top-start-md rounded-bottom-end-md text-bg-light clickable">
@@ -151,7 +152,7 @@
     {% endif %}
                 </div>
                 <div class="col-md">
-                    <h2>{{ collection.country }}: {{ collection.title }}</h2>
+                    <h3 class="h2">{{ collection.country }}: {{ collection.title }}</h3>
                     {{ collection.description|markdownify }}
                 </div>
             </div>
