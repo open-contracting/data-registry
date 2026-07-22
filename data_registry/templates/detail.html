@@ -304,7 +304,7 @@ window.catalog = JSON.parse('{% cache None catalog LANGUAGE_CODE %}{% catalog_st
                     Each contracting process is represented as one line of JSON text in the <code>.jsonl</code> file.
                     {% endblocktranslate %}
                 </p>
-                <p>
+                <p class="prose">
                     {% blocktranslate trimmed %}
                     The <code>.jsonl</code> file is compressed using Gzip. Windows users need <a href="https://www.7-zip.org" target="_blank">7-Zip</a>, <a href="https://www.win-rar.com" target="_blank">WinRAR</a> or <a href="https://www.winzip.com" target="_blank">WinZip</a> to decompress the <code>.gz</code> file.
                     {% endblocktranslate %}
@@ -335,7 +335,7 @@ window.catalog = JSON.parse('{% cache None catalog LANGUAGE_CODE %}{% catalog_st
                     In general, each file is link to its parent file via the <code>[file_name]_id</code> column.
                     {% endblocktranslate %}
                 </p>
-                <p>
+                <p class="prose">
                     {% blocktranslate trimmed %}
                     The <code>.csv</code> files are archived using tar and compressed using Gzip. Windows users need <a href="https://www.7-zip.org" target="_blank">7-Zip</a>, <a href="https://www.win-rar.com" target="_blank">WinRAR</a> or <a href="https://www.winzip.com" target="_blank">WinZip</a> to decompress the <code>.tar.gz</code> file.
                     {% endblocktranslate %}

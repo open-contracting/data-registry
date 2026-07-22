@@ -106,7 +106,7 @@ def markdownify(value: str) -> str:
     md = MarkdownIt("commonmark", {"typographer": True})
     md.enable(["smartquotes"])
     md.add_render_rule("link_open", render_blank_link)
-    return mark_safe(md.render(value))
+    return mark_safe(f'<div class="prose">{md.render(value)}</div>')
 
 
 @register.filter
