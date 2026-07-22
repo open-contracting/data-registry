@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-06 15:29+0000\n"
+"POT-Creation-Date: 2026-07-22 03:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -133,7 +133,7 @@ msgid "Show less"
 msgstr ""
 
 #: data_registry/templates/detail.html:60
-#: data_registry/templates/search.html:189
+#: data_registry/templates/search.html:190
 msgid "Available formats:"
 msgstr ""
 
@@ -146,40 +146,40 @@ msgid "Overview"
 msgstr ""
 
 #: data_registry/templates/detail.html:91
-#: data_registry/templates/search.html:162
+#: data_registry/templates/search.html:163
 msgid "Data date range:"
 msgstr ""
 
 #: data_registry/templates/detail.html:92
-#: data_registry/templates/search.html:163
+#: data_registry/templates/search.html:164
 msgid ""
 "The time span over which contracting information was first published, using "
 "the <code>date</code> field in OCDS"
 msgstr ""
 
 #: data_registry/templates/detail.html:92
-#: data_registry/templates/search.html:163
+#: data_registry/templates/search.html:164
 msgid "Information about the data date range"
 msgstr ""
 
 #: data_registry/templates/detail.html:101
-#: data_registry/templates/search.html:173
+#: data_registry/templates/search.html:174
 msgid "Update frequency:"
 msgstr ""
 
 #: data_registry/templates/detail.html:103
-#: data_registry/templates/search.html:175
+#: data_registry/templates/search.html:176
 msgid "Last retrieved:"
 msgstr ""
 
 #: data_registry/templates/detail.html:107
 #: data_registry/templates/detail.html:233
-#: data_registry/templates/search.html:179
+#: data_registry/templates/search.html:180
 msgid "This dataset has not yet been retrieved."
 msgstr ""
 
 #: data_registry/templates/detail.html:110
-#: data_registry/templates/search.html:182
+#: data_registry/templates/search.html:183
 #, python-format
 msgid "retrieved %(retrieval_frequency)s"
 msgstr ""
@@ -567,99 +567,103 @@ msgstr ""
 msgid "BACK TO REGISTRY HOME"
 msgstr ""
 
-#: data_registry/templates/search.html:27
-#: data_registry/templates/search.html:29
-#: data_registry/templates/search.html:38
+#: data_registry/templates/search.html:24
+msgid "Search for datasets"
+msgstr ""
+
+#: data_registry/templates/search.html:28
+#: data_registry/templates/search.html:30
+#: data_registry/templates/search.html:39
 msgid "Filters"
 msgstr ""
 
-#: data_registry/templates/search.html:39
+#: data_registry/templates/search.html:40
 msgid "Close"
 msgstr ""
 
-#: data_registry/templates/search.html:58
+#: data_registry/templates/search.html:59
 msgid "Clear all filters"
 msgstr ""
 
-#: data_registry/templates/search.html:62
-#: data_registry/templates/search.html:97
+#: data_registry/templates/search.html:63
+#: data_registry/templates/search.html:98
 msgid "Country"
 msgstr ""
 
-#: data_registry/templates/search.html:63
+#: data_registry/templates/search.html:64
 msgid "Unlisted countries have no datasets"
 msgstr ""
 
-#: data_registry/templates/search.html:63
+#: data_registry/templates/search.html:64
 msgid "Information about the country list"
 msgstr ""
 
-#: data_registry/templates/search.html:67
+#: data_registry/templates/search.html:68
 msgid "Select a country"
 msgstr ""
 
-#: data_registry/templates/search.html:69 data_registry/views.py:66
+#: data_registry/templates/search.html:70 data_registry/views.py:66
 msgid "All"
 msgstr ""
 
-#: data_registry/templates/search.html:77
-#: data_registry/templates/search.html:105
+#: data_registry/templates/search.html:78
+#: data_registry/templates/search.html:106
 msgid "Region"
 msgstr ""
 
-#: data_registry/templates/search.html:78
-#: data_registry/templates/search.html:113
+#: data_registry/templates/search.html:79
+#: data_registry/templates/search.html:114
 msgid "Data date range"
 msgstr ""
 
-#: data_registry/templates/search.html:79
-#: data_registry/templates/search.html:121
+#: data_registry/templates/search.html:80
+#: data_registry/templates/search.html:122
 msgid "Update frequency"
 msgstr ""
 
-#: data_registry/templates/search.html:80
-#: data_registry/templates/search.html:130
+#: data_registry/templates/search.html:81
+#: data_registry/templates/search.html:131
 msgid "Data contains"
 msgstr ""
 
-#: data_registry/templates/search.html:89
+#: data_registry/templates/search.html:90
 #, python-format
 msgid "%(counter)s dataset matches the selected filters:"
 msgid_plural "%(counter)s datasets match the selected filters:"
 msgstr[0] ""
 msgstr[1] ""
 
-#: data_registry/templates/search.html:98
+#: data_registry/templates/search.html:99
 msgid "Remove country filter"
 msgstr ""
 
-#: data_registry/templates/search.html:106
+#: data_registry/templates/search.html:107
 msgid "Remove region filter"
 msgstr ""
 
-#: data_registry/templates/search.html:114
+#: data_registry/templates/search.html:115
 msgid "Remove data date range filter"
 msgstr ""
 
-#: data_registry/templates/search.html:122
+#: data_registry/templates/search.html:123
 msgid "Remove update frequency filter"
 msgstr ""
 
-#: data_registry/templates/search.html:131
+#: data_registry/templates/search.html:132
 msgid "Remove data availability filter"
 msgstr ""
 
-#: data_registry/templates/search.html:136
+#: data_registry/templates/search.html:137
 #, python-format
 msgid "Showing all %(counter)s datasets"
 msgstr ""
 
-#: data_registry/templates/search.html:202
+#: data_registry/templates/search.html:203
 msgid "See details"
 msgstr ""
 
-#: data_registry/templates/search.html:215
-#: data_registry/templates/search.html:220
+#: data_registry/templates/search.html:216
+#: data_registry/templates/search.html:221
 msgid "Back to Top"
 msgstr ""
 

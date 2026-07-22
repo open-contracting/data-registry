@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-06 15:29+0000\n"
+"POT-Creation-Date: 2026-07-22 03:46+0000\n"
 "PO-Revision-Date: 2021-08-04 17:44+0000\n"
 "Last-Translator: Yohanna Lisnichuk <ylisnichuk@open-contracting.org>, 2025\n"
 "Language-Team: Russian (https://app.transifex.com/open-contracting-"
@@ -156,7 +156,7 @@ msgid "Show less"
 msgstr "Меньше"
 
 #: data_registry/templates/detail.html:60
-#: data_registry/templates/search.html:189
+#: data_registry/templates/search.html:190
 msgid "Available formats:"
 msgstr "Доступные форматы"
 
@@ -169,12 +169,12 @@ msgid "Overview"
 msgstr "Обзор"
 
 #: data_registry/templates/detail.html:91
-#: data_registry/templates/search.html:162
+#: data_registry/templates/search.html:163
 msgid "Data date range:"
 msgstr "Диапазон дат"
 
 #: data_registry/templates/detail.html:92
-#: data_registry/templates/search.html:163
+#: data_registry/templates/search.html:164
 msgid ""
 "The time span over which contracting information was first published, using "
 "the <code>date</code> field in OCDS"
@@ -183,28 +183,28 @@ msgstr ""
 "опубликована, используя поле <code>date</code> в OCDS"
 
 #: data_registry/templates/detail.html:92
-#: data_registry/templates/search.html:163
+#: data_registry/templates/search.html:164
 msgid "Information about the data date range"
 msgstr "Information about the data date range"
 
 #: data_registry/templates/detail.html:101
-#: data_registry/templates/search.html:173
+#: data_registry/templates/search.html:174
 msgid "Update frequency:"
 msgstr "Периодичность обновлений"
 
 #: data_registry/templates/detail.html:103
-#: data_registry/templates/search.html:175
+#: data_registry/templates/search.html:176
 msgid "Last retrieved:"
 msgstr "Последнее получено:"
 
 #: data_registry/templates/detail.html:107
 #: data_registry/templates/detail.html:233
-#: data_registry/templates/search.html:179
+#: data_registry/templates/search.html:180
 msgid "This dataset has not yet been retrieved."
 msgstr "Этот набор данных еще не загружен."
 
 #: data_registry/templates/detail.html:110
-#: data_registry/templates/search.html:182
+#: data_registry/templates/search.html:183
 #, python-format
 msgid "retrieved %(retrieval_frequency)s"
 msgstr "загружен %(retrieval_frequency)s"
@@ -666,62 +666,66 @@ msgstr ""
 msgid "BACK TO REGISTRY HOME"
 msgstr "Назад на главную"
 
-#: data_registry/templates/search.html:27
-#: data_registry/templates/search.html:29
-#: data_registry/templates/search.html:38
+#: data_registry/templates/search.html:24
+msgid "Search for datasets"
+msgstr "Поиск наборов данных"
+
+#: data_registry/templates/search.html:28
+#: data_registry/templates/search.html:30
+#: data_registry/templates/search.html:39
 msgid "Filters"
 msgstr "Фильтры"
 
-#: data_registry/templates/search.html:39
+#: data_registry/templates/search.html:40
 msgid "Close"
 msgstr "Закрыть"
 
-#: data_registry/templates/search.html:58
+#: data_registry/templates/search.html:59
 msgid "Clear all filters"
 msgstr "Очистить все фильтры"
 
-#: data_registry/templates/search.html:62
-#: data_registry/templates/search.html:97
+#: data_registry/templates/search.html:63
+#: data_registry/templates/search.html:98
 msgid "Country"
 msgstr "Страна"
 
-#: data_registry/templates/search.html:63
+#: data_registry/templates/search.html:64
 msgid "Unlisted countries have no datasets"
 msgstr "Страны, не указанные в списке, не имеют наборов данных"
 
-#: data_registry/templates/search.html:63
+#: data_registry/templates/search.html:64
 msgid "Information about the country list"
 msgstr "Information about the country list"
 
-#: data_registry/templates/search.html:67
+#: data_registry/templates/search.html:68
 msgid "Select a country"
 msgstr "Выберите страну"
 
-#: data_registry/templates/search.html:69 data_registry/views.py:66
+#: data_registry/templates/search.html:70 data_registry/views.py:66
 msgid "All"
 msgstr "Все"
 
-#: data_registry/templates/search.html:77
-#: data_registry/templates/search.html:105
+#: data_registry/templates/search.html:78
+#: data_registry/templates/search.html:106
 msgid "Region"
 msgstr "Регион"
 
-#: data_registry/templates/search.html:78
-#: data_registry/templates/search.html:113
+#: data_registry/templates/search.html:79
+#: data_registry/templates/search.html:114
 msgid "Data date range"
 msgstr "Диапазон дат данных"
 
-#: data_registry/templates/search.html:79
-#: data_registry/templates/search.html:121
+#: data_registry/templates/search.html:80
+#: data_registry/templates/search.html:122
 msgid "Update frequency"
 msgstr "Частота обновления"
 
-#: data_registry/templates/search.html:80
-#: data_registry/templates/search.html:130
+#: data_registry/templates/search.html:81
+#: data_registry/templates/search.html:131
 msgid "Data contains"
 msgstr "Данные содержат"
 
-#: data_registry/templates/search.html:89
+#: data_registry/templates/search.html:90
 #, python-format
 msgid "%(counter)s dataset matches the selected filters:"
 msgid_plural "%(counter)s datasets match the selected filters:"
@@ -730,37 +734,37 @@ msgstr[1] "%(counter)sнаборов данных соответствуют в�
 msgstr[2] "%(counter)sнаборов данных соответствуют выбранным фильтрам:"
 msgstr[3] "%(counter)sнаборов данных соответствуют выбранным фильтрам:"
 
-#: data_registry/templates/search.html:98
+#: data_registry/templates/search.html:99
 msgid "Remove country filter"
 msgstr "Удалить фильтр страны"
 
-#: data_registry/templates/search.html:106
+#: data_registry/templates/search.html:107
 msgid "Remove region filter"
 msgstr "Удалить фильтр региона"
 
-#: data_registry/templates/search.html:114
+#: data_registry/templates/search.html:115
 msgid "Remove data date range filter"
 msgstr "Удалить фильтр диапазона дат данных"
 
-#: data_registry/templates/search.html:122
+#: data_registry/templates/search.html:123
 msgid "Remove update frequency filter"
 msgstr "Удалить фильтр частоты обновления"
 
-#: data_registry/templates/search.html:131
+#: data_registry/templates/search.html:132
 msgid "Remove data availability filter"
 msgstr "Удалить фильтр доступности данных"
 
-#: data_registry/templates/search.html:136
+#: data_registry/templates/search.html:137
 #, python-format
 msgid "Showing all %(counter)s datasets"
 msgstr "Показаны все %(counter)sнаборов данных"
 
-#: data_registry/templates/search.html:202
+#: data_registry/templates/search.html:203
 msgid "See details"
 msgstr "Смотреть детали"
 
-#: data_registry/templates/search.html:215
-#: data_registry/templates/search.html:220
+#: data_registry/templates/search.html:216
+#: data_registry/templates/search.html:221
 msgid "Back to Top"
 msgstr "вернуться наверх"
 
