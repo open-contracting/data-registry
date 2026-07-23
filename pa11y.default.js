@@ -74,11 +74,7 @@ const ignore = strategy === "ignore" ? suppressions.flatMap((suppression) => sup
 module.exports = {
   defaults: {
     runners: ["htmlcs", "axe"],
-    // Cap any axe issue requiring manual review to warning, to allow pa11y to pass in CI.
-    // https://github.com/pa11y/pa11y#levelcapwhenneedsreview-string
     levelCapWhenNeedsReview: "warning",
-    // Cause pa11y to fail if any warnings are issued.
-    // https://github.com/pa11y/pa11y#includewarnings-boolean
     includeWarnings: includeWarnings,
     ...(hideElements.length ? { hideElements: hideElements.join(", ") } : {}),
     ...(ignore.length ? { ignore: ignore } : {}),
