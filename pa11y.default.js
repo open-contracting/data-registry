@@ -4,7 +4,7 @@ const includeWarnings = "PA11Y_INCLUDE_WARNINGS" in process.env;
 
 // pa11y supports hiding elements or ignoring rules - but not ignoring rules for specific elements.
 // So, in development, this configuration can be run using each strategy, to avoid shadowing issues.
-const strategy = process.env.PA11Y_STRATEGY || "hideElements";
+const strategy = process.env.PA11Y_STRATEGY;
 
 // Suppress false positive warnings.
 const suppressKnownWarnings = "PA11Y_SUPPRESS_KNOWN_WARNINGS" in process.env;
