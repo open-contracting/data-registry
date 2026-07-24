@@ -1,5 +1,5 @@
 import json
-import os.path
+from pathlib import Path
 from urllib.parse import quote, urlencode
 
 from django import template, urls
@@ -28,7 +28,7 @@ def catalog_str():
         get_language(),
         domain="djangojs",
         localedirs=[
-            os.path.join(apps.get_app_config("data_registry").path, "locale"),
+            Path(apps.get_app_config("data_registry").path) / "locale",
         ],
     )
     return mark_safe(json.dumps(catalog.get_catalog()))

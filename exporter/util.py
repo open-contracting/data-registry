@@ -1,5 +1,4 @@
 import logging
-import os
 import shutil
 from enum import StrEnum
 from pathlib import Path
@@ -165,9 +164,9 @@ class Export:
                 continue
             prefix = path.name.split(".", 1)[0]  # year, "full" or "undated"
             if prefix.isdigit():
-                files[suffix]["by_year"].append({"year": int(prefix), "size": os.path.getsize(path)})
+                files[suffix]["by_year"].append({"year": int(prefix), "size": path.stat().st_size})
             elif prefix in ("full", "undated"):
-                files[suffix][prefix] = os.path.getsize(path)
+                files[suffix][prefix] = path.stat().st_size
 
         return files
 

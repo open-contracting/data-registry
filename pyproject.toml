@@ -13,7 +13,6 @@ ignore = [
     "D1", "D205",
     "DTZ",
     "PLR2004",  # magic
-    "PTH",
     "S308",  # mark_safe
     "D200",  # https://github.com/astral-sh/ruff/issues/6269
 ]

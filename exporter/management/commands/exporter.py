@@ -83,7 +83,7 @@ def callback(state, channel, method, properties, input_message):
         if not records:
             break
 
-        with open(full_path, "a") as full:
+        with full_path.open("a") as full:
             files[full_path] = full
 
             for data_id, data, date in records:

@@ -1,6 +1,5 @@
 import gzip
 import logging
-import os
 import shutil
 import tarfile
 import tempfile
@@ -53,15 +52,15 @@ def callback(state, channel, method, properties, input_message):
 
 
 def process_file(job_id, file_path):
-    file_name = os.path.basename(file_path)
+    file_name = Path(file_path).name
     stem = file_name[:-9]  # remove .jsonl.gz
 
     export = Export(job_id, basename=f"{stem}.csv.tar.gz")
 
     csv_path = export.directory / f"{stem}.csv.tar.gz"
     xlsx_path = export.directory / f"{stem}.xlsx"
-    csv_exists = os.path.isfile(csv_path)
-    xlsx_exists = os.path.isfile(xlsx_path)
+    csv_exists = csv_path.is_file()
+    xlsx_exists = xlsx_path.is_file()
     csv = False
     xlsx = False
 

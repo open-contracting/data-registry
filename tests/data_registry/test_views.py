@@ -1,5 +1,5 @@
 import datetime
-import os.path
+from pathlib import Path
 from unittest.mock import PropertyMock, patch
 
 from django.test import Client, TestCase, override_settings
@@ -9,7 +9,7 @@ from data_registry import models
 
 @override_settings(
     STORAGES={"staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"}},
-    EXPORTER_DIR=os.path.join("tests", "fixtures"),
+    EXPORTER_DIR=Path("tests") / "fixtures",
 )
 class ViewsTests(TestCase):
     @classmethod
@@ -213,7 +213,7 @@ class ViewsTests(TestCase):
                         "X-Frame-Options": "DENY",
                     },
                 )
-                with open(os.path.join("tests", "fixtures", "99", f"2000.{suffix}"), "rb") as f:
+                with (Path("tests") / "fixtures" / "99" / f"2000.{suffix}").open("rb") as f:
                     self.assertEqual(b"".join(response.streaming_content), f.read())
 
     @override_settings(SCRAPYD={"url": "http://127.0.0.1", "project": "kingfisher"})
