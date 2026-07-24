@@ -162,8 +162,10 @@ class CollectTaskTests(TransactionTestCase):
             "log_categories": {
                 "error_logs": {
                     "details": [
-                        "2024-01-15 12:00:00 [scrapy.core.scraper] ERROR: "
-                        "kingfisher_scrapy.exceptions.MissingNextLinkError"
+                        (
+                            "2024-01-15 12:00:00 [scrapy.core.scraper] ERROR: "
+                            "kingfisher_scrapy.exceptions.MissingNextLinkError"
+                        )
                     ]
                 }
             },
@@ -295,8 +297,10 @@ class CollectTaskTests(TransactionTestCase):
                 "warning_logs": {
                     "details": [
                         "2024-01-15 12:00:05 [scrapy.core.scraper] WARNING: Got data loss in http://example.com",
-                        "[scrapy.middleware] WARNING: Disabled kingfisher_scrapy.extensions.DatabaseStore: "
-                        "DATABASE_URL is not set.",
+                        (
+                            "[scrapy.middleware] WARNING: Disabled kingfisher_scrapy.extensions.DatabaseStore: "
+                            "DATABASE_URL is not set."
+                        ),
                         "[yapw.clients] WARNING: Channel 1 was closed: ChannelClosedByClient: (200) 'Normal shutdown'",
                     ]
                 },

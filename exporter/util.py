@@ -50,10 +50,10 @@ def decorator(decode, callback, state, channel, method, properties, body):
 
     def errback(exception):
         if isinstance(exception, LockFileError):
-            logger.exception("Locked since %s, maybe caused by duplicate message %r, skipping", exception, body)
+            logger.exception("Locked since %s, maybe caused by duplicate message %r, skipping", exception, body)  # noqa: LOG004
             nack(state, channel, method.delivery_tag, requeue=False)
         else:
-            logger.exception("Unhandled exception when consuming %r, shutting down gracefully", body)
+            logger.exception("Unhandled exception when consuming %r, shutting down gracefully", body)  # noqa: LOG004
             add_callback_threadsafe(state.connection, state.interrupt)
 
     def finalback():
