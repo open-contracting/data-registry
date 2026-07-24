@@ -2,5 +2,5 @@
 coverage
 django-stubs
 mypy
-psycopg-binary
+psycopg[binary]
 types-requests
