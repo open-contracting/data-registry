@@ -14,7 +14,7 @@ class FilesTests(SimpleTestCase):
             for name in ("full.jsonl.gz", "undated.jsonl.gz", "2000.jsonl.gz", "2001.jsonl.gz"):
                 (job / name).write_bytes(b"x")
 
-            with override_settings(EXPORTER_DIR=directory, SPOONBILL_EXPORTER_DIR=directory):
+            with override_settings(EXPORTER_DIR=directory):
                 files = Export("99").files
 
             self.assertEqual(files["jsonl"]["full"], 1)
@@ -30,7 +30,7 @@ class FilesTests(SimpleTestCase):
             job.mkdir()
             (job / "full.jsonl.gz").write_bytes(b"x")
 
-            with override_settings(EXPORTER_DIR=directory, SPOONBILL_EXPORTER_DIR=directory):
+            with override_settings(EXPORTER_DIR=directory):
                 files = Export("99").files
 
             self.assertFalse(files["jsonl"]["undated"])

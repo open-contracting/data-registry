@@ -49,10 +49,6 @@ Backend
 
       env SCRAPYD_URL=https://USERNAME:PASSWORD@collect.kingfisher.open-contracting.org ./manage.py runserver
 
-   .. note::
-
-      To test integration with the production version of Spoonbill, you also need to set the ``SPOONBILL_API_USERNAME`` and ``SPOONBILL_API_PASSWORD`` environment variables.
-
 .. _django-shell:
 
 -  Open a Django shell:

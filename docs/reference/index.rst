@@ -46,15 +46,3 @@ KINGFISHER_PROCESS_DATABASE_URL
   The `connection string <https://github.com/kennethreitz/dj-database-url#url-schema>`__ for Kingfisher Process's database
 EXPORTER_DIR
   The directory to which the ``exporter`` app writes files
-
-Spoonbill integration
-~~~~~~~~~~~~~~~~~~~~~
-
-SPOONBILL_URL
-  The base URL of Spoonbill
-SPOONBILL_API_USERNAME
-  The username for `basic HTTP authentication <https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication#basic_authentication_scheme>`__
-SPOONBILL_API_PASSWORD
-  The password for basic HTTP authentication
-SPOONBILL_EXPORTER_DIR
-  The directory to which the ``exporter`` app writes files, from Spoonbill's perspective. This is relevant if this project or Spoonbill is running in a container.

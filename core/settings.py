@@ -322,16 +322,5 @@ EXPORTER_MAX_JSON_BYTES_TO_EXCEL = 1073741824  # 1 GB
 #   https://data.open-contracting.org (Apache)
 DOWNLOADS_URL = os.getenv("DOWNLOADS_URL", "")
 
-# The base URL of Spoonbill.
-SPOONBILL_URL = os.getenv("SPOONBILL_URL", "https://flatten.open-contracting.org")
-SPOONBILL_API_USERNAME = os.getenv("SPOONBILL_API_USERNAME")
-SPOONBILL_API_PASSWORD = os.getenv("SPOONBILL_API_PASSWORD")
-# This project sends absolute filepaths to Spoonbill. If this project is deployed using Docker, then the filepath
-# from within this project's container may differ from the filepath from within Spoonbill's container.
-#
-# In non-Docker environments, this environment variable can be unset, in which case `SPOONBILL_EXPORTER_DIR` will be
-# the same as `EXPORTER_DIR`.
-SPOONBILL_EXPORTER_DIR = os.getenv("SPOONBILL_EXPORTER_DIR", EXPORTER_DIR)
-
 # Serve STATIC_ROOT on the same port as runserver, to check a production build locally.
 SERVE_STATIC = os.getenv("SERVE_STATIC") == "True"
