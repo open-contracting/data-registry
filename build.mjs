@@ -28,6 +28,8 @@ const options = {
   plugins: [
     esbuildPluginBrowserslist(browserslist(), { printUnknownTargets: false }),
     sassPlugin({
+      quietDeps: true,
+      silenceDeprecations: ["import"],
       async transform(source) {
         const { css } = await postcss([autoprefixer]).process(source, { from: undefined });
         return css;

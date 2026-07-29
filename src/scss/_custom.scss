@@ -1,3 +1,5 @@
+@use "sass:map";
+
 // GT Eesti Pro Display has (plus Italic for each):
 // https://www.grillitype.com/typeface/gt-eesti
 // - UltraLight
@@ -102,9 +104,9 @@ $b-icon-animation-throb-duration: .75s;
 // https://getbootstrap.com/docs/5.2/utilities/colors/#sass
 $grays: (); // 0.2 KiB
 $colors: (); // 0.3 KiB
-$theme-colors: map-merge(map-remove($theme-colors, "danger"), ("white": $white)); // 2 KiB
-$grid-breakpoints: map-remove($grid-breakpoints, "xxl"); // 13 KiB
-$container-max-widths: map-remove($container-max-widths, "xxl"); // 0.1 KiB
+$theme-colors: map.merge(map.remove($theme-colors, "danger"), ("white": $white)); // 2 KiB
+$grid-breakpoints: map.remove($grid-breakpoints, "xxl"); // 13 KiB
+$container-max-widths: map.remove($container-max-widths, "xxl"); // 0.1 KiB
 $display-font-sizes: (); // 0.7 KiB
 
 // Adding the following has 0.4 KiB effect, but makes it hard to know which classes are available.
@@ -132,7 +134,7 @@ $display-font-sizes: (); // 0.7 KiB
 @import 'bootstrap/scss/utilities';
 
 // We remove unused directions for border, margin and padding. If confusing, restore them.
-$utilities: map-merge(
+$utilities: map.merge(
     $utilities,
     (
         // https://getbootstrap.com/docs/5.2/utilities/background/
@@ -152,8 +154,8 @@ $utilities: map-merge(
         // color
         "text-opacity": null,
         // https://getbootstrap.com/docs/5.2/utilities/display/
-        "display": map-merge( // 2 KiB
-            map-get($utilities, "display"),
+        "display": map.merge( // 2 KiB
+            map.get($utilities, "display"),
             (values: inline-block block inline-flex flex none)
         ),
         // https://getbootstrap.com/docs/5.2/utilities/flex/
