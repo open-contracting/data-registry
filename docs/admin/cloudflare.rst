@@ -16,7 +16,7 @@ The clearance is bound to the browser and IP that solved the challenge. So, you 
 
    .. code-block:: bash
 
-      ssh -D 1080 ocp29.open-contracting.org
+      ssh -D 1080 deployer@ocp29.open-contracting.org
 
 #. Launch a Chrome instance using this proxy server under an isolated profile. On macOS:
 
