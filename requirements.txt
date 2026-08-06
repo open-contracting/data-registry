@@ -113,6 +113,7 @@ typing-extensions==4.14.1
     # via
     #   -r requirements_base.txt
     #   dj-database-url
+    #   psycopg
 tzdata==2025.2
     # via
     #   -r requirements_base.txt
