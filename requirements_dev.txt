@@ -71,7 +71,6 @@ orjson==3.11.6
     # via
     #   -r requirements.txt
     #   flatterer
-    #   yapw
 packaging==24.0
     # via
     #   -r requirements.txt
@@ -96,6 +95,8 @@ psycopg==3.3.3
     #   -r requirements_dev.in
 psycopg-binary==3.3.3
     # via psycopg
+psycopg-c==3.3.3
+    # via -r requirements.txt
 ptyprocess==0.7.0
     # via
     #   -r requirements.txt
@@ -115,9 +116,7 @@ scrapyloganalyzer==0.0.5
 sentry-sdk==2.8.0
     # via -r requirements.txt
 setproctitle==1.2.2
-    # via
-    #   -r requirements.txt
-    #   gunicorn
+    # via -r requirements.txt
 six==1.16.0
     # via
     #   -r requirements.txt
@@ -138,7 +137,6 @@ typing-extensions==4.14.1
     #   django-stubs
     #   django-stubs-ext
     #   mypy
-    #   psycopg
 tzdata==2025.2
     # via
     #   -r requirements.txt
