@@ -6,5 +6,5 @@ class DataRegistryConfig(AppConfig):
     verbose_name = "Data registry"
 
     def ready(self):
-        # https://docs.djangoproject.com/en/5.2/topics/signals/
+        # https://docs.djangoproject.com/en/stable/topics/signals/
         from data_registry import signals  # noqa: F401, PLC0415
