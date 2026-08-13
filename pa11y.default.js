@@ -1,15 +1,15 @@
 const strategy = process.env.PA11Y_STRATEGY;
 const includeWarnings = "PA11Y_INCLUDE_WARNINGS" in process.env;
 const suppressKnownWarnings = "PA11Y_SUPPRESS_KNOWN_WARNINGS" in process.env;
-// Suppress false positive warnings that only occur against the live site.
-const suppressKnownWarningsLive = "PA11Y_SUPPRESS_KNOWN_WARNINGS_LIVE" in process.env;
 
-const knownErrors = {
-  // "This form does not contain a submit button."
-  // https://www.w3.org/WAI/WCAG21/Techniques/html/H32
-  rules: ["WCAG2AA.Principle3.Guideline3_2.3_2_2.H32.2"],
-  selectors: ["header form[method='post']"],
-};
+const knownErrors = [
+  {
+    // "This form does not contain a submit button."
+    // https://www.w3.org/WAI/WCAG21/Techniques/html/H32
+    rules: ["WCAG2AA.Principle3.Guideline3_2.3_2_2.H32.2"],
+    selectors: ["header form[method='post']"],
+  },
+];
 
 const knownWarnings = [
   {
@@ -30,14 +30,11 @@ const knownWarnings = [
     rules: ["WCAG2AA.Principle1.Guideline1_3.1_3_1.H85.2"],
     selectors: ["select#country-select"],
   },
-];
-
-const knownWarningsLive = [
   {
     // "Heading markup should be used if this content is intended as a heading."
     // https://www.w3.org/WAI/WCAG21/Techniques/html/H42
     rules: ["WCAG2AA.Principle1.Guideline1_3.1_3_1.H42"],
-    selectors: ["#license .prose"],
+    selectors: ["#license .prose"], // license description on detail page
   },
   {
     // "If this element contains a navigation section, it is recommended that it be marked up as a list."
@@ -47,28 +44,38 @@ const knownWarningsLive = [
       ".clickable .prose", // dataset description in search result
       "h1+.prose", // dataset description on detail page
       "#description .prose", // long description on detail page
-      ".bg-primary-subtle .prose", // quality summary on detail page
-      "#access .prose",
+      ".bg-primary-subtle .prose", // data availability on detail page
+      "#access .prose", // decompression instructions on detail page
     ],
   },
 ];
 
-const suppressions = [
-  knownErrors,
-  ...(includeWarnings
-    ? [...(suppressKnownWarnings ? knownWarnings : []), ...(suppressKnownWarningsLive ? knownWarningsLive : [])]
-    : []),
-];
+function createDefaults(extraKnownWarnings = []) {
+  const suppressions = [
+    ...knownErrors,
+    ...(includeWarnings && suppressKnownWarnings ? [...knownWarnings, ...extraKnownWarnings] : []),
+  ];
 
-const hideElements = strategy === "hideElements" ? suppressions.flatMap((suppression) => suppression.selectors) : [];
-const ignore = strategy === "ignore" ? suppressions.flatMap((suppression) => suppression.rules) : [];
+  const withoutSelectors = suppressions.filter((suppression) => !suppression.selectors.length);
+  const withSelectors = suppressions.filter((suppression) => suppression.selectors.length);
 
-module.exports = {
-  defaults: {
+  const hideElements =
+    strategy === "hideElements" ? withSelectors.flatMap((suppression) => suppression.selectors) : [];
+  const ignore = [
+    ...withoutSelectors.flatMap((suppression) => suppression.rules),
+    ...(strategy === "ignore" ? withSelectors.flatMap((suppression) => suppression.rules) : []),
+  ];
+
+  return {
     runners: ["htmlcs", "axe"],
     levelCapWhenNeedsReview: "warning",
     includeWarnings: includeWarnings,
     ...(hideElements.length ? { hideElements: hideElements.join(", ") } : {}),
     ...(ignore.length ? { ignore: ignore } : {}),
-  },
+  };
+}
+
+module.exports = {
+  createDefaults,
+  defaults: createDefaults(),
 };

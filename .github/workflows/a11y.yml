@@ -33,11 +33,17 @@ jobs:
           env DJANGO_ENV=production python manage.py collectstatic --noinput -v2
           python manage.py migrate
           python manage.py loaddata tests/fixtures/a11y.json
+          # The exports of the active job of the "portugal" publication, to fill in its file lists.
+          mkdir -p data/exporter/1
+          for name in full.jsonl.gz 2001.jsonl.gz undated.jsonl.gz full.csv.tar.gz; do
+            head -c 1024 /dev/zero > data/exporter/1/$name
+          done
       - name: Serve
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres
           DJANGO_ENV: production
           SERVE_STATIC: 'True'
+          EXPORTER_DIR: data/exporter
         run: |
           python manage.py runserver &
           sleep 5
