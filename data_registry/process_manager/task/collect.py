@@ -172,7 +172,7 @@ class Collect(TaskManager):
             if not scrapy_log.is_finished():
                 logs.append(f"crawl finish reason: {scrapy_log.logparser['finish_reason']}")
             if scrapy_log.error_rate > 0.01:  # 1%
-                logs.append(f"crawl error rate: {scrapy_log.error_rate}")
+                logs.append(f"crawl error rate: {scrapy_log.error_rate:.2%}")
 
             for key, level in (
                 # For administrators to review "Dropped: Duplicate File" messages.
