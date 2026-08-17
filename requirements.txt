@@ -28,7 +28,7 @@ django-modeltranslation==0.19.15
     # via -r requirements_base.txt
 flatterer==0.25.0
     # via -r requirements_base.txt
-gunicorn[setproctitle]==26.0.0
+gunicorn==26.0.0
     # via -r requirements_base.txt
 idna==3.15
     # via
@@ -58,7 +58,6 @@ orjson==3.11.6
     # via
     #   -r requirements_base.txt
     #   flatterer
-    #   yapw
 packaging==24.0
     # via
     #   -r requirements_base.txt
@@ -75,7 +74,7 @@ pika==1.3.2
     # via
     #   -r requirements_base.txt
     #   yapw
-psycopg[c]==3.3.3
+psycopg==3.3.3
     # via
     #   -r requirements.in
     #   -r requirements_base.txt
@@ -100,15 +99,13 @@ scrapyloganalyzer==0.0.5
 sentry-sdk==2.8.0
     # via -r requirements_base.txt
 setproctitle==1.2.2
-    # via
-    #   -r requirements_base.txt
-    #   gunicorn
+    # via -r requirements_base.txt
 six==1.16.0
     # via
     #   -r requirements_base.txt
     #   logparser
     #   python-dateutil
-sqlparse==0.6.0
+sqlparse==0.5.5
     # via
     #   -r requirements_base.txt
     #   django
@@ -126,5 +123,5 @@ urllib3==2.7.0
     #   -r requirements_base.txt
     #   requests
     #   sentry-sdk
-yapw[perf]==0.1.4
+yapw==0.1.4
     # via -r requirements_base.txt
