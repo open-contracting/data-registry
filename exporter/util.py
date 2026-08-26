@@ -49,10 +49,15 @@ def decorator(decode, callback, state, channel, method, properties, body):
 
     def errback(exception):
         if isinstance(exception, LockFileError):
-            logger.exception("Locked since %s, maybe caused by duplicate message %r, skipping", exception, body)  # noqa: LOG004
+            logger.error(
+                "Locked since %s, maybe caused by duplicate message %r, discarding message",
+                exception,  # the exception message is the lock file's last modification time
+                body,
+                exc_info=exception,
+            )
             nack(state, channel, method.delivery_tag, requeue=False)
         else:
-            logger.exception("Unhandled exception when consuming %r, shutting down gracefully", body)  # noqa: LOG004
+            logger.error("Unhandled exception when consuming %r, shutting down gracefully", body, exc_info=exception)
             add_callback_threadsafe(state.connection, state.interrupt)
 
     def finalback():
