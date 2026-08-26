@@ -47,17 +47,12 @@ def decorator(decode, callback, state, channel, method, properties, body):
     exceptions, assume that the same message was delivered twice, log an error, and nack the message.
     """
 
-    def errback(exception):
-        if isinstance(exception, LockFileError):
-            logger.error(
-                "Locked since %s, maybe caused by duplicate message %r, discarding message",
-                exception,  # the exception message is the lock file's last modification time
-                body,
-                exc_info=exception,
-            )
+    def errback(exc):
+        if isinstance(exc, LockFileError):  # the exception message is the lock file's last modification time
+            logger.error("Locked since %s, maybe caused by duplicate message %r, discarding", exc, body, exc_info=exc)
             nack(state, channel, method.delivery_tag, requeue=False)
         else:
-            logger.error("Unhandled exception when consuming %r, shutting down gracefully", body, exc_info=exception)
+            logger.error("Unhandled exception when consuming %r, shutting down gracefully", body, exc_info=exc)
             add_callback_threadsafe(state.connection, state.interrupt)
 
     def finalback():
