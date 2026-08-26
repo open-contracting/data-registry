@@ -123,5 +123,5 @@ urllib3==2.7.0
     #   -r requirements_base.txt
     #   requests
     #   sentry-sdk
-yapw==0.2.3
+yapw==0.2.2
     # via -r requirements_base.txt
