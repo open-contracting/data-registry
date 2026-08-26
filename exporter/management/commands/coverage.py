@@ -8,14 +8,14 @@ from ocdscardinal import ocdscardinal
 from yapw.methods import ack
 
 from data_registry.models import Job
-from exporter.util import Export, consume, decorator
+from exporter.util import Export, close_old_connections_and_halt, consume
 
 
 class Command(BaseCommand):
     help = """Calculate the field coverage of JSON files."""
 
     def handle(self, *args, **options):
-        consume(on_message_callback=callback, queue="coverage_init", decorator=decorator)
+        consume(on_message_callback=callback, queue="coverage_init", decorator=close_old_connections_and_halt)
 
 
 def filter_json_paths_by_suffix(json_paths, suffix):

@@ -10,7 +10,8 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 from yapw.methods import ack
 
-from exporter.util import Export, consume, decorator, publish
+from data_registry.exceptions import LockFileError
+from exporter.util import Export, close_old_connections_and_halt, consume, publish
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +34,7 @@ class Command(BaseCommand):
             # https://stackoverflow.com/q/70006802/244258
             # https://www.rabbitmq.com/docs/heartbeats#disabling
             rabbit_params={"heartbeat": 1800},  # 30 mins
-            decorator=decorator,
+            decorator=close_old_connections_and_halt,
         )
 
 
@@ -68,7 +69,14 @@ def process_file(job_id, file_path):
         logger.debug("Already done job_id=%s file_path=%s", job_id, file_path)
         return
 
-    export.lock()
+    try:
+        export.lock()
+    except LockFileError as e:
+        logger.exception(
+            "Locked since %s, maybe a duplicate for job_id=%s file_path=%s", e.modified, job_id, file_path
+        )
+        # The message was ack'd, so there is nothing to nack.
+        return
 
     try:
         with tempfile.TemporaryDirectory() as tmpdirname:

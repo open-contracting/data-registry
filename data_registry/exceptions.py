@@ -15,4 +15,12 @@ class RecoverableError(DataRegistryError):
 
 
 class LockFileError(DataRegistryError):
-    """Raised if a lock file exists."""
+    """
+    Raised if a lock file exists.
+
+    :param modified: the lock file's last modification time
+    """
+
+    def __init__(self, modified: float):
+        super().__init__(modified)
+        self.modified = modified

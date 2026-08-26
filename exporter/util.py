@@ -1,14 +1,14 @@
 import logging
 import shutil
 from enum import StrEnum
+from functools import partial
 from pathlib import Path
 from urllib.parse import parse_qs, urlencode, urlsplit
 
 from django.conf import settings
-from django.db import connections
+from django.db import close_old_connections
 from yapw.clients import AsyncConsumer, Blocking
-from yapw.decorators import decorate
-from yapw.methods import add_callback_threadsafe, nack
+from yapw.decorators import halt
 
 from data_registry.exceptions import LockFileError
 
@@ -39,27 +39,8 @@ def consume(*args, rabbit_params=None, **kwargs):
     client.start()
 
 
-def decorator(decode, callback, state, channel, method, properties, body):
-    """
-    Close the database connections opened by the callback, before returning.
-
-    If the callback raises an exception, shut down the client in the main thread, without acknowledgment. For some
-    exceptions, assume that the same message was delivered twice, log an error, and nack the message.
-    """
-
-    def errback(exc):
-        if isinstance(exc, LockFileError):  # the exception message is the lock file's last modification time
-            logger.error("Locked since %s, maybe caused by duplicate message %r, discarding", exc, body, exc_info=exc)
-            nack(state, channel, method.delivery_tag, requeue=False)
-        else:
-            logger.error("Unhandled exception when consuming %r, shutting down gracefully", body, exc_info=exc)
-            add_callback_threadsafe(state.connection, state.interrupt)
-
-    def finalback():
-        for conn in connections.all():
-            conn.close()
-
-    decorate(decode, callback, state, channel, method, properties, body, errback, finalback)
+# Django closes old connections between requests. A consumer similarly needs to close old connections between messages.
+close_old_connections_and_halt = partial(halt, finalback=close_old_connections)
 
 
 class TaskStatus(StrEnum):

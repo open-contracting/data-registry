@@ -6,9 +6,10 @@ from datetime import datetime
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.db import connections
-from yapw.methods import ack
+from yapw.methods import ack, nack
 
-from exporter.util import Export, consume, decorator
+from data_registry.exceptions import LockFileError
+from exporter.util import Export, close_old_connections_and_halt, consume
 
 logger = logging.getLogger(__name__)
 
@@ -21,7 +22,7 @@ class Command(BaseCommand):
     """
 
     def handle(self, *args, **options):
-        consume(on_message_callback=callback, queue="exporter_init", decorator=decorator)
+        consume(on_message_callback=callback, queue="exporter_init", decorator=close_old_connections_and_halt)
 
 
 def callback(state, channel, method, properties, input_message):
@@ -40,7 +41,14 @@ def callback(state, channel, method, properties, input_message):
             if path.is_file():
                 path.unlink()
 
-    export.lock()
+    try:
+        export.lock()
+    except LockFileError as e:
+        logger.exception(
+            "Locked since %s, maybe caused by duplicate message %r, discarding", e.modified, input_message
+        )
+        nack(state, channel, method.delivery_tag, requeue=False)
+        return
 
     minimum_data_id = 0
     page = 1
