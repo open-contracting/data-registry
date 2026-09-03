@@ -6,7 +6,7 @@ from datetime import datetime
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.db import connections
-from yapw.methods import ack, nack
+from yapw.methods import ack
 
 from data_registry.exceptions import LockFileError
 from exporter.util import Export, close_old_connections_and_halt, consume
@@ -47,7 +47,7 @@ def callback(state, channel, method, properties, input_message):
         logger.exception(
             "Locked since %s, maybe caused by duplicate message %r, discarding", e.modified, input_message
         )
-        nack(state, channel, method.delivery_tag, requeue=False)
+        ack(state, channel, method.delivery_tag)  # ack: site admins can regenerate the message via Django admin
         return
 
     minimum_data_id = 0
