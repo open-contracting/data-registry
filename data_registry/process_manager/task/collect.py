@@ -21,7 +21,7 @@ PROJECT = settings.SCRAPYD["project"]
 PROCESS_ID = re.compile(r"Created collection (.+) in Kingfisher Process \(([^\)]+)\)")
 
 IGNORE_WARNINGS = (
-    "[scrapy.middleware] WARNING: Disabled kingfisher_scrapy.extensions.DatabaseStore: DATABASE_URL is not set.",
+    "[scrapy.middleware] WARNING: Disabled <class 'kingfisher_scrapy.extensions.database_store.DatabaseStore'>: ",
     "[yapw.clients] WARNING: Channel 1 was closed: ChannelClosedByClient: (200) 'Normal shutdown'",
 )
 # See LOG_CATEGORIES_PATTERN_DICT in https://github.com/my8100/logparser
