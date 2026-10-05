@@ -142,7 +142,7 @@ tzdata==2025.2
     # via
     #   -r requirements.txt
     #   pandas
-urllib3==2.7.0
+urllib3==2.8.0
     # via
     #   -r requirements.txt
     #   requests
