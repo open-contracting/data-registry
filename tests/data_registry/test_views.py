@@ -1,4 +1,4 @@
-import datetime
+import datetime as dt
 from pathlib import Path
 from unittest.mock import PropertyMock, patch
 
@@ -31,14 +31,14 @@ class ViewsTests(TestCase):
             # Job logic
             source_id="paraguay_dncp_records",
             retrieval_frequency=models.Collection.RetrievalFrequency.MONTHLY,
-            last_retrieved=datetime.date(2001, 2, 3),
+            last_retrieved=dt.date(2001, 2, 3),
             # Visibility logic
             public=True,
         )
         cls.job = cls.collection1.active_job = cls.collection1.job_set.create(
             pk=99,  # to match tests/fixtures directory
-            date_from=datetime.date(2010, 2, 1),
-            date_to=datetime.date(2023, 9, 30),
+            date_from=dt.date(2010, 2, 1),
+            date_to=dt.date(2023, 9, 30),
             coverage={"": 25142, "/": 25142, "/id": 25142, "/tag": 25142, "/date": 25142, "/ocid": 25142},
         )
         cls.collection1.save()
@@ -60,7 +60,7 @@ class ViewsTests(TestCase):
             # Job logic
             source_id="canada_buyandsell",
             retrieval_frequency=models.Collection.RetrievalFrequency.MONTHLY,
-            last_retrieved=datetime.date(2001, 2, 3),
+            last_retrieved=dt.date(2001, 2, 3),
             # Visibility logic
             public=True,
         )

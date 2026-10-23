@@ -1,4 +1,4 @@
-import datetime
+import datetime as dt
 import logging
 
 from django.conf import settings
@@ -16,8 +16,8 @@ from data_registry.process_manager.util import TaskManager
 
 logger = logging.getLogger(__name__)
 
-FLATTENER_EXECUTION_LIMIT = datetime.timedelta(days=1)
-UNSUCCESSFUL_JOB_RETENTION = datetime.timedelta(days=180)
+FLATTENER_EXECUTION_LIMIT = dt.timedelta(days=1)
+UNSUCCESSFUL_JOB_RETENTION = dt.timedelta(days=180)
 
 
 def get_task_manager(task: models.Task) -> TaskManager:
