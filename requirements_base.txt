@@ -2,7 +2,7 @@
 #    uv pip compile requirements_base.in -o requirements_base.txt
 asgiref==3.11.1
     # via django
-certifi==2026.10.19
+certifi==2026.7.22
     # via
     #   requests
     #   sentry-sdk
@@ -21,7 +21,7 @@ django-modeltranslation==0.19.15
     # via -r requirements_base.in
 flatterer==0.25.0
     # via -r requirements_base.in
-gunicorn[setproctitle]==26.0.0
+gunicorn==26.0.0
     # via -r requirements_base.in
 idna==3.15
     # via requests
@@ -81,5 +81,5 @@ urllib3==2.8.0
     # via
     #   requests
     #   sentry-sdk
-yapw[perf]==0.2.3
+yapw==0.2.3
     # via -r requirements_base.in
