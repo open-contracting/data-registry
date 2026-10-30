@@ -1,4 +1,4 @@
-FROM nikolaik/python-nodejs:python3.13-nodejs22 AS build-stage
+FROM nikolaik/python-nodejs:python3.14-nodejs22 AS build-stage
 
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
@@ -18,7 +18,7 @@ ENV DJANGO_ENV=production
 RUN node build.mjs
 RUN python manage.py collectstatic --noinput -v2
 
-FROM python:3.13
+FROM python:3.14
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         gettext \

@@ -104,7 +104,7 @@ def process_file(job_id, file_path):
                 with tarfile.open(csv_path, "w:gz") as tar:
                     tar.add(outdir / "csv", arcname=infile.stem)  # remove .jsonl
             if xlsx and "xlsx" in output:
-                shutil.move(output["xlsx"], xlsx_path)
+                Path(output["xlsx"]).move(xlsx_path)
     # EOFError: Compressed file ended before the end-of-stream marker was reached
     # FileNotFoundError: https://github.com/open-contracting/data-registry/issues/254
     except (EOFError, FileNotFoundError) as e:
