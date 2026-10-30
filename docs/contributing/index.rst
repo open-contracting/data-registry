@@ -9,7 +9,7 @@ Setup
 -----
 
 #. Install PostgreSQL and RabbitMQ
-#. Create a Python 3.11 virtual environment
+#. Create a Python 3.13 virtual environment
 #. Install development dependencies:
 
    .. code-block:: bash
