@@ -52,7 +52,7 @@ numpy==2.5.4
     # via
     #   -r requirements_base.txt
     #   pandas
-ocdscardinal==0.0.7
+ocdscardinal==0.0.8
     # via -r requirements_base.txt
 orjson==3.11.6
     # via

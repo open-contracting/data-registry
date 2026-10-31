@@ -35,7 +35,7 @@ mdurl==0.1.2
     # via markdown-it-py
 numpy==2.5.4
     # via pandas
-ocdscardinal==0.0.7
+ocdscardinal==0.0.8
     # via -r requirements_base.in
 orjson==3.11.6
     # via
