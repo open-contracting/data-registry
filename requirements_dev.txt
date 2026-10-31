@@ -148,5 +148,5 @@ urllib3==2.8.0
     #   requests
     #   sentry-sdk
     #   types-requests
-yapw==0.2.3
+yapw==0.3.0
     # via -r requirements.txt
