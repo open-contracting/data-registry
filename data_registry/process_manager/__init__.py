@@ -1,5 +1,6 @@
 import datetime as dt
 import logging
+from typing import TYPE_CHECKING
 
 from django.conf import settings
 from django.db import transaction
@@ -12,7 +13,9 @@ from data_registry.process_manager.task.coverage import Coverage
 from data_registry.process_manager.task.exporter import Exporter
 from data_registry.process_manager.task.flattener import Flattener
 from data_registry.process_manager.task.process import Process
-from data_registry.process_manager.util import TaskManager
+
+if TYPE_CHECKING:
+    from data_registry.process_manager.util import TaskManager
 
 logger = logging.getLogger(__name__)
 
