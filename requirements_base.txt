@@ -53,9 +53,9 @@ psycopg==3.3.3
     # via -r requirements_base.in
 ptyprocess==0.7.0
     # via pexpect
-python-dateutil==2.8.2
+python-dateutil==3.0.0
     # via pandas
-pytz==2021.1
+pytz==2026.5
     # via pandas
 requests==2.33.0
     # via -r requirements_base.in
@@ -74,7 +74,9 @@ sqlparse==0.6.0
 typing-extensions==4.14.1
     # via dj-database-url
 tzdata==2025.2
-    # via pandas
+    # via
+    #   pandas
+    #   python-dateutil
 urllib3==2.8.0
     # via
     #   requests

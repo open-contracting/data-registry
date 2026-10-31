@@ -101,11 +101,11 @@ ptyprocess==0.7.0
     # via
     #   -r requirements.txt
     #   pexpect
-python-dateutil==2.8.2
+python-dateutil==3.0.0
     # via
     #   -r requirements.txt
     #   pandas
-pytz==2021.1
+pytz==2026.5
     # via
     #   -r requirements.txt
     #   pandas
@@ -141,6 +141,7 @@ tzdata==2025.2
     # via
     #   -r requirements.txt
     #   pandas
+    #   python-dateutil
 urllib3==2.8.0
     # via
     #   -r requirements.txt
