@@ -38,14 +38,14 @@ class CollectionTests(TransactionTestCase):
 
         collection.job_set.create(status=Job.Status.PLANNED, start=timezone.now() - timedelta(days=60))
 
-        self.assertFalse(collection.is_out_of_date())
+        self.assertTrue(collection.is_out_of_date())
 
     def test_is_out_of_date_incomplete_running(self):
         collection = Collection.objects.create(title="test", retrieval_frequency=MONTHLY)
 
         collection.job_set.create(status=Job.Status.RUNNING, start=timezone.now() - timedelta(days=60))
 
-        self.assertFalse(collection.is_out_of_date())
+        self.assertTrue(collection.is_out_of_date())
 
     def test_is_out_of_date_unsuccessful_less_than_one_week(self):
         collection = Collection.objects.create(title="test", retrieval_frequency=MONTHLY)

@@ -1,12 +1,9 @@
-import logging
 from datetime import date, timedelta
 
 from django.db import models
 from django.db.models import Q
 from django.db.models.functions import Now
 from django.utils.translation import gettext_lazy as _
-
-logger = logging.getLogger(__name__)
 
 
 def format_datetime(dt):
@@ -322,6 +319,9 @@ class Collection(models.Model):
         db_index=True,
         help_text="Additional Scrapy settings to send when scheduling crawls.",
     )
+    last_incomplete_warning = models.DateField(
+        blank=True, null=True, editable=False, help_text="The date of the most recent warning about incomplete jobs."
+    )
 
     # Visibility logic
     no_data_rationale = models.TextField(
@@ -374,9 +374,9 @@ class Collection(models.Model):
         """
         Return whether the publication is out-of-date.
 
-        A publication is out-of-date if it isn't frozen, has a retrieval frequency other than "never", has no
-        incomplete jobs, and either has never been scheduled or was last scheduled longer ago than the retrieval
-        frequency. If the most recent job is unsuccessful, the minimum retrieval frequency is used, instead.
+        A publication is out-of-date if it isn't frozen, has a retrieval frequency other than "never", and either has
+        never been scheduled or was last scheduled longer ago than the retrieval frequency. If the most recent job is
+        unsuccessful, the minimum retrieval frequency is used, instead.
         """
         if self.frozen:
             return False
@@ -412,18 +412,7 @@ class Collection(models.Model):
             case _:
                 raise NotImplementedError
 
-        out_of_date = date.today() >= (most_recent_job.start + timedelta(days=days)).date()
-
-        # Avoid a query if not out-of-date.
-        if not out_of_date:
-            return False
-
-        # It has an incomplete job (likely the most recent job). Don't run concurrent jobs for a publication.
-        if incomplete_jobs := list(self.job_set.incomplete()):
-            logger.warning("%s has incomplete job(s): %s", self, incomplete_jobs)
-            return False
-
-        return out_of_date
+        return date.today() >= (most_recent_job.start + timedelta(days=days)).date()
 
 
 class SettingsBundle(models.Model):

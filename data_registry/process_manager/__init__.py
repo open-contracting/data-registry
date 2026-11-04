@@ -92,7 +92,8 @@ def delete_older_jobs(collection: models.Collection, job: models.Job, *, dry_run
 
 def process(collection: models.Collection, *, dry_run: bool = False) -> None:
     """
-    If the collection is :meth:`out-of-date<data_registry.models.Collection.is_out_of_date>`, create a job.
+    If the collection is :meth:`out-of-date<data_registry.models.Collection.is_out_of_date>` and has no incomplete
+    jobs, create a job. If it is out-of-date but has incomplete jobs, issue a warning (once per day).
 
     For each of the collection's incomplete jobs:
 
@@ -121,7 +122,15 @@ def process(collection: models.Collection, *, dry_run: bool = False) -> None:
     country = collection.country
 
     if collection.is_out_of_date():
-        if dry_run:
+        # Don't run concurrent jobs for a publication.
+        if incomplete_jobs := list(collection.job_set.incomplete()):
+            today = dt.date.today()
+            if collection.last_incomplete_warning != today:
+                logger.warning("%s has incomplete job(s): %s", collection, incomplete_jobs)
+                if not dry_run:
+                    collection.last_incomplete_warning = today
+                    collection.save(update_fields=["last_incomplete_warning"])
+        elif dry_run:
             logger.info("DRY RUN: Would create job for out-of-date collection %s: %s", country, collection)
         else:
             collection.job_set.create()  # see signals.py

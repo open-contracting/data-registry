@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import date, timedelta
 from unittest.mock import MagicMock, patch
 
 from django.test import TransactionTestCase, override_settings
@@ -53,6 +53,33 @@ class ProcessTests(TransactionTestCase):
             self.assertEqual("OK", task.result)
             self.assertFalse(collection.is_out_of_date())
             self.assertFalse(collection.job_set.incomplete())
+
+    @override_settings(JOB_TASKS_PLAN=["test"])
+    def test_incomplete_jobs_warning(self):
+        collection = Collection.objects.get(pk=1)
+        collection.job_set.create(status=Job.Status.RUNNING, start=now() - timedelta(days=60))
+
+        with patch("data_registry.process_manager.get_task_manager") as mock_process:
+            mock_process.return_value.get_status.return_value = (Task.Status.RUNNING, None)
+
+            with self.assertLogs("data_registry.process_manager", level="WARNING") as cm:
+                process(collection, dry_run=True)
+                process(Collection.objects.get(pk=1), dry_run=True)
+
+            self.assertEqual(len(cm.records), 2)  # dry run doesn't record the warning
+
+            with self.assertLogs("data_registry.process_manager", level="WARNING") as cm:
+                process(collection)
+            with self.assertNoLogs("data_registry.process_manager", level="WARNING"):
+                process(Collection.objects.get(pk=1))
+
+            self.assertEqual(len(cm.records), 1)
+            self.assertEqual(collection.job_set.count(), 1)
+
+            Collection.objects.filter(pk=1).update(last_incomplete_warning=date.today() - timedelta(days=1))
+
+            with self.assertLogs("data_registry.process_manager", level="WARNING"):
+                process(Collection.objects.get(pk=1))
 
     @override_settings(JOB_TASKS_PLAN=["test"])
     def test_delete_jobs(self):
