@@ -170,6 +170,8 @@ class Collection(models.Model):
         OC = "OC", _("Oceania")
 
     class RetrievalFrequency(models.TextChoices):
+        #: Daily
+        DAILY = "DAILY", _("Daily")
         #: Weekly
         WEEKLY = "WEEKLY", _("Weekly")
         #: Every 2 weeks
@@ -376,7 +378,7 @@ class Collection(models.Model):
 
         A publication is out-of-date if it isn't frozen, has a retrieval frequency other than "never", and either has
         never been scheduled or was last scheduled longer ago than the retrieval frequency. If the most recent job is
-        unsuccessful, the minimum retrieval frequency is used, instead.
+        unsuccessful, a weekly retrieval frequency is used, instead, unless the retrieval frequency is daily.
         """
         if self.frozen:
             return False
@@ -395,10 +397,13 @@ class Collection(models.Model):
         if not most_recent_job.start:
             return False
 
-        # If the most recent job is unsuccessful, use the minimum retrieval frequency.
-        frequency = self.RetrievalFrequency.WEEKLY if most_recent_job.is_unsuccessful() else self.retrieval_frequency
+        frequency = self.retrieval_frequency
+        if most_recent_job.is_unsuccessful() and frequency != self.RetrievalFrequency.DAILY:
+            frequency = self.RetrievalFrequency.WEEKLY
 
         match frequency:
+            case self.RetrievalFrequency.DAILY:
+                days = 1
             case self.RetrievalFrequency.WEEKLY:
                 days = 7
             case self.RetrievalFrequency.BIWEEKLY:

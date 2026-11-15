@@ -8,6 +8,7 @@ from django.utils import timezone
 from data_registry.models import Collection, Job, Task
 from tests import TestTask
 
+DAILY = Collection.RetrievalFrequency.DAILY
 MONTHLY = Collection.RetrievalFrequency.MONTHLY
 
 
@@ -62,6 +63,18 @@ class CollectionTests(TransactionTestCase):
         job.task_set.create(status=Task.Status.COMPLETED, result=Task.Result.FAILED)
 
         self.assertTrue(collection.is_out_of_date())
+
+    def test_is_out_of_date_daily(self):
+        for result in (Task.Result.OK, Task.Result.FAILED):
+            for days, expected in ((0, False), (1, True)):
+                with self.subTest(result=result, days=days):
+                    collection = Collection.objects.create(title="test", retrieval_frequency=DAILY)
+
+                    start = timezone.now() - timedelta(days=days)
+                    job = collection.job_set.create(status=Job.Status.COMPLETED, start=start)
+                    job.task_set.create(status=Task.Status.COMPLETED, result=result)
+
+                    self.assertEqual(collection.is_out_of_date(), expected)
 
     def test_is_out_of_date_successful_less_than_frequency(self):
         collection = Collection.objects.create(title="test", retrieval_frequency=MONTHLY)
