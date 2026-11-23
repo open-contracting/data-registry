@@ -119,7 +119,7 @@ window.catalog = JSON.parse('{% cache None catalog LANGUAGE_CODE %}{% catalog_st
                 </a>
             </dt>
             <dd class="text-break"><a href="{{ collection.source_url }}" target="_blank">{{ collection.source_url }}</a></dd>
-            <dt>{% translate "License:" %}</dt>
+            <dt>{% translate "Publisher's license:" %}</dt>
             <dd class="text-break">
 {% if collection.license_custom %}
                 <a href="{{ collection.license_custom.url }}" target="_blank" class="d-block">{{ collection.license_custom.name }}</a>
