@@ -126,8 +126,21 @@ window.catalog = JSON.parse('{% cache None catalog LANGUAGE_CODE %}{% catalog_st
                 <div class="mt-2 mb-n3 ps-3 border-start small toggleable" id="license" data-show-more="{% translate "See permissions and conditions" %}" data-show-less="{% translate "Show less" %}">
                     {{ collection.license_custom.description|markdownify }}
                 </div>
+{% elif job.license %}
+                {{ job.license|urlize }}
 {% else %}
-                {{ job.license|urlize|default:"-" }}
+                <p class="mb-2">
+                    {% blocktranslate trimmed %}
+                        The publisher has not declared a license. <a href="https://theodi.org/insights/guides/reusers-guide-to-open-data-licensing/" target="_blank">Without one, you cannot assume permission to reuse this dataset</a>. What the law allows by default <a href="https://opendefinition.org/guide/data/" target="_blank">varies by jurisdiction</a>.
+                    {% endblocktranslate %}
+                </p>
+                <p class="mb-0">
+{% if collection.publication_policy or job.publication_policy %}
+                    {% translate "Check the publication policy for terms of use, or contact the publisher to ask what reuse is permitted." %}
+{% else %}
+                    {% translate "Contact the publisher to ask what reuse is permitted." %}
+{% endif %}
+                </p>
 {% endif %}
             </dd>
             <dt>{% translate "Publication policy:" %}</dt>
