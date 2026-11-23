@@ -245,7 +245,7 @@ msgstr "Информация о получении данных"
 
 #: templates/detail.html:122
 msgid "Publisher's license:"
-msgstr ""
+msgstr "Лицензия издателя:"
 
 #: templates/detail.html:126
 msgid "See permissions and conditions"
@@ -260,16 +260,24 @@ msgid ""
 "opendefinition.org/guide/data/\" target=\"_blank\">varies by jurisdiction</"
 "a>."
 msgstr ""
+"Издатель не указал лицензию. <a href=\"https://theodi.org/insights/guides/"
+"reusers-guide-to-open-data-licensing/\" target=\"_blank\">Без неё нельзя "
+"считать, что у вас есть разрешение на повторное использование этого набора "
+"данных</a>. То, что закон разрешает по умолчанию, <a href=\"https://"
+"opendefinition.org/guide/data/\" target=\"_blank\">зависит от юрисдикции</a>."
 
 #: templates/detail.html:139
 msgid ""
 "Check the publication policy for terms of use, or contact the publisher to "
 "ask what reuse is permitted."
 msgstr ""
+"Ознакомьтесь с политикой публикации, чтобы узнать условия использования, или "
+"свяжитесь с издателем, чтобы узнать, какое повторное использование разрешено."
 
 #: templates/detail.html:141
 msgid "Contact the publisher to ask what reuse is permitted."
 msgstr ""
+"Свяжитесь с издателем, чтобы узнать, какое повторное использование разрешено."
 
 #: templates/detail.html:146
 msgid "Publication policy:"
@@ -570,10 +578,6 @@ msgid "Connect with us:"
 msgstr "Связаться с нами:"
 
 #: templates/includes/footer.html:126
-#, fuzzy
-#| msgid ""
-#| "This work by the Open Contracting Partnership, unless otherwise noted, is "
-#| "licensed under a Creative Commons Attribution 4.0 International License."
 msgid ""
 "This work by the Open Contracting Partnership, unless otherwise noted, is "
 "licensed under a Creative Commons Attribution 4.0 International License. "
@@ -581,7 +585,9 @@ msgid ""
 "publishers' terms."
 msgstr ""
 "Эта работа Open Contracting Partnership, если не указано иное, находится под "
-"лицензией Creative Commons Attribution 4.0 International License."
+"лицензией Creative Commons Attribution 4.0 International License. Эта "
+"лицензия не распространяется на данные OCDS, которые регулируются условиями "
+"издателей."
 
 #: templates/includes/footer.html:129 templates/includes/header.html:11
 #: templates/index.html:6 views.py:191
