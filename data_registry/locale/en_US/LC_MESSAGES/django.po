@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-23 21:09+0000\n"
+"POT-Creation-Date: 2026-11-23 21:18+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -206,7 +206,7 @@ msgid "Information about data retrieval"
 msgstr ""
 
 #: templates/detail.html:122
-msgid "License:"
+msgid "Publisher's license:"
 msgstr ""
 
 #: templates/detail.html:126
@@ -491,7 +491,9 @@ msgstr ""
 #: templates/includes/footer.html:126
 msgid ""
 "This work by the Open Contracting Partnership, unless otherwise noted, is "
-"licensed under a Creative Commons Attribution 4.0 International License."
+"licensed under a Creative Commons Attribution 4.0 International License. "
+"This license does not apply to OCDS data, which is subject to the "
+"publishers' terms."
 msgstr ""
 
 #: templates/includes/footer.html:129 templates/includes/header.html:11
