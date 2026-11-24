@@ -46,6 +46,7 @@ const knownWarnings = [
       "#description .prose", // long description on detail page
       ".bg-primary-subtle .prose", // data availability on detail page
       "#access .prose", // decompression instructions on detail page
+      "#no-license", // no-license explainer on detail page
     ],
   },
 ];

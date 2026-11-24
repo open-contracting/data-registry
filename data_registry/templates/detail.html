@@ -129,7 +129,7 @@ window.catalog = JSON.parse('{% cache None catalog LANGUAGE_CODE %}{% catalog_st
 {% elif job.license %}
                 {{ job.license|urlize }}
 {% else %}
-                <p class="mb-2">
+                <p class="mb-2" id="no-license">
                     {% blocktranslate trimmed %}
                         The publisher has not declared a license. <a href="https://theodi.org/insights/guides/reusers-guide-to-open-data-licensing/" target="_blank">Without one, you cannot assume permission to reuse this dataset</a>. What the law allows by default <a href="https://opendefinition.org/guide/data/" target="_blank">varies by jurisdiction</a>.
                     {% endblocktranslate %}
